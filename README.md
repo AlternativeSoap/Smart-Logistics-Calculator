@@ -2,7 +2,7 @@
 
 **Your complete inventory management toolkit - works right in your browser, no installation needed!**
 
-## 🌐 **[Try it Online Now!](https://alternativesoap.github.io/Smart-Logistics-Calculator/)**
+## 🌐 **[Try it Online Now!](https://alternativesoap.github.io/Smart-Logistics-Calculator/smart_logistics_calculator/)**
 
 ## ✨ What Can It Do?
 
@@ -186,5 +186,6 @@ This tool was built to make your life easier. No complicated software, no expens
 ---
 
 *Version 2.1 | November 2025 | Open source and free to use*
+
 
 
