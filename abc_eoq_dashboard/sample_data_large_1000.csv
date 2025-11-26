@@ -1,0 +1,1001 @@
+Varenavn,Årsforbrug,Pris,Ordreomkostning,Rentesats,Kategori,Leverandør,Lagerlokation,Varenummer,Enhed,Minimumslagerbeholdning,Leveringstid (dage),Status
+Vare-0001,2185,6373,190,4.8,Ergonomi,CableWorld ApS,Warehouse-11,SKU-0001,Rulle,328,6,Fase Ud
+Vare-0002,4701,4624,273,4.8,Kontorartikler,ErgoShop ApS,Tilbehør Zone 14,SKU-0002,Rulle,705,8,Aktiv
+Vare-0003,2325,7944,413,5.4,IT Hardware,Apple Denmark,Lager Zone 30,SKU-0003,Kasse,349,6,Aktiv
+Vare-0004,1206,7870,150,4.4,Tools,Samsung Electronics,Tilbehør Zone 39,SKU-0004,Rulle,181,7,Aktiv
+Vare-0005,3718,12245,289,4,Warehouse,OfficeSupply A/S,Hylde A2-10,SKU-0005,Stk,558,12,Aktiv
+Vare-0006,2956,4005,330,4.7,Belysning,Dell Danmark A/S,Tilbehør Zone 6,SKU-0006,Kasse,443,3,Aktiv
+Vare-0007,1754,9957,85,5.8,Electronics,HP Inc Danmark,Warehouse-94,SKU-0007,Rulle,263,4,Aktiv
+Vare-0008,4419,4341,175,4.5,IT Hardware,Logitech Nordic,Tilbehør Zone 94,SKU-0008,Pakke,663,10,Aktiv
+Vare-0009,4659,12058,327,4.1,Warehouse,Samsung Electronics,Hylde B1-15,SKU-0009,Stk,699,13,Fase Ud
+Vare-0010,1540,14287,148,4.1,Tools,ErgoShop ApS,Hylde A2-17,SKU-0010,Æske,231,6,Aktiv
+Vare-0011,3105,1559,448,5.3,Tools,Logitech Nordic,IT-Lager Zone 96,SKU-0011,Kasse,466,10,Aktiv
+Vare-0012,2657,9720,86,5.7,Tilbehør,Dell Danmark A/S,Hylde B2-11,SKU-0012,Kasse,399,9,Aktiv
+Vare-0013,957,1522,460,5.7,IT Hardware,HP Inc Danmark,Hylde B2-90,SKU-0013,Æske,144,13,Aktiv
+Vare-0014,4249,11902,126,3.6,Ergonomi,Apple Denmark,Hylde A2-89,SKU-0014,Stk,637,13,Aktiv
+Vare-0015,3305,12298,333,3.6,Møbel,OfficeSupply A/S,IT-Lager Zone 52,SKU-0015,Stk,496,1,Aktiv
+Vare-0016,1114,11065,254,5.4,Belysning,Samsung Electronics,IT-Lager Zone 92,SKU-0016,Stk,167,9,Aktiv
+Vare-0017,3701,7251,469,4,Belysning,Apple Denmark,Hylde A1-91,SKU-0017,Æske,555,1,Fase Ud
+Vare-0018,2998,12143,143,5.2,Ergonomi,ASUS Denmark,Hylde A2-27,SKU-0018,Rulle,450,10,Aktiv
+Vare-0019,4381,7823,392,4.2,Electronics,ErgoShop ApS,Warehouse-61,SKU-0019,Sæt,657,5,Aktiv
+Vare-0020,2628,9734,453,5.3,Electronics,HP Inc Danmark,Tilbehør Zone 19,SKU-0020,Æske,394,2,Aktiv
+Vare-0021,626,12773,406,4.2,Belysning,ASUS Denmark,Tilbehør Zone 21,SKU-0021,Sæt,94,3,Fase Ud
+Vare-0022,2640,3179,254,5.1,Kontorartikler,Apple Denmark,Tilbehør Zone 2,SKU-0022,Pakke,396,6,Aktiv
+Vare-0023,4116,2630,358,4.8,Ergonomi,Apple Denmark,Hylde B1-79,SKU-0023,Kasse,617,7,Aktiv
+Vare-0024,2696,3814,330,5.4,Warehouse,Logitech Nordic,Tilbehør Zone 32,SKU-0024,Æske,404,2,Aktiv
+Vare-0025,4612,13412,296,5,Kabler,OfficeSupply A/S,Hylde B1-55,SKU-0025,Stk,692,3,Aktiv
+Vare-0026,1838,1583,397,3.5,Warehouse,ASUS Denmark,Hylde A1-68,SKU-0026,Pakke,276,3,Aktiv
+Vare-0027,819,2195,150,4.2,Ergonomi,Samsung Electronics,Lager Zone 83,SKU-0027,Pakke,123,8,Fase Ud
+Vare-0028,1989,4715,424,6.1,Warehouse,ASUS Denmark,Hylde A2-94,SKU-0028,Pakke,298,2,Aktiv
+Vare-0029,2310,3097,223,4.7,Møbel,OfficeSupply A/S,Hylde A1-15,SKU-0029,Sæt,346,9,Fase Ud
+Vare-0030,3271,2771,111,5.2,Belysning,Apple Denmark,Tilbehør Zone 40,SKU-0030,Pakke,491,8,Aktiv
+Vare-0031,2168,12675,421,5.9,Kabler,Lenovo Denmark,Hylde A2-88,SKU-0031,Stk,325,7,Aktiv
+Vare-0032,3667,9852,386,5.7,Belysning,ErgoShop ApS,Hylde A1-72,SKU-0032,Stk,550,2,Aktiv
+Vare-0033,3227,13026,193,5.4,Ergonomi,ErgoShop ApS,Tilbehør Zone 43,SKU-0033,Stk,484,8,Aktiv
+Vare-0034,4199,8555,133,3.6,Kabler,ErgoShop ApS,Hylde A1-35,SKU-0034,Kasse,630,13,Aktiv
+Vare-0035,2510,9118,461,4.4,Electronics,Dell Danmark A/S,Tilbehør Zone 14,SKU-0035,Stk,376,8,Aktiv
+Vare-0036,1755,6772,270,4.2,Kontorartikler,CableWorld ApS,Hylde B2-12,SKU-0036,Sæt,263,10,Aktiv
+Vare-0037,4909,4806,193,5.5,Tools,Dell Danmark A/S,Warehouse-47,SKU-0037,Rulle,736,11,Aktiv
+Vare-0038,1407,6770,397,4.6,Tools,Samsung Electronics,Hylde A1-92,SKU-0038,Æske,211,9,Aktiv
+Vare-0039,1651,2733,243,5.7,Warehouse,ASUS Denmark,Hylde B1-95,SKU-0039,Pakke,248,2,Aktiv
+Vare-0040,4206,14516,99,4.4,IT Hardware,Lenovo Denmark,Tilbehør Zone 82,SKU-0040,Rulle,631,5,Aktiv
+Vare-0041,656,3323,180,4,Tools,HP Inc Danmark,Hylde B1-94,SKU-0041,Rulle,98,4,Aktiv
+Vare-0042,925,1067,330,3.7,IT Hardware,Logitech Nordic,Lager Zone 49,SKU-0042,Pakke,139,5,Aktiv
+Vare-0043,1584,6123,491,4.9,Kabler,ASUS Denmark,Hylde B2-61,SKU-0043,Kasse,238,3,Aktiv
+Vare-0044,2761,3533,290,5,IT Hardware,Logitech Nordic,Hylde A1-68,SKU-0044,Rulle,414,5,Aktiv
+Vare-0045,3060,8118,450,5.5,Kabler,Apple Denmark,Hylde A1-42,SKU-0045,Sæt,459,9,Aktiv
+Vare-0046,2773,6684,375,5.5,Ergonomi,ASUS Denmark,Tilbehør Zone 56,SKU-0046,Stk,416,5,Aktiv
+Vare-0047,3542,1486,336,4.8,Kabler,ASUS Denmark,Warehouse-86,SKU-0047,Sæt,531,8,Fase Ud
+Vare-0048,2553,10064,194,4.3,Ergonomi,OfficeSupply A/S,Hylde A1-46,SKU-0048,Kasse,383,3,Fase Ud
+Vare-0049,4163,10742,327,5.3,Møbel,Logitech Nordic,Lager Zone 95,SKU-0049,Rulle,624,6,Aktiv
+Vare-0050,2150,141,203,4.4,Warehouse,CableWorld ApS,Hylde B1-25,SKU-0050,Kasse,322,5,Fase Ud
+Vare-0051,3809,6065,202,5,Møbel,Apple Denmark,Hylde A2-11,SKU-0051,Pakke,571,11,Aktiv
+Vare-0052,3235,5303,350,5.1,Electronics,Dell Danmark A/S,Hylde B2-36,SKU-0052,Rulle,485,12,Fase Ud
+Vare-0053,1995,152,216,3.7,Warehouse,OfficeSupply A/S,Hylde B1-71,SKU-0053,Æske,299,9,Aktiv
+Vare-0054,1049,2711,283,3.6,Kabler,Logitech Nordic,Hylde B2-69,SKU-0054,Rulle,157,8,Aktiv
+Vare-0055,1692,4279,405,4.7,Kabler,Logitech Nordic,Hylde A1-66,SKU-0055,Kasse,254,13,Aktiv
+Vare-0056,343,8581,411,4.3,Belysning,ErgoShop ApS,Tilbehør Zone 57,SKU-0056,Sæt,51,3,Aktiv
+Vare-0057,2173,1047,422,4,Warehouse,CableWorld ApS,Warehouse-85,SKU-0057,Sæt,326,7,Fase Ud
+Vare-0058,4347,3792,423,4.5,Møbel,HP Inc Danmark,Tilbehør Zone 51,SKU-0058,Æske,652,4,Aktiv
+Vare-0059,3776,8427,175,3.8,Kabler,CableWorld ApS,Hylde A2-57,SKU-0059,Rulle,566,8,Aktiv
+Vare-0060,1787,1114,430,3.6,Tools,Logitech Nordic,Hylde B2-85,SKU-0060,Sæt,268,3,Aktiv
+Vare-0061,2865,8657,291,4.7,IT Hardware,ASUS Denmark,Warehouse-31,SKU-0061,Kasse,430,2,Aktiv
+Vare-0062,4871,14684,394,4.9,Kontorartikler,ASUS Denmark,Hylde B2-82,SKU-0062,Æske,731,1,Aktiv
+Vare-0063,349,4948,250,5.6,Tools,ASUS Denmark,Hylde B1-92,SKU-0063,Æske,52,13,Fase Ud
+Vare-0064,1672,14115,195,6.1,Belysning,Samsung Electronics,Hylde B1-3,SKU-0064,Pakke,251,7,Aktiv
+Vare-0065,4139,10197,80,5.6,Electronics,ErgoShop ApS,Warehouse-2,SKU-0065,Æske,621,1,Aktiv
+Vare-0066,1670,13196,377,4.4,Kontorartikler,ErgoShop ApS,IT-Lager Zone 46,SKU-0066,Æske,250,4,Aktiv
+Vare-0067,4478,6908,344,4.5,Tilbehør,CableWorld ApS,Hylde A2-57,SKU-0067,Sæt,672,7,Aktiv
+Vare-0068,3926,3644,452,4.8,Belysning,Logitech Nordic,Hylde A1-54,SKU-0068,Sæt,589,12,Aktiv
+Vare-0069,2953,3415,436,4.6,Kontorartikler,Apple Denmark,Hylde B1-67,SKU-0069,Sæt,443,3,Aktiv
+Vare-0070,687,9930,497,5.3,Electronics,Apple Denmark,Warehouse-20,SKU-0070,Rulle,103,13,Aktiv
+Vare-0071,4480,2025,269,5.1,IT Hardware,Dell Danmark A/S,Hylde B2-19,SKU-0071,Sæt,672,1,Aktiv
+Vare-0072,829,11233,98,4,Møbel,Lenovo Denmark,Hylde A1-91,SKU-0072,Stk,124,5,Aktiv
+Vare-0073,1271,12878,315,5.6,Ergonomi,Lenovo Denmark,Hylde A1-6,SKU-0073,Pakke,191,3,Aktiv
+Vare-0074,351,9083,171,3.9,Ergonomi,Apple Denmark,IT-Lager Zone 65,SKU-0074,Stk,53,13,Aktiv
+Vare-0075,434,4619,247,3.5,Kabler,Samsung Electronics,Lager Zone 53,SKU-0075,Pakke,65,6,Fase Ud
+Vare-0076,3522,10945,332,5.5,Ergonomi,ErgoShop ApS,Hylde A1-4,SKU-0076,Pakke,528,1,Aktiv
+Vare-0077,1620,11375,112,5,Kontorartikler,CableWorld ApS,Tilbehør Zone 27,SKU-0077,Pakke,243,7,Aktiv
+Vare-0078,795,2282,127,5.5,Belysning,Samsung Electronics,Hylde A2-59,SKU-0078,Kasse,119,7,Fase Ud
+Vare-0079,3946,10848,183,6,Ergonomi,Logitech Nordic,IT-Lager Zone 65,SKU-0079,Æske,592,12,Aktiv
+Vare-0080,3968,6178,329,4.9,Warehouse,OfficeSupply A/S,IT-Lager Zone 25,SKU-0080,Kasse,595,1,Fase Ud
+Vare-0081,1465,6901,460,4.8,Kontorartikler,HP Inc Danmark,Hylde A2-75,SKU-0081,Pakke,220,7,Aktiv
+Vare-0082,4895,3203,493,5.8,Electronics,Lenovo Denmark,IT-Lager Zone 20,SKU-0082,Stk,734,4,Aktiv
+Vare-0083,1210,13913,135,4.4,Electronics,Logitech Nordic,IT-Lager Zone 78,SKU-0083,Æske,182,12,Aktiv
+Vare-0084,3543,12804,292,5.6,Kontorartikler,ASUS Denmark,Hylde A1-74,SKU-0084,Kasse,531,5,Aktiv
+Vare-0085,3583,4694,149,6,Kabler,OfficeSupply A/S,IT-Lager Zone 25,SKU-0085,Rulle,537,12,Aktiv
+Vare-0086,223,7908,257,5.4,Kontorartikler,Dell Danmark A/S,Hylde A1-69,SKU-0086,Stk,33,11,Aktiv
+Vare-0087,4510,11555,125,5.6,Belysning,Dell Danmark A/S,Warehouse-61,SKU-0087,Pakke,676,12,Aktiv
+Vare-0088,754,9586,232,4.2,Belysning,ErgoShop ApS,Hylde B1-2,SKU-0088,Pakke,113,11,Aktiv
+Vare-0089,3317,1939,294,4.3,Kontorartikler,OfficeSupply A/S,Tilbehør Zone 37,SKU-0089,Sæt,498,3,Aktiv
+Vare-0090,855,496,495,3.9,Møbel,OfficeSupply A/S,Hylde B2-74,SKU-0090,Rulle,128,9,Fase Ud
+Vare-0091,4143,6083,428,5.1,IT Hardware,ASUS Denmark,Hylde A1-13,SKU-0091,Pakke,621,13,Aktiv
+Vare-0092,1536,1829,483,5.8,Kabler,Apple Denmark,Warehouse-40,SKU-0092,Rulle,230,8,Fase Ud
+Vare-0093,1831,2952,89,4.1,Møbel,Samsung Electronics,Warehouse-32,SKU-0093,Sæt,275,13,Aktiv
+Vare-0094,913,9031,248,4,Kabler,ErgoShop ApS,Hylde B2-87,SKU-0094,Pakke,137,11,Aktiv
+Vare-0095,3748,14484,401,3.9,IT Hardware,Dell Danmark A/S,Tilbehør Zone 73,SKU-0095,Pakke,562,3,Aktiv
+Vare-0096,4957,4240,152,5.9,Belysning,ASUS Denmark,Lager Zone 38,SKU-0096,Stk,744,1,Aktiv
+Vare-0097,4269,14185,192,4.1,Electronics,ErgoShop ApS,Lager Zone 36,SKU-0097,Stk,640,4,Aktiv
+Vare-0098,4740,10137,283,3.6,Ergonomi,Apple Denmark,Hylde A2-78,SKU-0098,Pakke,711,2,Fase Ud
+Vare-0099,2204,6239,284,4.9,Belysning,CableWorld ApS,Lager Zone 31,SKU-0099,Rulle,331,11,Aktiv
+Vare-0100,1793,13919,482,5.8,Tilbehør,ErgoShop ApS,Hylde A2-25,SKU-0100,Stk,269,11,Aktiv
+Vare-0101,1389,9912,168,4.9,Electronics,Lenovo Denmark,Lager Zone 84,SKU-0101,Rulle,208,4,Aktiv
+Vare-0102,4775,917,252,4.4,Tilbehør,ASUS Denmark,Hylde A2-73,SKU-0102,Kasse,716,1,Aktiv
+Vare-0103,1728,8091,203,5.8,Belysning,CableWorld ApS,Tilbehør Zone 49,SKU-0103,Stk,259,9,Aktiv
+Vare-0104,2136,11490,412,5.2,Warehouse,OfficeSupply A/S,Tilbehør Zone 36,SKU-0104,Æske,320,4,Aktiv
+Vare-0105,4748,13693,84,5.5,Tilbehør,CableWorld ApS,Warehouse-78,SKU-0105,Rulle,712,12,Aktiv
+Vare-0106,3671,14520,346,5.7,Tilbehør,Samsung Electronics,Hylde B1-40,SKU-0106,Æske,551,6,Aktiv
+Vare-0107,4333,2193,418,4.1,IT Hardware,OfficeSupply A/S,Hylde A2-40,SKU-0107,Sæt,650,9,Fase Ud
+Vare-0108,538,14905,86,5.3,Ergonomi,Lenovo Denmark,Lager Zone 43,SKU-0108,Kasse,81,11,Aktiv
+Vare-0109,4267,3967,122,6,Kabler,HP Inc Danmark,Hylde B1-85,SKU-0109,Kasse,640,8,Aktiv
+Vare-0110,3723,14224,216,4,Warehouse,CableWorld ApS,Tilbehør Zone 8,SKU-0110,Æske,558,4,Aktiv
+Vare-0111,773,12507,323,5.2,Kontorartikler,Logitech Nordic,Tilbehør Zone 4,SKU-0111,Kasse,116,8,Aktiv
+Vare-0112,3459,5472,271,4.6,Warehouse,OfficeSupply A/S,Hylde A2-56,SKU-0112,Rulle,519,9,Fase Ud
+Vare-0113,2081,5531,240,3.6,Electronics,Samsung Electronics,Warehouse-98,SKU-0113,Sæt,312,1,Aktiv
+Vare-0114,1417,1545,199,5.3,Warehouse,Lenovo Denmark,Hylde A2-3,SKU-0114,Sæt,213,11,Aktiv
+Vare-0115,4190,8383,109,5.1,Kabler,ErgoShop ApS,Hylde A1-54,SKU-0115,Pakke,628,5,Aktiv
+Vare-0116,3641,8243,137,5.4,Tools,ErgoShop ApS,Tilbehør Zone 20,SKU-0116,Sæt,546,8,Aktiv
+Vare-0117,4694,4233,252,3.8,Belysning,ASUS Denmark,Lager Zone 79,SKU-0117,Rulle,704,5,Aktiv
+Vare-0118,2613,10733,281,6.1,Warehouse,Samsung Electronics,Hylde A2-22,SKU-0118,Æske,392,13,Fase Ud
+Vare-0119,1748,3766,340,5.1,Kabler,Samsung Electronics,Lager Zone 20,SKU-0119,Kasse,262,5,Aktiv
+Vare-0120,3507,9000,127,4.1,Kontorartikler,Lenovo Denmark,Hylde B1-23,SKU-0120,Rulle,526,2,Aktiv
+Vare-0121,2111,595,237,5.5,Belysning,HP Inc Danmark,Hylde A1-91,SKU-0121,Rulle,317,12,Fase Ud
+Vare-0122,2393,11853,247,6.1,Electronics,Apple Denmark,Hylde A2-64,SKU-0122,Sæt,359,1,Aktiv
+Vare-0123,259,691,240,5.2,Tools,Lenovo Denmark,IT-Lager Zone 93,SKU-0123,Pakke,39,13,Fase Ud
+Vare-0124,1247,9885,480,4.6,Ergonomi,ASUS Denmark,Tilbehør Zone 65,SKU-0124,Æske,187,1,Aktiv
+Vare-0125,3120,9757,358,5.6,Møbel,CableWorld ApS,Tilbehør Zone 3,SKU-0125,Stk,468,4,Fase Ud
+Vare-0126,2844,11149,226,5.8,Warehouse,HP Inc Danmark,Hylde B1-97,SKU-0126,Pakke,427,4,Aktiv
+Vare-0127,4540,9795,122,5.7,Electronics,Logitech Nordic,Tilbehør Zone 41,SKU-0127,Rulle,681,11,Aktiv
+Vare-0128,2363,12649,180,5.6,Tools,OfficeSupply A/S,Hylde A1-93,SKU-0128,Rulle,354,5,Fase Ud
+Vare-0129,4764,12480,412,4.5,Warehouse,ASUS Denmark,Lager Zone 70,SKU-0129,Æske,715,10,Aktiv
+Vare-0130,2129,12802,425,5.7,Tools,Samsung Electronics,Lager Zone 9,SKU-0130,Rulle,319,1,Aktiv
+Vare-0131,3298,9479,324,5.6,Kontorartikler,ErgoShop ApS,Tilbehør Zone 51,SKU-0131,Kasse,495,1,Aktiv
+Vare-0132,1113,8812,360,5.7,Ergonomi,OfficeSupply A/S,Hylde B2-4,SKU-0132,Pakke,167,1,Aktiv
+Vare-0133,3387,8505,274,4.8,Kabler,Samsung Electronics,Lager Zone 65,SKU-0133,Æske,508,13,Fase Ud
+Vare-0134,2621,1411,327,3.5,Ergonomi,Samsung Electronics,Hylde B1-59,SKU-0134,Pakke,393,5,Aktiv
+Vare-0135,553,11814,330,3.5,Tilbehør,Apple Denmark,Hylde B2-5,SKU-0135,Pakke,83,6,Aktiv
+Vare-0136,1594,2822,229,4.6,Warehouse,OfficeSupply A/S,IT-Lager Zone 49,SKU-0136,Sæt,239,5,Fase Ud
+Vare-0137,344,10258,456,5.7,Kontorartikler,ErgoShop ApS,Hylde B2-76,SKU-0137,Sæt,52,6,Fase Ud
+Vare-0138,4864,4002,93,4.1,Kontorartikler,ErgoShop ApS,Hylde B1-82,SKU-0138,Æske,730,13,Aktiv
+Vare-0139,4252,14353,229,3.6,Tools,ErgoShop ApS,Hylde B1-48,SKU-0139,Sæt,638,7,Aktiv
+Vare-0140,835,12772,487,4.6,Kabler,OfficeSupply A/S,IT-Lager Zone 24,SKU-0140,Sæt,125,8,Aktiv
+Vare-0141,1413,5351,391,5,Ergonomi,Logitech Nordic,IT-Lager Zone 83,SKU-0141,Æske,212,3,Fase Ud
+Vare-0142,3094,7098,290,4.6,Warehouse,Lenovo Denmark,Hylde A2-98,SKU-0142,Sæt,464,11,Aktiv
+Vare-0143,2440,9853,279,5.2,Tilbehør,CableWorld ApS,IT-Lager Zone 53,SKU-0143,Pakke,366,7,Aktiv
+Vare-0144,4496,7109,263,5,Electronics,CableWorld ApS,Hylde B2-26,SKU-0144,Sæt,674,11,Aktiv
+Vare-0145,2361,5335,353,5.5,Warehouse,CableWorld ApS,Hylde B1-25,SKU-0145,Stk,354,9,Aktiv
+Vare-0146,3779,5114,157,5.6,IT Hardware,Samsung Electronics,IT-Lager Zone 26,SKU-0146,Sæt,567,6,Aktiv
+Vare-0147,3944,5355,220,4.1,Kabler,ErgoShop ApS,Lager Zone 93,SKU-0147,Stk,592,11,Aktiv
+Vare-0148,514,11933,139,4,Kontorartikler,HP Inc Danmark,Hylde A1-57,SKU-0148,Sæt,77,5,Aktiv
+Vare-0149,2747,13237,326,4.2,Kabler,HP Inc Danmark,Hylde A2-61,SKU-0149,Rulle,412,10,Fase Ud
+Vare-0150,4897,10305,131,5.3,Electronics,Samsung Electronics,Hylde A2-41,SKU-0150,Pakke,735,12,Fase Ud
+Vare-0151,4413,14063,252,5,Warehouse,HP Inc Danmark,Warehouse-39,SKU-0151,Rulle,662,1,Aktiv
+Vare-0152,339,8603,212,4.7,Ergonomi,OfficeSupply A/S,IT-Lager Zone 48,SKU-0152,Æske,51,4,Aktiv
+Vare-0153,1471,6312,332,4.6,Electronics,ASUS Denmark,IT-Lager Zone 31,SKU-0153,Kasse,221,9,Fase Ud
+Vare-0154,4148,6208,169,6,Ergonomi,Samsung Electronics,Hylde A1-41,SKU-0154,Kasse,622,12,Aktiv
+Vare-0155,4518,8195,227,4.5,IT Hardware,HP Inc Danmark,Lager Zone 21,SKU-0155,Stk,678,3,Aktiv
+Vare-0156,1468,11820,231,4.5,Kabler,Samsung Electronics,Hylde A1-60,SKU-0156,Rulle,220,12,Aktiv
+Vare-0157,2745,4661,497,5.9,Warehouse,Apple Denmark,Hylde B1-24,SKU-0157,Stk,412,10,Aktiv
+Vare-0158,437,10382,276,4.5,Electronics,ErgoShop ApS,Hylde A2-47,SKU-0158,Sæt,66,5,Aktiv
+Vare-0159,1905,5895,227,4.7,IT Hardware,HP Inc Danmark,Hylde A1-15,SKU-0159,Stk,286,9,Aktiv
+Vare-0160,1739,3759,179,4.2,Kontorartikler,Lenovo Denmark,Lager Zone 38,SKU-0160,Rulle,261,10,Aktiv
+Vare-0161,4947,3315,225,4.5,Warehouse,Apple Denmark,IT-Lager Zone 15,SKU-0161,Sæt,742,5,Aktiv
+Vare-0162,920,12845,262,4.3,Ergonomi,Samsung Electronics,IT-Lager Zone 56,SKU-0162,Sæt,138,8,Aktiv
+Vare-0163,4839,10403,204,4.1,Electronics,Dell Danmark A/S,Tilbehør Zone 62,SKU-0163,Rulle,726,11,Aktiv
+Vare-0164,1450,12663,183,3.6,Electronics,Apple Denmark,IT-Lager Zone 97,SKU-0164,Rulle,218,8,Aktiv
+Vare-0165,1733,8246,265,5.6,Tools,ASUS Denmark,Hylde B1-81,SKU-0165,Æske,260,4,Fase Ud
+Vare-0166,4913,7908,244,4.3,Belysning,OfficeSupply A/S,Hylde B1-5,SKU-0166,Pakke,737,4,Aktiv
+Vare-0167,2815,10614,207,5.6,Møbel,ASUS Denmark,Hylde B2-77,SKU-0167,Rulle,422,11,Aktiv
+Vare-0168,3749,11581,354,4.9,Tools,Apple Denmark,Hylde A2-58,SKU-0168,Rulle,562,1,Aktiv
+Vare-0169,3885,8628,159,3.8,Tilbehør,Apple Denmark,Hylde A2-33,SKU-0169,Sæt,583,4,Aktiv
+Vare-0170,1409,8659,416,4.5,Electronics,Samsung Electronics,Warehouse-66,SKU-0170,Stk,211,4,Aktiv
+Vare-0171,416,9772,142,5.1,Ergonomi,OfficeSupply A/S,Tilbehør Zone 43,SKU-0171,Stk,62,7,Fase Ud
+Vare-0172,544,14461,108,5.8,Møbel,Lenovo Denmark,Hylde B1-8,SKU-0172,Æske,82,1,Fase Ud
+Vare-0173,4337,6928,109,5.6,Electronics,OfficeSupply A/S,Warehouse-35,SKU-0173,Rulle,651,5,Aktiv
+Vare-0174,2235,3806,189,5.7,Belysning,Logitech Nordic,Lager Zone 34,SKU-0174,Æske,335,9,Fase Ud
+Vare-0175,4053,1072,281,4.7,Kontorartikler,Apple Denmark,Hylde A1-81,SKU-0175,Æske,608,6,Aktiv
+Vare-0176,3771,13615,338,5.8,IT Hardware,Dell Danmark A/S,Hylde A1-46,SKU-0176,Stk,566,4,Aktiv
+Vare-0177,3828,7048,278,5.9,Tilbehør,Apple Denmark,Tilbehør Zone 24,SKU-0177,Sæt,574,4,Aktiv
+Vare-0178,2983,11185,399,5.8,Warehouse,OfficeSupply A/S,IT-Lager Zone 64,SKU-0178,Pakke,447,8,Aktiv
+Vare-0179,2513,7628,415,3.5,Tools,ASUS Denmark,Hylde A1-98,SKU-0179,Pakke,377,4,Aktiv
+Vare-0180,4405,5652,383,4.1,Warehouse,Samsung Electronics,Hylde B2-19,SKU-0180,Rulle,661,9,Aktiv
+Vare-0181,2104,6319,395,3.5,Kabler,Dell Danmark A/S,Lager Zone 62,SKU-0181,Æske,316,5,Aktiv
+Vare-0182,2820,8083,305,3.6,Tilbehør,Logitech Nordic,Hylde A2-88,SKU-0182,Kasse,423,2,Aktiv
+Vare-0183,1871,10990,407,5.6,Ergonomi,Apple Denmark,IT-Lager Zone 89,SKU-0183,Kasse,281,5,Aktiv
+Vare-0184,3159,3153,466,5.5,Warehouse,Samsung Electronics,Hylde A1-91,SKU-0184,Kasse,474,9,Aktiv
+Vare-0185,2733,8507,231,3.8,Tilbehør,ErgoShop ApS,Hylde A1-38,SKU-0185,Sæt,410,4,Aktiv
+Vare-0186,1681,12768,299,3.6,Electronics,OfficeSupply A/S,Warehouse-16,SKU-0186,Pakke,252,4,Aktiv
+Vare-0187,3197,13250,367,4,Ergonomi,ASUS Denmark,Hylde A1-43,SKU-0187,Rulle,480,5,Aktiv
+Vare-0188,2482,10545,340,3.8,Warehouse,Logitech Nordic,Warehouse-55,SKU-0188,Æske,372,3,Fase Ud
+Vare-0189,888,7360,276,4.8,Møbel,Logitech Nordic,Hylde A2-96,SKU-0189,Æske,133,8,Aktiv
+Vare-0190,2138,10739,419,5.6,Kabler,Dell Danmark A/S,Hylde A2-42,SKU-0190,Rulle,321,13,Aktiv
+Vare-0191,2736,8620,140,5.9,Tools,Lenovo Denmark,Hylde A2-87,SKU-0191,Stk,410,9,Aktiv
+Vare-0192,4763,12604,153,4.3,Warehouse,HP Inc Danmark,Hylde A2-1,SKU-0192,Stk,714,8,Aktiv
+Vare-0193,3616,4743,140,4.5,IT Hardware,ASUS Denmark,Lager Zone 46,SKU-0193,Sæt,542,6,Aktiv
+Vare-0194,3352,4267,141,4.1,Tilbehør,Apple Denmark,Tilbehør Zone 93,SKU-0194,Æske,503,3,Aktiv
+Vare-0195,4404,14153,279,4.8,Warehouse,Lenovo Denmark,Lager Zone 70,SKU-0195,Pakke,661,3,Aktiv
+Vare-0196,1100,6984,88,4.5,IT Hardware,Logitech Nordic,Hylde B1-42,SKU-0196,Pakke,165,3,Aktiv
+Vare-0197,2112,9779,292,4.9,Belysning,ASUS Denmark,Hylde B1-75,SKU-0197,Stk,317,12,Aktiv
+Vare-0198,3251,590,390,6.1,Kontorartikler,ErgoShop ApS,IT-Lager Zone 90,SKU-0198,Kasse,488,8,Aktiv
+Vare-0199,2197,10399,92,5.6,Ergonomi,Samsung Electronics,Hylde B1-66,SKU-0199,Sæt,330,8,Fase Ud
+Vare-0200,138,6886,364,3.9,IT Hardware,HP Inc Danmark,Hylde A1-83,SKU-0200,Pakke,21,1,Aktiv
+Vare-0201,1869,11056,214,4,Møbel,Apple Denmark,Hylde B2-76,SKU-0201,Æske,280,12,Aktiv
+Vare-0202,236,12648,107,3.5,Tools,CableWorld ApS,Lager Zone 83,SKU-0202,Pakke,35,9,Aktiv
+Vare-0203,211,12455,457,5.9,Tools,Lenovo Denmark,Hylde B2-78,SKU-0203,Stk,32,2,Aktiv
+Vare-0204,1713,13155,378,3.5,Electronics,Samsung Electronics,Hylde A1-39,SKU-0204,Rulle,257,10,Aktiv
+Vare-0205,3288,13443,194,5.1,Kontorartikler,Dell Danmark A/S,Lager Zone 65,SKU-0205,Pakke,493,8,Aktiv
+Vare-0206,3902,6619,257,6,Møbel,Samsung Electronics,Tilbehør Zone 73,SKU-0206,Stk,585,1,Aktiv
+Vare-0207,3943,6722,444,4.3,Ergonomi,CableWorld ApS,Warehouse-9,SKU-0207,Æske,591,6,Aktiv
+Vare-0208,3727,4037,163,3.8,Kabler,Samsung Electronics,Tilbehør Zone 80,SKU-0208,Æske,559,1,Aktiv
+Vare-0209,3436,8217,207,3.8,IT Hardware,Samsung Electronics,Warehouse-65,SKU-0209,Rulle,515,8,Aktiv
+Vare-0210,3238,7402,444,4,Electronics,ASUS Denmark,Hylde B1-37,SKU-0210,Æske,486,5,Aktiv
+Vare-0211,1017,12171,191,4.8,Tilbehør,OfficeSupply A/S,IT-Lager Zone 95,SKU-0211,Æske,153,4,Fase Ud
+Vare-0212,4087,11199,91,5.9,Warehouse,Lenovo Denmark,Warehouse-8,SKU-0212,Æske,613,6,Aktiv
+Vare-0213,4715,10620,237,4,Warehouse,ASUS Denmark,Hylde A2-68,SKU-0213,Æske,707,8,Aktiv
+Vare-0214,910,14078,263,4.9,Tilbehør,Lenovo Denmark,Hylde B2-56,SKU-0214,Rulle,136,2,Aktiv
+Vare-0215,1496,11928,141,5.4,Warehouse,ASUS Denmark,Hylde A2-96,SKU-0215,Sæt,224,5,Aktiv
+Vare-0216,2741,6038,110,3.6,Electronics,Apple Denmark,Hylde A2-95,SKU-0216,Sæt,411,7,Fase Ud
+Vare-0217,2699,13214,361,4.7,Ergonomi,Lenovo Denmark,Hylde A2-65,SKU-0217,Pakke,405,12,Aktiv
+Vare-0218,293,9826,157,4.4,Møbel,CableWorld ApS,Tilbehør Zone 65,SKU-0218,Rulle,44,5,Aktiv
+Vare-0219,4177,7713,152,5.9,Ergonomi,ASUS Denmark,Hylde B2-19,SKU-0219,Sæt,627,13,Fase Ud
+Vare-0220,3636,10142,475,5.2,Kabler,Samsung Electronics,Tilbehør Zone 20,SKU-0220,Sæt,545,11,Aktiv
+Vare-0221,255,7312,346,5.4,Tilbehør,Dell Danmark A/S,Hylde B1-29,SKU-0221,Kasse,38,6,Aktiv
+Vare-0222,394,1751,123,5,Kontorartikler,ErgoShop ApS,Hylde B2-13,SKU-0222,Kasse,59,9,Aktiv
+Vare-0223,3776,11554,272,6,Kabler,OfficeSupply A/S,Hylde A2-90,SKU-0223,Pakke,566,13,Aktiv
+Vare-0224,828,3280,186,5.8,Møbel,Samsung Electronics,Hylde B2-32,SKU-0224,Pakke,124,11,Aktiv
+Vare-0225,2293,11156,209,5.9,Electronics,Apple Denmark,Warehouse-19,SKU-0225,Stk,344,5,Aktiv
+Vare-0226,1793,321,410,3.6,Tilbehør,OfficeSupply A/S,IT-Lager Zone 78,SKU-0226,Pakke,269,8,Aktiv
+Vare-0227,2751,11489,425,5.3,IT Hardware,HP Inc Danmark,Warehouse-74,SKU-0227,Kasse,413,6,Fase Ud
+Vare-0228,641,12697,390,3.7,Tilbehør,Lenovo Denmark,Hylde A2-22,SKU-0228,Stk,96,10,Aktiv
+Vare-0229,2294,12239,118,4.4,Tilbehør,Dell Danmark A/S,Hylde B2-95,SKU-0229,Æske,344,11,Fase Ud
+Vare-0230,316,2823,129,4.3,IT Hardware,ASUS Denmark,Hylde A2-39,SKU-0230,Sæt,47,10,Aktiv
+Vare-0231,3839,2972,385,5.9,Ergonomi,Lenovo Denmark,IT-Lager Zone 91,SKU-0231,Kasse,576,7,Aktiv
+Vare-0232,1372,9306,141,5,Electronics,Samsung Electronics,Hylde B2-61,SKU-0232,Kasse,206,5,Aktiv
+Vare-0233,3597,7997,270,4.3,Ergonomi,ASUS Denmark,Hylde B2-56,SKU-0233,Kasse,540,5,Aktiv
+Vare-0234,253,12241,97,4,Ergonomi,Apple Denmark,Lager Zone 6,SKU-0234,Stk,38,4,Aktiv
+Vare-0235,4416,6225,359,5,Warehouse,Samsung Electronics,Hylde B1-64,SKU-0235,Pakke,662,4,Fase Ud
+Vare-0236,4131,4974,168,5.9,Ergonomi,Samsung Electronics,Warehouse-59,SKU-0236,Kasse,620,13,Aktiv
+Vare-0237,2891,6465,487,4.3,Ergonomi,HP Inc Danmark,Tilbehør Zone 14,SKU-0237,Rulle,434,1,Fase Ud
+Vare-0238,3217,8781,149,3.7,Electronics,Logitech Nordic,Warehouse-22,SKU-0238,Pakke,483,7,Aktiv
+Vare-0239,4296,13155,207,4.2,IT Hardware,ASUS Denmark,Hylde A1-62,SKU-0239,Pakke,644,10,Aktiv
+Vare-0240,4090,10677,412,4.8,Tools,Samsung Electronics,Tilbehør Zone 21,SKU-0240,Stk,614,8,Aktiv
+Vare-0241,1192,9409,402,5.1,Tools,OfficeSupply A/S,Hylde B2-71,SKU-0241,Sæt,179,2,Aktiv
+Vare-0242,692,4882,229,4.6,Belysning,OfficeSupply A/S,Warehouse-95,SKU-0242,Æske,104,2,Aktiv
+Vare-0243,4673,6166,332,5.5,Møbel,OfficeSupply A/S,Warehouse-8,SKU-0243,Rulle,701,13,Fase Ud
+Vare-0244,2319,6358,389,5.9,Tilbehør,OfficeSupply A/S,Hylde B1-83,SKU-0244,Stk,348,5,Aktiv
+Vare-0245,800,11720,387,3.8,Møbel,HP Inc Danmark,Hylde B1-14,SKU-0245,Æske,120,2,Aktiv
+Vare-0246,433,12633,128,3.9,Warehouse,HP Inc Danmark,Tilbehør Zone 32,SKU-0246,Stk,65,6,Aktiv
+Vare-0247,529,13511,282,5,Møbel,CableWorld ApS,Hylde A2-62,SKU-0247,Rulle,79,7,Fase Ud
+Vare-0248,3297,6220,157,4.2,Tilbehør,Dell Danmark A/S,Warehouse-49,SKU-0248,Pakke,495,9,Aktiv
+Vare-0249,2040,2638,434,5.6,Tilbehør,Apple Denmark,Hylde B2-44,SKU-0249,Pakke,306,13,Aktiv
+Vare-0250,1137,4856,491,4.1,Tilbehør,ErgoShop ApS,Tilbehør Zone 74,SKU-0250,Æske,171,8,Aktiv
+Vare-0251,2564,363,126,3.6,Kontorartikler,ErgoShop ApS,Hylde B1-30,SKU-0251,Æske,385,11,Aktiv
+Vare-0252,990,13396,436,5.8,Ergonomi,CableWorld ApS,Lager Zone 36,SKU-0252,Stk,148,3,Fase Ud
+Vare-0253,2042,11131,458,6,Møbel,ErgoShop ApS,Hylde A1-81,SKU-0253,Rulle,306,9,Aktiv
+Vare-0254,687,3472,423,5.1,Tools,Apple Denmark,Hylde B2-4,SKU-0254,Stk,103,3,Aktiv
+Vare-0255,4179,1498,255,4.6,Warehouse,HP Inc Danmark,Hylde A2-6,SKU-0255,Kasse,627,5,Aktiv
+Vare-0256,1662,12548,403,4.5,Tools,ASUS Denmark,IT-Lager Zone 75,SKU-0256,Pakke,249,11,Aktiv
+Vare-0257,1927,8560,239,3.6,Electronics,OfficeSupply A/S,Lager Zone 78,SKU-0257,Stk,289,12,Aktiv
+Vare-0258,1117,12566,275,3.5,Warehouse,ASUS Denmark,Hylde A2-37,SKU-0258,Stk,168,6,Aktiv
+Vare-0259,4039,9458,315,4.7,Belysning,ErgoShop ApS,Hylde B2-80,SKU-0259,Sæt,606,9,Aktiv
+Vare-0260,2353,10188,348,3.8,Kabler,ErgoShop ApS,Hylde A2-24,SKU-0260,Stk,353,6,Fase Ud
+Vare-0261,4952,5355,233,3.8,Møbel,Apple Denmark,Tilbehør Zone 70,SKU-0261,Rulle,743,12,Aktiv
+Vare-0262,2527,14139,273,4.3,Belysning,Samsung Electronics,Hylde B2-52,SKU-0262,Rulle,379,7,Aktiv
+Vare-0263,3060,7483,336,4.1,Electronics,ErgoShop ApS,Hylde B2-60,SKU-0263,Kasse,459,4,Aktiv
+Vare-0264,3333,4234,244,3.7,Tools,Samsung Electronics,Hylde B2-23,SKU-0264,Pakke,500,4,Aktiv
+Vare-0265,2818,287,350,3.7,Belysning,Dell Danmark A/S,Warehouse-30,SKU-0265,Pakke,423,13,Fase Ud
+Vare-0266,1728,9890,394,3.7,Kabler,ASUS Denmark,Hylde A2-77,SKU-0266,Rulle,259,1,Aktiv
+Vare-0267,2067,12269,344,5.3,Møbel,OfficeSupply A/S,Hylde B1-51,SKU-0267,Sæt,310,2,Aktiv
+Vare-0268,2624,12547,436,3.7,Electronics,Samsung Electronics,Tilbehør Zone 45,SKU-0268,Kasse,394,3,Fase Ud
+Vare-0269,2861,11414,283,4.1,Belysning,Apple Denmark,Lager Zone 12,SKU-0269,Sæt,429,10,Aktiv
+Vare-0270,4059,12498,231,6.1,Ergonomi,OfficeSupply A/S,Hylde A1-42,SKU-0270,Rulle,609,1,Aktiv
+Vare-0271,1983,8245,238,5.6,Kabler,Apple Denmark,IT-Lager Zone 85,SKU-0271,Kasse,297,8,Aktiv
+Vare-0272,493,6124,163,4.9,Ergonomi,CableWorld ApS,Lager Zone 36,SKU-0272,Pakke,74,7,Aktiv
+Vare-0273,735,13455,179,3.7,Møbel,ASUS Denmark,IT-Lager Zone 7,SKU-0273,Rulle,110,7,Aktiv
+Vare-0274,4418,3745,281,3.6,Møbel,HP Inc Danmark,Tilbehør Zone 25,SKU-0274,Stk,663,6,Aktiv
+Vare-0275,4073,10886,229,5.6,Tools,Dell Danmark A/S,Hylde B2-25,SKU-0275,Pakke,611,6,Aktiv
+Vare-0276,496,8180,322,4.5,Belysning,CableWorld ApS,Tilbehør Zone 22,SKU-0276,Stk,74,8,Aktiv
+Vare-0277,1620,9280,109,6.1,IT Hardware,Apple Denmark,Hylde A2-49,SKU-0277,Sæt,243,2,Aktiv
+Vare-0278,157,9894,469,4.3,Tilbehør,HP Inc Danmark,Warehouse-81,SKU-0278,Pakke,24,4,Aktiv
+Vare-0279,377,3093,126,3.9,Ergonomi,HP Inc Danmark,Warehouse-53,SKU-0279,Kasse,57,13,Aktiv
+Vare-0280,646,1208,134,4.1,Tools,Samsung Electronics,Lager Zone 30,SKU-0280,Stk,97,4,Aktiv
+Vare-0281,968,12275,174,3.9,Belysning,Dell Danmark A/S,Hylde A2-60,SKU-0281,Stk,145,2,Aktiv
+Vare-0282,560,12116,355,5.6,IT Hardware,Logitech Nordic,Hylde B1-66,SKU-0282,Æske,84,2,Aktiv
+Vare-0283,3012,10026,409,4.9,Warehouse,Dell Danmark A/S,Hylde B1-79,SKU-0283,Kasse,452,11,Aktiv
+Vare-0284,4712,14847,293,3.8,IT Hardware,HP Inc Danmark,Hylde A1-5,SKU-0284,Kasse,707,12,Fase Ud
+Vare-0285,1069,5062,283,4.2,Warehouse,Apple Denmark,Hylde A2-43,SKU-0285,Rulle,160,8,Aktiv
+Vare-0286,1747,6546,283,4.7,Ergonomi,OfficeSupply A/S,Hylde A2-84,SKU-0286,Rulle,262,3,Aktiv
+Vare-0287,3111,2317,343,5.8,Tools,CableWorld ApS,Hylde A2-35,SKU-0287,Pakke,467,4,Fase Ud
+Vare-0288,1890,13366,266,4.7,Tilbehør,CableWorld ApS,Lager Zone 96,SKU-0288,Pakke,284,6,Aktiv
+Vare-0289,4242,8537,383,6,IT Hardware,CableWorld ApS,Tilbehør Zone 50,SKU-0289,Sæt,636,6,Aktiv
+Vare-0290,4799,13292,371,5.3,Kabler,Logitech Nordic,Warehouse-28,SKU-0290,Pakke,720,5,Aktiv
+Vare-0291,893,6118,181,3.7,Tilbehør,Lenovo Denmark,Hylde A2-8,SKU-0291,Stk,134,4,Aktiv
+Vare-0292,2427,5514,209,3.9,Ergonomi,CableWorld ApS,Hylde A1-39,SKU-0292,Æske,364,11,Aktiv
+Vare-0293,1744,789,90,6.1,Electronics,Logitech Nordic,Tilbehør Zone 4,SKU-0293,Stk,262,12,Aktiv
+Vare-0294,1663,6387,464,5.9,Ergonomi,Logitech Nordic,IT-Lager Zone 86,SKU-0294,Sæt,249,10,Aktiv
+Vare-0295,650,10662,316,4.1,Ergonomi,Logitech Nordic,Hylde B2-42,SKU-0295,Sæt,98,1,Fase Ud
+Vare-0296,1673,8117,168,5,Kabler,Dell Danmark A/S,IT-Lager Zone 89,SKU-0296,Rulle,251,3,Fase Ud
+Vare-0297,1708,4796,283,4.3,Ergonomi,Dell Danmark A/S,Hylde A2-74,SKU-0297,Kasse,256,10,Aktiv
+Vare-0298,308,7302,175,4.5,Kontorartikler,Logitech Nordic,Hylde B1-35,SKU-0298,Sæt,46,9,Aktiv
+Vare-0299,1244,5504,319,3.5,Ergonomi,CableWorld ApS,Tilbehør Zone 47,SKU-0299,Sæt,187,11,Aktiv
+Vare-0300,1961,3790,472,3.7,Kabler,Samsung Electronics,Tilbehør Zone 29,SKU-0300,Kasse,294,11,Aktiv
+Vare-0301,1257,247,237,4.7,IT Hardware,Dell Danmark A/S,Hylde B2-68,SKU-0301,Kasse,189,13,Fase Ud
+Vare-0302,962,7413,224,5.9,Kontorartikler,ASUS Denmark,Hylde A1-55,SKU-0302,Æske,144,4,Aktiv
+Vare-0303,2218,5736,109,5.5,Belysning,HP Inc Danmark,Hylde B1-37,SKU-0303,Sæt,333,7,Fase Ud
+Vare-0304,4294,8952,364,4,Møbel,HP Inc Danmark,IT-Lager Zone 94,SKU-0304,Rulle,644,1,Fase Ud
+Vare-0305,797,7443,202,3.6,IT Hardware,Apple Denmark,Hylde B2-59,SKU-0305,Kasse,120,11,Aktiv
+Vare-0306,2022,12085,228,5,Kabler,ASUS Denmark,Hylde B1-60,SKU-0306,Pakke,303,5,Aktiv
+Vare-0307,1876,14343,259,3.8,Kabler,Samsung Electronics,Hylde B1-25,SKU-0307,Sæt,281,11,Aktiv
+Vare-0308,3651,12504,206,3.5,Kontorartikler,OfficeSupply A/S,Lager Zone 65,SKU-0308,Kasse,548,5,Aktiv
+Vare-0309,2435,11448,274,4.8,Belysning,ASUS Denmark,Hylde B2-43,SKU-0309,Sæt,365,10,Fase Ud
+Vare-0310,4382,13290,157,4.2,Warehouse,ErgoShop ApS,Tilbehør Zone 49,SKU-0310,Kasse,657,1,Aktiv
+Vare-0311,886,3880,431,5.1,Kabler,ASUS Denmark,Hylde B1-47,SKU-0311,Rulle,133,10,Aktiv
+Vare-0312,4716,5971,92,4.1,Kontorartikler,OfficeSupply A/S,Hylde B2-78,SKU-0312,Stk,707,1,Aktiv
+Vare-0313,4549,4180,166,4.4,Møbel,Lenovo Denmark,IT-Lager Zone 55,SKU-0313,Kasse,682,11,Fase Ud
+Vare-0314,4316,13592,321,4.5,Kabler,OfficeSupply A/S,IT-Lager Zone 65,SKU-0314,Rulle,647,2,Aktiv
+Vare-0315,2137,558,465,4.2,Electronics,ASUS Denmark,Warehouse-18,SKU-0315,Æske,321,6,Aktiv
+Vare-0316,3226,6484,125,4.4,Warehouse,HP Inc Danmark,Tilbehør Zone 42,SKU-0316,Kasse,484,1,Fase Ud
+Vare-0317,240,415,284,5.3,Møbel,HP Inc Danmark,Hylde A1-62,SKU-0317,Pakke,36,1,Aktiv
+Vare-0318,4435,1017,428,5.8,Electronics,Samsung Electronics,Hylde A2-92,SKU-0318,Stk,665,13,Aktiv
+Vare-0319,2643,11712,491,5,IT Hardware,ErgoShop ApS,Tilbehør Zone 43,SKU-0319,Pakke,396,3,Aktiv
+Vare-0320,4069,4703,465,3.8,Kontorartikler,HP Inc Danmark,Lager Zone 82,SKU-0320,Æske,610,1,Fase Ud
+Vare-0321,2423,14396,412,5.6,IT Hardware,HP Inc Danmark,Hylde B2-58,SKU-0321,Stk,363,7,Aktiv
+Vare-0322,1111,4367,158,4.2,Ergonomi,HP Inc Danmark,Hylde B1-55,SKU-0322,Pakke,167,11,Aktiv
+Vare-0323,3829,4500,293,4,Warehouse,Samsung Electronics,Hylde B2-58,SKU-0323,Sæt,574,12,Fase Ud
+Vare-0324,1306,387,280,5.1,Tools,HP Inc Danmark,Tilbehør Zone 46,SKU-0324,Sæt,196,9,Aktiv
+Vare-0325,3622,13709,85,5,Møbel,ASUS Denmark,Hylde A2-95,SKU-0325,Sæt,543,7,Aktiv
+Vare-0326,919,11877,83,4.6,Møbel,ASUS Denmark,Hylde A2-14,SKU-0326,Sæt,138,7,Aktiv
+Vare-0327,1421,1953,109,5.2,Kabler,Logitech Nordic,Tilbehør Zone 98,SKU-0327,Æske,213,3,Fase Ud
+Vare-0328,4921,5422,80,5.2,Møbel,HP Inc Danmark,Hylde B2-66,SKU-0328,Stk,738,5,Fase Ud
+Vare-0329,3558,7740,421,5.6,Tilbehør,Apple Denmark,Hylde B2-33,SKU-0329,Æske,534,8,Aktiv
+Vare-0330,1444,12349,416,3.9,Ergonomi,ErgoShop ApS,IT-Lager Zone 86,SKU-0330,Sæt,217,5,Fase Ud
+Vare-0331,4667,13226,477,6.1,Kabler,ASUS Denmark,Warehouse-20,SKU-0331,Stk,700,9,Fase Ud
+Vare-0332,247,7701,94,5.5,Tilbehør,Lenovo Denmark,Hylde B1-51,SKU-0332,Stk,37,10,Aktiv
+Vare-0333,2296,7425,340,3.5,Electronics,HP Inc Danmark,Hylde B1-85,SKU-0333,Stk,344,7,Aktiv
+Vare-0334,2743,14041,221,6,Electronics,CableWorld ApS,Lager Zone 54,SKU-0334,Rulle,411,5,Aktiv
+Vare-0335,1061,7696,84,5.2,Møbel,ASUS Denmark,Hylde B1-11,SKU-0335,Rulle,159,13,Aktiv
+Vare-0336,827,6877,177,6.1,Møbel,Logitech Nordic,IT-Lager Zone 60,SKU-0336,Kasse,124,13,Fase Ud
+Vare-0337,1948,4547,267,4.1,Warehouse,CableWorld ApS,Hylde A2-96,SKU-0337,Stk,292,4,Aktiv
+Vare-0338,3901,1472,247,3.8,Kontorartikler,Samsung Electronics,Hylde B2-36,SKU-0338,Æske,585,11,Fase Ud
+Vare-0339,4184,9070,347,5.4,Kontorartikler,Logitech Nordic,Hylde A1-65,SKU-0339,Stk,628,8,Aktiv
+Vare-0340,4623,12311,354,3.6,Tilbehør,Samsung Electronics,Tilbehør Zone 83,SKU-0340,Kasse,693,2,Fase Ud
+Vare-0341,2247,2570,341,5.3,Møbel,Logitech Nordic,Hylde B2-83,SKU-0341,Kasse,337,6,Aktiv
+Vare-0342,2716,12718,382,6.1,Belysning,Apple Denmark,Hylde A2-74,SKU-0342,Rulle,407,1,Aktiv
+Vare-0343,2383,10836,299,5.5,Tools,OfficeSupply A/S,IT-Lager Zone 84,SKU-0343,Rulle,357,2,Aktiv
+Vare-0344,1846,1205,446,6.1,IT Hardware,ASUS Denmark,Hylde A2-51,SKU-0344,Rulle,277,1,Aktiv
+Vare-0345,4368,6413,212,3.6,Belysning,Dell Danmark A/S,Tilbehør Zone 25,SKU-0345,Pakke,655,1,Aktiv
+Vare-0346,4918,11927,240,4.7,Møbel,Dell Danmark A/S,Warehouse-79,SKU-0346,Sæt,738,9,Aktiv
+Vare-0347,2442,12597,251,6,Kabler,Dell Danmark A/S,Tilbehør Zone 63,SKU-0347,Stk,366,4,Aktiv
+Vare-0348,2878,3663,168,5.9,IT Hardware,HP Inc Danmark,Warehouse-58,SKU-0348,Æske,432,13,Fase Ud
+Vare-0349,2452,11680,360,5,Warehouse,Samsung Electronics,Hylde B1-33,SKU-0349,Sæt,368,5,Fase Ud
+Vare-0350,4815,13621,314,5.2,Tilbehør,Logitech Nordic,Warehouse-57,SKU-0350,Rulle,722,3,Fase Ud
+Vare-0351,1435,602,240,3.8,Tools,OfficeSupply A/S,Tilbehør Zone 52,SKU-0351,Rulle,215,4,Fase Ud
+Vare-0352,2999,13941,139,5.4,Electronics,OfficeSupply A/S,Hylde B1-71,SKU-0352,Rulle,450,3,Aktiv
+Vare-0353,335,11880,180,3.6,Kabler,OfficeSupply A/S,Hylde A1-6,SKU-0353,Stk,50,10,Aktiv
+Vare-0354,4262,1539,416,3.5,Kontorartikler,ASUS Denmark,Hylde A2-55,SKU-0354,Stk,639,1,Aktiv
+Vare-0355,982,7830,467,3.9,Kabler,Dell Danmark A/S,IT-Lager Zone 39,SKU-0355,Sæt,147,12,Fase Ud
+Vare-0356,1304,8718,438,5.5,Belysning,Dell Danmark A/S,Hylde B1-58,SKU-0356,Æske,196,3,Aktiv
+Vare-0357,3071,748,105,4.3,Kontorartikler,ErgoShop ApS,Warehouse-52,SKU-0357,Kasse,461,4,Aktiv
+Vare-0358,2801,7590,238,4.9,IT Hardware,OfficeSupply A/S,Hylde B1-43,SKU-0358,Stk,420,4,Aktiv
+Vare-0359,3212,10461,281,5.2,Warehouse,ASUS Denmark,IT-Lager Zone 44,SKU-0359,Sæt,482,9,Fase Ud
+Vare-0360,1151,5315,113,3.9,Warehouse,ASUS Denmark,Warehouse-1,SKU-0360,Kasse,173,10,Aktiv
+Vare-0361,4782,4655,409,4.1,Belysning,Lenovo Denmark,IT-Lager Zone 31,SKU-0361,Sæt,717,6,Aktiv
+Vare-0362,3049,5806,115,4.8,Belysning,Dell Danmark A/S,IT-Lager Zone 2,SKU-0362,Æske,457,3,Aktiv
+Vare-0363,1917,14206,435,3.6,Ergonomi,Lenovo Denmark,Warehouse-95,SKU-0363,Sæt,288,5,Aktiv
+Vare-0364,3527,6588,172,4,Kontorartikler,ErgoShop ApS,Warehouse-93,SKU-0364,Æske,529,5,Aktiv
+Vare-0365,4139,3362,399,3.9,Møbel,Apple Denmark,Hylde B2-95,SKU-0365,Kasse,621,2,Fase Ud
+Vare-0366,4369,9086,202,4.7,Tilbehør,OfficeSupply A/S,Tilbehør Zone 67,SKU-0366,Pakke,655,3,Aktiv
+Vare-0367,1188,3302,337,3.9,Kabler,ErgoShop ApS,IT-Lager Zone 43,SKU-0367,Æske,178,4,Aktiv
+Vare-0368,4604,8776,86,3.5,Møbel,ASUS Denmark,Lager Zone 2,SKU-0368,Kasse,691,13,Aktiv
+Vare-0369,1309,14803,453,3.6,Kabler,Samsung Electronics,Lager Zone 33,SKU-0369,Sæt,196,11,Aktiv
+Vare-0370,1353,3205,111,4.6,Kabler,ErgoShop ApS,Hylde B2-48,SKU-0370,Sæt,203,4,Aktiv
+Vare-0371,4711,7028,451,3.6,Møbel,Apple Denmark,Lager Zone 13,SKU-0371,Kasse,707,1,Fase Ud
+Vare-0372,3042,13910,292,4.8,Belysning,ASUS Denmark,Hylde A1-46,SKU-0372,Æske,456,2,Aktiv
+Vare-0373,3920,1409,389,4.5,Ergonomi,Samsung Electronics,IT-Lager Zone 76,SKU-0373,Pakke,588,5,Fase Ud
+Vare-0374,3189,13315,493,3.7,Møbel,Apple Denmark,IT-Lager Zone 34,SKU-0374,Kasse,478,12,Aktiv
+Vare-0375,4562,7432,264,5.1,Tilbehør,ASUS Denmark,Hylde B1-20,SKU-0375,Pakke,684,10,Aktiv
+Vare-0376,313,3015,150,4.9,Tools,Logitech Nordic,Hylde B1-71,SKU-0376,Æske,47,1,Aktiv
+Vare-0377,4601,13099,103,5.1,Tools,CableWorld ApS,Tilbehør Zone 47,SKU-0377,Rulle,690,10,Fase Ud
+Vare-0378,1772,1665,470,5.7,Belysning,CableWorld ApS,IT-Lager Zone 22,SKU-0378,Pakke,266,4,Aktiv
+Vare-0379,1238,11942,451,5.8,Ergonomi,OfficeSupply A/S,Hylde B2-68,SKU-0379,Stk,186,13,Aktiv
+Vare-0380,1854,4317,320,5.7,Tilbehør,HP Inc Danmark,Hylde A1-51,SKU-0380,Æske,278,9,Aktiv
+Vare-0381,3220,9754,237,5,IT Hardware,Apple Denmark,Hylde B1-44,SKU-0381,Æske,483,6,Aktiv
+Vare-0382,3923,6617,194,6.1,Belysning,Samsung Electronics,Hylde B1-53,SKU-0382,Rulle,588,10,Aktiv
+Vare-0383,3426,152,369,4,Kabler,ASUS Denmark,IT-Lager Zone 52,SKU-0383,Sæt,514,2,Aktiv
+Vare-0384,1788,16,347,4.7,Tools,Apple Denmark,Lager Zone 36,SKU-0384,Pakke,268,12,Fase Ud
+Vare-0385,364,832,456,5,Tools,Apple Denmark,Hylde A2-60,SKU-0385,Pakke,55,13,Aktiv
+Vare-0386,4682,4817,116,4.6,Kontorartikler,ASUS Denmark,Lager Zone 31,SKU-0386,Æske,702,10,Aktiv
+Vare-0387,4120,1956,358,5.7,Belysning,HP Inc Danmark,Lager Zone 28,SKU-0387,Æske,618,6,Aktiv
+Vare-0388,3136,802,87,5.8,Tilbehør,Dell Danmark A/S,IT-Lager Zone 49,SKU-0388,Sæt,470,6,Fase Ud
+Vare-0389,4971,11373,251,4.1,Ergonomi,Samsung Electronics,Tilbehør Zone 41,SKU-0389,Rulle,746,11,Fase Ud
+Vare-0390,2105,9465,237,3.8,Kontorartikler,Dell Danmark A/S,Hylde A1-80,SKU-0390,Æske,316,5,Aktiv
+Vare-0391,3463,4994,300,5.8,Tilbehør,Lenovo Denmark,Hylde A2-77,SKU-0391,Stk,519,7,Aktiv
+Vare-0392,4029,1558,397,5.7,Kontorartikler,Lenovo Denmark,Warehouse-72,SKU-0392,Kasse,604,3,Fase Ud
+Vare-0393,2968,11652,496,3.5,Møbel,Lenovo Denmark,Warehouse-10,SKU-0393,Æske,445,7,Aktiv
+Vare-0394,1593,5984,307,4.8,Møbel,Lenovo Denmark,Tilbehør Zone 11,SKU-0394,Rulle,239,3,Fase Ud
+Vare-0395,3458,2487,401,5.6,Kabler,Logitech Nordic,Warehouse-22,SKU-0395,Kasse,519,12,Aktiv
+Vare-0396,486,5994,178,3.9,Tools,Dell Danmark A/S,Hylde B1-38,SKU-0396,Stk,73,9,Fase Ud
+Vare-0397,2065,12259,371,4.2,Warehouse,Dell Danmark A/S,Hylde B2-17,SKU-0397,Æske,310,1,Aktiv
+Vare-0398,4275,4505,119,4.4,Tools,Samsung Electronics,Warehouse-37,SKU-0398,Æske,641,13,Aktiv
+Vare-0399,4716,3777,443,5.5,Tilbehør,ASUS Denmark,IT-Lager Zone 14,SKU-0399,Pakke,707,8,Fase Ud
+Vare-0400,2105,11747,208,5.5,Warehouse,OfficeSupply A/S,Hylde B2-26,SKU-0400,Pakke,316,1,Aktiv
+Vare-0401,2439,5158,471,5.6,Ergonomi,HP Inc Danmark,Hylde B2-12,SKU-0401,Stk,366,6,Aktiv
+Vare-0402,1905,6744,418,4.9,IT Hardware,OfficeSupply A/S,Hylde A2-35,SKU-0402,Kasse,286,9,Aktiv
+Vare-0403,2726,9153,118,5.7,Tools,Dell Danmark A/S,Hylde A1-87,SKU-0403,Rulle,409,7,Aktiv
+Vare-0404,3267,9617,360,4.4,Tools,ErgoShop ApS,IT-Lager Zone 62,SKU-0404,Rulle,490,9,Aktiv
+Vare-0405,1895,3286,320,4.2,Warehouse,Lenovo Denmark,Lager Zone 49,SKU-0405,Stk,284,9,Aktiv
+Vare-0406,3651,2206,107,3.9,Tilbehør,Apple Denmark,Tilbehør Zone 33,SKU-0406,Pakke,548,7,Aktiv
+Vare-0407,1562,713,416,4.7,Belysning,Samsung Electronics,Hylde B1-65,SKU-0407,Kasse,234,11,Aktiv
+Vare-0408,2883,2445,307,5.3,Kabler,ASUS Denmark,Lager Zone 38,SKU-0408,Pakke,432,10,Aktiv
+Vare-0409,473,10955,200,6.1,Møbel,Apple Denmark,Warehouse-9,SKU-0409,Stk,71,1,Aktiv
+Vare-0410,3193,8818,97,4.4,Electronics,HP Inc Danmark,Warehouse-30,SKU-0410,Rulle,479,1,Aktiv
+Vare-0411,943,1389,150,4.9,Belysning,CableWorld ApS,Hylde B2-24,SKU-0411,Rulle,141,12,Aktiv
+Vare-0412,3648,12978,184,4.4,Ergonomi,OfficeSupply A/S,Hylde A1-20,SKU-0412,Stk,547,12,Aktiv
+Vare-0413,3737,1678,288,3.7,Tools,Dell Danmark A/S,Hylde B1-26,SKU-0413,Pakke,561,1,Aktiv
+Vare-0414,389,8733,278,3.8,Kontorartikler,OfficeSupply A/S,Hylde A1-24,SKU-0414,Kasse,58,6,Aktiv
+Vare-0415,1042,5998,177,4.7,IT Hardware,Dell Danmark A/S,Hylde B2-42,SKU-0415,Æske,156,1,Aktiv
+Vare-0416,614,1147,256,5.9,Belysning,OfficeSupply A/S,Hylde B2-43,SKU-0416,Kasse,92,7,Fase Ud
+Vare-0417,246,8923,470,5.5,Møbel,Logitech Nordic,IT-Lager Zone 41,SKU-0417,Æske,37,4,Aktiv
+Vare-0418,3160,11294,179,6,Belysning,Apple Denmark,Lager Zone 61,SKU-0418,Stk,474,8,Aktiv
+Vare-0419,4407,11788,137,4.9,Ergonomi,Lenovo Denmark,Lager Zone 68,SKU-0419,Æske,661,2,Fase Ud
+Vare-0420,4568,1106,342,5.5,Ergonomi,ASUS Denmark,Tilbehør Zone 64,SKU-0420,Æske,685,1,Aktiv
+Vare-0421,4554,7730,164,5.9,Tilbehør,HP Inc Danmark,Hylde A1-93,SKU-0421,Stk,683,9,Aktiv
+Vare-0422,1853,6804,296,5.7,Kabler,Samsung Electronics,Hylde B1-66,SKU-0422,Kasse,278,4,Aktiv
+Vare-0423,3805,10836,132,4,Møbel,OfficeSupply A/S,Tilbehør Zone 81,SKU-0423,Sæt,571,10,Aktiv
+Vare-0424,2661,1459,363,4.7,IT Hardware,Lenovo Denmark,Hylde B2-52,SKU-0424,Stk,399,10,Aktiv
+Vare-0425,3870,5562,273,4.2,Electronics,Dell Danmark A/S,Hylde A1-59,SKU-0425,Sæt,580,2,Aktiv
+Vare-0426,3249,1846,443,4.8,Tools,ASUS Denmark,Hylde B1-45,SKU-0426,Pakke,487,2,Aktiv
+Vare-0427,1814,13052,211,3.7,Ergonomi,Lenovo Denmark,Tilbehør Zone 19,SKU-0427,Stk,272,7,Fase Ud
+Vare-0428,726,1187,404,3.6,Møbel,Samsung Electronics,Hylde A2-20,SKU-0428,Sæt,109,11,Aktiv
+Vare-0429,1705,7103,95,5,Kontorartikler,OfficeSupply A/S,IT-Lager Zone 25,SKU-0429,Kasse,256,8,Aktiv
+Vare-0430,4668,10304,104,5.5,Møbel,HP Inc Danmark,Lager Zone 82,SKU-0430,Rulle,700,8,Aktiv
+Vare-0431,1027,8420,308,3.8,Warehouse,Samsung Electronics,IT-Lager Zone 21,SKU-0431,Stk,154,3,Aktiv
+Vare-0432,4632,10738,311,3.7,Kabler,Apple Denmark,Hylde B1-66,SKU-0432,Kasse,695,13,Aktiv
+Vare-0433,3939,10025,262,4.9,Kabler,HP Inc Danmark,Hylde B2-58,SKU-0433,Æske,591,12,Aktiv
+Vare-0434,4283,4950,289,4,Ergonomi,Dell Danmark A/S,Warehouse-27,SKU-0434,Rulle,642,8,Aktiv
+Vare-0435,4429,13716,127,6,Ergonomi,Apple Denmark,Hylde B2-82,SKU-0435,Sæt,664,4,Aktiv
+Vare-0436,4317,5006,429,3.7,IT Hardware,Apple Denmark,Hylde B1-79,SKU-0436,Stk,648,12,Aktiv
+Vare-0437,504,120,399,3.7,Tools,CableWorld ApS,Warehouse-73,SKU-0437,Stk,76,2,Fase Ud
+Vare-0438,1700,12216,296,4.5,IT Hardware,Lenovo Denmark,Hylde A2-11,SKU-0438,Sæt,255,13,Aktiv
+Vare-0439,762,653,440,4.1,Belysning,Samsung Electronics,Warehouse-34,SKU-0439,Rulle,114,12,Aktiv
+Vare-0440,1797,499,211,4.8,Warehouse,ASUS Denmark,Hylde B1-1,SKU-0440,Pakke,270,11,Aktiv
+Vare-0441,3196,11054,137,5.4,Belysning,Logitech Nordic,Warehouse-63,SKU-0441,Sæt,479,9,Aktiv
+Vare-0442,3312,2770,331,3.5,Møbel,ErgoShop ApS,Warehouse-71,SKU-0442,Kasse,497,1,Aktiv
+Vare-0443,3939,3034,422,5.8,Belysning,Logitech Nordic,Hylde A2-35,SKU-0443,Kasse,591,9,Aktiv
+Vare-0444,4924,14050,234,4.7,Møbel,Dell Danmark A/S,Tilbehør Zone 94,SKU-0444,Stk,739,13,Aktiv
+Vare-0445,2248,7341,97,3.9,Electronics,Lenovo Denmark,Hylde B2-50,SKU-0445,Æske,337,10,Aktiv
+Vare-0446,1918,9358,373,4.6,Ergonomi,ASUS Denmark,Hylde B2-91,SKU-0446,Rulle,288,2,Aktiv
+Vare-0447,1627,12180,353,3.7,Tools,Samsung Electronics,IT-Lager Zone 17,SKU-0447,Æske,244,9,Aktiv
+Vare-0448,2944,7291,469,5.8,Kontorartikler,Lenovo Denmark,Tilbehør Zone 91,SKU-0448,Rulle,442,4,Fase Ud
+Vare-0449,4834,9961,171,3.8,Tools,Samsung Electronics,Hylde B2-75,SKU-0449,Stk,725,13,Aktiv
+Vare-0450,2446,8887,287,4.3,IT Hardware,CableWorld ApS,Lager Zone 54,SKU-0450,Stk,367,3,Fase Ud
+Vare-0451,3806,9114,430,4,Møbel,ErgoShop ApS,Hylde B1-31,SKU-0451,Kasse,571,10,Fase Ud
+Vare-0452,1719,9052,94,4.8,Warehouse,Logitech Nordic,IT-Lager Zone 90,SKU-0452,Rulle,258,8,Aktiv
+Vare-0453,1916,7447,456,5.6,Kabler,OfficeSupply A/S,Lager Zone 57,SKU-0453,Pakke,287,9,Fase Ud
+Vare-0454,232,3820,354,6,Electronics,Logitech Nordic,Hylde B1-40,SKU-0454,Rulle,35,3,Aktiv
+Vare-0455,3694,12887,313,5.3,Kontorartikler,OfficeSupply A/S,Hylde A2-69,SKU-0455,Æske,554,3,Aktiv
+Vare-0456,2887,11974,374,4.1,Tilbehør,Samsung Electronics,Tilbehør Zone 77,SKU-0456,Rulle,433,1,Aktiv
+Vare-0457,3608,6368,175,5,Ergonomi,Samsung Electronics,IT-Lager Zone 3,SKU-0457,Pakke,541,3,Fase Ud
+Vare-0458,3546,14156,496,4.4,Møbel,Dell Danmark A/S,IT-Lager Zone 76,SKU-0458,Rulle,532,11,Aktiv
+Vare-0459,1584,1267,216,6,Møbel,OfficeSupply A/S,Hylde A2-27,SKU-0459,Pakke,238,13,Aktiv
+Vare-0460,3593,12390,184,4,Møbel,ErgoShop ApS,Warehouse-67,SKU-0460,Æske,539,2,Aktiv
+Vare-0461,393,4220,357,4.6,Møbel,HP Inc Danmark,Hylde A2-86,SKU-0461,Kasse,59,6,Aktiv
+Vare-0462,4083,691,402,6,Belysning,Dell Danmark A/S,Tilbehør Zone 33,SKU-0462,Pakke,612,1,Aktiv
+Vare-0463,4625,11906,464,3.9,Warehouse,OfficeSupply A/S,Hylde A2-36,SKU-0463,Stk,694,12,Aktiv
+Vare-0464,3508,8775,458,5.5,Kabler,OfficeSupply A/S,Hylde B1-72,SKU-0464,Sæt,526,3,Fase Ud
+Vare-0465,4505,12184,341,5.1,Belysning,CableWorld ApS,Hylde B2-12,SKU-0465,Pakke,676,8,Fase Ud
+Vare-0466,3794,1001,179,5.3,Kabler,OfficeSupply A/S,Tilbehør Zone 44,SKU-0466,Kasse,569,5,Fase Ud
+Vare-0467,3106,5199,473,5.9,IT Hardware,OfficeSupply A/S,Hylde B2-79,SKU-0467,Kasse,466,10,Aktiv
+Vare-0468,361,11063,432,4.3,Warehouse,Samsung Electronics,IT-Lager Zone 4,SKU-0468,Sæt,54,13,Aktiv
+Vare-0469,3687,9429,232,5.3,Kontorartikler,Dell Danmark A/S,Hylde A1-42,SKU-0469,Kasse,553,3,Aktiv
+Vare-0470,723,3464,410,4,Kabler,Apple Denmark,Lager Zone 94,SKU-0470,Stk,108,8,Aktiv
+Vare-0471,4711,14957,312,3.6,Belysning,Lenovo Denmark,Lager Zone 15,SKU-0471,Sæt,707,8,Aktiv
+Vare-0472,3332,7809,331,6,Tilbehør,Logitech Nordic,Hylde A1-85,SKU-0472,Pakke,500,9,Aktiv
+Vare-0473,3138,7996,232,6,Møbel,Dell Danmark A/S,Lager Zone 45,SKU-0473,Kasse,471,4,Aktiv
+Vare-0474,115,3469,272,3.9,IT Hardware,OfficeSupply A/S,Lager Zone 76,SKU-0474,Sæt,17,5,Aktiv
+Vare-0475,2364,6444,336,4.2,Kabler,Dell Danmark A/S,Hylde B2-16,SKU-0475,Pakke,355,4,Fase Ud
+Vare-0476,3934,1892,195,4.2,Warehouse,Dell Danmark A/S,Hylde A1-17,SKU-0476,Rulle,590,11,Fase Ud
+Vare-0477,3684,598,115,4.3,Tools,HP Inc Danmark,Hylde B2-37,SKU-0477,Æske,553,13,Aktiv
+Vare-0478,2473,9983,178,5,Electronics,Lenovo Denmark,Warehouse-53,SKU-0478,Stk,371,13,Aktiv
+Vare-0479,2879,14363,431,5.1,Warehouse,OfficeSupply A/S,Hylde B2-18,SKU-0479,Sæt,432,1,Aktiv
+Vare-0480,878,6431,279,4.3,Tools,Lenovo Denmark,Hylde B2-88,SKU-0480,Stk,132,6,Fase Ud
+Vare-0481,2083,264,235,4.4,Møbel,CableWorld ApS,IT-Lager Zone 45,SKU-0481,Stk,312,2,Aktiv
+Vare-0482,826,5794,423,4.7,Electronics,Lenovo Denmark,Hylde A2-2,SKU-0482,Sæt,124,12,Aktiv
+Vare-0483,4421,8669,232,5.8,Kontorartikler,Apple Denmark,Lager Zone 3,SKU-0483,Æske,663,7,Aktiv
+Vare-0484,766,8881,252,5.9,Belysning,Dell Danmark A/S,Hylde B1-17,SKU-0484,Kasse,115,6,Fase Ud
+Vare-0485,2695,6924,294,4.9,Electronics,OfficeSupply A/S,Hylde B1-88,SKU-0485,Æske,404,10,Fase Ud
+Vare-0486,3148,2285,414,4.9,Ergonomi,OfficeSupply A/S,Hylde B2-50,SKU-0486,Rulle,472,10,Aktiv
+Vare-0487,2436,13931,291,5.1,Ergonomi,CableWorld ApS,Hylde B2-4,SKU-0487,Æske,365,12,Aktiv
+Vare-0488,3377,1609,307,4.6,Møbel,Lenovo Denmark,Hylde B1-46,SKU-0488,Æske,507,13,Aktiv
+Vare-0489,3715,354,358,3.6,Ergonomi,ErgoShop ApS,Hylde A1-95,SKU-0489,Rulle,557,13,Aktiv
+Vare-0490,295,4589,345,5.4,Tools,Samsung Electronics,Hylde A2-16,SKU-0490,Stk,44,5,Fase Ud
+Vare-0491,3594,4440,152,5.3,Tilbehør,CableWorld ApS,Hylde A2-7,SKU-0491,Stk,539,6,Aktiv
+Vare-0492,1675,10885,149,4.2,Møbel,OfficeSupply A/S,Hylde A2-73,SKU-0492,Æske,251,5,Aktiv
+Vare-0493,4656,5831,176,5.9,Ergonomi,HP Inc Danmark,Hylde A2-3,SKU-0493,Rulle,698,12,Fase Ud
+Vare-0494,606,13049,427,5.9,Warehouse,Samsung Electronics,Hylde B1-98,SKU-0494,Rulle,91,5,Aktiv
+Vare-0495,115,14315,259,5.3,Belysning,Logitech Nordic,Warehouse-86,SKU-0495,Pakke,17,6,Aktiv
+Vare-0496,975,461,352,4,Belysning,HP Inc Danmark,Hylde B2-57,SKU-0496,Kasse,146,13,Aktiv
+Vare-0497,2271,2317,498,3.8,Møbel,OfficeSupply A/S,Hylde A2-35,SKU-0497,Sæt,341,9,Aktiv
+Vare-0498,241,5929,197,3.5,Belysning,Samsung Electronics,IT-Lager Zone 12,SKU-0498,Stk,36,7,Fase Ud
+Vare-0499,710,3310,344,4.2,Warehouse,Dell Danmark A/S,Hylde A2-67,SKU-0499,Stk,106,10,Aktiv
+Vare-0500,3380,6991,81,3.8,Møbel,CableWorld ApS,Hylde B1-34,SKU-0500,Pakke,507,6,Aktiv
+Vare-0501,4644,390,435,4.7,Electronics,Samsung Electronics,Lager Zone 96,SKU-0501,Rulle,697,10,Aktiv
+Vare-0502,3027,11209,87,4.4,Tilbehør,Apple Denmark,Hylde A2-28,SKU-0502,Kasse,454,9,Aktiv
+Vare-0503,3205,2340,486,3.7,Kabler,Dell Danmark A/S,Hylde A1-10,SKU-0503,Kasse,481,4,Aktiv
+Vare-0504,1544,2287,403,5.4,Ergonomi,Dell Danmark A/S,Tilbehør Zone 23,SKU-0504,Rulle,232,10,Fase Ud
+Vare-0505,3861,4629,304,3.7,Kontorartikler,HP Inc Danmark,Hylde A2-64,SKU-0505,Pakke,579,10,Aktiv
+Vare-0506,1894,654,330,3.6,IT Hardware,Apple Denmark,Hylde B2-46,SKU-0506,Rulle,284,9,Aktiv
+Vare-0507,3487,7053,311,3.8,Ergonomi,Logitech Nordic,Lager Zone 92,SKU-0507,Stk,523,2,Fase Ud
+Vare-0508,2722,90,221,4.5,Kabler,CableWorld ApS,Hylde A2-43,SKU-0508,Pakke,408,9,Aktiv
+Vare-0509,3910,12635,134,5.6,Ergonomi,Samsung Electronics,IT-Lager Zone 22,SKU-0509,Stk,586,10,Aktiv
+Vare-0510,730,6243,339,4.8,Electronics,Dell Danmark A/S,Warehouse-21,SKU-0510,Sæt,110,10,Aktiv
+Vare-0511,2517,12696,478,4.5,IT Hardware,Dell Danmark A/S,Hylde A1-69,SKU-0511,Sæt,378,1,Aktiv
+Vare-0512,2169,7515,480,4.4,IT Hardware,ErgoShop ApS,Hylde B1-54,SKU-0512,Rulle,325,9,Aktiv
+Vare-0513,2936,11864,447,4.8,Warehouse,ErgoShop ApS,Hylde A1-6,SKU-0513,Stk,440,13,Aktiv
+Vare-0514,4342,9863,395,4.6,Ergonomi,Logitech Nordic,Tilbehør Zone 78,SKU-0514,Pakke,651,13,Aktiv
+Vare-0515,1129,9231,432,5.8,IT Hardware,CableWorld ApS,IT-Lager Zone 85,SKU-0515,Rulle,169,13,Aktiv
+Vare-0516,2866,113,424,4.4,Kabler,Logitech Nordic,Lager Zone 47,SKU-0516,Rulle,430,10,Fase Ud
+Vare-0517,2655,6454,467,3.6,Kabler,CableWorld ApS,IT-Lager Zone 56,SKU-0517,Kasse,398,7,Aktiv
+Vare-0518,4778,1081,272,5.5,Kontorartikler,ASUS Denmark,Warehouse-61,SKU-0518,Æske,717,5,Fase Ud
+Vare-0519,3956,11177,104,5.4,Electronics,Samsung Electronics,IT-Lager Zone 80,SKU-0519,Pakke,593,1,Aktiv
+Vare-0520,3060,7376,402,5.6,Ergonomi,Logitech Nordic,Lager Zone 81,SKU-0520,Pakke,459,7,Fase Ud
+Vare-0521,137,11540,143,5.4,Warehouse,Logitech Nordic,Hylde A2-74,SKU-0521,Æske,21,11,Fase Ud
+Vare-0522,4510,13854,268,5,Kontorartikler,Logitech Nordic,Hylde A1-23,SKU-0522,Stk,676,4,Aktiv
+Vare-0523,3941,12244,194,5.6,Warehouse,Samsung Electronics,Lager Zone 97,SKU-0523,Kasse,591,2,Aktiv
+Vare-0524,3773,12480,385,4.8,Tools,CableWorld ApS,Hylde B2-60,SKU-0524,Rulle,566,13,Aktiv
+Vare-0525,518,7074,351,4.2,Belysning,ASUS Denmark,Hylde B2-1,SKU-0525,Stk,78,1,Aktiv
+Vare-0526,3911,6679,253,6.1,Kontorartikler,CableWorld ApS,Hylde A1-24,SKU-0526,Rulle,587,3,Aktiv
+Vare-0527,2746,4841,419,5.4,Warehouse,Lenovo Denmark,Hylde A1-81,SKU-0527,Pakke,412,11,Aktiv
+Vare-0528,3826,1292,377,4.9,Belysning,HP Inc Danmark,Hylde A1-88,SKU-0528,Pakke,574,12,Aktiv
+Vare-0529,258,40,124,5.5,Ergonomi,HP Inc Danmark,Hylde A2-80,SKU-0529,Kasse,39,6,Aktiv
+Vare-0530,3302,7356,127,5.3,Warehouse,Logitech Nordic,Warehouse-28,SKU-0530,Pakke,495,11,Aktiv
+Vare-0531,738,10903,286,5.9,Møbel,Samsung Electronics,Hylde A1-70,SKU-0531,Kasse,111,3,Aktiv
+Vare-0532,4136,14113,427,5.5,Møbel,OfficeSupply A/S,IT-Lager Zone 31,SKU-0532,Stk,620,10,Fase Ud
+Vare-0533,3405,1553,88,5.4,Electronics,HP Inc Danmark,Tilbehør Zone 22,SKU-0533,Sæt,511,11,Aktiv
+Vare-0534,124,7497,258,4.1,Tilbehør,Samsung Electronics,Tilbehør Zone 59,SKU-0534,Rulle,19,13,Aktiv
+Vare-0535,1988,3192,266,3.9,Kontorartikler,ASUS Denmark,IT-Lager Zone 89,SKU-0535,Pakke,298,5,Aktiv
+Vare-0536,1242,7336,337,4.7,Tools,CableWorld ApS,Hylde B2-86,SKU-0536,Rulle,186,7,Aktiv
+Vare-0537,2989,624,109,5.1,Belysning,CableWorld ApS,Tilbehør Zone 41,SKU-0537,Pakke,448,9,Aktiv
+Vare-0538,3903,14988,435,5.4,IT Hardware,Samsung Electronics,Hylde A2-65,SKU-0538,Stk,585,13,Fase Ud
+Vare-0539,2228,8659,80,5.5,Møbel,Lenovo Denmark,Hylde A2-77,SKU-0539,Stk,334,5,Aktiv
+Vare-0540,3575,4912,434,4.9,Electronics,HP Inc Danmark,Hylde A1-55,SKU-0540,Rulle,536,13,Aktiv
+Vare-0541,4100,5445,422,5.9,IT Hardware,Dell Danmark A/S,Warehouse-16,SKU-0541,Pakke,615,13,Fase Ud
+Vare-0542,3454,12999,377,3.6,Warehouse,OfficeSupply A/S,IT-Lager Zone 94,SKU-0542,Æske,518,5,Aktiv
+Vare-0543,1588,10031,109,4.6,Ergonomi,Lenovo Denmark,IT-Lager Zone 90,SKU-0543,Stk,238,1,Aktiv
+Vare-0544,115,13289,238,5.8,Kabler,CableWorld ApS,Hylde B1-11,SKU-0544,Æske,17,10,Fase Ud
+Vare-0545,4266,8055,100,6,Kontorartikler,HP Inc Danmark,Hylde B1-71,SKU-0545,Sæt,640,7,Aktiv
+Vare-0546,884,164,459,5.3,Møbel,Dell Danmark A/S,Lager Zone 23,SKU-0546,Kasse,133,7,Fase Ud
+Vare-0547,1250,13871,194,4.7,Ergonomi,Dell Danmark A/S,Hylde B2-13,SKU-0547,Kasse,188,1,Aktiv
+Vare-0548,3594,4429,384,5.4,Tilbehør,ErgoShop ApS,IT-Lager Zone 53,SKU-0548,Stk,539,6,Fase Ud
+Vare-0549,3490,854,256,4.5,Belysning,ErgoShop ApS,Tilbehør Zone 38,SKU-0549,Æske,524,12,Aktiv
+Vare-0550,2362,14632,92,5.1,Kontorartikler,ASUS Denmark,IT-Lager Zone 38,SKU-0550,Rulle,354,5,Aktiv
+Vare-0551,166,740,494,4.4,IT Hardware,HP Inc Danmark,Hylde A1-75,SKU-0551,Kasse,25,3,Aktiv
+Vare-0552,616,10874,492,3.5,Kabler,Apple Denmark,Hylde A2-24,SKU-0552,Stk,92,7,Aktiv
+Vare-0553,3246,12807,389,3.7,Tools,Logitech Nordic,Hylde B2-46,SKU-0553,Pakke,487,12,Aktiv
+Vare-0554,563,5059,215,3.7,Belysning,OfficeSupply A/S,Hylde B2-87,SKU-0554,Rulle,84,13,Fase Ud
+Vare-0555,2320,7832,397,4.8,Belysning,ErgoShop ApS,Lager Zone 5,SKU-0555,Æske,348,9,Aktiv
+Vare-0556,189,10136,308,4.4,Kabler,HP Inc Danmark,Hylde A2-70,SKU-0556,Rulle,28,10,Aktiv
+Vare-0557,1824,248,490,4.7,Electronics,CableWorld ApS,Hylde A1-12,SKU-0557,Pakke,274,4,Aktiv
+Vare-0558,1520,9311,123,5.4,Ergonomi,CableWorld ApS,IT-Lager Zone 11,SKU-0558,Æske,228,8,Fase Ud
+Vare-0559,2979,12957,90,5.3,Kontorartikler,Lenovo Denmark,Tilbehør Zone 98,SKU-0559,Stk,447,8,Fase Ud
+Vare-0560,122,11365,174,6,Warehouse,OfficeSupply A/S,Hylde A2-29,SKU-0560,Sæt,18,11,Aktiv
+Vare-0561,4886,11853,138,5.9,Kontorartikler,OfficeSupply A/S,IT-Lager Zone 7,SKU-0561,Kasse,733,13,Aktiv
+Vare-0562,1974,14625,412,4.6,Warehouse,Dell Danmark A/S,Warehouse-52,SKU-0562,Rulle,296,2,Aktiv
+Vare-0563,773,5410,116,4.1,Tools,CableWorld ApS,IT-Lager Zone 93,SKU-0563,Sæt,116,4,Aktiv
+Vare-0564,1428,7166,409,4.8,Warehouse,Dell Danmark A/S,Hylde B1-33,SKU-0564,Kasse,214,11,Fase Ud
+Vare-0565,4026,902,326,5.9,Electronics,ASUS Denmark,Lager Zone 1,SKU-0565,Rulle,604,2,Aktiv
+Vare-0566,3078,3663,212,3.7,Kontorartikler,HP Inc Danmark,Hylde B1-64,SKU-0566,Stk,462,5,Aktiv
+Vare-0567,4671,4590,494,4.5,Ergonomi,ErgoShop ApS,Lager Zone 28,SKU-0567,Rulle,701,1,Aktiv
+Vare-0568,3117,606,423,5.3,Tools,ErgoShop ApS,Hylde A2-25,SKU-0568,Pakke,468,1,Aktiv
+Vare-0569,1142,12378,303,6.1,Electronics,HP Inc Danmark,Lager Zone 4,SKU-0569,Rulle,171,8,Aktiv
+Vare-0570,3140,6982,324,4.4,Electronics,Lenovo Denmark,Hylde A2-14,SKU-0570,Rulle,471,1,Aktiv
+Vare-0571,3176,7267,315,4.5,Møbel,HP Inc Danmark,Tilbehør Zone 28,SKU-0571,Sæt,476,7,Aktiv
+Vare-0572,3465,6432,114,3.6,Belysning,OfficeSupply A/S,Hylde A1-16,SKU-0572,Sæt,520,13,Aktiv
+Vare-0573,3887,3167,167,3.5,Electronics,Dell Danmark A/S,Lager Zone 57,SKU-0573,Kasse,583,2,Fase Ud
+Vare-0574,341,3544,172,4.4,Ergonomi,OfficeSupply A/S,Hylde A2-82,SKU-0574,Pakke,51,5,Aktiv
+Vare-0575,1029,4063,483,5.1,Tools,CableWorld ApS,Hylde A1-4,SKU-0575,Sæt,154,13,Aktiv
+Vare-0576,1142,11451,128,3.8,Kabler,ErgoShop ApS,Hylde A2-44,SKU-0576,Rulle,171,11,Aktiv
+Vare-0577,2301,7324,267,3.7,Tools,Logitech Nordic,Hylde B1-7,SKU-0577,Æske,345,13,Aktiv
+Vare-0578,2445,14112,130,3.8,Tilbehør,HP Inc Danmark,Lager Zone 8,SKU-0578,Stk,367,9,Aktiv
+Vare-0579,1476,13546,443,5,Møbel,Dell Danmark A/S,Hylde B1-13,SKU-0579,Æske,221,2,Aktiv
+Vare-0580,2558,5875,411,5.8,Tools,CableWorld ApS,Hylde B1-64,SKU-0580,Kasse,384,2,Aktiv
+Vare-0581,3949,13123,134,5.7,IT Hardware,Dell Danmark A/S,Hylde A1-70,SKU-0581,Æske,592,9,Aktiv
+Vare-0582,3020,12259,284,3.8,Tools,CableWorld ApS,Hylde A2-17,SKU-0582,Pakke,453,4,Aktiv
+Vare-0583,3344,10779,402,4.1,Tilbehør,Apple Denmark,IT-Lager Zone 35,SKU-0583,Kasse,502,13,Aktiv
+Vare-0584,2997,12941,361,5.4,Kontorartikler,Dell Danmark A/S,Hylde A2-76,SKU-0584,Rulle,450,13,Aktiv
+Vare-0585,3624,7547,171,3.6,Tilbehør,ErgoShop ApS,Tilbehør Zone 8,SKU-0585,Rulle,544,4,Fase Ud
+Vare-0586,1009,14172,363,4.1,Ergonomi,CableWorld ApS,Hylde A2-74,SKU-0586,Stk,151,7,Fase Ud
+Vare-0587,709,10199,80,4.7,Warehouse,ASUS Denmark,IT-Lager Zone 50,SKU-0587,Rulle,106,12,Aktiv
+Vare-0588,4074,2605,119,3.9,IT Hardware,ErgoShop ApS,Hylde A2-80,SKU-0588,Pakke,611,6,Aktiv
+Vare-0589,729,13311,86,6.1,Tilbehør,Apple Denmark,Warehouse-36,SKU-0589,Stk,109,6,Aktiv
+Vare-0590,4500,8119,417,5.7,Kabler,CableWorld ApS,Tilbehør Zone 42,SKU-0590,Rulle,675,7,Fase Ud
+Vare-0591,133,1084,126,4.1,Tools,Lenovo Denmark,Hylde A1-45,SKU-0591,Stk,20,1,Aktiv
+Vare-0592,3297,13237,355,5.3,Warehouse,Lenovo Denmark,Lager Zone 32,SKU-0592,Kasse,495,11,Aktiv
+Vare-0593,1872,12794,170,5.5,Møbel,Apple Denmark,Warehouse-60,SKU-0593,Æske,281,10,Aktiv
+Vare-0594,1892,14218,328,3.7,Tilbehør,Samsung Electronics,Lager Zone 83,SKU-0594,Kasse,284,13,Fase Ud
+Vare-0595,2086,4731,448,5.9,Kabler,HP Inc Danmark,Hylde A2-27,SKU-0595,Rulle,313,9,Fase Ud
+Vare-0596,1753,10340,88,3.8,Møbel,Dell Danmark A/S,IT-Lager Zone 57,SKU-0596,Sæt,263,8,Aktiv
+Vare-0597,4667,7154,372,3.7,Electronics,Dell Danmark A/S,Warehouse-32,SKU-0597,Kasse,700,13,Fase Ud
+Vare-0598,2154,3547,484,4.6,Tilbehør,ErgoShop ApS,Hylde B1-51,SKU-0598,Rulle,323,3,Aktiv
+Vare-0599,1772,13019,229,4.2,Kabler,Logitech Nordic,Hylde A1-81,SKU-0599,Sæt,266,3,Aktiv
+Vare-0600,2281,9121,348,4.3,Tilbehør,Samsung Electronics,IT-Lager Zone 63,SKU-0600,Sæt,342,6,Aktiv
+Vare-0601,2821,5437,99,6,IT Hardware,ASUS Denmark,Hylde A1-85,SKU-0601,Pakke,423,9,Aktiv
+Vare-0602,4949,12430,270,4.9,Electronics,OfficeSupply A/S,Warehouse-2,SKU-0602,Rulle,742,10,Aktiv
+Vare-0603,389,3994,100,5.4,Tools,OfficeSupply A/S,Hylde A1-79,SKU-0603,Stk,58,11,Aktiv
+Vare-0604,3744,11856,161,4.4,Kabler,OfficeSupply A/S,Tilbehør Zone 42,SKU-0604,Pakke,562,10,Aktiv
+Vare-0605,4637,12035,84,5.1,Warehouse,ErgoShop ApS,Tilbehør Zone 85,SKU-0605,Sæt,696,6,Fase Ud
+Vare-0606,409,8830,228,4.3,Møbel,ASUS Denmark,Hylde B1-13,SKU-0606,Kasse,61,13,Aktiv
+Vare-0607,2169,5217,244,3.9,IT Hardware,OfficeSupply A/S,Hylde B2-79,SKU-0607,Kasse,325,3,Aktiv
+Vare-0608,4041,3108,205,6.1,Tilbehør,Lenovo Denmark,Hylde A2-85,SKU-0608,Rulle,606,3,Fase Ud
+Vare-0609,4170,757,349,5.8,Warehouse,Samsung Electronics,Hylde A2-6,SKU-0609,Æske,626,7,Aktiv
+Vare-0610,4875,3545,117,4.2,Warehouse,Dell Danmark A/S,Lager Zone 98,SKU-0610,Rulle,731,13,Aktiv
+Vare-0611,1338,7849,222,4.8,Electronics,Dell Danmark A/S,Hylde A1-20,SKU-0611,Stk,201,11,Aktiv
+Vare-0612,1757,1245,380,5.9,Electronics,ErgoShop ApS,Hylde B1-98,SKU-0612,Kasse,264,11,Fase Ud
+Vare-0613,1568,10322,354,5.5,Warehouse,CableWorld ApS,Hylde A1-1,SKU-0613,Pakke,235,6,Aktiv
+Vare-0614,4866,14985,343,6,Belysning,Lenovo Denmark,Hylde A1-39,SKU-0614,Kasse,730,12,Aktiv
+Vare-0615,3943,10248,321,6.1,Kabler,Apple Denmark,Tilbehør Zone 3,SKU-0615,Pakke,591,3,Fase Ud
+Vare-0616,3941,1509,218,5.1,Tilbehør,CableWorld ApS,Tilbehør Zone 35,SKU-0616,Æske,591,5,Aktiv
+Vare-0617,1390,8893,436,5.6,Belysning,Dell Danmark A/S,Warehouse-14,SKU-0617,Sæt,208,3,Aktiv
+Vare-0618,2572,815,146,4.5,IT Hardware,Samsung Electronics,Hylde A2-64,SKU-0618,Sæt,386,7,Aktiv
+Vare-0619,683,14948,439,6.1,Tools,Dell Danmark A/S,Tilbehør Zone 22,SKU-0619,Stk,102,5,Aktiv
+Vare-0620,2378,10149,185,5.1,Møbel,Apple Denmark,Hylde B1-49,SKU-0620,Sæt,357,12,Aktiv
+Vare-0621,2809,2158,188,3.7,Electronics,Samsung Electronics,Hylde B1-11,SKU-0621,Kasse,421,6,Aktiv
+Vare-0622,1302,14047,249,4.3,Tilbehør,Logitech Nordic,Hylde A1-66,SKU-0622,Sæt,195,9,Aktiv
+Vare-0623,1937,1380,327,4,Ergonomi,Samsung Electronics,Hylde B1-83,SKU-0623,Pakke,291,12,Aktiv
+Vare-0624,2350,14823,228,3.7,Ergonomi,OfficeSupply A/S,Hylde B2-66,SKU-0624,Sæt,352,7,Aktiv
+Vare-0625,917,9273,463,5.2,IT Hardware,OfficeSupply A/S,Hylde B1-70,SKU-0625,Kasse,138,11,Fase Ud
+Vare-0626,4968,11690,491,3.6,Warehouse,ErgoShop ApS,Hylde A2-91,SKU-0626,Stk,745,1,Fase Ud
+Vare-0627,3249,14732,369,5.3,Tools,Samsung Electronics,Hylde B1-37,SKU-0627,Stk,487,6,Aktiv
+Vare-0628,3372,5902,130,3.6,Kontorartikler,OfficeSupply A/S,Lager Zone 42,SKU-0628,Æske,506,9,Aktiv
+Vare-0629,3244,14632,409,4.5,Kabler,Samsung Electronics,Tilbehør Zone 23,SKU-0629,Rulle,487,8,Aktiv
+Vare-0630,1040,11651,247,4.8,Tilbehør,Logitech Nordic,Hylde B2-6,SKU-0630,Pakke,156,4,Aktiv
+Vare-0631,3787,3180,433,4.8,Tilbehør,OfficeSupply A/S,Hylde B2-29,SKU-0631,Rulle,568,6,Aktiv
+Vare-0632,998,6568,423,5.4,Ergonomi,Dell Danmark A/S,Tilbehør Zone 41,SKU-0632,Rulle,150,11,Aktiv
+Vare-0633,1058,9767,383,5.3,Warehouse,ASUS Denmark,Hylde A2-95,SKU-0633,Kasse,159,2,Aktiv
+Vare-0634,1793,7306,454,6.1,Belysning,ErgoShop ApS,Tilbehør Zone 23,SKU-0634,Stk,269,13,Aktiv
+Vare-0635,2661,14339,395,5.6,Kontorartikler,ASUS Denmark,Lager Zone 26,SKU-0635,Kasse,399,5,Aktiv
+Vare-0636,163,7871,421,4.5,IT Hardware,Lenovo Denmark,IT-Lager Zone 97,SKU-0636,Sæt,24,12,Fase Ud
+Vare-0637,1141,2354,333,3.9,Ergonomi,Lenovo Denmark,Hylde A1-18,SKU-0637,Pakke,171,9,Aktiv
+Vare-0638,155,10996,472,6.1,Tools,HP Inc Danmark,Tilbehør Zone 79,SKU-0638,Rulle,23,13,Aktiv
+Vare-0639,4215,13676,435,3.9,Ergonomi,Apple Denmark,Hylde A1-14,SKU-0639,Stk,632,7,Fase Ud
+Vare-0640,4379,3172,425,6,Tilbehør,Logitech Nordic,Lager Zone 52,SKU-0640,Stk,657,3,Aktiv
+Vare-0641,433,12449,378,5.3,Kontorartikler,ErgoShop ApS,Hylde B2-96,SKU-0641,Sæt,65,9,Aktiv
+Vare-0642,2092,9204,472,3.6,Tools,Lenovo Denmark,Hylde A1-29,SKU-0642,Sæt,314,7,Aktiv
+Vare-0643,131,13355,356,5.6,Tools,HP Inc Danmark,Hylde B1-76,SKU-0643,Pakke,20,5,Aktiv
+Vare-0644,3598,4591,207,5.9,Kabler,OfficeSupply A/S,Hylde A1-15,SKU-0644,Sæt,540,2,Aktiv
+Vare-0645,3424,747,381,5.1,Warehouse,Logitech Nordic,IT-Lager Zone 18,SKU-0645,Pakke,514,9,Fase Ud
+Vare-0646,4983,4900,295,3.9,IT Hardware,ASUS Denmark,Hylde B2-43,SKU-0646,Æske,747,1,Fase Ud
+Vare-0647,1618,9799,392,4.6,Electronics,HP Inc Danmark,Hylde B2-22,SKU-0647,Kasse,243,11,Aktiv
+Vare-0648,3169,10202,364,5.4,Kabler,Dell Danmark A/S,Hylde A2-55,SKU-0648,Rulle,475,12,Aktiv
+Vare-0649,4490,13102,361,3.8,Warehouse,Samsung Electronics,Hylde A1-69,SKU-0649,Kasse,674,7,Aktiv
+Vare-0650,2406,4798,250,4.2,Belysning,Apple Denmark,IT-Lager Zone 1,SKU-0650,Stk,361,3,Aktiv
+Vare-0651,4647,8368,193,5.8,Tools,ErgoShop ApS,Tilbehør Zone 1,SKU-0651,Kasse,697,7,Aktiv
+Vare-0652,4559,12131,140,6,Tilbehør,Apple Denmark,Tilbehør Zone 50,SKU-0652,Kasse,684,9,Fase Ud
+Vare-0653,1579,7883,309,4.9,Tools,ASUS Denmark,Tilbehør Zone 55,SKU-0653,Sæt,237,4,Aktiv
+Vare-0654,3607,1234,389,5.9,Warehouse,HP Inc Danmark,Lager Zone 89,SKU-0654,Æske,541,7,Fase Ud
+Vare-0655,3451,928,88,6,Tools,Samsung Electronics,Warehouse-30,SKU-0655,Stk,518,7,Aktiv
+Vare-0656,4632,3037,233,3.5,Electronics,ErgoShop ApS,Hylde A2-30,SKU-0656,Kasse,695,3,Aktiv
+Vare-0657,1339,10642,222,3.9,Tilbehør,HP Inc Danmark,IT-Lager Zone 5,SKU-0657,Pakke,201,8,Aktiv
+Vare-0658,3993,12219,459,5.1,Tools,ASUS Denmark,Hylde A2-60,SKU-0658,Pakke,599,5,Aktiv
+Vare-0659,4609,12964,440,4.2,Ergonomi,HP Inc Danmark,Hylde B2-19,SKU-0659,Stk,691,13,Fase Ud
+Vare-0660,270,8488,178,4.6,Kabler,Apple Denmark,Lager Zone 98,SKU-0660,Sæt,40,6,Aktiv
+Vare-0661,3436,11282,467,4.5,Kabler,ASUS Denmark,Tilbehør Zone 37,SKU-0661,Stk,515,3,Fase Ud
+Vare-0662,1782,4802,266,3.6,Warehouse,OfficeSupply A/S,Hylde A1-59,SKU-0662,Pakke,267,9,Fase Ud
+Vare-0663,3657,13642,103,5.6,IT Hardware,HP Inc Danmark,Hylde B2-82,SKU-0663,Pakke,549,3,Fase Ud
+Vare-0664,995,11119,464,3.5,IT Hardware,Lenovo Denmark,Hylde B1-82,SKU-0664,Rulle,149,10,Fase Ud
+Vare-0665,2711,9191,277,3.8,IT Hardware,OfficeSupply A/S,Warehouse-69,SKU-0665,Æske,407,11,Fase Ud
+Vare-0666,595,13286,273,4.1,Electronics,HP Inc Danmark,Hylde A2-51,SKU-0666,Pakke,89,9,Aktiv
+Vare-0667,4010,13029,150,4.2,Electronics,Samsung Electronics,Tilbehør Zone 82,SKU-0667,Sæt,602,3,Aktiv
+Vare-0668,2730,3030,323,4.3,Warehouse,Logitech Nordic,Hylde B1-82,SKU-0668,Æske,410,9,Fase Ud
+Vare-0669,1753,9792,173,5,Electronics,CableWorld ApS,Hylde A1-71,SKU-0669,Stk,263,10,Aktiv
+Vare-0670,3825,12414,379,4.6,Tilbehør,Lenovo Denmark,Tilbehør Zone 77,SKU-0670,Æske,574,5,Aktiv
+Vare-0671,3399,3941,336,5.6,Tools,Apple Denmark,Hylde A1-79,SKU-0671,Æske,510,7,Fase Ud
+Vare-0672,4116,6947,439,4.9,Tilbehør,OfficeSupply A/S,Hylde B2-94,SKU-0672,Kasse,617,3,Fase Ud
+Vare-0673,2913,3157,242,6,Warehouse,ErgoShop ApS,Hylde B1-32,SKU-0673,Rulle,437,6,Aktiv
+Vare-0674,2140,13779,124,3.7,Ergonomi,ErgoShop ApS,Hylde A1-67,SKU-0674,Stk,321,3,Fase Ud
+Vare-0675,3908,6166,253,5.4,IT Hardware,HP Inc Danmark,Hylde B1-23,SKU-0675,Stk,586,13,Aktiv
+Vare-0676,1775,10319,119,6.1,Kontorartikler,Samsung Electronics,Hylde A2-52,SKU-0676,Stk,266,7,Aktiv
+Vare-0677,4778,4544,402,4.6,Møbel,CableWorld ApS,Lager Zone 53,SKU-0677,Sæt,717,7,Aktiv
+Vare-0678,4398,13690,291,4.3,IT Hardware,OfficeSupply A/S,Hylde B2-97,SKU-0678,Stk,660,13,Aktiv
+Vare-0679,1787,6764,478,5.9,Møbel,Logitech Nordic,Lager Zone 32,SKU-0679,Pakke,268,4,Aktiv
+Vare-0680,1691,5873,82,4.7,Ergonomi,Lenovo Denmark,Hylde B1-43,SKU-0680,Æske,254,11,Aktiv
+Vare-0681,1941,11983,342,4.5,Electronics,CableWorld ApS,Lager Zone 30,SKU-0681,Sæt,291,5,Aktiv
+Vare-0682,2525,3785,449,6.1,Tilbehør,Apple Denmark,Warehouse-60,SKU-0682,Æske,379,9,Aktiv
+Vare-0683,1818,1726,415,5.7,Warehouse,OfficeSupply A/S,IT-Lager Zone 60,SKU-0683,Sæt,273,2,Aktiv
+Vare-0684,3279,13337,368,5.3,Møbel,Samsung Electronics,Hylde B2-50,SKU-0684,Kasse,492,6,Aktiv
+Vare-0685,3166,11158,155,4.6,Kontorartikler,HP Inc Danmark,Lager Zone 34,SKU-0685,Rulle,475,6,Aktiv
+Vare-0686,1950,1108,328,4.2,Kontorartikler,Samsung Electronics,Hylde B2-31,SKU-0686,Rulle,292,13,Aktiv
+Vare-0687,1112,12927,143,6.1,Warehouse,Dell Danmark A/S,IT-Lager Zone 51,SKU-0687,Kasse,167,2,Fase Ud
+Vare-0688,2346,9128,164,4.2,Ergonomi,Logitech Nordic,Hylde B1-19,SKU-0688,Stk,352,13,Aktiv
+Vare-0689,3870,14709,247,5.6,Tools,Dell Danmark A/S,Lager Zone 28,SKU-0689,Kasse,580,4,Aktiv
+Vare-0690,4582,1308,95,4.4,Belysning,Dell Danmark A/S,Tilbehør Zone 5,SKU-0690,Sæt,687,4,Aktiv
+Vare-0691,3269,6579,475,5.1,Ergonomi,Dell Danmark A/S,Hylde B1-62,SKU-0691,Æske,490,9,Aktiv
+Vare-0692,4745,6399,121,5.9,Warehouse,ErgoShop ApS,Lager Zone 59,SKU-0692,Rulle,712,7,Aktiv
+Vare-0693,4478,3149,306,5.8,Ergonomi,Logitech Nordic,IT-Lager Zone 70,SKU-0693,Rulle,672,6,Aktiv
+Vare-0694,1125,8235,219,5,Ergonomi,Logitech Nordic,Hylde A1-52,SKU-0694,Kasse,169,3,Aktiv
+Vare-0695,1572,5734,413,4.2,Møbel,CableWorld ApS,Lager Zone 8,SKU-0695,Sæt,236,11,Fase Ud
+Vare-0696,3873,908,392,4.3,Tools,ErgoShop ApS,Lager Zone 33,SKU-0696,Sæt,581,9,Aktiv
+Vare-0697,4357,3705,123,5.3,Kontorartikler,Logitech Nordic,Warehouse-81,SKU-0697,Pakke,654,6,Fase Ud
+Vare-0698,4243,519,239,4.8,Ergonomi,Apple Denmark,IT-Lager Zone 17,SKU-0698,Pakke,636,3,Aktiv
+Vare-0699,2596,14982,252,5.2,Tools,Lenovo Denmark,Hylde A2-60,SKU-0699,Rulle,389,5,Aktiv
+Vare-0700,1362,2563,193,5.9,IT Hardware,ErgoShop ApS,IT-Lager Zone 41,SKU-0700,Sæt,204,3,Aktiv
+Vare-0701,3162,8318,258,5.5,Belysning,Dell Danmark A/S,Hylde B1-55,SKU-0701,Stk,474,10,Aktiv
+Vare-0702,148,1443,158,4,Kabler,CableWorld ApS,Hylde B2-45,SKU-0702,Stk,22,11,Aktiv
+Vare-0703,2982,3597,249,6.1,Belysning,OfficeSupply A/S,Lager Zone 95,SKU-0703,Pakke,447,12,Fase Ud
+Vare-0704,434,9199,404,5,Warehouse,CableWorld ApS,Hylde A2-10,SKU-0704,Kasse,65,4,Aktiv
+Vare-0705,710,8934,474,6.1,Belysning,Lenovo Denmark,Tilbehør Zone 94,SKU-0705,Æske,106,6,Aktiv
+Vare-0706,4342,9831,141,5,Kabler,OfficeSupply A/S,IT-Lager Zone 26,SKU-0706,Stk,651,11,Aktiv
+Vare-0707,2351,3689,158,4.8,Møbel,ASUS Denmark,IT-Lager Zone 18,SKU-0707,Pakke,353,10,Aktiv
+Vare-0708,4280,6405,286,5.9,Belysning,Lenovo Denmark,Hylde B2-20,SKU-0708,Sæt,642,5,Aktiv
+Vare-0709,4693,12063,317,5.1,Kontorartikler,HP Inc Danmark,Hylde A1-34,SKU-0709,Stk,704,3,Aktiv
+Vare-0710,3763,5756,327,5.6,Belysning,OfficeSupply A/S,Hylde B1-96,SKU-0710,Æske,564,1,Fase Ud
+Vare-0711,4366,6861,247,5.4,Møbel,OfficeSupply A/S,Warehouse-4,SKU-0711,Æske,655,3,Aktiv
+Vare-0712,2500,11513,217,4.7,Electronics,Dell Danmark A/S,Hylde B2-84,SKU-0712,Æske,375,1,Aktiv
+Vare-0713,2682,5878,470,6,Kabler,OfficeSupply A/S,Hylde B2-49,SKU-0713,Stk,402,13,Aktiv
+Vare-0714,2595,4986,336,5.9,Kontorartikler,ErgoShop ApS,Hylde A2-65,SKU-0714,Kasse,389,12,Fase Ud
+Vare-0715,566,2482,218,6,Møbel,Apple Denmark,Warehouse-6,SKU-0715,Stk,85,9,Aktiv
+Vare-0716,2881,2275,199,4.6,Ergonomi,ErgoShop ApS,Hylde A1-58,SKU-0716,Kasse,432,12,Aktiv
+Vare-0717,4123,13912,207,4.2,Kabler,ErgoShop ApS,Hylde A1-38,SKU-0717,Sæt,618,12,Aktiv
+Vare-0718,1128,12062,262,6,Ergonomi,OfficeSupply A/S,Hylde A2-73,SKU-0718,Rulle,169,7,Aktiv
+Vare-0719,2799,6013,470,4.8,Electronics,HP Inc Danmark,Tilbehør Zone 24,SKU-0719,Pakke,420,11,Aktiv
+Vare-0720,4146,10999,459,4.1,IT Hardware,Dell Danmark A/S,Lager Zone 87,SKU-0720,Pakke,622,5,Aktiv
+Vare-0721,3601,8296,273,4.5,IT Hardware,OfficeSupply A/S,IT-Lager Zone 86,SKU-0721,Æske,540,13,Fase Ud
+Vare-0722,2828,10995,180,5.7,Warehouse,OfficeSupply A/S,Hylde B1-89,SKU-0722,Kasse,424,4,Aktiv
+Vare-0723,4756,12921,475,4.8,Kontorartikler,HP Inc Danmark,Hylde B1-66,SKU-0723,Stk,713,6,Aktiv
+Vare-0724,4649,11086,257,6.1,Electronics,HP Inc Danmark,Hylde B2-28,SKU-0724,Stk,697,7,Aktiv
+Vare-0725,3111,7044,425,6.1,Electronics,ErgoShop ApS,Tilbehør Zone 44,SKU-0725,Æske,467,13,Fase Ud
+Vare-0726,440,10252,224,4.6,Belysning,Dell Danmark A/S,Hylde B2-33,SKU-0726,Rulle,66,12,Aktiv
+Vare-0727,4865,6079,413,5.6,Kontorartikler,HP Inc Danmark,Lager Zone 50,SKU-0727,Rulle,730,12,Aktiv
+Vare-0728,3726,8950,114,4.9,Warehouse,Apple Denmark,IT-Lager Zone 73,SKU-0728,Æske,559,9,Aktiv
+Vare-0729,1210,12237,96,5.2,Tools,Logitech Nordic,Warehouse-10,SKU-0729,Kasse,182,5,Aktiv
+Vare-0730,3995,4272,231,5,Kontorartikler,CableWorld ApS,Hylde A2-36,SKU-0730,Kasse,599,2,Fase Ud
+Vare-0731,171,11248,277,5.6,Kontorartikler,Logitech Nordic,Hylde B1-18,SKU-0731,Rulle,26,8,Aktiv
+Vare-0732,2570,12625,172,5.8,Ergonomi,OfficeSupply A/S,Hylde B1-46,SKU-0732,Rulle,386,5,Fase Ud
+Vare-0733,1813,3599,269,3.7,IT Hardware,ASUS Denmark,Hylde B2-96,SKU-0733,Sæt,272,7,Aktiv
+Vare-0734,3469,13004,106,4.1,Ergonomi,Logitech Nordic,Hylde A1-5,SKU-0734,Kasse,520,4,Aktiv
+Vare-0735,4697,1581,382,5,Kontorartikler,HP Inc Danmark,Hylde A2-14,SKU-0735,Stk,705,13,Aktiv
+Vare-0736,3427,9676,276,4.7,Belysning,ASUS Denmark,Warehouse-76,SKU-0736,Kasse,514,6,Aktiv
+Vare-0737,1723,1932,103,4.8,Møbel,Logitech Nordic,Hylde A1-30,SKU-0737,Kasse,258,8,Aktiv
+Vare-0738,1904,7906,448,5.6,Kontorartikler,Lenovo Denmark,Hylde B2-90,SKU-0738,Sæt,286,11,Aktiv
+Vare-0739,3455,13262,270,6,IT Hardware,Dell Danmark A/S,Hylde B2-16,SKU-0739,Stk,518,2,Aktiv
+Vare-0740,1968,13923,469,3.8,Belysning,Lenovo Denmark,Warehouse-22,SKU-0740,Rulle,295,6,Fase Ud
+Vare-0741,2883,13536,474,4.1,Belysning,Samsung Electronics,Hylde A2-64,SKU-0741,Sæt,432,10,Aktiv
+Vare-0742,4039,14767,354,5.5,Kontorartikler,ASUS Denmark,IT-Lager Zone 1,SKU-0742,Æske,606,8,Fase Ud
+Vare-0743,1037,10008,461,4.1,Møbel,CableWorld ApS,Hylde A2-23,SKU-0743,Stk,156,3,Aktiv
+Vare-0744,2330,14915,345,5.8,Møbel,Apple Denmark,Hylde B2-19,SKU-0744,Sæt,350,8,Aktiv
+Vare-0745,4594,9525,201,4.5,Warehouse,Samsung Electronics,Hylde B2-6,SKU-0745,Sæt,689,6,Aktiv
+Vare-0746,3011,2353,310,4.7,Tilbehør,Logitech Nordic,Tilbehør Zone 74,SKU-0746,Pakke,452,2,Aktiv
+Vare-0747,1710,6348,372,5.7,Tilbehør,HP Inc Danmark,IT-Lager Zone 17,SKU-0747,Rulle,256,3,Aktiv
+Vare-0748,2977,9447,314,4.3,Tilbehør,Samsung Electronics,IT-Lager Zone 21,SKU-0748,Kasse,447,11,Fase Ud
+Vare-0749,1963,10611,205,3.5,Kontorartikler,ASUS Denmark,Hylde A1-93,SKU-0749,Sæt,294,13,Fase Ud
+Vare-0750,3300,4357,135,4.3,Warehouse,ASUS Denmark,Hylde B1-64,SKU-0750,Sæt,495,4,Aktiv
+Vare-0751,3257,14393,274,6,Møbel,ErgoShop ApS,IT-Lager Zone 74,SKU-0751,Stk,489,8,Aktiv
+Vare-0752,3978,12889,237,4.8,Kabler,Samsung Electronics,Hylde B1-3,SKU-0752,Stk,597,3,Aktiv
+Vare-0753,1821,6489,330,5,Kabler,OfficeSupply A/S,Hylde B1-57,SKU-0753,Stk,273,5,Aktiv
+Vare-0754,3403,8551,158,6.1,Belysning,Dell Danmark A/S,Warehouse-24,SKU-0754,Pakke,510,11,Aktiv
+Vare-0755,3326,1689,171,5.7,Tilbehør,OfficeSupply A/S,Lager Zone 51,SKU-0755,Stk,499,10,Aktiv
+Vare-0756,4748,6999,403,4.1,Tilbehør,Logitech Nordic,Tilbehør Zone 75,SKU-0756,Pakke,712,9,Fase Ud
+Vare-0757,3215,11056,441,3.7,Kabler,Logitech Nordic,Lager Zone 86,SKU-0757,Kasse,482,13,Aktiv
+Vare-0758,4709,2899,251,3.6,Electronics,Apple Denmark,Hylde A1-53,SKU-0758,Kasse,706,12,Fase Ud
+Vare-0759,3466,11365,428,3.5,IT Hardware,HP Inc Danmark,Hylde A1-73,SKU-0759,Kasse,520,4,Fase Ud
+Vare-0760,1353,11748,126,4.2,Tools,Dell Danmark A/S,Hylde B2-77,SKU-0760,Kasse,203,2,Aktiv
+Vare-0761,2937,8313,277,5.8,Møbel,HP Inc Danmark,Tilbehør Zone 60,SKU-0761,Rulle,441,12,Aktiv
+Vare-0762,3220,2449,85,4.2,Kabler,Logitech Nordic,Hylde A2-73,SKU-0762,Stk,483,3,Aktiv
+Vare-0763,4559,1463,181,3.6,IT Hardware,Samsung Electronics,Warehouse-93,SKU-0763,Rulle,684,9,Fase Ud
+Vare-0764,3618,5509,92,4.3,Warehouse,Apple Denmark,Hylde A2-30,SKU-0764,Kasse,543,13,Fase Ud
+Vare-0765,4142,4240,165,6,Tilbehør,ASUS Denmark,Hylde A1-97,SKU-0765,Kasse,621,7,Aktiv
+Vare-0766,4633,13158,312,4.9,Kabler,HP Inc Danmark,IT-Lager Zone 98,SKU-0766,Stk,695,7,Aktiv
+Vare-0767,2746,10770,228,5.6,Warehouse,Samsung Electronics,Hylde A1-27,SKU-0767,Pakke,412,10,Aktiv
+Vare-0768,4195,1070,150,5.7,Electronics,Apple Denmark,Lager Zone 65,SKU-0768,Pakke,629,1,Aktiv
+Vare-0769,2610,1920,407,4.4,Warehouse,CableWorld ApS,Lager Zone 60,SKU-0769,Rulle,392,3,Aktiv
+Vare-0770,3658,12996,301,3.6,Warehouse,ErgoShop ApS,Lager Zone 95,SKU-0770,Kasse,549,9,Aktiv
+Vare-0771,3544,276,297,5.1,Kabler,ErgoShop ApS,Lager Zone 97,SKU-0771,Sæt,532,11,Fase Ud
+Vare-0772,1581,4458,365,3.5,Belysning,Logitech Nordic,Hylde B1-10,SKU-0772,Sæt,237,7,Aktiv
+Vare-0773,1186,10140,273,5.9,Kontorartikler,Lenovo Denmark,Hylde A2-35,SKU-0773,Æske,178,11,Aktiv
+Vare-0774,981,12016,255,4.8,Electronics,Samsung Electronics,Hylde B2-92,SKU-0774,Stk,147,2,Aktiv
+Vare-0775,3883,12799,121,5.6,Electronics,Lenovo Denmark,Tilbehør Zone 78,SKU-0775,Sæt,582,13,Aktiv
+Vare-0776,4857,14628,411,5.9,Kontorartikler,Lenovo Denmark,Lager Zone 41,SKU-0776,Sæt,729,2,Aktiv
+Vare-0777,200,13332,420,4.7,Kabler,ASUS Denmark,Hylde A2-32,SKU-0777,Æske,30,13,Fase Ud
+Vare-0778,1990,1993,239,4.4,Belysning,Samsung Electronics,Hylde B1-18,SKU-0778,Rulle,298,2,Aktiv
+Vare-0779,3299,12006,96,5.7,Warehouse,OfficeSupply A/S,Hylde B1-72,SKU-0779,Stk,495,12,Fase Ud
+Vare-0780,886,5898,303,3.5,Ergonomi,ASUS Denmark,IT-Lager Zone 41,SKU-0780,Pakke,133,2,Aktiv
+Vare-0781,300,9482,424,3.6,Tools,ASUS Denmark,Tilbehør Zone 23,SKU-0781,Sæt,45,1,Fase Ud
+Vare-0782,1291,14459,107,4.5,Kabler,Apple Denmark,Hylde A1-75,SKU-0782,Kasse,194,9,Aktiv
+Vare-0783,1618,13685,205,6.1,Belysning,Dell Danmark A/S,IT-Lager Zone 77,SKU-0783,Stk,243,13,Aktiv
+Vare-0784,1629,5847,134,6,Tools,HP Inc Danmark,Hylde B1-85,SKU-0784,Sæt,244,6,Aktiv
+Vare-0785,1618,8087,128,4.6,IT Hardware,Apple Denmark,Hylde B1-47,SKU-0785,Kasse,243,6,Fase Ud
+Vare-0786,1796,1023,466,4.6,Warehouse,ErgoShop ApS,Lager Zone 8,SKU-0786,Æske,269,8,Aktiv
+Vare-0787,4940,9707,113,3.6,Belysning,Samsung Electronics,IT-Lager Zone 49,SKU-0787,Stk,741,4,Fase Ud
+Vare-0788,165,12895,379,4.5,Electronics,ASUS Denmark,Hylde B1-30,SKU-0788,Rulle,25,10,Aktiv
+Vare-0789,2159,6346,483,5.1,Tools,OfficeSupply A/S,Hylde A2-76,SKU-0789,Æske,324,11,Aktiv
+Vare-0790,100,9158,228,4.2,Tools,ErgoShop ApS,Lager Zone 60,SKU-0790,Pakke,15,12,Aktiv
+Vare-0791,4691,2782,343,5.5,IT Hardware,Lenovo Denmark,Hylde A1-37,SKU-0791,Kasse,704,1,Fase Ud
+Vare-0792,658,6394,271,5.6,IT Hardware,ErgoShop ApS,IT-Lager Zone 25,SKU-0792,Rulle,99,4,Aktiv
+Vare-0793,4298,3135,281,5.2,Ergonomi,OfficeSupply A/S,Hylde A1-91,SKU-0793,Sæt,645,4,Aktiv
+Vare-0794,4293,12924,173,6,IT Hardware,Apple Denmark,IT-Lager Zone 14,SKU-0794,Sæt,644,12,Aktiv
+Vare-0795,1556,7773,449,3.6,Tilbehør,HP Inc Danmark,Tilbehør Zone 81,SKU-0795,Pakke,233,10,Fase Ud
+Vare-0796,4107,6592,222,6,Belysning,HP Inc Danmark,Lager Zone 84,SKU-0796,Kasse,616,4,Aktiv
+Vare-0797,2669,4153,156,5.3,Kontorartikler,Apple Denmark,Tilbehør Zone 33,SKU-0797,Rulle,400,8,Aktiv
+Vare-0798,3042,8676,431,5,Belysning,Lenovo Denmark,Hylde A1-11,SKU-0798,Rulle,456,13,Aktiv
+Vare-0799,198,149,303,3.5,Belysning,Apple Denmark,Hylde A1-86,SKU-0799,Kasse,30,12,Aktiv
+Vare-0800,2019,5932,412,4.6,Kabler,OfficeSupply A/S,Hylde A1-4,SKU-0800,Kasse,303,7,Aktiv
+Vare-0801,1673,6607,83,4.2,Kontorartikler,Lenovo Denmark,IT-Lager Zone 78,SKU-0801,Pakke,251,13,Fase Ud
+Vare-0802,1906,10459,327,5.8,Electronics,ASUS Denmark,Hylde A1-57,SKU-0802,Rulle,286,1,Aktiv
+Vare-0803,3267,3971,245,4.6,Tilbehør,Samsung Electronics,IT-Lager Zone 92,SKU-0803,Rulle,490,8,Aktiv
+Vare-0804,161,562,204,5.7,Tools,Lenovo Denmark,Hylde B2-40,SKU-0804,Stk,24,10,Fase Ud
+Vare-0805,1995,3278,117,3.8,Electronics,Dell Danmark A/S,Warehouse-58,SKU-0805,Pakke,299,9,Aktiv
+Vare-0806,4637,5248,256,5.6,Electronics,Lenovo Denmark,Warehouse-19,SKU-0806,Pakke,696,5,Fase Ud
+Vare-0807,2321,5717,478,3.6,Tools,Lenovo Denmark,Warehouse-50,SKU-0807,Stk,348,5,Aktiv
+Vare-0808,3849,11532,199,4.8,Warehouse,Logitech Nordic,Tilbehør Zone 83,SKU-0808,Rulle,577,13,Fase Ud
+Vare-0809,4083,8150,150,5.7,Kabler,CableWorld ApS,Hylde B2-53,SKU-0809,Æske,612,2,Aktiv
+Vare-0810,2513,14338,276,3.5,Ergonomi,Logitech Nordic,Hylde A1-34,SKU-0810,Stk,377,4,Aktiv
+Vare-0811,2196,1981,354,4.2,Kontorartikler,Dell Danmark A/S,Lager Zone 65,SKU-0811,Kasse,329,3,Aktiv
+Vare-0812,610,5947,250,4.8,Kontorartikler,Apple Denmark,Hylde B1-41,SKU-0812,Rulle,92,3,Fase Ud
+Vare-0813,1369,13488,290,4.2,Kontorartikler,Apple Denmark,Lager Zone 6,SKU-0813,Rulle,205,8,Aktiv
+Vare-0814,141,13540,284,6,Møbel,Lenovo Denmark,Hylde B2-58,SKU-0814,Kasse,21,9,Aktiv
+Vare-0815,2944,14879,145,5.8,Electronics,Samsung Electronics,Lager Zone 26,SKU-0815,Æske,442,13,Fase Ud
+Vare-0816,3901,872,288,5.3,Kontorartikler,CableWorld ApS,Hylde A1-5,SKU-0816,Sæt,585,12,Aktiv
+Vare-0817,2094,11474,200,5.5,Electronics,Dell Danmark A/S,Hylde B2-81,SKU-0817,Rulle,314,4,Aktiv
+Vare-0818,572,4417,244,4.3,Electronics,OfficeSupply A/S,Warehouse-95,SKU-0818,Pakke,86,11,Fase Ud
+Vare-0819,2037,2745,143,4.4,Tilbehør,ErgoShop ApS,Hylde A2-79,SKU-0819,Rulle,306,10,Fase Ud
+Vare-0820,2674,13172,467,5.2,Tilbehør,ErgoShop ApS,Tilbehør Zone 96,SKU-0820,Pakke,401,4,Aktiv
+Vare-0821,3205,6782,401,4.2,Belysning,Lenovo Denmark,Hylde B1-97,SKU-0821,Æske,481,3,Fase Ud
+Vare-0822,4067,4203,422,4.2,Tilbehør,CableWorld ApS,Tilbehør Zone 28,SKU-0822,Kasse,610,6,Aktiv
+Vare-0823,4800,8180,326,3.9,Kabler,Dell Danmark A/S,Tilbehør Zone 73,SKU-0823,Sæt,720,5,Aktiv
+Vare-0824,4690,13720,86,4.6,Warehouse,Dell Danmark A/S,Hylde B2-66,SKU-0824,Stk,704,12,Aktiv
+Vare-0825,1754,2207,277,4.1,Tilbehør,Apple Denmark,Hylde B1-31,SKU-0825,Kasse,263,10,Aktiv
+Vare-0826,4867,1391,414,4.1,Belysning,HP Inc Danmark,Hylde A1-75,SKU-0826,Kasse,730,5,Fase Ud
+Vare-0827,830,1895,137,4.8,Electronics,Dell Danmark A/S,Hylde B1-79,SKU-0827,Kasse,124,6,Aktiv
+Vare-0828,3480,10511,439,4.9,Tools,ASUS Denmark,IT-Lager Zone 72,SKU-0828,Rulle,522,4,Aktiv
+Vare-0829,152,7008,242,3.8,Møbel,CableWorld ApS,Hylde A2-23,SKU-0829,Æske,23,13,Aktiv
+Vare-0830,4088,9580,487,5.8,Tilbehør,OfficeSupply A/S,Hylde B1-39,SKU-0830,Kasse,613,1,Aktiv
+Vare-0831,3655,2754,321,5.1,Kontorartikler,OfficeSupply A/S,Lager Zone 67,SKU-0831,Sæt,548,7,Fase Ud
+Vare-0832,934,9690,463,6,Tilbehør,Dell Danmark A/S,Hylde A2-6,SKU-0832,Rulle,140,11,Aktiv
+Vare-0833,320,6175,359,3.9,Ergonomi,HP Inc Danmark,Hylde B1-26,SKU-0833,Sæt,48,10,Fase Ud
+Vare-0834,4801,10266,132,5.2,IT Hardware,Samsung Electronics,IT-Lager Zone 58,SKU-0834,Sæt,720,2,Aktiv
+Vare-0835,2942,685,349,4.7,Kontorartikler,CableWorld ApS,Lager Zone 77,SKU-0835,Kasse,441,12,Aktiv
+Vare-0836,1973,6227,182,4.4,IT Hardware,Logitech Nordic,Hylde B1-8,SKU-0836,Kasse,296,12,Aktiv
+Vare-0837,3468,10535,292,5.8,Møbel,Dell Danmark A/S,Lager Zone 21,SKU-0837,Stk,520,13,Fase Ud
+Vare-0838,4960,6761,306,5.2,Warehouse,Samsung Electronics,IT-Lager Zone 60,SKU-0838,Kasse,744,2,Fase Ud
+Vare-0839,2418,906,245,4.6,Tools,Samsung Electronics,IT-Lager Zone 2,SKU-0839,Pakke,363,4,Aktiv
+Vare-0840,3473,14626,403,4.2,Electronics,OfficeSupply A/S,Hylde A2-56,SKU-0840,Rulle,521,3,Aktiv
+Vare-0841,1410,5393,382,3.6,Ergonomi,ErgoShop ApS,Hylde B1-53,SKU-0841,Kasse,212,8,Aktiv
+Vare-0842,3017,4108,117,5.7,Electronics,HP Inc Danmark,Hylde B2-26,SKU-0842,Æske,453,12,Aktiv
+Vare-0843,4984,11249,186,3.6,Tools,Logitech Nordic,IT-Lager Zone 7,SKU-0843,Stk,748,9,Aktiv
+Vare-0844,2369,11081,265,6,Electronics,Lenovo Denmark,Lager Zone 29,SKU-0844,Rulle,355,13,Aktiv
+Vare-0845,1606,6603,276,4.9,Tools,Logitech Nordic,Hylde B2-24,SKU-0845,Æske,241,4,Aktiv
+Vare-0846,2595,1738,189,5.2,Belysning,HP Inc Danmark,Lager Zone 2,SKU-0846,Kasse,389,7,Aktiv
+Vare-0847,704,7191,362,5.1,Tools,Logitech Nordic,Tilbehør Zone 55,SKU-0847,Pakke,106,2,Aktiv
+Vare-0848,540,10895,119,4.6,Tilbehør,HP Inc Danmark,IT-Lager Zone 23,SKU-0848,Pakke,81,5,Aktiv
+Vare-0849,1965,2658,369,3.9,Kontorartikler,Samsung Electronics,Hylde A1-35,SKU-0849,Rulle,295,4,Fase Ud
+Vare-0850,3200,1404,101,3.5,Tilbehør,Samsung Electronics,Hylde A2-87,SKU-0850,Sæt,480,11,Aktiv
+Vare-0851,795,2001,237,5.4,IT Hardware,Dell Danmark A/S,Hylde A2-98,SKU-0851,Stk,119,10,Fase Ud
+Vare-0852,1921,4109,262,3.5,Tools,CableWorld ApS,Lager Zone 73,SKU-0852,Æske,288,7,Aktiv
+Vare-0853,3360,5531,283,5.8,Kontorartikler,CableWorld ApS,IT-Lager Zone 13,SKU-0853,Æske,504,4,Aktiv
+Vare-0854,2739,1423,455,3.9,Kontorartikler,CableWorld ApS,IT-Lager Zone 93,SKU-0854,Stk,411,1,Aktiv
+Vare-0855,2013,2501,452,5.3,Møbel,ErgoShop ApS,Hylde B1-2,SKU-0855,Rulle,302,5,Fase Ud
+Vare-0856,4496,11894,391,5.7,Belysning,ErgoShop ApS,IT-Lager Zone 94,SKU-0856,Pakke,674,1,Aktiv
+Vare-0857,1175,5463,391,4.1,Kabler,ASUS Denmark,IT-Lager Zone 89,SKU-0857,Pakke,176,5,Fase Ud
+Vare-0858,4663,10732,452,5.8,Electronics,OfficeSupply A/S,Lager Zone 46,SKU-0858,Kasse,699,9,Aktiv
+Vare-0859,2447,7281,429,5.2,IT Hardware,CableWorld ApS,Hylde A2-88,SKU-0859,Stk,367,4,Aktiv
+Vare-0860,3276,13980,186,3.8,IT Hardware,Apple Denmark,Hylde A2-69,SKU-0860,Pakke,491,2,Aktiv
+Vare-0861,268,4872,98,4.2,Kontorartikler,ErgoShop ApS,Hylde A1-76,SKU-0861,Rulle,40,1,Aktiv
+Vare-0862,2895,5775,357,4.1,Kabler,Logitech Nordic,Hylde A2-69,SKU-0862,Rulle,434,5,Aktiv
+Vare-0863,3972,4373,326,3.9,Electronics,Lenovo Denmark,Hylde A1-77,SKU-0863,Æske,596,9,Aktiv
+Vare-0864,3031,3103,124,3.6,Electronics,CableWorld ApS,Hylde A2-19,SKU-0864,Pakke,455,11,Aktiv
+Vare-0865,932,12322,286,5.8,Tools,Apple Denmark,IT-Lager Zone 29,SKU-0865,Pakke,140,13,Aktiv
+Vare-0866,836,9259,152,4.5,Ergonomi,HP Inc Danmark,Hylde A1-73,SKU-0866,Stk,125,10,Aktiv
+Vare-0867,1110,12574,385,3.9,Kabler,HP Inc Danmark,Hylde B2-39,SKU-0867,Sæt,166,6,Aktiv
+Vare-0868,4993,871,431,4.4,Kontorartikler,HP Inc Danmark,Hylde A1-9,SKU-0868,Kasse,749,4,Aktiv
+Vare-0869,257,1725,235,3.5,Electronics,Dell Danmark A/S,Hylde B2-98,SKU-0869,Æske,39,5,Aktiv
+Vare-0870,2756,1233,424,5.5,Tools,Apple Denmark,Hylde A1-71,SKU-0870,Sæt,413,5,Fase Ud
+Vare-0871,144,10261,381,4.1,Ergonomi,Logitech Nordic,Lager Zone 62,SKU-0871,Rulle,22,9,Aktiv
+Vare-0872,821,13066,423,3.5,Electronics,Apple Denmark,Warehouse-87,SKU-0872,Rulle,123,2,Aktiv
+Vare-0873,2482,8346,141,6.1,Kontorartikler,ASUS Denmark,Lager Zone 67,SKU-0873,Stk,372,10,Aktiv
+Vare-0874,686,4704,474,4.9,Kontorartikler,Lenovo Denmark,Hylde B1-23,SKU-0874,Rulle,103,8,Aktiv
+Vare-0875,3763,14559,320,6.1,Kabler,Lenovo Denmark,Warehouse-94,SKU-0875,Rulle,564,3,Aktiv
+Vare-0876,3698,13397,354,5.7,Tools,HP Inc Danmark,IT-Lager Zone 33,SKU-0876,Sæt,555,8,Fase Ud
+Vare-0877,4682,3334,247,3.6,IT Hardware,CableWorld ApS,Hylde B2-31,SKU-0877,Rulle,702,10,Fase Ud
+Vare-0878,4354,4057,292,4.3,Møbel,OfficeSupply A/S,Tilbehør Zone 90,SKU-0878,Kasse,653,11,Aktiv
+Vare-0879,229,2875,468,4.4,Kabler,Logitech Nordic,Tilbehør Zone 84,SKU-0879,Pakke,34,11,Aktiv
+Vare-0880,806,12315,281,5.2,Kabler,CableWorld ApS,Hylde A2-8,SKU-0880,Kasse,121,11,Aktiv
+Vare-0881,3995,8473,455,4.9,Warehouse,Dell Danmark A/S,Tilbehør Zone 89,SKU-0881,Æske,599,10,Aktiv
+Vare-0882,2012,12419,107,3.9,Ergonomi,Logitech Nordic,Hylde B1-93,SKU-0882,Pakke,302,2,Fase Ud
+Vare-0883,1976,3955,274,4.8,Kabler,Apple Denmark,Warehouse-42,SKU-0883,Sæt,296,8,Aktiv
+Vare-0884,3742,14981,418,5.3,Tilbehør,Samsung Electronics,IT-Lager Zone 27,SKU-0884,Stk,561,5,Fase Ud
+Vare-0885,4844,11266,258,3.6,Electronics,CableWorld ApS,Warehouse-22,SKU-0885,Pakke,727,5,Fase Ud
+Vare-0886,1414,10042,97,3.7,Tools,CableWorld ApS,Warehouse-1,SKU-0886,Sæt,212,2,Fase Ud
+Vare-0887,209,11239,375,4.8,Electronics,OfficeSupply A/S,Hylde A1-51,SKU-0887,Rulle,31,12,Aktiv
+Vare-0888,3433,9309,277,5,Kabler,Dell Danmark A/S,Lager Zone 16,SKU-0888,Kasse,515,5,Aktiv
+Vare-0889,4611,13870,472,4.2,Tools,Apple Denmark,Hylde A2-9,SKU-0889,Stk,692,7,Aktiv
+Vare-0890,983,12479,148,3.5,Belysning,ASUS Denmark,Hylde A1-58,SKU-0890,Pakke,147,12,Fase Ud
+Vare-0891,1406,9477,430,5.6,Belysning,ErgoShop ApS,IT-Lager Zone 38,SKU-0891,Æske,211,12,Aktiv
+Vare-0892,792,9750,149,6.1,Tools,Samsung Electronics,Hylde A2-33,SKU-0892,Kasse,119,4,Fase Ud
+Vare-0893,2377,8742,84,5.2,Ergonomi,ErgoShop ApS,IT-Lager Zone 98,SKU-0893,Rulle,357,6,Aktiv
+Vare-0894,237,1622,301,5.6,IT Hardware,HP Inc Danmark,Hylde A1-10,SKU-0894,Sæt,36,13,Fase Ud
+Vare-0895,4457,4805,440,5.9,Electronics,Apple Denmark,Lager Zone 12,SKU-0895,Kasse,669,10,Fase Ud
+Vare-0896,4824,2391,278,5.9,Electronics,Samsung Electronics,Warehouse-32,SKU-0896,Sæt,724,2,Aktiv
+Vare-0897,3891,3623,159,3.7,Electronics,Lenovo Denmark,Tilbehør Zone 7,SKU-0897,Stk,584,1,Aktiv
+Vare-0898,947,2414,236,5.4,Warehouse,Logitech Nordic,Hylde B1-30,SKU-0898,Stk,142,1,Aktiv
+Vare-0899,3705,7352,384,5.8,Ergonomi,ASUS Denmark,Lager Zone 88,SKU-0899,Rulle,556,11,Aktiv
+Vare-0900,3470,8888,204,4.2,Kabler,Logitech Nordic,Hylde B1-76,SKU-0900,Sæt,520,9,Aktiv
+Vare-0901,3226,5541,159,3.9,IT Hardware,Logitech Nordic,Hylde B2-36,SKU-0901,Pakke,484,6,Fase Ud
+Vare-0902,1994,5706,80,3.5,Electronics,Samsung Electronics,Warehouse-78,SKU-0902,Æske,299,2,Aktiv
+Vare-0903,4850,5915,96,5.5,IT Hardware,Apple Denmark,Hylde B2-43,SKU-0903,Pakke,728,9,Aktiv
+Vare-0904,3339,3205,446,4,Tools,ASUS Denmark,Hylde A2-2,SKU-0904,Pakke,501,8,Aktiv
+Vare-0905,3925,6541,160,4.1,Ergonomi,Logitech Nordic,Hylde B1-83,SKU-0905,Sæt,589,10,Aktiv
+Vare-0906,729,8565,317,3.5,IT Hardware,Dell Danmark A/S,Lager Zone 93,SKU-0906,Sæt,109,9,Aktiv
+Vare-0907,3991,10012,403,4.7,Kontorartikler,ASUS Denmark,Lager Zone 93,SKU-0907,Æske,599,10,Aktiv
+Vare-0908,2564,14249,431,6,Ergonomi,OfficeSupply A/S,IT-Lager Zone 14,SKU-0908,Stk,385,13,Aktiv
+Vare-0909,3194,2204,374,5.1,Ergonomi,Apple Denmark,Hylde B2-27,SKU-0909,Pakke,479,13,Fase Ud
+Vare-0910,254,8767,108,5.3,Belysning,HP Inc Danmark,Lager Zone 53,SKU-0910,Sæt,38,5,Aktiv
+Vare-0911,1804,12597,136,6,Kabler,Lenovo Denmark,Warehouse-85,SKU-0911,Kasse,271,6,Aktiv
+Vare-0912,2458,4141,161,3.5,IT Hardware,ErgoShop ApS,Tilbehør Zone 62,SKU-0912,Pakke,369,7,Aktiv
+Vare-0913,124,14218,337,4.7,Warehouse,ASUS Denmark,Hylde A1-28,SKU-0913,Æske,19,8,Aktiv
+Vare-0914,3531,13004,141,4.3,Møbel,OfficeSupply A/S,Hylde B1-10,SKU-0914,Stk,530,6,Aktiv
+Vare-0915,2571,3508,112,3.5,Kabler,CableWorld ApS,Warehouse-12,SKU-0915,Pakke,386,9,Fase Ud
+Vare-0916,1440,3062,427,3.8,Belysning,Apple Denmark,Hylde B2-7,SKU-0916,Stk,216,10,Aktiv
+Vare-0917,3602,461,274,6,Ergonomi,ErgoShop ApS,IT-Lager Zone 95,SKU-0917,Æske,540,4,Aktiv
+Vare-0918,4930,11963,206,5.3,Kontorartikler,Lenovo Denmark,Hylde A1-98,SKU-0918,Kasse,740,1,Aktiv
+Vare-0919,3280,4873,95,4.5,Møbel,Samsung Electronics,Tilbehør Zone 85,SKU-0919,Pakke,492,12,Fase Ud
+Vare-0920,2755,4966,193,5.7,Kontorartikler,ASUS Denmark,Lager Zone 31,SKU-0920,Sæt,413,5,Aktiv
+Vare-0921,2663,11727,169,4.8,Belysning,HP Inc Danmark,Tilbehør Zone 18,SKU-0921,Sæt,399,10,Fase Ud
+Vare-0922,4853,14368,116,4,IT Hardware,CableWorld ApS,Hylde A1-47,SKU-0922,Æske,728,12,Aktiv
+Vare-0923,446,426,341,4.3,Møbel,CableWorld ApS,Hylde A1-12,SKU-0923,Kasse,67,11,Aktiv
+Vare-0924,4758,11535,297,5.1,Kontorartikler,OfficeSupply A/S,IT-Lager Zone 44,SKU-0924,Stk,714,13,Aktiv
+Vare-0925,506,4074,144,5.1,Kabler,Logitech Nordic,Hylde B1-26,SKU-0925,Pakke,76,4,Aktiv
+Vare-0926,4509,2913,361,4.5,Ergonomi,ErgoShop ApS,Hylde B2-46,SKU-0926,Stk,676,3,Fase Ud
+Vare-0927,2707,12919,420,4.7,Warehouse,Lenovo Denmark,Warehouse-27,SKU-0927,Æske,406,3,Aktiv
+Vare-0928,2648,9543,89,5.2,Electronics,Apple Denmark,Tilbehør Zone 66,SKU-0928,Pakke,397,5,Aktiv
+Vare-0929,4085,10844,105,4.4,Warehouse,Logitech Nordic,Hylde B2-93,SKU-0929,Stk,613,4,Aktiv
+Vare-0930,2405,9250,177,5.6,Møbel,OfficeSupply A/S,Hylde B1-9,SKU-0930,Kasse,361,3,Fase Ud
+Vare-0931,283,1985,347,5.4,Kabler,ASUS Denmark,Hylde B2-95,SKU-0931,Rulle,42,1,Aktiv
+Vare-0932,1094,89,321,4.1,Warehouse,Apple Denmark,Lager Zone 77,SKU-0932,Kasse,164,6,Aktiv
+Vare-0933,3980,1000,440,5.9,Tools,Samsung Electronics,Hylde B2-76,SKU-0933,Kasse,597,12,Aktiv
+Vare-0934,1997,10009,138,5.5,Kabler,ASUS Denmark,Hylde A1-82,SKU-0934,Pakke,300,11,Aktiv
+Vare-0935,2295,11236,202,4.8,Ergonomi,CableWorld ApS,Hylde A1-66,SKU-0935,Stk,344,11,Aktiv
+Vare-0936,4750,360,198,4.7,IT Hardware,Samsung Electronics,Lager Zone 15,SKU-0936,Stk,712,10,Aktiv
+Vare-0937,130,14105,440,4.4,Tilbehør,Logitech Nordic,Warehouse-36,SKU-0937,Kasse,20,1,Aktiv
+Vare-0938,3014,8346,305,4.5,Ergonomi,Dell Danmark A/S,Hylde B1-48,SKU-0938,Sæt,452,10,Aktiv
+Vare-0939,784,5718,184,4.2,Ergonomi,Samsung Electronics,Hylde A1-64,SKU-0939,Pakke,118,9,Aktiv
+Vare-0940,490,7363,202,5.3,Ergonomi,HP Inc Danmark,IT-Lager Zone 84,SKU-0940,Pakke,74,4,Fase Ud
+Vare-0941,295,14977,83,3.7,Ergonomi,Lenovo Denmark,Hylde B2-52,SKU-0941,Rulle,44,4,Aktiv
+Vare-0942,921,6771,471,4.5,IT Hardware,OfficeSupply A/S,IT-Lager Zone 85,SKU-0942,Stk,138,2,Aktiv
+Vare-0943,4711,2694,148,4.9,Tilbehør,ASUS Denmark,Hylde B2-57,SKU-0943,Sæt,707,7,Fase Ud
+Vare-0944,3604,9334,336,5.5,Møbel,Lenovo Denmark,Lager Zone 54,SKU-0944,Sæt,541,2,Aktiv
+Vare-0945,3841,1822,183,5.4,Electronics,OfficeSupply A/S,Warehouse-69,SKU-0945,Pakke,576,5,Aktiv
+Vare-0946,1428,8740,316,6.1,IT Hardware,Logitech Nordic,Hylde A1-50,SKU-0946,Kasse,214,4,Aktiv
+Vare-0947,4534,6216,374,4.6,Warehouse,Lenovo Denmark,Lager Zone 38,SKU-0947,Sæt,680,8,Aktiv
+Vare-0948,395,5423,473,5.9,Electronics,Samsung Electronics,Warehouse-83,SKU-0948,Pakke,59,6,Aktiv
+Vare-0949,4398,12080,182,5.5,Kabler,ASUS Denmark,Warehouse-68,SKU-0949,Æske,660,1,Fase Ud
+Vare-0950,1470,10094,115,5.8,IT Hardware,Apple Denmark,Hylde A2-64,SKU-0950,Stk,220,8,Aktiv
+Vare-0951,627,1726,378,4.6,Belysning,Lenovo Denmark,Hylde A2-65,SKU-0951,Sæt,94,8,Aktiv
+Vare-0952,2765,10263,155,6.1,Tilbehør,OfficeSupply A/S,IT-Lager Zone 2,SKU-0952,Stk,415,5,Aktiv
+Vare-0953,2773,14237,276,4.2,Kontorartikler,Apple Denmark,Tilbehør Zone 78,SKU-0953,Stk,416,3,Aktiv
+Vare-0954,2471,9552,185,4,Kontorartikler,Lenovo Denmark,Hylde A2-23,SKU-0954,Æske,371,13,Aktiv
+Vare-0955,752,6496,425,3.8,Møbel,HP Inc Danmark,Warehouse-17,SKU-0955,Æske,113,9,Aktiv
+Vare-0956,117,8349,222,4.6,Ergonomi,Dell Danmark A/S,Tilbehør Zone 68,SKU-0956,Pakke,18,12,Aktiv
+Vare-0957,3814,4705,135,3.7,IT Hardware,Dell Danmark A/S,IT-Lager Zone 22,SKU-0957,Rulle,572,3,Aktiv
+Vare-0958,2897,552,478,4.6,Møbel,HP Inc Danmark,Hylde A2-6,SKU-0958,Æske,435,1,Aktiv
+Vare-0959,105,8703,268,3.7,Møbel,Apple Denmark,Lager Zone 40,SKU-0959,Æske,16,4,Fase Ud
+Vare-0960,2553,459,181,3.9,Warehouse,ErgoShop ApS,Tilbehør Zone 67,SKU-0960,Sæt,383,1,Fase Ud
+Vare-0961,4893,9266,96,5.3,Tilbehør,ErgoShop ApS,IT-Lager Zone 82,SKU-0961,Kasse,734,6,Aktiv
+Vare-0962,1951,11515,314,4.3,IT Hardware,Lenovo Denmark,Hylde B2-24,SKU-0962,Rulle,293,11,Aktiv
+Vare-0963,2371,3596,326,3.9,Kabler,Samsung Electronics,Hylde A1-15,SKU-0963,Sæt,356,7,Fase Ud
+Vare-0964,2130,4759,106,4.9,Belysning,ASUS Denmark,Hylde B2-76,SKU-0964,Pakke,320,6,Aktiv
+Vare-0965,1137,7618,88,4,Møbel,Apple Denmark,Hylde B1-57,SKU-0965,Stk,171,7,Fase Ud
+Vare-0966,1315,7951,486,3.8,Warehouse,HP Inc Danmark,Tilbehør Zone 81,SKU-0966,Pakke,197,1,Aktiv
+Vare-0967,1241,10547,362,5,Kontorartikler,OfficeSupply A/S,Hylde B2-65,SKU-0967,Sæt,186,11,Aktiv
+Vare-0968,1813,13453,264,4.7,Møbel,Lenovo Denmark,IT-Lager Zone 52,SKU-0968,Sæt,272,1,Aktiv
+Vare-0969,3492,9682,180,6.1,Tilbehør,OfficeSupply A/S,Hylde B2-84,SKU-0969,Pakke,524,5,Aktiv
+Vare-0970,2384,7089,379,4.7,Electronics,Logitech Nordic,Warehouse-90,SKU-0970,Kasse,358,7,Aktiv
+Vare-0971,1493,11480,493,5.1,Kontorartikler,ErgoShop ApS,Tilbehør Zone 90,SKU-0971,Æske,224,8,Fase Ud
+Vare-0972,4242,7247,288,5.3,Tools,OfficeSupply A/S,Hylde A2-1,SKU-0972,Stk,636,2,Aktiv
+Vare-0973,421,9257,370,4.3,Warehouse,Apple Denmark,Hylde B1-68,SKU-0973,Kasse,63,3,Aktiv
+Vare-0974,2529,1362,247,4.4,Electronics,Logitech Nordic,Hylde A2-8,SKU-0974,Sæt,379,4,Aktiv
+Vare-0975,4455,2074,107,3.5,Warehouse,Samsung Electronics,Hylde B1-62,SKU-0975,Stk,668,2,Aktiv
+Vare-0976,2759,13413,405,5.1,Kabler,HP Inc Danmark,Hylde A1-87,SKU-0976,Rulle,414,1,Fase Ud
+Vare-0977,362,316,402,5.6,Belysning,CableWorld ApS,IT-Lager Zone 94,SKU-0977,Sæt,54,4,Fase Ud
+Vare-0978,3949,897,286,3.9,Warehouse,Dell Danmark A/S,Warehouse-4,SKU-0978,Pakke,592,10,Aktiv
+Vare-0979,3814,11473,216,4.2,Kontorartikler,Lenovo Denmark,Tilbehør Zone 78,SKU-0979,Æske,572,12,Aktiv
+Vare-0980,2261,6362,290,5.9,Electronics,ErgoShop ApS,Hylde A1-98,SKU-0980,Æske,339,13,Aktiv
+Vare-0981,715,107,165,3.7,Kontorartikler,Samsung Electronics,IT-Lager Zone 63,SKU-0981,Rulle,107,5,Aktiv
+Vare-0982,2346,14734,141,3.5,Kabler,Apple Denmark,Warehouse-48,SKU-0982,Kasse,352,9,Aktiv
+Vare-0983,4930,4168,326,5.7,Kabler,ASUS Denmark,Hylde B2-52,SKU-0983,Rulle,740,4,Fase Ud
+Vare-0984,479,1994,393,3.7,Kabler,CableWorld ApS,Hylde B1-62,SKU-0984,Pakke,72,12,Aktiv
+Vare-0985,2008,5061,386,5,Møbel,Logitech Nordic,Hylde A1-1,SKU-0985,Sæt,301,2,Fase Ud
+Vare-0986,370,4041,430,3.7,Kontorartikler,Logitech Nordic,Lager Zone 3,SKU-0986,Sæt,56,6,Aktiv
+Vare-0987,4989,10121,261,6.1,Kabler,OfficeSupply A/S,Tilbehør Zone 50,SKU-0987,Kasse,748,9,Aktiv
+Vare-0988,4428,5660,162,4.9,Kabler,Lenovo Denmark,IT-Lager Zone 43,SKU-0988,Sæt,664,4,Aktiv
+Vare-0989,3596,7927,393,5,Kontorartikler,Lenovo Denmark,Hylde B2-9,SKU-0989,Stk,539,3,Aktiv
+Vare-0990,2948,849,453,5.3,Belysning,ASUS Denmark,IT-Lager Zone 47,SKU-0990,Æske,442,4,Aktiv
+Vare-0991,1770,4430,284,4.7,Warehouse,Samsung Electronics,Warehouse-89,SKU-0991,Sæt,266,10,Fase Ud
+Vare-0992,4574,892,398,3.5,Belysning,Dell Danmark A/S,IT-Lager Zone 81,SKU-0992,Kasse,686,5,Fase Ud
+Vare-0993,3538,8116,89,4.6,Ergonomi,Samsung Electronics,Hylde A2-75,SKU-0993,Æske,531,13,Aktiv
+Vare-0994,1635,7032,303,5.9,Kontorartikler,HP Inc Danmark,Hylde A2-46,SKU-0994,Kasse,245,9,Aktiv
+Vare-0995,4912,6902,252,5.5,Tilbehør,Lenovo Denmark,IT-Lager Zone 91,SKU-0995,Æske,737,12,Fase Ud
+Vare-0996,3423,316,210,4.4,Warehouse,Dell Danmark A/S,Lager Zone 79,SKU-0996,Kasse,513,13,Aktiv
+Vare-0997,2510,6563,272,4.8,Belysning,HP Inc Danmark,Warehouse-54,SKU-0997,Sæt,376,2,Aktiv
+Vare-0998,4370,4698,445,5.6,IT Hardware,Samsung Electronics,IT-Lager Zone 55,SKU-0998,Rulle,656,13,Aktiv
+Vare-0999,3060,13039,277,5,Tools,HP Inc Danmark,Warehouse-62,SKU-0999,Stk,459,3,Aktiv
+Vare-1000,1950,1416,196,5.3,Warehouse,OfficeSupply A/S,IT-Lager Zone 27,SKU-1000,Æske,292,11,Aktiv

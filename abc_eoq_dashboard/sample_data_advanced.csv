@@ -1,0 +1,68 @@
+Varenavn,Årsforbrug,Pris,Ordreomkostning,Rentesats,Kategori,Leverandør,Varenummer,EAN,Lagerlokation,Garanti (mdr),CPU/Spec,RAM (GB),Vægt (kg),Energiforbrug (W),Status,Certificering,Sidst Opdateret
+Dell Precision 5570 Workstation,285,18500,450,5.5,Workstation,Dell Technologies,DELL-PREC-5570,5711783479826,Pro-WS-A01,36,Intel i7-12700H,32,2.0,130,Aktiv,Energy Star,2024-11-10
+HP Z2 Tower G9 Workstation,165,22000,480,5.5,Workstation,HP Inc Danmark,HP-Z2-G9-TWR,5711045824756,Pro-WS-A02,36,Intel i9-12900K,64,8.5,500,Aktiv,TCO Certified,2024-11-08
+Lenovo ThinkPad P1 Gen 5,340,19500,450,5.5,Workstation,Lenovo Denmark,LNV-P1G5-001,5711045136487,Pro-WS-A03,36,Intel i7-12800H,32,1.8,135,Aktiv,EPEAT Gold,2024-11-12
+Apple MacBook Pro 16" M2,420,28000,500,5.5,Workstation,Apple Denmark,APPL-MBP16-M2,5711783895421,Pro-WS-A04,12,Apple M2 Max,32,2.2,140,Aktiv,Energy Star,2024-11-14
+Microsoft Surface Laptop Studio,195,24500,470,5.5,Workstation,Microsoft Danmark,MSFT-SLS-i7,5711045736284,Pro-WS-A05,24,Intel i7-11370H,32,1.8,127,Aktiv,Energy Star,2024-11-09
+Dell UltraSharp U2723DE 27",580,4200,280,4.8,Monitor,Dell Technologies,DELL-U2723DE,5711783264895,Display-B01,36,IPS 2560x1440,N/A,5.7,65,Aktiv,TCO Certified,2024-11-13
+LG 34WN80C-B UltraWide 34",240,6800,320,4.8,Monitor,LG Electronics,LG-34WN80C-B,5711045958274,Display-B02,36,IPS 3440x1440,N/A,6.4,75,Aktiv,Energy Star,2024-11-11
+BenQ PD3220U 32" 4K Designer,155,12500,380,4.8,Monitor,BenQ Denmark,BENQ-PD3220U,5711045632841,Display-B03,36,IPS 3840x2160,N/A,9.2,85,Aktiv,TCO Certified,2024-11-07
+ASUS ProArt PA278QV 27",380,3850,280,4.8,Monitor,ASUS Denmark,ASUS-PA278QV,5711783147852,Display-B04,36,IPS 2560x1440,N/A,5.6,60,Aktiv,EPEAT Gold,2024-11-12
+Samsung Odyssey G9 49" Curved,95,14500,400,4.8,Monitor,Samsung Denmark,SAM-OG9-49,5711045823946,Display-B05,36,VA 5120x1440,N/A,14.1,120,Aktiv,Energy Star,2024-11-05
+Logitech MX Keys Advanced,890,1150,185,4.2,Tastatur,Logitech Nordic,LOG-MX-KEYS-ADV,5711783695841,Perif-C01,24,Wireless Backlit,N/A,0.8,N/A,Aktiv,N/A,2024-11-14
+Keychron K8 Pro Mechanical,520,1380,195,4.2,Tastatur,Keychron Nordic,KEY-K8-PRO-RGB,5711045728364,Perif-C02,24,Wireless Mech RGB,N/A,0.85,N/A,Aktiv,N/A,2024-11-10
+Ducky One 3 Mechanical RGB,340,1520,200,4.2,Tastatur,Ducky Channel,DUCK-ONE3-RGB,5711783524869,Perif-C03,24,Wired Mech RGB,N/A,0.92,N/A,Aktiv,N/A,2024-11-08
+Logitech MX Master 3S,1240,850,170,4.2,Mus,Logitech Nordic,LOG-MX-M3S-BLK,5711783841256,Perif-C04,24,Wireless 8000 DPI,N/A,0.14,N/A,Aktiv,N/A,2024-11-15
+Razer DeathAdder V3 Pro,480,1180,180,4.2,Mus,Razer Inc,RZR-DA-V3-PRO,5711045947362,Perif-C05,24,Wireless 30K DPI,N/A,0.063,N/A,Aktiv,N/A,2024-11-12
+Logitech MX Ergo Trackball,290,950,175,4.2,Mus,Logitech Nordic,LOG-MX-ERGO,5711783652841,Perif-C06,24,Wireless Trackball,N/A,0.26,N/A,Aktiv,N/A,2024-11-11
+Jabra Evolve2 85 ANC,380,3200,250,5.0,Headset,GN Audio Denmark,JAB-EV2-85-UC,5711045728951,Audio-D01,24,ANC BT Wireless,N/A,0.286,N/A,Aktiv,Teams Certified,2024-11-13
+Sony WH-1000XM5 ANC,245,3800,260,5.0,Headset,Sony Denmark,SONY-WH1000XM5,5711783948527,Audio-D02,24,Premium ANC BT,N/A,0.25,N/A,Aktiv,Hi-Res Audio,2024-11-09
+Bose 700 UC Headset,180,4200,270,5.0,Headset,Bose Denmark,BOSE-700-UC-BLK,5711045836274,Audio-D03,24,UC ANC Wireless,N/A,0.254,N/A,Aktiv,Teams Certified,2024-11-07
+Sennheiser Momentum 4,165,3600,255,5.0,Headset,Sennheiser Nordic,SENH-MOM4-BLK,5711783847295,Audio-D04,24,ANC BT aptX,N/A,0.293,N/A,Aktiv,Hi-Res Audio,2024-11-05
+HyperX Cloud Alpha Wireless,420,1850,210,5.0,Headset,Kingston HyperX,HPX-ALPHA-WRLS,5711045927461,Audio-D05,24,Gaming Wireless,N/A,0.318,N/A,Aktiv,N/A,2024-11-14
+CalDigit TS4 Thunderbolt 4 Dock,210,4500,290,5.2,Dock,CalDigit Inc,CALD-TS4-TB4,5711783625841,Dock-E01,24,18 Ports TB4,N/A,0.58,98,Aktiv,TB4 Certified,2024-11-12
+Anker 777 Thunderbolt Dock,285,3400,270,5.2,Dock,Anker Innovations,ANK-777-TB4,5711045847263,Dock-E02,24,12 Ports TB4,N/A,0.48,100,Aktiv,TB4 Certified,2024-11-13
+Kensington SD5700T Dock,195,3800,280,5.2,Dock,Kensington Denmark,KENS-SD5700T,5711783736294,Dock-E03,24,11 Ports TB4,N/A,0.52,96,Aktiv,TB4 Certified,2024-11-10
+Plugable TBT3-UDZ Dock,240,2950,260,5.2,Dock,Plugable Tech,PLUG-TBT3-UDZ,5711045738295,Dock-E04,24,13 Ports TB3,N/A,0.46,96,Aktiv,TB3 Certified,2024-11-08
+Ergotron LX Desk Mount Arm,340,2100,230,4.5,Ergonomi,Ergotron Inc,ERGO-LX-ARM,5711783592847,Ergo-F01,120,Single Monitor,N/A,4.5,N/A,Aktiv,VESA,2024-11-11
+Herman Miller Aeron Chair Size B,85,12500,450,6.0,Møbel,Herman Miller DK,HM-AERON-B-GR,5711045928374,Furniture-G01,144,Ergonomisk Stol,N/A,21.8,N/A,Aktiv,Greenguard,2024-11-06
+Steelcase Leap V2 Chair,95,11800,440,6.0,Møbel,Steelcase Denmark,STEEL-LEAP-V2,5711783947285,Furniture-G02,144,Ergonomisk Stol,N/A,23.6,N/A,Aktiv,Greenguard,2024-11-07
+Secretlab Titan Evo 2022,145,5200,320,6.0,Møbel,Secretlab Europe,SECR-TITAN-22,5711045836294,Furniture-G03,60,Gaming Stol,N/A,32.5,N/A,Aktiv,N/A,2024-11-10
+Herman Miller Embody Chair,68,14200,480,6.0,Møbel,Herman Miller DK,HM-EMBODY-BLK,5711783826491,Furniture-G04,144,Premium Ergo,N/A,20.9,N/A,Aktiv,Greenguard,2024-11-05
+Fully Jarvis Bamboo Standing Desk 180x80,125,8500,390,5.8,Møbel,Fully Denmark,FULLY-JARV-1880,5711045937284,Furniture-G05,84,Sit-Stand Desk,N/A,52.0,310,Aktiv,FSC Certified,2024-11-09
+Uplift V2 Standing Desk L-Shape,78,11200,420,5.8,Møbel,Uplift Desk,UPLFT-V2-LSHP,5711783948261,Furniture-G06,84,L-Shape Sit-Stand,N/A,68.5,350,Aktiv,Greenguard,2024-11-06
+FlexiSpot E7 Pro Standing Desk,165,6800,350,5.8,Møbel,FlexiSpot Nordic,FLEX-E7-PRO,5711045826394,Furniture-G07,60,Premium Sit-Stand,N/A,48.2,300,Aktiv,N/A,2024-11-12
+Vari Electric Standing Desk 60x30,140,5400,330,5.8,Møbel,Vari Workspace,VARI-ELEC-6030,5711783736284,Furniture-G08,60,Compact Sit-Stand,N/A,35.8,265,Aktiv,N/A,2024-11-11
+IKEA IDÅSEN Sit/Stand Desk,210,4200,300,5.8,Møbel,IKEA Denmark,IKEA-IDSEN-160,5711045937261,Furniture-G09,120,Basic Sit-Stand,N/A,42.0,280,Aktiv,N/A,2024-11-14
+Elgato Stream Deck XL,180,2850,245,4.8,Streaming,Elgato Systems,ELGA-SDX-32KEY,5711045826391,Stream-H01,24,32 LCD Keys,N/A,0.465,15,Aktiv,N/A,2024-11-13
+Elgato Key Light Air LED,290,1480,205,4.8,Belysning,Elgato Systems,ELGA-KEYLT-AIR,5711783948251,Stream-H02,24,2800 Lumen WiFi,N/A,1.2,28,Aktiv,Energy Star,2024-11-14
+Logitech StreamCam 1080p,340,1650,210,4.8,Kamera,Logitech Nordic,LOG-STRCAM-1080,5711045937284,Stream-H03,24,Full HD USB-C,N/A,0.25,N/A,Aktiv,N/A,2024-11-15
+Elgato Cam Link 4K,240,1280,200,4.8,Streaming,Elgato Systems,ELGA-CAMLINK-4K,5711783826491,Stream-H04,24,4K60 Capture,N/A,0.015,N/A,Aktiv,N/A,2024-11-12
+Blue Yeti X Professional Mic,195,1850,215,4.8,Mikrofon,Blue Microphones,BLUE-YETI-X-PRO,5711045836274,Audio-D06,24,USB Condenser,N/A,1.28,5,Aktiv,N/A,2024-11-11
+Shure MV7 USB/XLR Mic,140,2650,235,4.8,Mikrofon,Shure Inc,SHURE-MV7-BLK,5711783947261,Audio-D07,24,Hybrid USB/XLR,N/A,0.55,N/A,Aktiv,N/A,2024-11-09
+Rode PodMic USB Dynamic,165,2180,225,4.8,Mikrofon,Rode Microphones,RODE-PODMIC-USB,5711045937285,Audio-D08,24,USB Dynamic,N/A,0.94,N/A,Aktiv,N/A,2024-11-10
+APC Back-UPS Pro 1500VA,240,2400,240,5.0,UPS,APC Schneider,APC-BR1500G-EU,5711783826394,Power-I01,36,1500VA 865W,N/A,19.5,N/A,Aktiv,Energy Star,2024-11-13
+CyberPower CP1500PFCLCD UPS,285,1850,220,5.0,UPS,CyberPower EU,CYBER-CP1500PF,5711045928361,Power-I02,36,1500VA 900W,N/A,17.8,N/A,Aktiv,N/A,2024-11-14
+Tripp Lite SMART1500LCDT UPS,195,2100,230,5.0,UPS,Tripp Lite EU,TRIP-SM1500LCD,5711783947283,Power-I03,36,1500VA 900W,N/A,18.6,N/A,Aktiv,Energy Star,2024-11-12
+Eaton 5S 1500VA UPS,220,1950,225,5.0,UPS,Eaton Denmark,EATON-5S1500I,5711045836295,Power-I04,36,1500VA 900W,N/A,16.2,N/A,Aktiv,N/A,2024-11-11
+Synology DS920+ 4-Bay NAS,95,5800,340,5.5,Storage,Synology Inc,SYNO-DS920PLUS,5711783947285,Storage-J01,36,Intel Celeron,4,2.3,54,Aktiv,N/A,2024-11-08
+QNAP TS-464 4-Bay NAS,78,6200,350,5.5,Storage,QNAP Systems,QNAP-TS464-4G,5711045937284,Storage-J02,36,Intel Celeron,4,3.8,90,Aktiv,N/A,2024-11-07
+Western Digital My Cloud EX2 Ultra,145,3400,280,5.5,Storage,WD Denmark,WD-MYCLOUDEX2,5711783826491,Storage-J03,36,Marvell ARM,1,1.98,31,Aktiv,N/A,2024-11-10
+Seagate IronWolf Pro 18TB HDD,380,5200,310,5.2,Storage,Seagate Denmark,SEAG-IW18TB-PRO,5711045836274,Storage-J04,60,7200 RPM NAS,N/A,0.67,8.4,Aktiv,N/A,2024-11-14
+WD Red Plus 14TB NAS HDD,420,4600,300,5.2,Storage,WD Denmark,WD-RED14TB-PLS,5711783947261,Storage-J05,36,5400 RPM NAS,N/A,0.61,5.3,Aktiv,N/A,2024-11-15
+Samsung 980 PRO 2TB NVMe SSD,580,1850,210,4.5,Storage,Samsung Denmark,SAM-980PRO-2TB,5711045928374,Storage-J06,60,PCIe 4.0 7000MB/s,N/A,0.009,5.5,Aktiv,N/A,2024-11-13
+Crucial P5 Plus 2TB NVMe SSD,640,1620,205,4.5,Storage,Crucial Denmark,CRUC-P5P-2TB,5711783826491,Storage-J07,60,PCIe 4.0 6600MB/s,N/A,0.009,5.0,Aktiv,N/A,2024-11-14
+WD Black SN850X 2TB NVMe SSD,520,1980,215,4.5,Storage,WD Denmark,WD-SN850X-2TB,5711045937285,Storage-J08,60,PCIe 4.0 7300MB/s,N/A,0.008,5.8,Aktiv,N/A,2024-11-12
+Kingston KC3000 2TB PCIe 4.0,480,1750,208,4.5,Storage,Kingston Denmark,KING-KC3000-2TB,5711783947283,Storage-J09,60,PCIe 4.0 7000MB/s,N/A,0.008,6.5,Aktiv,N/A,2024-11-11
+Corsair MP600 PRO XT 4TB,285,3800,265,4.5,Storage,Corsair Nordic,CORS-MP600XT-4T,5711045836294,Storage-J10,60,PCIe 4.0 7100MB/s,N/A,0.018,7.0,Aktiv,N/A,2024-11-09
+UniFi Dream Machine Pro,125,4800,320,5.5,Network,Ubiquiti Inc,UBIQ-UDM-PRO,5711783826495,Network-K01,12,8-Port Switch,N/A,4.9,23,Aktiv,N/A,2024-11-13
+Netgear Nighthawk AX12 Router,210,4200,300,5.5,Network,Netgear Denmark,NTGR-RAX120-EU,5711045937284,Network-K02,12,WiFi 6 AX6000,N/A,1.68,45,Aktiv,WiFi 6,2024-11-14
+ASUS RT-AX89X AX6000 Router,165,3850,290,5.5,Network,ASUS Denmark,ASUS-AX89X-EU,5711783947285,Network-K03,36,WiFi 6 AX6000,N/A,1.84,50,Aktiv,WiFi 6,2024-11-12
+TP-Link Archer AX11000 Router,195,3400,280,5.5,Network,TP-Link Nordic,TPL-AX11000-EU,5711045836274,Network-K04,24,WiFi 6 Tri-Band,N/A,2.45,58,Aktiv,WiFi 6,2024-11-11
+Ubiquiti UniFi 6 Enterprise AP,240,3600,285,5.5,Network,Ubiquiti Inc,UBIQ-U6-ENT,5711783826491,Network-K05,12,WiFi 6 PoE++,N/A,1.35,23,Aktiv,WiFi 6E,2024-11-15
+Cable Matters 10Gbps Cat8 5m,840,125,95,3.8,Kabel,Cable Matters,CBLM-CAT8-5M,5711045937284,Cable-L01,60,S/FTP Cat8,N/A,0.38,N/A,Aktiv,Cat8 Cert,2024-11-14
+StarTech Thunderbolt 4 Cable 2m,480,385,135,3.8,Kabel,StarTech.com,STAR-TB4-2M,5711783947261,Cable-L02,36,TB4 40Gbps,N/A,0.12,N/A,Aktiv,TB4 Certified,2024-11-13
+Anker USB-C to USB-C 100W 3m,1250,165,105,3.8,Kabel,Anker Innovations,ANK-USBC-100W-3,5711045836274,Cable-L03,18,USB-C 3.1 100W,N/A,0.08,N/A,Aktiv,USB-IF,2024-11-15
+Belkin Boost Charge USB-C 240W,920,245,115,3.8,Kabel,Belkin Denmark,BLK-USBC-240W,5711783826491,Cable-L04,24,USB-C 4.0 240W,N/A,0.09,N/A,Aktiv,USB-IF,2024-11-14
+Cable Matters DisplayPort 1.4 3m,680,195,110,3.8,Kabel,Cable Matters,CBLM-DP14-3M,5711045937285,Cable-L05,60,DP 1.4 8K,N/A,0.15,N/A,Aktiv,VESA DP 1.4,2024-11-12
+

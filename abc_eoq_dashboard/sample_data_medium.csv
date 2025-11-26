@@ -1,0 +1,31 @@
+Varenavn,Årsforbrug,Pris,Ordreomkostning,Rentesats,Kategori,Leverandør,Varenummer,Lagerlokation,Garanti (mdr),Vægt (kg),Mål (cm),Status,Sidste Købsdato,Kvalitet
+Laptop Dell XPS 15,450,12500,350,5.2,IT Hardware,Dell Danmark A/S,DELL-XPS15-2024,IT-Lager Zone 1,36,2.1,35x24x2,Aktiv,2024-11-01,Premium
+Monitor Samsung 27",780,3200,220,4.8,IT Hardware,Samsung Electronics,SAM-U27-001,IT-Lager Zone 2,36,5.8,61x46x21,Aktiv,2024-10-28,Premium
+Tastatur Logitech MX,1100,650,150,4.5,Tilbehør,Logitech Nordic,LOG-MX-KEYS,Tilbehør Zone A,24,0.8,43x13x3,Aktiv,2024-11-05,Standard
+Mus Logitech MX Master,1350,450,120,4.5,Tilbehør,Logitech Nordic,LOG-MX-M3S,Tilbehør Zone A,24,0.14,12x8x5,Aktiv,2024-11-08,Standard
+Headset Jabra Evolve,620,1100,180,4.8,Tilbehør,GN Audio Danmark,JAB-EV2-85,Tilbehør Zone B,24,0.28,18x16x8,Aktiv,2024-10-22,Premium
+Webcam Logitech C920,380,850,160,4.6,Tilbehør,Logitech Nordic,LOG-C920-HD,Tilbehør Zone A,24,0.16,9x4x3,Aktiv,2024-10-15,Standard
+Dockingstation Dell,290,2400,250,5.0,Tilbehør,Dell Danmark A/S,DELL-DOCK-WD19,IT-Lager Zone 1,36,0.58,21x9x3,Aktiv,2024-10-10,Premium
+USB-C Hub,890,420,130,4.4,Tilbehør,Anker Innovations,ANK-HUB-7IN1,Tilbehør Zone C,12,0.12,11x5x2,Aktiv,2024-11-12,Standard
+Laptop Stand,540,280,110,4.2,Ergonomi,ErgoShop ApS,ERG-STAND-ALU,Ergonomi Zone 1,12,0.85,25x22x5,Aktiv,2024-10-30,Standard
+Mus Pad XL,1520,95,80,4.0,Tilbehør,OfficeComfort A/S,PAD-XL-900,Tilbehør Zone C,6,0.4,90x40x0.4,Aktiv,2024-11-10,Basic
+HDMI Kabel 2m,2100,85,75,3.8,Kabler,CableWorld ApS,CBL-HDMI-2M,Kabel Zone 1,12,0.18,200x1x1,Aktiv,2024-11-14,Standard
+USB Kabel USB-C,2800,45,70,3.8,Kabler,CableWorld ApS,CBL-USBC-1M,Kabel Zone 1,12,0.08,100x1x1,Aktiv,2024-11-15,Basic
+Laptop Taske,410,380,140,4.4,Tasker,Targus Danmark,TRG-15-BLK,Lager Zone D,24,0.95,40x30x8,Aktiv,2024-10-20,Standard
+Skærmbeskytter 27",320,125,95,4.2,Tilbehør,3M Danmark,3M-SCRN-27,Tilbehør Zone B,0,0.25,61x34x0.1,Aktiv,2024-10-18,Standard
+Adapter HDMI-USB-C,970,165,100,4.2,Kabler,Anker Innovations,ANK-ADP-HDMI,Kabel Zone 2,12,0.05,8x3x1,Aktiv,2024-11-02,Standard
+Trådløs Oplader,680,245,105,4.3,Tilbehør,Belkin Danmark,BLK-QI-15W,Tilbehør Zone C,24,0.15,10x10x1,Aktiv,2024-10-25,Standard
+Powerbank 20000mAh,540,385,125,4.5,Tilbehør,Anker Innovations,ANK-PB-20K,Tilbehør Zone C,18,0.36,16x8x2,Aktiv,2024-10-28,Premium
+Ethernet Kabel 5m,1250,68,85,3.8,Kabler,CableWorld ApS,CBL-ETH-5M,Kabel Zone 1,12,0.28,500x1x1,Aktiv,2024-11-12,Standard
+Dokumentholder,460,175,90,4.0,Ergonomi,ErgoShop ApS,ERG-DOC-ADJ,Ergonomi Zone 1,12,0.45,30x25x5,Aktiv,2024-10-22,Standard
+LED Skrivebordslampe,380,420,115,4.4,Belysning,Philips Lighting,PHI-LED-DSK,Belysning Zone 1,24,0.68,40x15x10,Aktiv,2024-10-15,Premium
+Ryglænspude Kontor,290,285,100,4.2,Ergonomi,ErgoShop ApS,ERG-BACK-MEM,Ergonomi Zone 2,12,0.52,38x32x8,Aktiv,2024-10-12,Standard
+Fodstøtte Justerbar,210,365,110,4.3,Ergonomi,ErgoShop ApS,ERG-FOOT-ADJ,Ergonomi Zone 2,12,1.2,45x35x10,Aktiv,2024-10-08,Standard
+Skærmarm Dobbelt,175,1250,200,4.8,Ergonomi,Ergotron Norge,ERG-ARM-DUL,Ergonomi Zone 1,120,4.5,58x15x15,Aktiv,2024-09-25,Premium
+Kabelholder Desk,920,48,75,3.8,Tilbehør,OfficeComfort A/S,OFF-CBL-MGMT,Tilbehør Zone D,6,0.08,15x5x2,Aktiv,2024-11-13,Basic
+Whiteboardmarkør Sort,3400,22,65,3.6,Kontorartikler,Edding Danmark,EDD-363-BLK,Kontor Zone A,0,0.02,14x2x2,Aktiv,2024-11-11,Standard
+Whiteboardmarkør Rød,1680,22,65,3.6,Kontorartikler,Edding Danmark,EDD-363-RED,Kontor Zone A,0,0.02,14x2x2,Aktiv,2024-11-11,Standard
+Whiteboardmarkør Blå,1890,22,65,3.6,Kontorartikler,Edding Danmark,EDD-363-BLU,Kontor Zone A,0,0.02,14x2x2,Aktiv,2024-11-11,Standard
+Whiteboardmarkør Grøn,1120,22,65,3.6,Kontorartikler,Edding Danmark,EDD-363-GRN,Kontor Zone A,0,0.02,14x2x2,Aktiv,2024-11-11,Standard
+Whiteboard Viskelæder,580,35,70,3.8,Kontorartikler,OfficeSupply A/S,OFF-WB-ERASE,Kontor Zone A,0,0.05,15x6x2,Aktiv,2024-11-09,Standard
+Whiteboard Spray 250ml,440,68,80,4.0,Kontorartikler,OfficeSupply A/S,OFF-WB-CLN-250,Kontor Zone B,0,0.28,18x6x6,Aktiv,2024-11-07,Standard

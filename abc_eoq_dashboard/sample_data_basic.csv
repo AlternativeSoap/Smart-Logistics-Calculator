@@ -1,0 +1,11 @@
+Varenavn,Årsforbrug,Pris,Ordreomkostning,Rentesats,Kategori,Leverandør,Lagerlokation,Varenummer,Enhed,Minimumslagerbeholdning,Leveringstid (dage),Status
+Blyant,1200,15,120,4.5,Kontorartikler,OfficeSupply A/S,Hylde A1-03,SKU-001,Stk,200,5,Aktiv
+Papir A4,2500,45,150,4.5,Kontorartikler,PaperPro Danmark,Hylde A1-05,SKU-002,Pakke,400,3,Aktiv
+Kuglepen,1800,12,110,4.5,Kontorartikler,OfficeSupply A/S,Hylde A1-04,SKU-003,Stk,300,5,Aktiv
+Notesblok,950,35,130,4.5,Kontorartikler,PaperPro Danmark,Hylde A1-06,SKU-004,Stk,150,3,Aktiv
+Hæftemaskine,450,125,140,4.8,Kontorartikler,OfficeTools ApS,Hylde B2-01,SKU-005,Stk,75,7,Aktiv
+Clips,3200,8,100,4.2,Kontorartikler,OfficeSupply A/S,Hylde A1-02,SKU-006,Æske,500,5,Aktiv
+Mapper,680,22,115,4.5,Kontorartikler,PaperPro Danmark,Hylde A2-01,SKU-007,Stk,100,3,Aktiv
+Viskelæder,1100,10,105,4.2,Kontorartikler,OfficeSupply A/S,Hylde A1-01,SKU-008,Stk,180,5,Aktiv
+Linjal,520,18,110,4.5,Kontorartikler,OfficeTools ApS,Hylde B2-02,SKU-009,Stk,85,7,Aktiv
+Saks,380,42,125,4.8,Kontorartikler,OfficeTools ApS,Hylde B2-03,SKU-010,Stk,60,7,Aktiv
