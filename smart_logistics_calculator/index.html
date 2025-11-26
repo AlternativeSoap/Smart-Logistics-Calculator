@@ -4515,16 +4515,16 @@
                                 <div class="space-y-2 text-sm">
                                     <div class="grid grid-cols-2 gap-2">
                                         <div class="bg-red-100 dark:bg-red-900/30 p-2 rounded text-center">
-                                            <strong class="text-red-700 dark:text-red-400">Kritisk:</strong> Under sikkerhedslager
+                                            <strong class="text-red-700 dark:text-red-400" data-i18n="mm-status-critical">Kritisk:</strong> <span data-i18n="mm-status-critical-desc">Under sikkerhedslager</span>
                                         </div>
                                         <div class="bg-orange-100 dark:bg-orange-900/30 p-2 rounded text-center">
-                                            <strong class="text-orange-700 dark:text-orange-400">Lav:</strong> Under min
+                                            <strong class="text-orange-700 dark:text-orange-400" data-i18n="mm-status-low">Lav:</strong> <span data-i18n="mm-status-low-desc">Under min</span>
                                         </div>
                                         <div class="bg-green-100 dark:bg-green-900/30 p-2 rounded text-center">
-                                            <strong class="text-green-700 dark:text-green-400">Normal:</strong> Mellem min-max
+                                            <strong class="text-green-700 dark:text-green-400" data-i18n="mm-status-normal">Normal:</strong> <span data-i18n="mm-status-normal-desc">Mellem min-max</span>
                                         </div>
                                         <div class="bg-blue-100 dark:bg-blue-900/30 p-2 rounded text-center">
-                                            <strong class="text-blue-700 dark:text-blue-400">Overfyldt:</strong> Over max
+                                            <strong class="text-blue-700 dark:text-blue-400" data-i18n="mm-status-overfilled">Overfyldt:</strong> <span data-i18n="mm-status-overfilled-desc">Over max</span>
                                         </div>
                                     </div>
                                 </div>
@@ -4694,40 +4694,58 @@
                             <span id="exercises-toggle" class="text-2xl text-gray-400 transform transition-transform duration-200">▼</span>
                         </button>
                         <div id="exercises-content" class="hidden border-t border-gray-200 dark:border-gray-700 p-6">
-                        <div class="space-y-4">
+                        <div class="grid gap-4 md:grid-cols-2">
                             <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border-l-4 border-blue-500">
-                                <h3 class="font-bold text-gray-900 dark:text-white mb-2" data-i18n="exercise-1-title">Øvelse 1: Basis ABC Klassificering</h3>
-                                <p class="text-sm text-gray-700 dark:text-gray-300 mb-2" data-i18n="exercise-1-desc">
-                                    Indlæs "Detailbutik" datasættet og identificer hvilke varer der er A-varer. Hvorfor er de vigtige?
+                                <h3 class="font-bold text-gray-900 dark:text-white mb-2" data-i18n="exercise-1-title">Øvelse 1: ABC Klassificering</h3>
+                                <p class="text-sm text-gray-700 dark:text-gray-300 mb-3" data-i18n="exercise-1-desc">
+                                    Indlæs "Detailbutik" datasættet og identificer hvilke varer der er A-varer. Hvorfor er de vigtige for virksomheden?
                                 </p>
                                 <button onclick="loadSampleDataset('retail'); switchTab('abc')" class="text-sm px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" data-i18n="start-exercise">
                                     Start Øvelse
                                 </button>
                             </div>
                             <div class="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border-l-4 border-green-500">
-                                <h3 class="font-bold text-gray-900 dark:text-white mb-2" data-i18n="exercise-2-title">Øvelse 2: EOQ Beregning</h3>
-                                <p class="text-sm text-gray-700 dark:text-gray-300 mb-2" data-i18n="exercise-2-desc">
-                                    Brug Wilson-beregneren til at finde optimal ordrestørrelse for en vare med årsforbrug=5000, ordreomkostning=200, pris=50, rente=5%
+                                <h3 class="font-bold text-gray-900 dark:text-white mb-2" data-i18n="exercise-2-title">Øvelse 2: Wilson EOQ Beregning</h3>
+                                <p class="text-sm text-gray-700 dark:text-gray-300 mb-3" data-i18n="exercise-2-desc">
+                                    Brug Wilson-beregneren til at finde optimal ordrestørrelse. Prøv med: Årsforbrug=5000, Ordreomkostning=200 kr, Pris=50 kr, Rente=5%
                                 </p>
                                 <button onclick="switchTab('wilson')" class="text-sm px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors" data-i18n="start-exercise">
                                     Start Øvelse
                                 </button>
                             </div>
                             <div class="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border-l-4 border-purple-500">
-                                <h3 class="font-bold text-gray-900 dark:text-white mb-2" data-i18n="exercise-3-title">Øvelse 3: Sammenligning</h3>
-                                <p class="text-sm text-gray-700 dark:text-gray-300 mb-2" data-i18n="exercise-3-desc">
-                                    Sammenlign to Wilson scenarier med forskellige ordreomkostninger og se hvordan EOQ ændrer sig
+                                <h3 class="font-bold text-gray-900 dark:text-white mb-2" data-i18n="exercise-3-title">Øvelse 3: Genbestillingspunkt</h3>
+                                <p class="text-sm text-gray-700 dark:text-gray-300 mb-3" data-i18n="exercise-3-desc">
+                                    Beregn ROP for en vare med dagligt forbrug på 20 enheder, leveringstid 7 dage, og 95% serviceniveau. Hvornår skal du bestille?
                                 </p>
-                                <button onclick="switchTab('wilson')" class="text-sm px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors" data-i18n="start-exercise">
+                                <button onclick="switchTab('inventory')" class="text-sm px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors" data-i18n="start-exercise">
                                     Start Øvelse
                                 </button>
                             </div>
                             <div class="p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg border-l-4 border-orange-500">
                                 <h3 class="font-bold text-gray-900 dark:text-white mb-2" data-i18n="exercise-4-title">Øvelse 4: ABC Dobbelt Analyse</h3>
-                                <p class="text-sm text-gray-700 dark:text-gray-300 mb-2" data-i18n="exercise-4-desc">
+                                <p class="text-sm text-gray-700 dark:text-gray-300 mb-3" data-i18n="exercise-4-desc">
                                     Indlæs et datasæt og brug ABC Dobbelt analysen til at identificere AA-varer (høj værdi OG højt forbrug). Hvordan adskiller de sig fra andre A-varer?
                                 </p>
-                                <button onclick="loadSampleDataset('retail'); performDoubleABCAnalysis(); switchTab('abc-double')" class="text-sm px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors" data-i18n="start-exercise">
+                                <button onclick="loadSampleDataset('warehouse'); switchTab('abc')" class="text-sm px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors" data-i18n="start-exercise">
+                                    Start Øvelse
+                                </button>
+                            </div>
+                            <div class="p-4 bg-teal-50 dark:bg-teal-900/20 rounded-lg border-l-4 border-teal-500">
+                                <h3 class="font-bold text-gray-900 dark:text-white mb-2" data-i18n="exercise-5-title">Øvelse 5: OEE Beregning</h3>
+                                <p class="text-sm text-gray-700 dark:text-gray-300 mb-3" data-i18n="exercise-5-desc">
+                                    Beregn OEE for en maskine: Tilgængelighed 90%, Ydelse 85%, Kvalitet 98%. Er det verdensklasse?
+                                </p>
+                                <button onclick="switchTab('lean')" class="text-sm px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors" data-i18n="start-exercise">
+                                    Start Øvelse
+                                </button>
+                            </div>
+                            <div class="p-4 bg-pink-50 dark:bg-pink-900/20 rounded-lg border-l-4 border-pink-500">
+                                <h3 class="font-bold text-gray-900 dark:text-white mb-2" data-i18n="exercise-6-title">Øvelse 6: Budget Planlægning</h3>
+                                <p class="text-sm text-gray-700 dark:text-gray-300 mb-3" data-i18n="exercise-6-desc">
+                                    Opret et månedligt budget med faste udgifter (husleje, forsikring) og variable udgifter (dagligvarer, transport). Brug kontosystemet til at spore dem.
+                                </p>
+                                <button onclick="switchTab('budget')" class="text-sm px-4 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-colors" data-i18n="start-exercise">
                                     Start Øvelse
                                 </button>
                             </div>
