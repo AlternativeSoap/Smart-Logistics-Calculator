@@ -9,7 +9,9 @@ class BudgetEditor {
         this.exporter = new BudgetExporter(this.storage);
         this.currentData = this.storage.getData();
         this.monthNames = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-        this.monthNamesFull = ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'December'];
+        this.monthNamesFull = currentLanguage === 'da'
+            ? ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'December']
+            : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         this.editingCell = null;
         this.debounceTimers = {};
         this.viewMode = 'full'; // full, month, compare, quarter, vertical
@@ -26,6 +28,12 @@ class BudgetEditor {
         // Number formatting settings
         this.currency = localStorage.getItem('budget-currency') || 'kr.';
         this.numberFormat = localStorage.getItem('budget-number-format') || 'danish'; // danish, us, space, indian
+        
+        // Expense sharing settings
+        this.expenseSplitEnabled = localStorage.getItem('budget-expense-split') === 'true';
+        this.expenseSplitRatio = parseFloat(localStorage.getItem('budget-expense-split-ratio')) || 0.5; // 0.5 = 50%
+        this.safetyBufferEnabled = localStorage.getItem('budget-safety-buffer') === 'true';
+        this.safetyBufferPercent = parseFloat(localStorage.getItem('budget-safety-buffer-percent')) || 5; // 5%
         
         this.init();
     }
@@ -75,6 +83,48 @@ class BudgetEditor {
         }, 100);
         
         console.log('Budget Editor initialized (Excel-like mode) - Current month:', currentMonth);
+        
+        // Initialize focus mode state
+        this.focusModeActive = false;
+        
+        // Initialize month indicator tracking
+        this.initMonthIndicator();
+    }
+
+    // ===================================================================
+    // Focus Mode Toggle
+    // ===================================================================
+    initMonthIndicator() {
+        // Track scroll position to update month indicator
+        const tableContainer = document.querySelector('#budget-table-container');
+        if (tableContainer) {
+            tableContainer.addEventListener('scroll', () => {
+                this.updateMonthIndicator();
+            });
+        }
+        
+        // Initial update
+        this.updateMonthIndicator();
+    }
+    
+    updateMonthIndicator() {
+        const monthIndicator = document.getElementById('currentMonthName');
+        if (!monthIndicator) return;
+        
+        const tableContainer = document.querySelector('#budget-table-container');
+        if (!tableContainer) return;
+        
+        // Get scroll position
+        const scrollLeft = tableContainer.scrollLeft;
+        
+        // Calculate which month is in view based on scroll position
+        // Each month column is approximately 150px wide (month + 14.Dag)
+        const columnWidth = 150;
+        const monthIndex = Math.floor(scrollLeft / columnWidth);
+        
+        // Update indicator (clamp to 0-11)
+        const displayMonth = Math.min(11, Math.max(0, monthIndex));
+        monthIndicator.textContent = this.monthNamesFull[displayMonth];
     }
 
     // ===================================================================
@@ -91,6 +141,19 @@ class BudgetEditor {
             });
         }
 
+        // Budget template selector
+        const templateSelect = document.getElementById('budget-template-select');
+        if (templateSelect) {
+            templateSelect.addEventListener('change', (e) => {
+                const templateId = e.target.value;
+                if (templateId) {
+                    this.loadBudgetTemplate(templateId);
+                    // Reset selection after loading
+                    e.target.value = '';
+                }
+            });
+        }
+
         // Action buttons
         document.getElementById('budget-add-income-btn')?.addEventListener('click', () => this.addIncomeRow());
         document.getElementById('budget-add-expense-btn')?.addEventListener('click', () => this.addExpenseRow());
@@ -104,6 +167,7 @@ class BudgetEditor {
         document.getElementById('budget-export-excel-btn')?.addEventListener('click', () => this.exportExcel());
         document.getElementById('budget-export-csv-btn')?.addEventListener('click', () => this.exportCSV());
         document.getElementById('budget-export-json-btn')?.addEventListener('click', () => this.exportJSON());
+        document.getElementById('budget-export-btn')?.addEventListener('click', () => this.showExportMenu());
         
         // Import button
         document.getElementById('budget-import-btn')?.addEventListener('click', () => this.showImportDialog());
@@ -225,23 +289,84 @@ class BudgetEditor {
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             if (this.isInBudgetTab()) {
-                if (e.ctrlKey && e.key === 'z') {
-                    e.preventDefault();
-                    this.undo();
-                } else if (e.ctrlKey && e.key === 'y') {
-                    e.preventDefault();
-                    this.redo();
-                } else if (e.ctrlKey && e.key === 'n') {
-                    e.preventDefault();
-                    this.addIncomeRow();
-                } else if (e.ctrlKey && e.key === 'e') {
-                    e.preventDefault();
-                    this.addExpenseRow();
-                } else if (e.key === 'F1') {
-                    e.preventDefault();
-                    this.showHelpModal();
-                } else if (e.key === 'Escape') {
-                    this.hideHelpModal();
+                // Ctrl shortcuts
+                if (e.ctrlKey && !e.shiftKey && !e.altKey) {
+                    if (e.key === 'z') {
+                        e.preventDefault();
+                        this.undo();
+                    } else if (e.key === 'y') {
+                        e.preventDefault();
+                        this.redo();
+                    } else if (e.key === 'n') {
+                        e.preventDefault();
+                        this.addIncomeRow();
+                    } else if (e.key === 'e') {
+                        e.preventDefault();
+                        this.addExpenseRow();
+                    } else if (e.key === 's') {
+                        e.preventDefault();
+                        this.storage.saveData(this.currentData);
+                        this.showMessage(currentLanguage === 'da' ? '✓ Budget gemt' : '✓ Budget saved', 'success');
+                    }
+                }
+                // Ctrl+Shift shortcuts
+                else if (e.ctrlKey && e.shiftKey && !e.altKey) {
+                    if (e.key === 'E' || e.key === 'e') {
+                        e.preventDefault();
+                        this.exportExcel();
+                    } else if (e.key === 'I' || e.key === 'i') {
+                        e.preventDefault();
+                        this.showImportDialog();
+                    } else if (e.key === 'C' || e.key === 'c') {
+                        e.preventDefault();
+                        this.addCategoryRow('income');
+                    } else if (e.key === 'X' || e.key === 'x') {
+                        e.preventDefault();
+                        this.addCategoryRow('expense');
+                    }
+                }
+                // Alt shortcuts  
+                else if (e.altKey && !e.ctrlKey && !e.shiftKey) {
+                    if (e.key === 'm' || e.key === 'M') {
+                        e.preventDefault();
+                        this.setViewMode('month');
+                    } else if (e.key === 'f' || e.key === 'F') {
+                        e.preventDefault();
+                        this.setViewMode('full');
+                    } else if (e.key === 's' || e.key === 'S') {
+                        e.preventDefault();
+                        const searchInput = document.getElementById('budget-search');
+                        if (searchInput) searchInput.focus();
+                    }
+                }
+                // Function keys
+                else if (!e.ctrlKey && !e.shiftKey && !e.altKey) {
+                    if (e.key === 'F1') {
+                        e.preventDefault();
+                        this.showHelpModal();
+                    } else if (e.key === 'Escape') {
+                        this.hideHelpModal();
+                        this.hideMonthModal();
+                        this.hidePreviewModal();
+                    }
+                    // Arrow key cell navigation (Step I)
+                    else if (['ArrowUp', 'ArrowDown'].includes(e.key)) {
+                        const active = document.activeElement;
+                        if (active && active.classList.contains('budget-cell-input') && active.dataset.row !== undefined) {
+                            const type  = active.dataset.type;
+                            const field = active.dataset.field;
+                            const row   = parseInt(active.dataset.row, 10);
+                            const delta = e.key === 'ArrowDown' ? 1 : -1;
+                            const target = document.querySelector(
+                                `.budget-cell-input[data-type="${type}"][data-row="${row + delta}"][data-field="${field}"]`
+                            );
+                            if (target) {
+                                e.preventDefault();
+                                target.focus();
+                                target.select();
+                            }
+                        }
+                    }
                 }
             }
         });
@@ -425,7 +550,9 @@ class BudgetEditor {
 
     generatePreviewHTML() {
         const data = this.currentData;
-        const monthNamesFull = ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'December'];
+        const monthNamesFull = currentLanguage === 'da'
+            ? ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'December']
+            : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         
         let html = '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">';
 
@@ -448,15 +575,15 @@ class BudgetEditor {
                     <h4 class="font-bold text-lg mb-3 text-gray-900 dark:text-white">${monthNamesFull[idx]}</h4>
                     <div class="space-y-2 text-sm">
                         <div class="flex justify-between">
-                            <span class="text-gray-600 dark:text-gray-400">Indtægter:</span>
+                            <span class="text-gray-600 dark:text-gray-400">${this.t('budget-month-income', 'Income:')}</span>
                             <span class="text-green-600 font-semibold">${monthIncome.toFixed(2)} kr.</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-gray-600 dark:text-gray-400">Udgifter:</span>
+                            <span class="text-gray-600 dark:text-gray-400">${this.t('budget-month-expenses', 'Expenses:')}</span>
                             <span class="text-red-600 font-semibold">${monthExpenses.toFixed(2)} kr.</span>
                         </div>
                         <div class="border-t border-gray-300 dark:border-gray-700 pt-2 flex justify-between">
-                            <span class="font-bold text-gray-900 dark:text-white">Netto:</span>
+                            <span class="font-bold text-gray-900 dark:text-white">${this.t('budget-month-net', 'Net:')}</span>
                             <span class="font-bold ${netClass}">${net.toFixed(2)} kr.</span>
                         </div>
                     </div>
@@ -483,18 +610,18 @@ class BudgetEditor {
 
         html += `
             <div class="mt-6 bg-purple-50 dark:bg-purple-900 rounded-lg p-6 border-2 border-purple-300">
-                <h4 class="font-bold text-xl mb-4 text-gray-900 dark:text-white">📊 Årsoversigt ${data.year || 2025}</h4>
+                <h4 class="font-bold text-xl mb-4 text-gray-900 dark:text-white">📊 ${this.t('budget-year-overview-title', 'Annual Overview')} ${data.year || 2025}</h4>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
                     <div>
-                        <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">Total indtægter</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">${this.t('budget-total-income-yr', 'Total income')}</div>
                         <div class="text-2xl font-bold text-green-600">${yearlyIncome.toFixed(2)} kr.</div>
                     </div>
                     <div>
-                        <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">Total udgifter</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">${this.t('budget-total-expenses-yr', 'Total expenses')}</div>
                         <div class="text-2xl font-bold text-red-600">${yearlyExpenses.toFixed(2)} kr.</div>
                     </div>
                     <div>
-                        <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">Årligt netto</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">${this.t('budget-yearly-net', 'Yearly net')}</div>
                         <div class="text-3xl font-bold ${yearlyNetClass}">${yearlyNet.toFixed(2)} kr.</div>
                     </div>
                 </div>
@@ -533,14 +660,14 @@ class BudgetEditor {
         // Left: Preview
         splitView.innerHTML = `
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4">
-                <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">📊 Oversigt</h3>
+                <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">${currentLanguage === 'da' ? '📊 Oversigt' : '📊 Overview'}</h3>
                 ${this.generatePreviewHTML()}
             </div>
             
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4">
-                <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">✏️ Rediger</h3>
-                <p class="text-gray-600 dark:text-gray-400 mb-4">Klik på "Skift visning" igen for at vende tilbage til fuld tabelvisning.</p>
-                <button onclick="budgetEditor.toggleSplitView()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">← Tilbage til tabel</button>
+                <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">${currentLanguage === 'da' ? '✏️ Rediger' : '✏️ Edit'}</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">${currentLanguage === 'da' ? 'Klik på "Skift visning" igen for at vende tilbage til fuld tabelvisning.' : 'Click "Toggle view" again to return to full table view.'}</p>
+                <button onclick="budgetEditor.toggleSplitView()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">${currentLanguage === 'da' ? '← Tilbage til tabel' : '← Back to table'}</button>
             </div>
         `;
 
@@ -550,6 +677,278 @@ class BudgetEditor {
     isInBudgetTab() {
         const budgetTab = document.getElementById('budget-content');
         return budgetTab && budgetTab.classList.contains('active');
+    }
+
+    // ===================================================================
+    // Focus Mode
+    // ===================================================================
+    toggleBudgetFocusMode() {
+        this.focusModeActive = !this.focusModeActive;
+        const btn = document.getElementById('budgetFocusMode');
+
+        if (this.focusModeActive) {
+            // Activate via body class (CSS handles all hide/show)
+            document.body.classList.add('budget-focus-active');
+
+            // Populate the focus strip with current totals
+            this._updateFocusStrip();
+
+            // Update button
+            if (btn) {
+                btn.innerHTML = currentLanguage === 'da' ? '✖️ Afslut fokus' : '✖️ Exit Focus';
+                btn.classList.remove('bg-purple-600', 'hover:bg-purple-700');
+                btn.classList.add('bg-red-600', 'hover:bg-red-700');
+            }
+        } else {
+            // Deactivate
+            document.body.classList.remove('budget-focus-active');
+
+            // Restore button
+            if (btn) {
+                btn.innerHTML = currentLanguage === 'da' ? '🎯 Fokus' : '🎯 Focus';
+                btn.classList.remove('bg-red-600', 'hover:bg-red-700');
+                btn.classList.add('bg-purple-600', 'hover:bg-purple-700');
+            }
+        }
+    }
+
+    _updateFocusStrip() {
+        // Copy current totals from existing elements
+        const monthName = document.getElementById('currentMonthName');
+        const income = document.getElementById('budget-total-income');
+        const expenses = document.getElementById('budget-total-expenses');
+        const net = document.getElementById('budget-net-income');
+
+        const stripMonth = document.getElementById('focus-strip-month');
+        const stripIncome = document.getElementById('focus-strip-income');
+        const stripExpense = document.getElementById('focus-strip-expense');
+        const stripNet = document.getElementById('focus-strip-net');
+
+        if (stripMonth && monthName) stripMonth.textContent = monthName.textContent;
+        if (stripIncome && income) stripIncome.textContent = income.textContent;
+        if (stripExpense && expenses) stripExpense.textContent = expenses.textContent;
+        if (stripNet && net) stripNet.textContent = net.textContent;
+    }
+
+    // ===================================================================
+    // Budget Templates
+    // ===================================================================
+    loadBudgetTemplate(templateId) {
+        if (!confirm(currentLanguage === 'da' ? `Vil du indlæse skabelonen "${this.getTemplateName(templateId)}"?\n\nDette vil tilføje kategorier og eksempler til dit budget.` : `Load template "${this.getTemplateName(templateId)}"?\n\nThis will add categories and examples to your budget.`)) {
+            return;
+        }
+
+        const template = this.getBudgetTemplate(templateId);
+        if (!template) {
+            this.showMessage(currentLanguage === 'da' ? '❌ Skabelon ikke fundet' : '❌ Template not found', 'error');
+            return;
+        }
+
+        // Add template income rows
+        template.income.forEach(item => {
+            this.currentData.income.push({
+                name: item.name,
+                account: 'budget',
+                faktiske: 0,
+                isCategory: item.isCategory || false,
+                ...this.createEmptyMonthData()
+            });
+        });
+
+        // Add template expense rows
+        template.expenses.forEach(item => {
+            this.currentData.expenses.push({
+                name: item.name,
+                account: 'budget',
+                faktiske: 0,
+                isCategory: item.isCategory || false,
+                ...this.createEmptyMonthData()
+            });
+        });
+
+        this.storage.saveData(this.currentData);
+        this.render(true);
+        this.showMessage(currentLanguage === 'da' ? `✓ Skabelon "${this.getTemplateName(templateId)}" indlæst` : `✓ Template "${this.getTemplateName(templateId)}" loaded`, 'success');
+    }
+
+    getTemplateName(templateId) {
+        const names = {
+            'household-basic': currentLanguage === 'da' ? 'Husholdning Basis' : 'Household Basic',
+            'household-full': currentLanguage === 'da' ? 'Husholdning Komplet' : 'Household Complete',
+            'student': currentLanguage === 'da' ? 'Studerende' : 'Student',
+            'single': currentLanguage === 'da' ? 'Enlig' : 'Single',
+            'family': currentLanguage === 'da' ? 'Familie' : 'Family'
+        };
+        return names[templateId] || templateId;
+    }
+
+    getBudgetTemplate(templateId) {
+        const templates = {
+            'household-basic': {
+                income: [
+                    { name: currentLanguage === 'da' ? '💼 Løn' : '💼 Salary', isCategory: false },
+                    { name: currentLanguage === 'da' ? '🎁 Anden indtægt' : '🎁 Other income', isCategory: false }
+                ],
+                expenses: [
+                    { name: currentLanguage === 'da' ? '🏠 Bolig' : '🏠 Housing', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Husleje/Boliglån' : 'Rent/Mortgage', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'El og vand' : 'Electricity and water', isCategory: false },
+                    { name: 'Internet/TV', isCategory: false },
+                    { name: currentLanguage === 'da' ? '🚗 Transport' : '🚗 Transport', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Bil (forsikring, benzin)' : 'Car (insurance, gas)', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Offentlig transport' : 'Public transport', isCategory: false },
+                    { name: currentLanguage === 'da' ? '🍕 Mad' : '🍕 Food', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Dagligvarer' : 'Groceries', isCategory: false },
+                    { name: 'Restaurant/Takeaway', isCategory: false },
+                    { name: currentLanguage === 'da' ? '📱 Telefon & Abonnementer' : '📱 Phone & Subscriptions', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Mobil' : 'Mobile', isCategory: false },
+                    { name: 'Streaming (Netflix etc.)', isCategory: false }
+                ]
+            },
+            'household-full': {
+                income: [
+                    { name: currentLanguage === 'da' ? '💼 Indtægter' : '💼 Income', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Løn (efter skat)' : 'Salary (after tax)', isCategory: false },
+                    { name: 'Pension', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Freelance/Biindtægt' : 'Freelance/Side income', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Investeringer' : 'Investments', isCategory: false }
+                ],
+                expenses: [
+                    { name: currentLanguage === 'da' ? '🏠 Bolig' : '🏠 Housing', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Husleje/Realkreditlån' : 'Rent/Mortgage', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Ejendomsskat' : 'Property tax', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Boligforsikring' : 'Home insurance', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'El, vand, varme' : 'Electricity, water, heating', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Internet/TV/Telefon' : 'Internet/TV/Phone', isCategory: false },
+                    { name: currentLanguage === 'da' ? '🚗 Transport' : '🚗 Transport', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Bilforsikring' : 'Car insurance', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Brændstof' : 'Fuel', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Vedligeholdelse/Reparation' : 'Maintenance/Repair', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Parkering/Vej' : 'Parking/Road', isCategory: false },
+                    { name: currentLanguage === 'da' ? '🍕 Mad & Dagligvarer' : '🍕 Food & Groceries', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Dagligvarer' : 'Groceries', isCategory: false },
+                    { name: 'Restaurant/Cafe', isCategory: false },
+                    { name: 'Takeaway', isCategory: false },
+                    { name: currentLanguage === 'da' ? '💊 Sundhed' : '💊 Health', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Læge/Tandlæge' : 'Doctor/Dentist', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Medicin' : 'Medicine', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Fitness/Træning' : 'Fitness/Training', isCategory: false },
+                    { name: currentLanguage === 'da' ? '🎮 Fritid & Underholdning' : '🎮 Leisure & Entertainment', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Streaming tjenester' : 'Streaming services', isCategory: false },
+                    { name: 'Hobby', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Sport/Aktiviteter' : 'Sports/Activities', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Ferie' : 'Vacation', isCategory: false },
+                    { name: currentLanguage === 'da' ? '👕 Tøj & Personlig pleje' : '👕 Clothing & Personal care', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Tøj/Sko' : 'Clothing/Shoes', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Frisør' : 'Hairdresser', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Kosmetik' : 'Cosmetics', isCategory: false },
+                    { name: currentLanguage === 'da' ? '💰 Opsparing & Gæld' : '💰 Savings & Debt', isCategory: true },
+                    { name: 'Pension', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Opsparing' : 'Savings', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Lån/Kreditkort' : 'Loan/Credit card', isCategory: false }
+                ]
+            },
+            'student': {
+                income: [
+                    { name: currentLanguage === 'da' ? '🎓 SU' : '🎓 Student grant', isCategory: false },
+                    { name: currentLanguage === 'da' ? '💼 Studiejob' : '💼 Student job', isCategory: false },
+                    { name: currentLanguage === 'da' ? '👨‍👩‍👧 Støtte fra forældre' : '👨‍👩‍👧 Support from parents', isCategory: false }
+                ],
+                expenses: [
+                    { name: currentLanguage === 'da' ? '🏠 Bolig' : '🏠 Housing', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Husleje' : 'Rent', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'El og internet' : 'Electricity and internet', isCategory: false },
+                    { name: currentLanguage === 'da' ? '🍕 Mad' : '🍕 Food', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Dagligvarer' : 'Groceries', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Mensa/Kantinen' : 'Canteen', isCategory: false },
+                    { name: currentLanguage === 'da' ? '🚲 Transport' : '🚲 Transport', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Offentlig transport' : 'Public transport', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Cykel vedligehold' : 'Bicycle maintenance', isCategory: false },
+                    { name: currentLanguage === 'da' ? '📚 Studie' : '📚 Studies', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Bøger' : 'Books', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Print/Kopier' : 'Print/Copies', isCategory: false },
+                    { name: currentLanguage === 'da' ? '📱 Telefon & Abonnementer' : '📱 Phone & Subscriptions', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Mobil' : 'Mobile', isCategory: false },
+                    { name: 'Streaming', isCategory: false },
+                    { name: currentLanguage === 'da' ? '🎉 Fritid' : '🎉 Leisure', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Sociale arrangementer' : 'Social events', isCategory: false },
+                    { name: 'Sport/Fitness', isCategory: false }
+                ]
+            },
+            'single': {
+                income: [
+                    { name: currentLanguage === 'da' ? '💼 Løn' : '💼 Salary', isCategory: false },
+                    { name: currentLanguage === 'da' ? '📈 Anden indtægt' : '📈 Other income', isCategory: false }
+                ],
+                expenses: [
+                    { name: currentLanguage === 'da' ? '🏠 Bolig' : '🏠 Housing', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Husleje/Boliglån' : 'Rent/Mortgage', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'El, vand, varme' : 'Electricity, water, heating', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Forsikring' : 'Insurance', isCategory: false },
+                    { name: currentLanguage === 'da' ? '🚗 Transport' : '🚗 Transport', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Bil/Transport' : 'Car/Transport', isCategory: false },
+                    { name: currentLanguage === 'da' ? '🍕 Mad' : '🍕 Food', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Dagligvarer' : 'Groceries', isCategory: false },
+                    { name: 'Restaurant', isCategory: false },
+                    { name: currentLanguage === 'da' ? '📱 Telefon & Internet' : '📱 Phone & Internet', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Mobil' : 'Mobile', isCategory: false },
+                    { name: 'Internet/TV', isCategory: false },
+                    { name: currentLanguage === 'da' ? '💪 Sundhed' : '💪 Health', isCategory: true },
+                    { name: 'Fitness', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Medicin' : 'Medicine', isCategory: false },
+                    { name: currentLanguage === 'da' ? '🎮 Fritid' : '🎮 Leisure', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Underholdning' : 'Entertainment', isCategory: false },
+                    { name: 'Hobby', isCategory: false },
+                    { name: currentLanguage === 'da' ? '💰 Opsparing' : '💰 Savings', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Månedlig opsparing' : 'Monthly savings', isCategory: false }
+                ]
+            },
+            'family': {
+                income: [
+                    { name: currentLanguage === 'da' ? '👔 Indtægter' : '👔 Income', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Løn partner 1' : 'Salary partner 1', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Løn partner 2' : 'Salary partner 2', isCategory: false },
+                    { name: currentLanguage === 'da' ? '👶 Børnepenge' : '👶 Child benefits', isCategory: false }
+                ],
+                expenses: [
+                    { name: currentLanguage === 'da' ? '🏠 Bolig' : '🏠 Housing', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Husleje/Realkreditlån' : 'Rent/Mortgage', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Ejendomsskat' : 'Property tax', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Forsikringer' : 'Insurance', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'El, vand, varme' : 'Electricity, water, heating', isCategory: false },
+                    { name: 'Internet/TV', isCategory: false },
+                    { name: currentLanguage === 'da' ? '🚗 Transport' : '🚗 Transport', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Bil 1' : 'Car 1', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Bil 2' : 'Car 2', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Offentlig transport' : 'Public transport', isCategory: false },
+                    { name: currentLanguage === 'da' ? '🍕 Mad & Dagligvarer' : '🍕 Food & Groceries', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Dagligvarer' : 'Groceries', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Restaurant/Familie udflugter' : 'Restaurant/Family outings', isCategory: false },
+                    { name: currentLanguage === 'da' ? '👶 Børn' : '👶 Children', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Vuggestue/Børnehave' : 'Daycare/Kindergarten', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Skole/SFO' : 'School/After-school care', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Fritidsaktiviteter' : 'Extracurricular activities', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Tøj til børn' : "Children's clothing", isCategory: false },
+                    { name: currentLanguage === 'da' ? '💊 Sundhed' : '💊 Health', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Læge/Tandlæge' : 'Doctor/Dentist', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Medicin' : 'Medicine', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Forsikringer' : 'Insurance', isCategory: false },
+                    { name: currentLanguage === 'da' ? '🎮 Fritid & Ferie' : '🎮 Leisure & Vacation', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Familie aktiviteter' : 'Family activities', isCategory: false },
+                    { name: 'Streaming', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Ferie/Rejser' : 'Vacation/Travel', isCategory: false },
+                    { name: currentLanguage === 'da' ? '📱 Telefon' : '📱 Phone', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Mobil partner 1' : 'Mobile partner 1', isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Mobil partner 2' : 'Mobile partner 2', isCategory: false },
+                    { name: currentLanguage === 'da' ? '💰 Opsparing' : '💰 Savings', isCategory: true },
+                    { name: currentLanguage === 'da' ? 'Børneopsparing' : "Children's savings", isCategory: false },
+                    { name: currentLanguage === 'da' ? 'Familie opsparing' : 'Family savings', isCategory: false },
+                    { name: 'Pension', isCategory: false }
+                ]
+            }
+        };
+
+        return templates[templateId];
     }
 
     // ===================================================================
@@ -574,6 +973,11 @@ class BudgetEditor {
         // Update sidebar if visible
         if (this.sidebarVisible) {
             this.renderSidebar();
+        }
+
+        // Update focus mode strip if active
+        if (this.focusModeActive) {
+            setTimeout(() => this._updateFocusStrip(), 150);
         }
     }
 
@@ -730,7 +1134,7 @@ class BudgetEditor {
             const moveUpBtn = document.createElement('button');
             moveUpBtn.className = 'budget-action-btn budget-move-btn';
             moveUpBtn.innerHTML = '↑';
-            moveUpBtn.title = 'Flyt op';
+            moveUpBtn.title = currentLanguage === 'da' ? 'Flyt op' : 'Move up';
             moveUpBtn.dataset.type = type;
             moveUpBtn.dataset.row = rowIndex;
             moveUpBtn.dataset.action = 'up';
@@ -739,7 +1143,7 @@ class BudgetEditor {
             const moveDownBtn = document.createElement('button');
             moveDownBtn.className = 'budget-action-btn budget-move-btn';
             moveDownBtn.innerHTML = '↓';
-            moveDownBtn.title = 'Flyt ned';
+            moveDownBtn.title = currentLanguage === 'da' ? 'Flyt ned' : 'Move down';
             moveDownBtn.dataset.type = type;
             moveDownBtn.dataset.row = rowIndex;
             moveDownBtn.dataset.action = 'down';
@@ -748,7 +1152,7 @@ class BudgetEditor {
             const duplicateBtn = document.createElement('button');
             duplicateBtn.className = 'budget-action-btn budget-duplicate-btn';
             duplicateBtn.innerHTML = '⎘';
-            duplicateBtn.title = 'Duplikér kategori';
+            duplicateBtn.title = currentLanguage === 'da' ? 'Duplikér kategori' : 'Duplicate category';
             duplicateBtn.dataset.type = type;
             duplicateBtn.dataset.row = rowIndex;
             duplicateBtn.style.cssText = 'color: white; font-size: 18px; background: rgba(255,255,255,0.2); border-radius: 4px; padding: 2px 6px; cursor: pointer; border: none;';
@@ -756,7 +1160,7 @@ class BudgetEditor {
             const deleteBtn = document.createElement('button');
             deleteBtn.className = 'budget-action-btn budget-delete-btn';
             deleteBtn.innerHTML = '×';
-            deleteBtn.title = 'Slet kategori';
+            deleteBtn.title = currentLanguage === 'da' ? 'Slet kategori' : 'Delete category';
             deleteBtn.dataset.type = type;
             deleteBtn.dataset.row = rowIndex;
             deleteBtn.style.cssText = 'color: white; font-size: 24px; background: rgba(255,255,255,0.2); border-radius: 4px; padding: 0 8px; cursor: pointer; border: none;';
@@ -795,30 +1199,8 @@ class BudgetEditor {
         nameInput.setAttribute('autocomplete', 'off');
         nameInput.style.cssText = 'flex: 1; border: none; background: transparent; min-width: 150px;';
         
-        // Account selector dropdown
-        const accountSelect = document.createElement('select');
-        accountSelect.className = 'budget-cell-input budget-account-select';
-        accountSelect.dataset.type = type;
-        accountSelect.dataset.row = rowIndex;
-        accountSelect.dataset.field = 'account';
-        accountSelect.style.cssText = 'padding: 4px 6px; font-size: 11px; border: 1px solid #d1d5db; border-radius: 4px; background: white; cursor: pointer; width: 85px; flex-shrink: 0;';
-        
-        // Account options
-        const dailyOption = document.createElement('option');
-        dailyOption.value = 'daily';
-        dailyOption.textContent = this.t('budget-account-daily', 'Daily Use');
-        
-        const budgetOption = document.createElement('option');
-        budgetOption.value = 'budget';
-        budgetOption.textContent = this.t('budget-account-budget', 'Budget');
-        
-        accountSelect.appendChild(dailyOption);
-        accountSelect.appendChild(budgetOption);
-        accountSelect.value = rowData.account || 'daily';
-        
         nameWrapper.appendChild(nameIcon);
         nameWrapper.appendChild(nameInput);
-        nameWrapper.appendChild(accountSelect);
         nameTd.appendChild(nameWrapper);
         tr.appendChild(nameTd);
 
@@ -881,7 +1263,7 @@ class BudgetEditor {
         const moveUpBtn = document.createElement('button');
         moveUpBtn.className = 'budget-action-btn budget-move-btn';
         moveUpBtn.innerHTML = '↑';
-        moveUpBtn.title = 'Flyt op';
+        moveUpBtn.title = currentLanguage === 'da' ? 'Flyt op' : 'Move up';
         moveUpBtn.dataset.type = type;
         moveUpBtn.dataset.row = rowIndex;
         moveUpBtn.dataset.action = 'up';
@@ -889,28 +1271,46 @@ class BudgetEditor {
         const moveDownBtn = document.createElement('button');
         moveDownBtn.className = 'budget-action-btn budget-move-btn';
         moveDownBtn.innerHTML = '↓';
-        moveDownBtn.title = 'Flyt ned';
+        moveDownBtn.title = currentLanguage === 'da' ? 'Flyt ned' : 'Move down';
         moveDownBtn.dataset.type = type;
         moveDownBtn.dataset.row = rowIndex;
         moveDownBtn.dataset.action = 'down';
         
+        const fillAllBtn = document.createElement('button');
+        fillAllBtn.className = 'budget-action-btn budget-fill-all-btn';
+        fillAllBtn.innerHTML = '⇉';
+        fillAllBtn.title = currentLanguage === 'da' ? 'Udfyld alle måneder med samme værdi' : 'Fill all months with same value';
+        fillAllBtn.dataset.type = type;
+        fillAllBtn.dataset.row = rowIndex;
+        
         const duplicateBtn = document.createElement('button');
         duplicateBtn.className = 'budget-action-btn budget-duplicate-btn';
         duplicateBtn.innerHTML = '⎘';
-        duplicateBtn.title = 'Duplikér række';
+        duplicateBtn.title = currentLanguage === 'da' ? 'Duplikér række' : 'Duplicate row';
         duplicateBtn.dataset.type = type;
         duplicateBtn.dataset.row = rowIndex;
         
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'budget-action-btn budget-delete-btn';
         deleteBtn.innerHTML = '×';
-        deleteBtn.title = 'Slet række';
+        deleteBtn.title = currentLanguage === 'da' ? 'Slet række' : 'Delete row';
         deleteBtn.dataset.type = type;
         deleteBtn.dataset.row = rowIndex;
         
+        // Quick-Notes button (Step J)
+        const notesBtn = document.createElement('button');
+        notesBtn.className = 'budget-action-btn budget-notes-btn';
+        notesBtn.innerHTML = rowData.notes ? '📝' : '🗒️';
+        notesBtn.title = rowData.notes ? `Note: ${rowData.notes}` : (currentLanguage === 'da' ? 'Tilføj note' : 'Add Note');
+        notesBtn.dataset.type = type;
+        notesBtn.dataset.row = rowIndex;
+        notesBtn.style.cssText = rowData.notes ? 'opacity:1;' : 'opacity:0.45;';
+        
         actionsTd.appendChild(moveUpBtn);
         actionsTd.appendChild(moveDownBtn);
+        actionsTd.appendChild(fillAllBtn);
         actionsTd.appendChild(duplicateBtn);
+        actionsTd.appendChild(notesBtn);
         actionsTd.appendChild(deleteBtn);
         tr.appendChild(actionsTd);
 
@@ -1023,44 +1423,8 @@ class BudgetEditor {
     renderAccountDashboard() {
         const transferRec = this.calculateTransferRecommendation();
         
-        // Budget Account - Required Transfer
-        const requiredEl = document.getElementById('budget-transfer-required');
-        if (requiredEl) {
-            requiredEl.textContent = this.formatCurrency(transferRec.required);
-        }
-        
-        // Budget Account - Advised Transfer
-        const advisedEl = document.getElementById('budget-transfer-advised');
-        const noteEl = document.getElementById('budget-transfer-note');
-        if (advisedEl) {
-            if (transferRec.advised !== null) {
-                advisedEl.textContent = this.formatCurrency(transferRec.advised);
-                if (noteEl) {
-                    noteEl.textContent = this.t('budget-transfer-based-on-history', 'Baseret på historiske data');
-                }
-            } else {
-                advisedEl.textContent = this.formatCurrency(transferRec.required);
-                if (noteEl) {
-                    noteEl.textContent = this.t('budget-transfer-no-history', 'Ingen historik endnu - tilføj egen buffer');
-                }
-            }
-        }
-        
-        // Daily Use Account
-        const dailyIncomeEl = document.getElementById('budget-daily-income');
-        const dailyExpensesEl = document.getElementById('budget-daily-expenses');
-        const dailyRemainingEl = document.getElementById('budget-daily-remaining');
-        
-        if (dailyIncomeEl) {
-            dailyIncomeEl.textContent = this.formatCurrency(transferRec.accountTotals.daily.income);
-        }
-        if (dailyExpensesEl) {
-            dailyExpensesEl.textContent = this.formatCurrency(transferRec.accountTotals.daily.expenses);
-        }
-        if (dailyRemainingEl) {
-            dailyRemainingEl.textContent = this.formatCurrency(transferRec.remaining);
-            dailyRemainingEl.style.color = transferRec.remaining >= 0 ? '#22c55e' : '#ef4444';
-        }
+        // Decide which amount to show (with buffer if enabled, otherwise just your share)
+        const recommendedAmount = transferRec.bufferEnabled ? transferRec.withBuffer : transferRec.required;
         
         // Budget Account Summary
         const budgetIncomeEl = document.getElementById('budget-budget-income');
@@ -1078,6 +1442,213 @@ class BudgetEditor {
             budgetBalanceEl.textContent = this.formatCurrency(balance);
             budgetBalanceEl.style.color = balance >= 0 ? '#22c55e' : '#ef4444';
         }
+        
+        // Periodic Transfer Recommendations - use recommended amount
+        const monthlyTransferEl = document.getElementById('budget-monthly-transfer');
+        const biweeklyTransferEl = document.getElementById('budget-biweekly-transfer');
+        
+        if (monthlyTransferEl && biweeklyTransferEl) {
+            // Calculate how much to transfer per month (divide yearly total by 12)
+            const monthlyAmount = recommendedAmount / 12;
+            // Calculate how much to transfer every 14 days (divide yearly total by 26)
+            const biweeklyAmount = recommendedAmount / 26;
+            
+            monthlyTransferEl.textContent = this.formatCurrency(monthlyAmount);
+            biweeklyTransferEl.textContent = this.formatCurrency(biweeklyAmount);
+        }
+        
+        // Update explanation panel data
+        this.updateExplanationPanel(transferRec);
+        
+        // Setup explanation toggle if not already done
+        if (!this.explanationToggleSetup) {
+            this.setupExplanationToggle();
+            this.explanationToggleSetup = true;
+        }
+        
+        // Setup settings toggle if not already done
+        if (!this.settingsToggleSetup) {
+            this.setupSettingsToggle();
+            this.settingsToggleSetup = true;
+        }
+    }
+    
+    updateExplanationPanel(transferRec) {
+        const totalIncome = transferRec.accountTotals.budget.income;
+        const totalExpenses = transferRec.accountTotals.budget.expenses;
+        const required = transferRec.required;
+        
+        // Determine recommended amount (with buffer if enabled)
+        const recommendedAmount = transferRec.bufferEnabled ? transferRec.withBuffer : transferRec.required;
+        const monthlyAmount = recommendedAmount / 12;
+        const biweeklyAmount = recommendedAmount / 26;
+        
+        // Update explanation values
+        document.getElementById('explain-total-income').textContent = this.formatCurrency(totalIncome);
+        document.getElementById('explain-total-expenses').textContent = this.formatCurrency(totalExpenses);
+        document.getElementById('explain-required-yearly').textContent = this.formatCurrency(recommendedAmount);
+        document.getElementById('explain-monthly-amount').textContent = this.formatCurrency(monthlyAmount);
+        document.getElementById('explain-biweekly-amount').textContent = this.formatCurrency(biweeklyAmount);
+        
+        // Build calculation text with split and buffer info
+        let calcText = '';
+        
+        // Show base amount
+        if (transferRec.splitEnabled || transferRec.bufferEnabled) {
+            calcText += `${this.t('budget-total-expenses-label', 'Total Expenses')}: ${this.formatCurrency(transferRec.baseRequired)}/${this.t('budget-year', 'year')}<br>`;
+        }
+        
+        // Show split calculation
+        if (transferRec.splitEnabled) {
+            const splitPercent = Math.round(transferRec.splitRatio * 100);
+            calcText += `${this.t('budget-your-share', 'Your share:')} (${splitPercent}%): ${this.formatCurrency(transferRec.required)}/${this.t('budget-year', 'year')}<br>`;
+        }
+        
+        // Show buffer calculation
+        if (transferRec.bufferEnabled) {
+            const baseAmount = transferRec.splitEnabled ? transferRec.required : transferRec.baseRequired;
+            calcText += `${this.t('budget-add-buffer', 'Safety buffer')} (+${transferRec.bufferPercent}%): +${this.formatCurrency(transferRec.bufferAmount)}/${this.t('budget-year', 'year')}<br>`;
+            calcText += `${this.t('budget-with-buffer', 'With buffer')}: ${this.formatCurrency(transferRec.withBuffer)}/${this.t('budget-year', 'year')}<br><br>`;
+        }
+        
+        // Add monthly calculation
+        calcText += `${this.formatCurrency(recommendedAmount)} ÷ 12 ${this.t('budget-months', 'months')} = ${this.formatCurrency(monthlyAmount)} ${this.t('budget-per-month', 'per month')}`;
+        document.getElementById('explain-monthly-calc').innerHTML = calcText;
+        
+        // Add bi-weekly calculation
+        document.getElementById('explain-biweekly-calc').textContent = 
+            `${this.formatCurrency(recommendedAmount)} ÷ 26 ${this.t('budget-periods', 'periods')} = ${this.formatCurrency(biweeklyAmount)} ${this.t('budget-per-14days', 'per 14 days')}`;
+        
+        // Update income note with detailed explanation
+        const balance = totalIncome - totalExpenses;
+        const incomeNote = document.getElementById('explain-income-note');
+        if (incomeNote) {
+            // Calculate average monthly income and expenses
+            const avgMonthlyIncome = totalIncome / 12;
+            const avgMonthlyExpenses = totalExpenses / 12;
+            
+            if (balance >= 0) {
+                incomeNote.innerHTML = `
+                    ${this.t('budget-avg-per-month', 'Your budget shows the following average per month:')}<br>
+                    &bull; <strong class="text-green-600">${this.t('budget-month-income', 'Income:')}</strong> ${this.formatCurrency(avgMonthlyIncome)}/${this.t('budget-month', 'month')}<br>
+                    &bull; <strong class="text-red-600">${this.t('budget-month-expenses', 'Expenses:')}</strong> ${this.formatCurrency(avgMonthlyExpenses)}/${this.t('budget-month', 'month')}<br>
+                    &bull; <strong class="text-blue-600">${this.t('budget-surplus', 'Surplus:')}</strong> ${this.formatCurrency(balance / 12)}/${this.t('budget-month', 'month')}<br><br>
+                    ${this.t('budget-can-afford', 'With this plan you can afford to save')} ${this.formatCurrency(monthlyAmount)} ${this.t('budget-per-month', 'per month')} ${this.t('budget-or', 'or')} ${this.formatCurrency(biweeklyAmount)} ${this.t('budget-every-14-days', 'every 14 days')}.
+                `;
+            } else {
+                incomeNote.innerHTML = `
+                    <strong class="text-red-600">⚠️ ${this.t('budget-warning-deficit', 'Warning - Budget Deficit:')}</strong><br><br>
+                    ${this.t('budget-avg-per-month', 'Your budget shows the following average per month:')}<br>
+                    &bull; <strong class="text-green-600">${this.t('budget-month-income', 'Income:')}</strong> ${this.formatCurrency(avgMonthlyIncome)}/${this.t('budget-month', 'month')}<br>
+                    &bull; <strong class="text-red-600">${this.t('budget-month-expenses', 'Expenses:')}</strong> ${this.formatCurrency(avgMonthlyExpenses)}/${this.t('budget-month', 'month')}<br>
+                    &bull; <strong class="text-red-600">${this.t('budget-deficit', 'Deficit:')}</strong> ${this.formatCurrency(Math.abs(balance / 12))}/${this.t('budget-month', 'month')}<br><br>
+                    ${this.t('budget-shortfall', 'You are')} ${this.formatCurrency(Math.abs(balance))} ${this.t('budget-shortfall2', 'short over the year. Consider:')}:<br>
+                    1. ${this.t('budget-reduce-expenses', 'Reduce your expenses')}<br>
+                    2. ${this.t('budget-increase-income', 'Increase your income')}<br>
+                    3. ${this.t('budget-review-budget', 'Review your budget for unrealistic figures')}
+                `;
+            }
+        }
+    }
+    
+    setupExplanationToggle() {
+        const toggleBtn = document.getElementById('budget-explain-toggle');
+        const closeBtn = document.getElementById('budget-explain-close');
+        const panel = document.getElementById('budget-explanation-panel');
+        
+        if (toggleBtn && panel) {
+            toggleBtn.addEventListener('click', () => {
+                const isHidden = panel.style.display === 'none' || !panel.style.display;
+                panel.style.display = isHidden ? 'block' : 'none';
+                
+                // Scroll to panel if opening
+                if (isHidden) {
+                    setTimeout(() => {
+                        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }, 100);
+                }
+            });
+        }
+        
+        if (closeBtn && panel) {
+            closeBtn.addEventListener('click', () => {
+                panel.style.display = 'none';
+            });
+        }
+    }
+
+    setupSettingsToggle() {
+        const settingsBtn = document.getElementById('budget-settings-toggle');
+        const settingsPanel = document.getElementById('budget-settings-panel');
+        
+        if (settingsBtn && settingsPanel) {
+            settingsBtn.addEventListener('click', () => {
+                const isHidden = settingsPanel.style.display === 'none' || !settingsPanel.style.display;
+                settingsPanel.style.display = isHidden ? 'block' : 'none';
+                
+                // Scroll to panel if opening
+                if (isHidden) {
+                    setTimeout(() => {
+                        settingsPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }, 100);
+                }
+            });
+        }
+        
+        // Setup checkbox handlers
+        const splitCheckbox = document.getElementById('budget-split-enabled');
+        const bufferCheckbox = document.getElementById('budget-buffer-enabled');
+        
+        if (splitCheckbox) {
+            splitCheckbox.checked = this.expenseSplitEnabled;
+            splitCheckbox.addEventListener('change', (e) => {
+                this.expenseSplitEnabled = e.target.checked;
+                localStorage.setItem('budget-expense-split', e.target.checked);
+                this.renderAccountDashboard();
+            });
+        }
+        
+        if (bufferCheckbox) {
+            bufferCheckbox.checked = this.safetyBufferEnabled;
+            bufferCheckbox.addEventListener('change', (e) => {
+                this.safetyBufferEnabled = e.target.checked;
+                localStorage.setItem('budget-safety-buffer', e.target.checked);
+                this.renderAccountDashboard();
+            });
+        }
+        
+        // Setup slider handlers
+        const splitSlider = document.getElementById('budget-split-ratio');
+        const splitValue = document.getElementById('budget-split-value');
+        
+        if (splitSlider && splitValue) {
+            splitSlider.value = this.expenseSplitRatio * 100;
+            splitValue.textContent = Math.round(this.expenseSplitRatio * 100) + '%';
+            
+            splitSlider.addEventListener('input', (e) => {
+                const percent = parseInt(e.target.value);
+                splitValue.textContent = percent + '%';
+                this.expenseSplitRatio = percent / 100;
+                localStorage.setItem('budget-expense-split-ratio', this.expenseSplitRatio);
+                this.renderAccountDashboard();
+            });
+        }
+        
+        const bufferSlider = document.getElementById('budget-buffer-percent');
+        const bufferValue = document.getElementById('budget-buffer-value');
+        
+        if (bufferSlider && bufferValue) {
+            bufferSlider.value = this.safetyBufferPercent;
+            bufferValue.textContent = this.safetyBufferPercent + '%';
+            
+            bufferSlider.addEventListener('input', (e) => {
+                const percent = parseInt(e.target.value);
+                bufferValue.textContent = percent + '%';
+                this.safetyBufferPercent = percent;
+                localStorage.setItem('budget-safety-buffer-percent', percent);
+                this.renderAccountDashboard();
+            });
+        }
     }
 
     // ===================================================================
@@ -1091,13 +1662,6 @@ class BudgetEditor {
         // Event delegation for cell inputs
         document.addEventListener('input', (e) => {
             if (e.target.classList.contains('budget-cell-input')) {
-                this.handleCellChange(e.target);
-            }
-        });
-        
-        // Event delegation for account select dropdowns
-        document.addEventListener('change', (e) => {
-            if (e.target.classList.contains('budget-account-select')) {
                 this.handleCellChange(e.target);
             }
         });
@@ -1156,6 +1720,17 @@ class BudgetEditor {
                     return;
                 }
                 
+                // Check for fill-all button
+                const fillAllBtn = e.target.closest('.budget-fill-all-btn');
+                if (fillAllBtn) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const type = fillAllBtn.dataset.type;
+                    const rowIndex = parseInt(fillAllBtn.dataset.row);
+                    this.showFillAllMonthsDialog(type, rowIndex);
+                    return;
+                }
+                
                 // Check for move buttons
                 const moveBtn = e.target.closest('.budget-move-btn');
                 if (moveBtn) {
@@ -1169,6 +1744,17 @@ class BudgetEditor {
                     } else if (action === 'down') {
                         this.moveRowDown(type, rowIndex);
                     }
+                    return;
+                }
+
+                // Check for Quick-Notes button (Step J)
+                const notesBtn = e.target.closest('.budget-notes-btn');
+                if (notesBtn) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const type = notesBtn.dataset.type;
+                    const rowIndex = parseInt(notesBtn.dataset.row);
+                    this.toggleRowNotes(type, rowIndex, notesBtn);
                     return;
                 }
         });
@@ -1328,7 +1914,7 @@ class BudgetEditor {
 
         // Deep clone the row
         const newRow = JSON.parse(JSON.stringify(sourceRow));
-        newRow.name = `${newRow.name} (kopi)`;
+        newRow.name = `${newRow.name} ${currentLanguage === 'da' ? '(kopi)' : '(copy)'}`;
 
         // Add to data
         if (type === 'income') {
@@ -1356,6 +1942,42 @@ class BudgetEditor {
                 }, 500);
             }
         }, 50);
+    }
+
+    showFillAllMonthsDialog(type, rowIndex) {
+        const row = type === 'income' ? this.currentData.income[rowIndex] : this.currentData.expenses[rowIndex];
+        if (!row) return;
+
+        const value = prompt(currentLanguage === 'da' ? `Udfyld alle måneder for "${row.name}"\n\nIndtast værdi (dette vil udfylde Mdr. kolonnen, 14.Dag beregnes automatisk):` : `Fill all months for "${row.name}"\n\nEnter value (this will fill the Monthly column, 14-Day is calculated automatically):`);
+        
+        if (value === null) return; // User cancelled
+        
+        const numValue = parseFloat(value);
+        if (isNaN(numValue)) {
+            alert(currentLanguage === 'da' ? 'Ugyldig værdi. Indtast venligst et tal.' : 'Invalid value. Please enter a number.');
+            return;
+        }
+
+        // Fill all months with the value (mdr column only)
+        this.monthNames.forEach(month => {
+            if (row[month]) {
+                row[month].mdr = numValue;
+                // Auto-calculate dag14 if enabled
+                if (this.autoCalc14Dag) {
+                    row[month].dag14 = this.autoCalcType === 'divide' ? numValue / 2 : (this.autoCalcType === 'copy' ? numValue : 0);
+                }
+            }
+        });
+
+        // Save and re-render
+        this.storage.saveData(this.currentData);
+        this.renderIncomeTable();
+        this.renderExpenseTable();
+        this.renderSummary();
+        this.updateUndoRedoButtons();
+        
+        // Show success message
+        this.showMessage(currentLanguage === 'da' ? `✓ Alle måneder udfyldt med ${this.formatCurrency(numValue)}` : `✓ All months filled with ${this.formatCurrency(numValue)}`, 'success');
     }
 
     moveRowUp(type, rowIndex) {
@@ -1427,6 +2049,63 @@ class BudgetEditor {
         this.renderExpenseTable();
         this.renderSummary();
         this.updateUndoRedoButtons();
+    }
+
+    // Quick-Notes per row (Step J)
+    toggleRowNotes(type, rowIndex, triggerBtn) {
+        // Check for existing inline note row
+        const existingNoteRow = document.getElementById(`budget-note-row-${type}-${rowIndex}`);
+        if (existingNoteRow) {
+            existingNoteRow.remove();
+            return;
+        }
+
+        const data = type === 'income' ? this.currentData.income : this.currentData.expenses;
+        const row = data[rowIndex];
+        if (!row) return;
+
+        // Find the actual TR element for this row
+        const tbody = document.getElementById(`budget-${type}-tbody`);
+        if (!tbody) return;
+        const trs = tbody.querySelectorAll('tr.budget-row');
+        let targetTr = null;
+        trs.forEach(tr => {
+            if (parseInt(tr.dataset.rowIndex) === rowIndex) targetTr = tr;
+        });
+        if (!targetTr) return;
+
+        const colCount = targetTr.children.length || 28;
+        const noteTr = document.createElement('tr');
+        noteTr.id = `budget-note-row-${type}-${rowIndex}`;
+        noteTr.style.cssText = 'background: #fefce8;';
+        const noteTd = document.createElement('td');
+        noteTd.colSpan = colCount;
+        noteTd.style.cssText = 'padding: 6px 12px; border-top: 1px dashed #f59e0b;';
+
+        const textarea = document.createElement('textarea');
+        textarea.placeholder = currentLanguage === 'da' ? '📝 Tilføj en note til denne række...' : '📝 Add a note for this row...';
+        textarea.value = row.notes || '';
+        textarea.style.cssText = 'width: 100%; min-height: 48px; padding: 6px; font-size: 12px; border: 1px solid #f59e0b; border-radius: 4px; background: white; resize: vertical;';
+        textarea.addEventListener('input', () => {
+            row.notes = textarea.value.trim();
+            this.storage.saveData(this.currentData);
+            if (triggerBtn) {
+                triggerBtn.innerHTML = row.notes ? '📝' : '🗒️';
+                triggerBtn.title = row.notes ? `Note: ${row.notes}` : (currentLanguage === 'da' ? 'Tilføj note' : 'Add Note');
+                triggerBtn.style.opacity = row.notes ? '1' : '0.45';
+            }
+        });
+
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = currentLanguage === 'da' ? '✕ Luk note' : '✕ Close note';
+        closeBtn.style.cssText = 'margin-left: 8px; font-size: 11px; color: #92400e; background: none; border: none; cursor: pointer; text-decoration: underline;';
+        closeBtn.addEventListener('click', () => noteTr.remove());
+
+        noteTd.appendChild(textarea);
+        noteTd.appendChild(closeBtn);
+        noteTr.appendChild(noteTd);
+        targetTr.insertAdjacentElement('afterend', noteTr);
+        textarea.focus();
     }
 
     handleKeyboardNav(e) {
@@ -1533,6 +2212,11 @@ class BudgetEditor {
     // ===================================================================
     // Import Dialog
     // ===================================================================
+    showExportMenu() {
+        // Directly export to Excel
+        this.exportExcel();
+    }
+
     showImportDialog() {
         const input = document.createElement('input');
         input.type = 'file';
@@ -1843,31 +2527,31 @@ class BudgetEditor {
         if (!content) return;
 
         const data = this.currentData;
-        let html = '<div class="mb-4"><h4 class="font-semibold text-sm text-gray-600 dark:text-gray-400 mb-2">INDTÆGTER</h4>';
+        let html = `<div class="mb-4"><h4 class="font-semibold text-sm text-gray-600 dark:text-gray-400 mb-2">${this.t('budget-sidebar-income', 'INCOME')}</h4>`;
         
         data.income.forEach((row, idx) => {
             const yearTotal = this.calculateYearTotal(row);
             html += `
                 <div class="sidebar-row text-sm" data-type="income" data-index="${idx}">
-                    <div class="font-medium">${row.name || 'Unavngivet'}</div>
+                    <div class="font-medium">${row.name || this.t('budget-unnamed', 'Unnamed')}</div>
                     <div class="flex justify-between text-xs text-gray-600 dark:text-gray-400 mt-1">
-                        <span>Faktiske: ${row.faktiske.toFixed(2)} kr</span>
+                        <span>${this.t('budget-actual-label', 'Actual:')} ${row.faktiske.toFixed(2)} kr</span>
                         <span class="font-semibold text-green-600">${yearTotal.toFixed(2)} kr</span>
                     </div>
                 </div>
             `;
         });
         
-        html += '</div><div><h4 class="font-semibold text-sm text-gray-600 dark:text-gray-400 mb-2">UDGIFTER</h4>';
+        html += `</div><div><h4 class="font-semibold text-sm text-gray-600 dark:text-gray-400 mb-2">${this.t('budget-sidebar-expenses', 'EXPENSES')}</h4>`;
         
         data.expenses.forEach((row, idx) => {
             const yearTotal = this.calculateYearTotal(row);
             const isRecurring = this.recurringExpenses.has(`expense-${idx}`);
             html += `
                 <div class="sidebar-row text-sm ${isRecurring ? 'budget-row-recurring' : ''}" data-type="expense" data-index="${idx}">
-                    <div class="font-medium">${row.name || 'Unavngivet'}</div>
+                    <div class="font-medium">${row.name || this.t('budget-unnamed', 'Unnamed')}</div>
                     <div class="flex justify-between text-xs text-gray-600 dark:text-gray-400 mt-1">
-                        <span>Faktiske: ${row.faktiske.toFixed(2)} kr</span>
+                        <span>${this.t('budget-actual-label', 'Actual:')} ${row.faktiske.toFixed(2)} kr</span>
                         <span class="font-semibold text-red-600">${yearTotal.toFixed(2)} kr</span>
                     </div>
                 </div>
@@ -1972,7 +2656,7 @@ class BudgetEditor {
         this.renderExpenseTable();
         this.renderSummary();
         this.hideCopyForwardModal();
-        this.showMessage(`Kopieret fra ${this.monthNamesFull[fromIdx]} til ${targetMonths.length} måned(er)`);
+        this.showMessage(currentLanguage === 'da' ? `Kopieret fra ${this.monthNamesFull[fromIdx]} til ${targetMonths.length} måned(er)` : `Copied from ${this.monthNamesFull[fromIdx]} to ${targetMonths.length} month(s)`);
     }
 
     // Recurring expense detection
@@ -1994,7 +2678,7 @@ class BudgetEditor {
             }
         });
 
-        this.showMessage(`Fundet ${this.recurringExpenses.size} faste udgifter`);
+        this.showMessage(`${this.t('budget-found-recurring', 'Found')} ${this.recurringExpenses.size} ${this.t('budget-fixed-expenses', 'recurring expenses')}`);
         this.renderSidebar();
     }
 
@@ -2041,7 +2725,7 @@ class BudgetEditor {
         this.renderExpenseTable();
         this.renderSummary();
         this.hideQuickFillModal();
-        this.showMessage(`Udfyldt ${count} rækker med Faktiske × ${multiplier}`);
+        this.showMessage(currentLanguage === 'da' ? `Udfyldt ${count} rækker med Faktiske × ${multiplier}` : `Filled ${count} rows with Actual × ${multiplier}`);
     }
 
     isRowEmpty(row) {
@@ -2099,22 +2783,27 @@ class BudgetEditor {
     // ===================================================================
     calculateAccountTotals(month = null) {
         const result = {
-            budget: { income: 0, expenses: 0 },
-            daily: { income: 0, expenses: 0 }
+            budget: { income: 0, expenses: 0 }
         };
 
         // Calculate income per account
         this.currentData.income.forEach(row => {
             if (row.isCategory) return;
-            const account = row.account || 'daily';
+            const account = 'budget';
             
-            if (month) {
-                const total = (row[month]?.mdr || 0) + (row[month]?.dag14 || 0);
+            // Only include faktiske if we're calculating for a SPECIFIC month (not yearly totals)
+            // The faktiske column is actual data for comparison, not part of yearly budget
+            if (month === 'faktiske') {
+                const faktiskeValue = parseFloat(row.faktiske) || 0;
+                result[account].income += faktiskeValue;
+            } else if (month) {
+                // Single month calculation
+                const total = (parseFloat(row[month]?.mdr) || 0) + (parseFloat(row[month]?.dag14) || 0);
                 result[account].income += total;
             } else {
-                // All months
+                // All months - only sum the 12 month columns, NOT faktiske
                 this.monthNames.forEach(m => {
-                    const total = (row[m]?.mdr || 0) + (row[m]?.dag14 || 0);
+                    const total = (parseFloat(row[m]?.mdr) || 0) + (parseFloat(row[m]?.dag14) || 0);
                     result[account].income += total;
                 });
             }
@@ -2123,15 +2812,20 @@ class BudgetEditor {
         // Calculate expenses per account
         this.currentData.expenses.forEach(row => {
             if (row.isCategory) return;
-            const account = row.account || 'daily';
+            const account = 'budget';
             
-            if (month) {
-                const total = (row[month]?.mdr || 0) + (row[month]?.dag14 || 0);
+            // Only include faktiske if we're calculating for a SPECIFIC month (not yearly totals)
+            if (month === 'faktiske') {
+                const faktiskeValue = parseFloat(row.faktiske) || 0;
+                result[account].expenses += faktiskeValue;
+            } else if (month) {
+                // Single month calculation
+                const total = (parseFloat(row[month]?.mdr) || 0) + (parseFloat(row[month]?.dag14) || 0);
                 result[account].expenses += total;
             } else {
-                // All months
+                // All months - only sum the 12 month columns, NOT faktiske
                 this.monthNames.forEach(m => {
-                    const total = (row[m]?.mdr || 0) + (row[m]?.dag14 || 0);
+                    const total = (parseFloat(row[m]?.mdr) || 0) + (parseFloat(row[m]?.dag14) || 0);
                     result[account].expenses += total;
                 });
             }
@@ -2143,23 +2837,43 @@ class BudgetEditor {
     calculateTransferRecommendation(month = null) {
         const accountTotals = this.calculateAccountTotals(month);
         
-        // Required amount = Budget account expenses
-        const required = accountTotals.budget.expenses;
+        // Base required amount = Budget account expenses
+        let baseRequired = accountTotals.budget.expenses;
         
-        // Advised amount = Required + 90th percentile variance
+        // Apply expense splitting if enabled (e.g., split with partner)
+        let yourShare = baseRequired;
+        if (this.expenseSplitEnabled) {
+            yourShare = baseRequired * this.expenseSplitRatio;
+        }
+        
+        // Apply safety buffer if enabled
+        let withBuffer = yourShare;
+        if (this.safetyBufferEnabled) {
+            const bufferAmount = yourShare * (this.safetyBufferPercent / 100);
+            withBuffer = yourShare + bufferAmount;
+        }
+        
+        // Advised amount = Required + 90th percentile variance (historical data)
         const advisedVariance = this.storage.calculate90thPercentileVariance('budget');
-        const advised = advisedVariance !== null ? required + Math.abs(advisedVariance) : null;
+        const advised = advisedVariance !== null ? baseRequired + Math.abs(advisedVariance) : null;
         
-        // Remaining in daily use = Daily income - Daily expenses - Required transfer
-        const dailyNet = accountTotals.daily.income - accountTotals.daily.expenses;
-        const remaining = dailyNet - required;
+        // Net balance = Budget income - Budget expenses
+        const budgetNet = accountTotals.budget.income - accountTotals.budget.expenses;
         
         return {
-            required: required,
-            advised: advised,
-            remaining: remaining,
+            required: yourShare, // Your share after splitting
+            baseRequired: baseRequired, // Total expenses before splitting
+            withBuffer: withBuffer, // Your share + safety buffer
+            bufferAmount: withBuffer - yourShare, // The buffer amount added
+            advised: advised, // Historical-based recommendation
+            remaining: budgetNet,
             hasHistoricalData: advisedVariance !== null,
-            accountTotals: accountTotals
+            accountTotals: accountTotals,
+            // Settings used
+            splitEnabled: this.expenseSplitEnabled,
+            splitRatio: this.expenseSplitRatio,
+            bufferEnabled: this.safetyBufferEnabled,
+            bufferPercent: this.safetyBufferPercent
         };
     }
 }

@@ -141,7 +141,7 @@ const logisticsTemplates = [
         formulas: [
             { name: "valuePercent", label: "Value % of Total", formula: "(itemValue / totalValue) * 100" },
             { name: "isA", label: "Is A Class", formula: "cumulativePercent <= 80 ? 1 : 0" },
-            { name: "isB", label: "Is B Class", formula: "(cumulativePercent > 80 && cumulativePercent <= 95) ? 1 : 0" },
+            { name: "isB", label: "Is B Class", formula: "(cumulativePercent > 80 and cumulativePercent <= 95) ? 1 : 0" },
             { name: "isC", label: "Is C Class", formula: "cumulativePercent > 95 ? 1 : 0" }
         ]
     },
@@ -256,7 +256,7 @@ const logisticsTemplates = [
             { name: "maxDailyCapacity", label: "Maximum Daily Capacity", formula: "(availableHours * 60) / cycleTime" },
             { name: "utilizationRate", label: "Utilization Rate %", formula: "(actualProduction / maxDailyCapacity) * 100" },
             { name: "monthlyCapacity", label: "Monthly Capacity", formula: "maxDailyCapacity * workingDays" },
-            { name: "spareCap acity", label: "Spare Capacity per Day", formula: "maxDailyCapacity - actualProduction" }
+            { name: "spareCapacity", label: "Spare Capacity per Day", formula: "maxDailyCapacity - actualProduction" }
         ]
     },
     {
@@ -500,6 +500,52 @@ const logisticsTemplates = [
             { name: "lateDeliveries", label: "Late Deliveries", formula: "totalDeliveries - onTimeDeliveries" },
             { name: "lateDeliveryRate", label: "Late Delivery Rate %", formula: "(lateDeliveries / totalDeliveries) * 100" }
         ]
+    },
+    // NEW LOGISTICS: Cross-Docking Efficiency
+    {
+        name: "Cross-Docking Efficiency",
+        icon: "🔀",
+        description: "Measure throughput and cost savings of cross-docking vs traditional warehousing",
+        translationKey: "template-logistics-crossdock",
+        inputs: [
+            { name: "inboundUnits", label: "Inbound Units per Day", type: "number", defaultValue: 5000 },
+            { name: "avgHandlingTimeSec", label: "Avg Handling Time (sec/unit)", type: "number", defaultValue: 12 },
+            { name: "laborRatePerHour", label: "Labor Rate (per hour)", type: "number", defaultValue: 220 },
+            { name: "traditionalStorageCostPerUnit", label: "Traditional Storage Cost (per unit/day)", type: "number", defaultValue: 2.5 },
+            { name: "facilityOperatingHours", label: "Facility Operating Hours/Day", type: "number", defaultValue: 16 }
+        ],
+        formulas: [
+            { name: "totalHandlingHours", label: "Total Handling Time (hours)", formula: "(inboundUnits * avgHandlingTimeSec) / 3600" },
+            { name: "laborCostPerDay", label: "Daily Labor Cost", formula: "totalHandlingHours * laborRatePerHour" },
+            { name: "laborCostPerUnit", label: "Labor Cost Per Unit", formula: "laborCostPerDay / inboundUnits" },
+            { name: "storageSavings", label: "Daily Storage Savings", formula: "inboundUnits * traditionalStorageCostPerUnit" },
+            { name: "netBenefit", label: "Net Daily Benefit", formula: "storageSavings - laborCostPerDay" },
+            { name: "utilisationRate", label: "Facility Utilisation (%)", formula: "(totalHandlingHours / facilityOperatingHours) * 100" }
+        ]
+    },
+    // NEW LOGISTICS: Supplier Lead Time Variability
+    {
+        name: "Supplier Lead Time Variability",
+        icon: "📅",
+        description: "Analyse lead time standard deviation and calculate safety stock buffer",
+        translationKey: "template-logistics-leadvar",
+        inputs: [
+            { name: "lt1", label: "Lead Time Sample 1 (days)", type: "number", defaultValue: 5 },
+            { name: "lt2", label: "Lead Time Sample 2 (days)", type: "number", defaultValue: 7 },
+            { name: "lt3", label: "Lead Time Sample 3 (days)", type: "number", defaultValue: 6 },
+            { name: "lt4", label: "Lead Time Sample 4 (days)", type: "number", defaultValue: 9 },
+            { name: "lt5", label: "Lead Time Sample 5 (days)", type: "number", defaultValue: 4 },
+            { name: "avgDemandPerDay", label: "Average Daily Demand", type: "number", defaultValue: 100 },
+            { name: "serviceFactor", label: "Service Factor (Z)", type: "number", defaultValue: 1.65 }
+        ],
+        formulas: [
+            { name: "avgLeadTime", label: "Average Lead Time (days)", formula: "(lt1 + lt2 + lt3 + lt4 + lt5) / 5" },
+            { name: "variance", label: "Lead Time Variance", formula: "((lt1-avgLeadTime)^2 + (lt2-avgLeadTime)^2 + (lt3-avgLeadTime)^2 + (lt4-avgLeadTime)^2 + (lt5-avgLeadTime)^2) / 5" },
+            { name: "stdDev", label: "Std Deviation (days)", formula: "sqrt(variance)" },
+            { name: "safetyStock", label: "Safety Stock (units)", formula: "serviceFactor * stdDev * avgDemandPerDay" },
+            { name: "reorderPoint", label: "Reorder Point", formula: "(avgLeadTime * avgDemandPerDay) + safetyStock" },
+            { name: "variabilityIndex", label: "Variability Index (%)", formula: "(stdDev / avgLeadTime) * 100" }
+        ]
     }
 ];
 
@@ -628,7 +674,7 @@ const leanTemplates = [
             { name: "totalScore", label: "Total Score", formula: "sortScore + setInOrderScore + shineScore + standardizeScore + sustainScore" },
             { name: "percentageScore", label: "Overall Score (%)", formula: "(totalScore / 25) * 100" },
             { name: "averageScore", label: "Average Score", formula: "totalScore / 5" },
-            { name: "maturityLevel", label: "Maturity Level (1-5)", formula: "Math.round(averageScore)" }
+            { name: "maturityLevel", label: "Maturity Level (1-5)", formula: "round(averageScore)" }
         ]
     },
     {
@@ -646,7 +692,7 @@ const leanTemplates = [
             { name: "demandDuringLT", label: "Demand During Lead Time", formula: "dailyDemand * leadTime" },
             { name: "safetyStock", label: "Safety Stock", formula: "demandDuringLT * (safetyFactor / 100)" },
             { name: "totalInventory", label: "Total Inventory Needed", formula: "demandDuringLT + safetyStock" },
-            { name: "numberOfCards", label: "Number of Kanban Cards", formula: "Math.ceil(totalInventory / containerSize)" }
+            { name: "numberOfCards", label: "Number of Kanban Cards", formula: "ceil(totalInventory / containerSize)" }
         ]
     },
     {
@@ -700,9 +746,9 @@ const leanTemplates = [
         ],
         formulas: [
             { name: "avgDemandDuringRT", label: "Avg Demand During RT", formula: "avgDailyDemand * replenishmentTime" },
-            { name: "safetyBuffer", label: "Safety Buffer", formula: "serviceLevel * demandVariability * Math.sqrt(replenishmentTime)" },
+            { name: "safetyBuffer", label: "Safety Buffer", formula: "serviceLevel * demandVariability * sqrt(replenishmentTime)" },
             { name: "totalBufferSize", label: "Total Buffer Size", formula: "avgDemandDuringRT + safetyBuffer" },
-            { name: "reorderPoint", label: "Reorder Point", formula: "Math.ceil(totalBufferSize)" }
+            { name: "reorderPoint", label: "Reorder Point", formula: "ceil(totalBufferSize)" }
         ]
     },
     {
@@ -778,6 +824,50 @@ const leanTemplates = [
             { name: "dpmAfter", label: "DPM After", formula: "(defectsAfterPY / totalUnits) * 1000000" },
             { name: "costSavings", label: "Annual Cost Savings", formula: "defectReduction * costPerDefect" }
         ]
+    },
+    // NEW LEAN: Error Rate Tracker (DPMO)
+    {
+        name: "Error Rate Tracker (DPMO)",
+        icon: "🎯",
+        description: "Defects Per Million Opportunities — measure and track Six Sigma quality level",
+        translationKey: "template-lean-dpmo",
+        inputs: [
+            { name: "defects", label: "Number of Defects", type: "number", defaultValue: 12 },
+            { name: "totalUnits", label: "Total Units Inspected", type: "number", defaultValue: 5000 },
+            { name: "opportunitiesPerUnit", label: "Opportunities per Unit", type: "number", defaultValue: 5 }
+        ],
+        formulas: [
+            { name: "totalOpportunities", label: "Total Opportunities", formula: "totalUnits * opportunitiesPerUnit" },
+            { name: "dpo", label: "Defects Per Opportunity", formula: "defects / totalOpportunities" },
+            { name: "dpmo", label: "DPMO", formula: "dpo * 1000000" },
+            { name: "yieldPct", label: "Process Yield (%)", formula: "(1 - dpo) * 100" },
+            { name: "sigmaLevel", label: "Approx. Sigma Level", formula: "dpmo <= 3.4 ? 6 : (dpmo <= 233 ? 5 : (dpmo <= 6210 ? 4 : (dpmo <= 66807 ? 3 : (dpmo <= 308537 ? 2 : 1))))" }
+        ]
+    },
+    // NEW LEAN: Line Balancing Efficiency
+    {
+        name: "Line Balancing Efficiency",
+        icon: "⚖️",
+        description: "Compare takt time vs cycle times per station to identify bottlenecks",
+        translationKey: "template-lean-linebalance",
+        inputs: [
+            { name: "availableTimeMin", label: "Available Time (min/shift)", type: "number", defaultValue: 480 },
+            { name: "customerDemand", label: "Customer Demand (units/shift)", type: "number", defaultValue: 240 },
+            { name: "numStations", label: "Number of Stations", type: "number", defaultValue: 5 },
+            { name: "station1", label: "Station 1 Cycle Time (min)", type: "number", defaultValue: 1.8 },
+            { name: "station2", label: "Station 2 Cycle Time (min)", type: "number", defaultValue: 2.1 },
+            { name: "station3", label: "Station 3 Cycle Time (min)", type: "number", defaultValue: 1.5 },
+            { name: "station4", label: "Station 4 Cycle Time (min)", type: "number", defaultValue: 2.0 },
+            { name: "station5", label: "Station 5 Cycle Time (min)", type: "number", defaultValue: 1.7 }
+        ],
+        formulas: [
+            { name: "taktTime", label: "Takt Time (min/unit)", formula: "availableTimeMin / customerDemand" },
+            { name: "totalWorkContent", label: "Total Work Content (min)", formula: "station1 + station2 + station3 + station4 + station5" },
+            { name: "bottleneck", label: "Bottleneck Time (min)", formula: "max(station1, station2, station3, station4, station5)" },
+            { name: "lineEfficiency", label: "Line Efficiency (%)", formula: "(totalWorkContent / (bottleneck * numStations)) * 100" },
+            { name: "totalIdleTime", label: "Total Idle Time (min/unit)", formula: "(bottleneck * numStations) - totalWorkContent" },
+            { name: "balanceDelay", label: "Balance Delay (%)", formula: "100 - lineEfficiency" }
+        ]
     }
 ];
 
@@ -796,7 +886,7 @@ const financeTemplates = [
         formulas: [
             { name: "totalReturn", label: "Total Return", formula: "finalValue - initialInvestment" },
             { name: "roi", label: "ROI (%)", formula: "((finalValue - initialInvestment) / initialInvestment) * 100" },
-            { name: "annualizedROI", label: "Annualized ROI (%)", formula: "(Math.pow((finalValue / initialInvestment), (1 / timeYears)) - 1) * 100" }
+            { name: "annualizedROI", label: "Annualized ROI (%)", formula: "(pow((finalValue / initialInvestment), (1 / timeYears)) - 1) * 100" }
         ]
     },
     {
@@ -812,9 +902,9 @@ const financeTemplates = [
             { name: "discountRate", label: "Discount Rate (%)", type: "number", defaultValue: 10 }
         ],
         formulas: [
-            { name: "pvYear1", label: "PV Year 1", formula: "yearOneCashFlow / Math.pow((1 + discountRate / 100), 1)" },
-            { name: "pvYear2", label: "PV Year 2", formula: "yearTwoCashFlow / Math.pow((1 + discountRate / 100), 2)" },
-            { name: "pvYear3", label: "PV Year 3", formula: "yearThreeCashFlow / Math.pow((1 + discountRate / 100), 3)" },
+            { name: "pvYear1", label: "PV Year 1", formula: "yearOneCashFlow / pow((1 + discountRate / 100), 1)" },
+            { name: "pvYear2", label: "PV Year 2", formula: "yearTwoCashFlow / pow((1 + discountRate / 100), 2)" },
+            { name: "pvYear3", label: "PV Year 3", formula: "yearThreeCashFlow / pow((1 + discountRate / 100), 3)" },
             { name: "totalPV", label: "Total Present Value", formula: "pvYear1 + pvYear2 + pvYear3" },
             { name: "npv", label: "Net Present Value", formula: "totalPV - initialInvestment" }
         ]
@@ -911,24 +1001,6 @@ const financeTemplates = [
         ]
     },
     {
-        name: "Break-Even Point",
-        icon: "⚖️",
-        description: "Calculate break-even in units and revenue",
-        translationKey: "template-finance-breakeven",
-        inputs: [
-            { name: "fixedCosts", label: "Fixed Costs", type: "number", defaultValue: 50000 },
-            { name: "pricePerUnit", label: "Price Per Unit", type: "number", defaultValue: 100 },
-            { name: "variableCostPerUnit", label: "Variable Cost Per Unit", type: "number", defaultValue: 60 }
-        ],
-        formulas: [
-            { name: "contributionMargin", label: "Contribution Margin", formula: "pricePerUnit - variableCostPerUnit" },
-            { name: "contributionMarginRatio", label: "CM Ratio (%)", formula: "(contributionMargin / pricePerUnit) * 100" },
-            { name: "breakEvenUnits", label: "Break-Even Units", formula: "fixedCosts / contributionMargin" },
-            { name: "breakEvenRevenue", label: "Break-Even Revenue", formula: "breakEvenUnits * pricePerUnit" },
-            { name: "marginOfSafety", label: "Margin of Safety (at 2000 units)", formula: "2000 - breakEvenUnits" }
-        ]
-    },
-    {
         name: "Debt-to-Equity Ratio",
         icon: "⚖️",
         description: "Measure financial leverage",
@@ -1020,7 +1092,7 @@ const financeTemplates = [
             { name: "priceChange", label: "Price Change (%)", formula: "((newPrice - originalPrice) / originalPrice) * 100" },
             { name: "quantityChange", label: "Quantity Change (%)", formula: "((newQuantity - originalQuantity) / originalQuantity) * 100" },
             { name: "priceElasticity", label: "Price Elasticity", formula: "quantityChange / priceChange" },
-            { name: "elasticityType", label: "Elasticity Type", formula: "Math.abs(priceElasticity) > 1 ? 1 : 0" },
+            { name: "elasticityType", label: "Elasticity Type", formula: "abs(priceElasticity) > 1 ? 1 : 0" },
             { name: "revenueChange", label: "Revenue Change", formula: "(newPrice * newQuantity) - (originalPrice * originalQuantity)" }
         ]
     },
@@ -1037,12 +1109,51 @@ const financeTemplates = [
         ],
         formulas: [
             { name: "holdingCost", label: "Holding Cost Per Unit", formula: "unitCost * (holdingCostRate / 100)" },
-            { name: "eoq", label: "Economic Order Quantity", formula: "Math.sqrt((2 * annualDemand * orderingCost) / holdingCost)" },
+            { name: "eoq", label: "Economic Order Quantity", formula: "sqrt((2 * annualDemand * orderingCost) / holdingCost)" },
             { name: "numberOfOrders", label: "Number of Orders", formula: "annualDemand / eoq" },
             { name: "totalOrderingCost", label: "Total Ordering Cost", formula: "numberOfOrders * orderingCost" },
             { name: "avgInventory", label: "Average Inventory", formula: "eoq / 2" },
             { name: "totalHoldingCost", label: "Total Holding Cost", formula: "avgInventory * holdingCost" },
             { name: "totalInventoryCost", label: "Total Inventory Cost", formula: "totalOrderingCost + totalHoldingCost" }
+        ]
+    },
+    // NEW FINANCE: Cash Conversion Cycle
+    {
+        name: "Cash Conversion Cycle",
+        icon: "🔄",
+        description: "Measure how long cash is tied up in operations: DIO + DSO - DPO",
+        translationKey: "template-finance-ccc",
+        inputs: [
+            { name: "inventoryDays", label: "Days Inventory Outstanding (DIO)", type: "number", defaultValue: 45 },
+            { name: "dso", label: "Days Sales Outstanding (DSO)", type: "number", defaultValue: 35 },
+            { name: "dpo", label: "Days Payable Outstanding (DPO)", type: "number", defaultValue: 30 },
+            { name: "dailyRevenue", label: "Daily Revenue", type: "number", defaultValue: 10000 }
+        ],
+        formulas: [
+            { name: "ccc", label: "Cash Conversion Cycle (days)", formula: "inventoryDays + dso - dpo" },
+            { name: "cashTiedUp", label: "Cash Tied Up", formula: "ccc * dailyRevenue" },
+            { name: "ccStatus", label: "CCC Status", formula: "ccc <= 30 ? 'Excellent' : (ccc <= 60 ? 'Good' : (ccc <= 90 ? 'Average' : 'Poor'))" }
+        ]
+    },
+    // NEW FINANCE: WACC Calculator
+    {
+        name: "WACC Calculator",
+        icon: "📐",
+        description: "Weighted Average Cost of Capital — used as discount rate for investment decisions",
+        translationKey: "template-finance-wacc",
+        inputs: [
+            { name: "equityValue", label: "Market Value of Equity", type: "number", defaultValue: 600000 },
+            { name: "debtValue", label: "Market Value of Debt", type: "number", defaultValue: 400000 },
+            { name: "costOfEquity", label: "Cost of Equity (%)", type: "number", defaultValue: 12 },
+            { name: "costOfDebt", label: "Cost of Debt (%)", type: "number", defaultValue: 6 },
+            { name: "taxRate", label: "Corporate Tax Rate (%)", type: "number", defaultValue: 22 }
+        ],
+        formulas: [
+            { name: "totalCapital", label: "Total Capital", formula: "equityValue + debtValue" },
+            { name: "equityWeight", label: "Equity Weight (%)", formula: "(equityValue / totalCapital) * 100" },
+            { name: "debtWeight", label: "Debt Weight (%)", formula: "(debtValue / totalCapital) * 100" },
+            { name: "afterTaxDebt", label: "After-Tax Cost of Debt (%)", formula: "costOfDebt * (1 - taxRate / 100)" },
+            { name: "wacc", label: "WACC (%)", formula: "((equityWeight / 100) * costOfEquity) + ((debtWeight / 100) * afterTaxDebt)" }
         ]
     }
 ];
@@ -1257,44 +1368,6 @@ const mathTemplates = [
         ]
     },
     {
-        name: "Depreciation Calculator",
-        icon: "📉",
-        description: "Calculate asset depreciation (straight-line method)",
-        translationKey: "template-math-depreciation",
-        inputs: [
-            { name: "assetCost", label: "Asset Cost", type: "number", defaultValue: 50000 },
-            { name: "salvageValue", label: "Salvage Value", type: "number", defaultValue: 5000 },
-            { name: "usefulLife", label: "Useful Life (years)", type: "number", defaultValue: 10 },
-            { name: "yearsUsed", label: "Years Used", type: "number", defaultValue: 3 }
-        ],
-        formulas: [
-            { name: "depreciableAmount", label: "Depreciable Amount", formula: "assetCost - salvageValue" },
-            { name: "annualDepreciation", label: "Annual Depreciation", formula: "depreciableAmount / usefulLife" },
-            { name: "accumulatedDepreciation", label: "Accumulated Depreciation", formula: "annualDepreciation * yearsUsed" },
-            { name: "bookValue", label: "Current Book Value", formula: "assetCost - accumulatedDepreciation" },
-            { name: "remainingLife", label: "Remaining Life (years)", formula: "usefulLife - yearsUsed" }
-        ]
-    },
-    {
-        name: "Working Capital Calculator",
-        icon: "💼",
-        description: "Calculate working capital and ratios",
-        translationKey: "template-math-workingcapital",
-        inputs: [
-            { name: "currentAssets", label: "Current Assets", type: "number", defaultValue: 150000 },
-            { name: "currentLiabilities", label: "Current Liabilities", type: "number", defaultValue: 100000 },
-            { name: "inventory", label: "Inventory", type: "number", defaultValue: 40000 },
-            { name: "cash", label: "Cash", type: "number", defaultValue: 30000 }
-        ],
-        formulas: [
-            { name: "workingCapital", label: "Working Capital", formula: "currentAssets - currentLiabilities" },
-            { name: "currentRatio", label: "Current Ratio", formula: "currentAssets / currentLiabilities" },
-            { name: "quickAssets", label: "Quick Assets", formula: "currentAssets - inventory" },
-            { name: "quickRatio", label: "Quick Ratio (Acid Test)", formula: "quickAssets / currentLiabilities" },
-            { name: "cashRatio", label: "Cash Ratio", formula: "cash / currentLiabilities" }
-        ]
-    },
-    {
         name: "Service Level Calculator",
         icon: "🎯",
         description: "Calculate service level and stockout probability",
@@ -1446,6 +1519,164 @@ const mathTemplates = [
             { name: "variance", label: "Variance (approx)", formula: "((val1-mean)^2 + (val2-mean)^2 + (val3-mean)^2 + (val4-mean)^2 + (val5-mean)^2) / 5" },
             { name: "stdDev", label: "Standard Deviation", formula: "sqrt(variance)" }
         ]
+    },
+    {
+        name: "Lastsikring (Cargo Securing)",
+        icon: "🚛",
+        description: "Comprehensive cargo securing calculator with EN 12195-1:2010 standards, multiple methods, and safety analysis",
+        translationKey: "template-lastsikring",
+        inputs: [
+            { name: "securingMethod", label: "Securing Method", type: "select", options: ["Overfaldssurring (Top-over)", "Loopsurring (Loop)", "Grime/Fjedersurring (Spring)", "Direkte Surring (Direct)", "Blocking/Opklodsning"], defaultValue: "Overfaldssurring (Top-over)" },
+            { name: "cargoWeight", label: "Cargo Weight (tons)", type: "number", defaultValue: 10 },
+            { name: "cargoHeight", label: "Cargo Height (m)", type: "number", defaultValue: 2.0, step: 0.1 },
+            { name: "cargoWidth", label: "Cargo Width/Base (m)", type: "number", defaultValue: 1.2, step: 0.1 },
+            { name: "cargoLength", label: "Cargo Length (m)", type: "number", defaultValue: 2.5, step: 0.1 },
+            { name: "lashingCapacity", label: "Lashing Capacity LC (daN)", type: "number", defaultValue: 2500 },
+            { name: "standardForce", label: "Standard Tension Force STF (daN)", type: "number", defaultValue: 500 },
+            { name: "frictionCoeff", label: "Friction Coefficient (μ)", type: "number", defaultValue: 0.30, step: 0.05 },
+            { name: "lashingAngle", label: "Lashing Angle (degrees)", type: "number", defaultValue: 90, step: 5 },
+            { name: "numberOfLashingPoints", label: "Number of Lashing Points", type: "number", defaultValue: 4 },
+            { name: "safetyFactor", label: "Additional Safety Factor (%)", type: "number", defaultValue: 0, step: 5 },
+            { name: "weatherConditions", label: "Weather/Road Conditions", type: "select", options: ["Normal", "Poor (wet/icy)", "Extreme"], defaultValue: "Normal" },
+            { name: "cargoStability", label: "Cargo Stability", type: "select", options: ["Stable/Rigid", "Moderately Stable", "Unstable/Fragile"], defaultValue: "Stable/Rigid" }
+        ],
+        formulas: [
+            // Dimensional Calculations
+            { name: "hbRatio", label: "Height/Base Ratio (H/B)", formula: "cargoHeight / cargoWidth" },
+            { name: "cargoVolume", label: "Cargo Volume (m³)", formula: "cargoHeight * cargoWidth * cargoLength" },
+            { name: "cargoDensity", label: "Cargo Density (kg/m³)", formula: "cargoVolume > 0 ? (cargoWeight * 1000) / cargoVolume : 0" },
+            
+            // Lashing Components
+            { name: "verticalComponent", label: "Vertical Component (sin α)", formula: "abs(sin(lashingAngle * PI / 180))" },
+            { name: "horizontalComponent", label: "Horizontal Component (cos α)", formula: "abs(cos(lashingAngle * PI / 180))" },
+            { name: "effectiveSTF", label: "Effective STF per Lashing", formula: "standardForce * (verticalComponent * frictionCoeff + horizontalComponent)" },
+            
+            // EU Acceleration Forces (EN 12195-1:2010)
+            { name: "forwardForce", label: "Forward Acceleration (0.8g)", formula: "cargoWeight * 1000 * 0.8" },
+            { name: "backwardForce", label: "Backward Acceleration (0.5g)", formula: "cargoWeight * 1000 * 0.5" },
+            { name: "sidewaysForce", label: "Sideways Acceleration (0.5g)", formula: "cargoWeight * 1000 * 0.5" },
+            
+            // Sliding Calculations
+            { name: "slidingSide", label: "Lashings - Sliding Side", formula: "ceil(sidewaysForce / effectiveSTF)" },
+            { name: "slidingForward", label: "Lashings - Sliding Forward", formula: "ceil(forwardForce / effectiveSTF)" },
+            { name: "slidingBackward", label: "Lashings - Sliding Backward", formula: "ceil(backwardForce / effectiveSTF)" },
+            { name: "maxSlidingLashings", label: "Max Sliding Requirement", formula: "max(slidingSide, slidingForward, slidingBackward)" },
+            
+            // Tipping Calculations
+            { name: "conversionFactor", label: "Conversion Factor (STF/LC)", formula: "min(standardForce / 400, lashingCapacity / 1600)" },
+            { name: "hbTableValue", label: "H/B Table Multiplier", formula: "hbRatio < 0.6 ? 20 : (hbRatio < 0.8 ? 10 : (hbRatio < 1.0 ? 5.1 : (hbRatio < 1.25 ? 3.4 : (hbRatio < 1.5 ? 2.5 : (hbRatio < 2.0 ? 1.7 : 1.0)))))" },
+            { name: "tippingCapacity", label: "Tons per Lashing (Tipping)", formula: "conversionFactor * hbTableValue" },
+            { name: "tippingLashings", label: "Lashings - Tipping Prevention", formula: "tippingCapacity > 0 ? ceil(cargoWeight / tippingCapacity) : 999" },
+            
+            // Method-Specific Adjustments
+            { name: "methodMultiplier", label: "Method Efficiency Factor", formula: "securingMethod.includes('Overfald') ? 1.0 : (securingMethod.includes('Loop') ? 0.9 : (securingMethod.includes('Direct') ? 1.2 : (securingMethod.includes('Grime') ? 0.85 : 0.7)))" },
+            { name: "adjustedSlidingReq", label: "Adjusted Sliding Requirement", formula: "ceil(maxSlidingLashings / methodMultiplier)" },
+            { name: "adjustedTippingReq", label: "Adjusted Tipping Requirement", formula: "ceil(tippingLashings / methodMultiplier)" },
+            
+            // Environmental Adjustments
+            { name: "weatherMultiplier", label: "Weather Safety Multiplier", formula: "weatherConditions.includes('Poor') ? 1.15 : (weatherConditions.includes('Extreme') ? 1.30 : 1.0)" },
+            { name: "stabilityMultiplier", label: "Stability Safety Multiplier", formula: "cargoStability.includes('Unstable') ? 1.20 : (cargoStability.includes('Moderately') ? 1.10 : 1.0)" },
+            { name: "combinedSafetyFactor", label: "Combined Safety Factor", formula: "(1 + safetyFactor / 100) * weatherMultiplier * stabilityMultiplier" },
+            
+            // Final Recommendations
+            { name: "baseRequirement", label: "Base Lashing Requirement", formula: "max(adjustedSlidingReq, adjustedTippingReq)" },
+            { name: "recommendedLashings", label: "RECOMMENDED LASHINGS", formula: "ceil(baseRequirement * combinedSafetyFactor)" },
+            { name: "lashingsPerSide", label: "Lashings Per Side (if paired)", formula: "ceil(recommendedLashings / 2)" },
+            { name: "lashingSpacing", label: "Recommended Spacing (m)", formula: "cargoLength > 0 ? cargoLength / (recommendedLashings / 2) : 0" },
+            
+            // Safety Analysis
+            { name: "totalCapacity", label: "Total Securing Capacity (daN)", formula: "recommendedLashings * effectiveSTF" },
+            { name: "maxLoadCapacity", label: "Max Supported Weight (tons)", formula: "totalCapacity / (1000 * 0.8)" },
+            { name: "safetyMargin", label: "Safety Margin (%)", formula: "((maxLoadCapacity - cargoWeight) / cargoWeight) * 100" },
+            { name: "criticalDirection", label: "Critical Direction", formula: "slidingForward > slidingSide ? (slidingForward > slidingBackward ? 'Forward' : 'Backward') : (slidingSide > slidingBackward ? 'Sideways' : 'Backward')" },
+            
+            // Friction Analysis
+            { name: "frictionCategory", label: "Friction Category", formula: "frictionCoeff >= 0.50 ? 'Excellent' : (frictionCoeff >= 0.40 ? 'Good' : (frictionCoeff >= 0.30 ? 'Moderate' : (frictionCoeff >= 0.20 ? 'Low' : 'Poor')))" },
+            { name: "frictionForce", label: "Friction Contribution (daN)", formula: "cargoWeight * 1000 * frictionCoeff * verticalComponent * recommendedLashings" },
+            { name: "tensionForce", label: "Tension Contribution (daN)", formula: "standardForce * horizontalComponent * recommendedLashings" },
+            
+            // EU BPG Compliance Checks
+            { name: "isHBRatioSafe", label: "H/B Ratio Status", formula: "hbRatio <= 2.0 ? 'Safe' : 'High'" },
+            { name: "isLCAdequate", label: "LC Capacity Check", formula: "lashingCapacity >= 2000 ? 'Adequate' : 'Low'" },
+            { name: "isSTFAdequate", label: "STF Tension Check", formula: "standardForce >= 350 ? 'Adequate' : 'Low'" },
+            { name: "minLashingAngle", label: "Min Recommended Angle", formula: "hbRatio > 1.5 ? 60 : 75" },
+            { name: "isAngleOptimal", label: "Angle Optimization", formula: "lashingAngle >= minLashingAngle ? 'Optimal' : 'Increase angle'" },
+            
+            // Cost & Material Estimates
+            { name: "totalLashingLength", label: "Est. Total Strap Length (m)", formula: "recommendedLashings * ((cargoWidth + cargoHeight) * 2 + 1.5)" },
+            { name: "estimatedCost", label: "Est. Material Cost (EUR)", formula: "recommendedLashings * 15" },
+            
+            // Additional Reference Values
+            { name: "standardLCReference", label: "Standard LC Reference", formula: "'LC 2500 daN'" },
+            { name: "standardSTFReference", label: "Standard STF Reference", formula: "'STF 400-500 daN'" },
+            { name: "complianceStandard", label: "Compliance Standard", formula: "'EN 12195-1:2010'" }
+        ]
+    },
+    {
+        name: "Barcode & QR Generator",
+        icon: "📱",
+        description: "Generate EAN13, QR codes, Code128, and more with customization options",
+        translationKey: "template-barcode-qr",
+        inputs: [
+            { name: "barcodeType", label: "Barcode Type", type: "select", options: ["EAN13", "QR", "Code128", "Code39", "UPC-A", "ITF-14"], defaultValue: "EAN13" },
+            { name: "barcodeData", label: "Data/Text", type: "text", defaultValue: "1234567890128" },
+            { name: "displayValue", label: "Show Text Below", type: "checkbox", defaultValue: true },
+            { name: "barcodeWidth", label: "Width (px)", type: "number", defaultValue: 2, step: 1 },
+            { name: "barcodeHeight", label: "Height (px)", type: "number", defaultValue: 100 },
+            { name: "qrSize", label: "QR Size (px)", type: "number", defaultValue: 256 },
+            { name: "qrErrorLevel", label: "QR Error Correction", type: "select", options: ["L", "M", "Q", "H"], defaultValue: "M" },
+            { name: "foregroundColor", label: "Color", type: "text", defaultValue: "#000000" },
+            { name: "backgroundColor", label: "Background", type: "text", defaultValue: "#FFFFFF" }
+        ],
+        formulas: [
+            { name: "dataLength", label: "Data Length", formula: "length(barcodeData)" },
+            { name: "isValidEAN13", label: "Valid EAN13", formula: "if(barcodeType == 'EAN13' and length(barcodeData) == 13, 'Yes', 'No')" },
+            { name: "estimatedSize", label: "Estimated Size (px)", formula: "if(barcodeType == 'QR', qrSize, barcodeWidth * length(barcodeData) * 10)" }
+        ]
+    },
+    // NEW MATH: Fuel Cost Calculator
+    {
+        name: "Fuel Cost Calculator",
+        icon: "⛽",
+        description: "Calculate fuel usage, total cost and cost per km for any vehicle",
+        translationKey: "template-math-fuel",
+        inputs: [
+            { name: "distanceKm", label: "Distance (km)", type: "number", defaultValue: 500 },
+            { name: "fuelPer100Km", label: "Fuel Consumption (L/100km)", type: "number", defaultValue: 8.5 },
+            { name: "fuelPricePerLitre", label: "Fuel Price per Litre", type: "number", defaultValue: 1.85 },
+            { name: "numVehicles", label: "Number of Vehicles", type: "number", defaultValue: 1 }
+        ],
+        formulas: [
+            { name: "fuelUsedLitres", label: "Fuel Used (litres)", formula: "(distanceKm / 100) * fuelPer100Km" },
+            { name: "tripFuelCost", label: "Trip Fuel Cost", formula: "fuelUsedLitres * fuelPricePerLitre" },
+            { name: "costPerKm", label: "Cost per km", formula: "tripFuelCost / distanceKm" },
+            { name: "totalFleetCost", label: "Total Fleet Cost", formula: "tripFuelCost * numVehicles" },
+            { name: "co2Kg", label: "Estimated CO₂ (kg)", formula: "fuelUsedLitres * 2.31" }
+        ]
+    },
+    // NEW MATH: Tax Bracket Calculator
+    {
+        name: "Tax Bracket Calculator",
+        icon: "🏦",
+        description: "Calculate marginal and effective tax rates across 3 income brackets",
+        translationKey: "template-math-tax",
+        inputs: [
+            { name: "grossIncome", label: "Gross Annual Income", type: "number", defaultValue: 600000 },
+            { name: "bracket1Limit", label: "Bracket 1 Upper Limit", type: "number", defaultValue: 50000 },
+            { name: "bracket1Rate", label: "Bracket 1 Tax Rate (%)", type: "number", defaultValue: 8 },
+            { name: "bracket2Limit", label: "Bracket 2 Upper Limit", type: "number", defaultValue: 550000 },
+            { name: "bracket2Rate", label: "Bracket 2 Tax Rate (%)", type: "number", defaultValue: 40.2 },
+            { name: "bracket3Rate", label: "Bracket 3 Tax Rate (%)", type: "number", defaultValue: 56 }
+        ],
+        formulas: [
+            { name: "tax1", label: "Tax on Bracket 1", formula: "min(grossIncome, bracket1Limit) * (bracket1Rate / 100)" },
+            { name: "tax2", label: "Tax on Bracket 2", formula: "max(0, min(grossIncome, bracket2Limit) - bracket1Limit) * (bracket2Rate / 100)" },
+            { name: "tax3", label: "Tax on Bracket 3", formula: "max(0, grossIncome - bracket2Limit) * (bracket3Rate / 100)" },
+            { name: "totalTax", label: "Total Tax", formula: "tax1 + tax2 + tax3" },
+            { name: "effectiveRate", label: "Effective Tax Rate (%)", formula: "(totalTax / grossIncome) * 100" },
+            { name: "netIncome", label: "Net Income After Tax", formula: "grossIncome - totalTax" },
+            { name: "marginalRate", label: "Marginal Tax Rate (%)", formula: "grossIncome > bracket2Limit ? bracket3Rate : (grossIncome > bracket1Limit ? bracket2Rate : bracket1Rate)" }
+        ]
     }
 ];
 
@@ -1561,23 +1792,49 @@ function addCustomInput() {
     const id = `input_${inputCounter++}`;
     
     const inputDiv = document.createElement('div');
-    inputDiv.className = 'flex gap-2 items-start p-3 bg-gray-50 dark:bg-gray-700 rounded';
+    inputDiv.className = 'rounded-lg border-2 border-indigo-200 dark:border-indigo-700 overflow-hidden shadow-sm mb-2';
     inputDiv.id = id;
     
     inputDiv.innerHTML = `
-        <div class="drag-handle cursor-move px-2 py-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" title="${translate('drag-to-reorder') || 'Drag to reorder'}">
-            ⋮⋮
+        <!-- Header bar -->
+        <div class="flex items-center justify-between px-3 py-2 bg-indigo-500 dark:bg-indigo-700">
+            <div class="flex items-center gap-2">
+                <span class="drag-handle cursor-move text-white/70 hover:text-white select-none text-lg" title="Drag to reorder">⋮⋮</span>
+                <span class="text-white font-semibold text-sm">📥 Input Field</span>
+            </div>
+            <div class="flex gap-1">
+                <button onclick="duplicateInput('${id}')" class="px-2 py-1 bg-white/20 hover:bg-white/30 text-white rounded text-xs" title="Duplicate">📋</button>
+                <button onclick="removeElement('${id}')" class="px-2 py-1 bg-white/20 hover:bg-red-500 text-white rounded text-xs" title="Delete">🗑️</button>
+            </div>
         </div>
-        <div class="flex-1 space-y-2">
-            <div class="grid grid-cols-2 gap-2">
-                <div>
-                    <input type="text" placeholder="${translate('input-var-placeholder') || 'price'}" class="input-field text-sm input-var-name" oninput="updateAvailableVariables(); setupFormulaAutocomplete()">
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5" data-i18n="input-var-name-hint">${translate('input-var-name-hint') || 'Use lowercase, no spaces (e.g., price, quantity)'}</p>
+        <!-- Two-pane: Variable Name + Display Label -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 bg-white dark:bg-gray-800">
+            <!-- Variable Name (orange) -->
+            <div class="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-3 border border-orange-200 dark:border-orange-700">
+                <div class="flex items-center gap-1.5 mb-2">
+                    <span>🔑</span>
+                    <label class="text-xs font-bold text-orange-700 dark:text-orange-300 uppercase tracking-wide">Variable Name</label>
                 </div>
-                <div>
-                    <input type="text" placeholder="${translate('input-label-placeholder') || 'Price per unit'}" class="input-field text-sm input-label" oninput="suggestVariableName(this)">
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5" data-i18n="input-label-hint">${translate('input-label-hint') || 'Friendly name shown to users'}</p>
+                <input type="text" placeholder="price" class="input-field text-sm font-mono input-var-name" oninput="updateAvailableVariables(); setupFormulaAutocomplete()">
+                <p class="text-xs text-orange-600 dark:text-orange-400 mt-1.5 leading-snug">
+                    Used in formulas: <code class="bg-orange-100 dark:bg-orange-900/50 px-1 rounded font-mono">price * quantity</code>
+                </p>
+                <p class="text-xs text-gray-400 mt-0.5">Lowercase, no spaces (e.g. <em>price</em>, <em>qty</em>)</p>
+            </div>
+            <!-- Display Label (blue) -->
+            <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border border-blue-200 dark:border-blue-700">
+                <div class="flex items-center gap-1.5 mb-2">
+                    <span>🏷️</span>
+                    <label class="text-xs font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wide">Display Label</label>
                 </div>
+                <input type="text" placeholder="Price per unit" class="input-field text-sm input-label" oninput="suggestVariableName(this)">
+                <p class="text-xs text-blue-600 dark:text-blue-400 mt-1.5 leading-snug">Shown to users as the field heading / name</p>
+            </div>
+        </div>
+        <!-- Row 2: Type, Default, Unit -->
+        <div class="grid grid-cols-3 gap-3 px-3 pb-3 bg-white dark:bg-gray-800">
+            <div>
+                <label class="text-xs font-semibold text-gray-500 dark:text-gray-400 block mb-1">📊 Input Type</label>
                 <select class="input-field text-sm input-type" onchange="updateInputTypeOptions(this)">
                     <option value="number">Number</option>
                     <option value="text">Text</option>
@@ -1588,31 +1845,36 @@ function addCustomInput() {
                     <option value="percentage">Percentage (%)</option>
                     <option value="currency">Currency ($)</option>
                 </select>
-                <div>
-                    <input type="number" placeholder="${translate('input-default-placeholder') || '100'}" class="input-field text-sm input-default">
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5" data-i18n="input-default-hint">${translate('input-default-hint') || 'Pre-filled value (optional)'}</p>
-                </div>
             </div>
-            <details class="validation-details hidden">
-                <summary class="cursor-pointer text-xs text-yellow-700 dark:text-yellow-400 hover:text-yellow-600">⚙️ Validation Rules</summary>
-                <div class="mt-1 grid grid-cols-3 gap-2 pl-3 border-l-2 border-yellow-300">
+            <div>
+                <label class="text-xs font-semibold text-gray-500 dark:text-gray-400 block mb-1">🔢 Default Value</label>
+                <input type="number" placeholder="100" class="input-field text-sm input-default">
+            </div>
+            <div>
+                <label class="text-xs font-semibold text-gray-500 dark:text-gray-400 block mb-1">🏷 Unit <span class="font-normal text-gray-400">(optional)</span></label>
+                <input type="text" placeholder="kg, %, €" class="input-field text-xs input-unit" maxlength="12">
+            </div>
+        </div>
+        <!-- Validation rules (collapsible) -->
+        <details class="validation-details hidden">
+            <summary class="cursor-pointer text-xs text-yellow-700 dark:text-yellow-400 hover:text-yellow-600 px-3 py-2 bg-yellow-50 dark:bg-yellow-900/20 border-t border-gray-100 dark:border-gray-700">⚙️ Validation Rules (optional)</summary>
+            <div class="grid grid-cols-3 gap-2 px-3 pb-3 pt-2 bg-white dark:bg-gray-800">
+                <div>
+                    <label class="text-xs text-gray-500 block mb-1">Min value</label>
                     <input type="number" placeholder="Min" class="input-field text-xs input-min" title="Minimum value">
+                </div>
+                <div>
+                    <label class="text-xs text-gray-500 block mb-1">Max value</label>
                     <input type="number" placeholder="Max" class="input-field text-xs input-max" title="Maximum value">
-                    <label class="flex items-center gap-1 text-xs text-gray-700 dark:text-gray-300">
-                        <input type="checkbox" class="input-required w-3 h-3">
-                        <span>Required</span>
+                </div>
+                <div class="flex items-end pb-1">
+                    <label class="flex items-center gap-1.5 text-xs text-gray-700 dark:text-gray-300">
+                        <input type="checkbox" class="input-required w-3.5 h-3.5">
+                        <span>Required field</span>
                     </label>
                 </div>
-            </details>
-        </div>
-        <div class="flex flex-col gap-1">
-            <button onclick="duplicateInput('${id}')" class="px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-xs" title="${translate('duplicate') || 'Duplicate'}">
-                📋
-            </button>
-            <button onclick="removeElement('${id}')" class="px-2 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-xs" title="${translate('delete') || 'Delete'}">
-                🗑️
-            </button>
-        </div>
+            </div>
+        </details>
     `;
     
     // Make draggable
@@ -1635,56 +1897,90 @@ function addCustomFormula() {
     const id = `formula_${formulaCounter++}`;
     
     const formulaDiv = document.createElement('div');
-    formulaDiv.className = 'p-3 bg-gray-50 dark:bg-gray-700 rounded';
+    formulaDiv.className = 'rounded-lg border-2 border-purple-200 dark:border-purple-700 overflow-hidden shadow-sm mb-2';
     formulaDiv.id = id;
     
     formulaDiv.innerHTML = `
-        <div class="flex gap-2 mb-2">
-            <div class="drag-handle cursor-move px-2 py-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" title="${translate('drag-to-reorder') || 'Drag to reorder'}">
-                ⋮⋮
-            </div>
-            <div class="flex-1">
-                <input type="text" placeholder="${translate('formula-var-placeholder') || 'total'}" class="input-field text-sm formula-var-name">
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5" data-i18n="formula-name-hint">${translate('formula-name-hint') || 'Result name (can be used in other formulas)'}</p>
-            </div>
-            <div class="flex-1">
-                <input type="text" placeholder="${translate('formula-label-placeholder') || 'Total Price'}" class="input-field text-sm formula-label">
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5" data-i18n="formula-label-hint">${translate('formula-label-hint') || 'Heading shown above result'}</p>
+        <!-- Header bar -->
+        <div class="flex items-center justify-between px-3 py-2 bg-purple-600 dark:bg-purple-800">
+            <div class="flex items-center gap-2">
+                <span class="drag-handle cursor-move text-white/70 hover:text-white select-none text-lg" title="Drag to reorder">⋮⋮</span>
+                <span class="text-white font-semibold text-sm">🧮 Formula / Output</span>
             </div>
             <div class="flex gap-1">
-                <button onclick="duplicateFormula('${id}')" class="px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-xs" title="${translate('duplicate') || 'Duplicate'}">
-                    📋
-                </button>
-                <button onclick="removeElement('${id}')" class="px-2 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-xs" title="${translate('delete') || 'Delete'}">
-                    🗑️
-                </button>
+                <button onclick="duplicateFormula('${id}')" class="px-2 py-1 bg-white/20 hover:bg-white/30 text-white rounded text-xs" title="Duplicate">📋</button>
+                <button onclick="removeElement('${id}')" class="px-2 py-1 bg-white/20 hover:bg-red-500 text-white rounded text-xs" title="Delete">🗑️</button>
             </div>
         </div>
-        <div class="relative">
-            <textarea placeholder="${translate('formula-expression-placeholder') || 'price * quantity'}" 
-                class="input-field text-sm font-mono formula-expression" rows="2"
-                oninput="validateFormulaLive(this)" 
-                onkeydown="handleFormulaAutocomplete(event, this)"
-                data-formula-id="${id}"></textarea>
-            <div class="autocomplete-dropdown hidden absolute z-50 bg-white dark:bg-gray-800 border-2 border-blue-500 rounded-lg shadow-xl max-h-48 overflow-y-auto" id="autocomplete-${id}"></div>
-            <div class="formula-error hidden mt-1 text-xs text-red-600 dark:text-red-400"></div>
-            <div class="formula-success hidden mt-1 text-xs text-green-600 dark:text-green-400"></div>
-        </div>
-        <div class="mt-2 relative group">
-            <span class="text-xs text-blue-600 dark:text-blue-400 cursor-help" data-i18n="formula-help-hover">💡 ${translate('formula-help-hover') || 'Formula Help (hover for info)'}</span>
-            <div class="absolute left-0 bottom-full mb-2 hidden group-hover:block z-50 bg-white dark:bg-gray-800 border-2 border-blue-500 rounded-lg shadow-xl p-3 w-80">
-                <div class="text-xs space-y-2">
-                    <div class="font-semibold text-blue-700 dark:text-blue-300" data-i18n="available-functions">${translate('available-functions') || 'Available Functions:'}</div>
-                    <div class="text-gray-700 dark:text-gray-300"><code class="bg-gray-100 dark:bg-gray-700 px-1 rounded">sqrt() pow() abs() round() min() max()</code></div>
-                    <div class="font-semibold text-blue-700 dark:text-blue-300" data-i18n="available-operators">${translate('available-operators') || 'Operators:'}</div>
-                    <div class="text-gray-700 dark:text-gray-300"><code class="bg-gray-100 dark:bg-gray-700 px-1 rounded">+ - * / ^ ( )</code></div>
-                    <div class="font-semibold text-blue-700 dark:text-blue-300" data-i18n="examples">${translate('examples') || 'Examples:'}</div>
-                    <div class="text-gray-700 dark:text-gray-300 space-y-1">
-                        <div><code class="bg-gray-100 dark:bg-gray-700 px-1 rounded text-xs">price * quantity</code></div>
-                        <div><code class="bg-gray-100 dark:bg-gray-700 px-1 rounded text-xs">sqrt(2 * demand * cost)</code></div>
-                        <div><code class="bg-gray-100 dark:bg-gray-700 px-1 rounded text-xs">revenue - expenses</code></div>
-                    </div>
+        <!-- Two-pane: Result Variable + Result Label -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 bg-white dark:bg-gray-800">
+            <!-- Result Variable Name (orange) -->
+            <div class="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-3 border border-orange-200 dark:border-orange-700">
+                <div class="flex items-center gap-1.5 mb-2">
+                    <span>🔑</span>
+                    <label class="text-xs font-bold text-orange-700 dark:text-orange-300 uppercase tracking-wide">Result Variable Name</label>
                 </div>
+                <input type="text" placeholder="total" class="input-field text-sm font-mono formula-var-name">
+                <p class="text-xs text-orange-600 dark:text-orange-400 mt-1.5 leading-snug">
+                    Chain in other formulas: <code class="bg-orange-100 dark:bg-orange-900/50 px-1 rounded font-mono">total * 1.25</code>
+                </p>
+            </div>
+            <!-- Result Label (blue) -->
+            <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border border-blue-200 dark:border-blue-700">
+                <div class="flex items-center gap-1.5 mb-2">
+                    <span>🏷️</span>
+                    <label class="text-xs font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wide">Result Label</label>
+                </div>
+                <input type="text" placeholder="Total Price" class="input-field text-sm formula-label">
+                <p class="text-xs text-blue-600 dark:text-blue-400 mt-1.5 leading-snug">Shown as the output card heading</p>
+            </div>
+        </div>
+        <!-- Formula Expression (dark code editor style) -->
+        <div class="px-3 pb-3 bg-white dark:bg-gray-800">
+            <label class="text-xs font-bold text-gray-600 dark:text-gray-400 block mb-1.5">
+                <span class="text-green-600 dark:text-green-400 font-mono text-sm">ƒ(x)</span> Formula Expression
+                <span class="ml-1 font-normal text-gray-400">— reference variable names from the Input Fields above</span>
+            </label>
+            <div class="relative">
+                <textarea placeholder="price * quantity"
+                    class="input-field text-sm font-mono formula-expression w-full"
+                    rows="2"
+                    oninput="validateFormulaLive(this)"
+                    onkeydown="handleFormulaAutocomplete(event, this)"
+                    data-formula-id="${id}"
+                    style="background: #1e1e2e; color: #4ade80; font-family: 'Courier New', monospace; border: 1px solid #4b5563; border-radius: 6px;"></textarea>
+                <div class="autocomplete-dropdown hidden absolute z-50 bg-white dark:bg-gray-800 border-2 border-blue-500 rounded-lg shadow-xl max-h-48 overflow-y-auto" id="autocomplete-${id}"></div>
+                <div class="formula-error hidden mt-1 text-xs text-red-600 dark:text-red-400"></div>
+                <div class="formula-success hidden mt-1 text-xs text-green-600 dark:text-green-400"></div>
+            </div>
+            <div class="mt-1.5 flex flex-wrap gap-x-4 gap-y-0.5 text-xs text-gray-400">
+                <span>Functions: <code class="bg-gray-100 dark:bg-gray-700 px-1 rounded text-gray-600 dark:text-gray-300">sqrt() pow() abs() round() min() max()</code></span>
+                <span>Operators: <code class="bg-gray-100 dark:bg-gray-700 px-1 rounded text-gray-600 dark:text-gray-300">+ - * / ^ ( )</code></span>
+            </div>
+        </div>
+        <!-- Output options row -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 px-3 pb-3 pt-2 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700">
+            <div>
+                <label class="text-xs font-semibold text-gray-500 dark:text-gray-400 block mb-1">📐 Output Format</label>
+                <select class="input-field text-xs formula-format" style="padding: 4px 6px;">
+                    <option value="number">Number (2 dec)</option>
+                    <option value="integer">Integer</option>
+                    <option value="currency">Currency</option>
+                    <option value="percent">Percent (%)</option>
+                    <option value="text">As-is / Text</option>
+                </select>
+            </div>
+            <div>
+                <label class="text-xs font-semibold text-gray-500 dark:text-gray-400 block mb-1">🔴 Warn Below</label>
+                <input type="number" placeholder="threshold" class="input-field text-xs formula-threshold-low" style="padding: 4px 6px;">
+            </div>
+            <div>
+                <label class="text-xs font-semibold text-gray-500 dark:text-gray-400 block mb-1">🟢 Good Above</label>
+                <input type="number" placeholder="threshold" class="input-field text-xs formula-threshold-high" style="padding: 4px 6px;">
+            </div>
+            <div>
+                <label class="text-xs font-semibold text-gray-500 dark:text-gray-400 block mb-1">📝 Notes</label>
+                <input type="text" placeholder="Explanation..." class="input-field text-xs formula-notes" style="padding: 4px 6px;">
             </div>
         </div>
     `;
@@ -1768,7 +2064,7 @@ function validateFormula(textarea) {
 function saveCustomPage() {
     const name = document.getElementById('customPageName').value.trim();
     if (!name) {
-        showToast('Please enter a page name', 'warning');
+        showToast(currentLanguage === 'da' ? 'Angiv venligst et sidenavn' : 'Please enter a page name', 'warning');
         return;
     }
     
@@ -1782,6 +2078,10 @@ function saveCustomPage() {
         
         if (varName && label) {
             const inputObj = { name: varName, label, type, defaultValue };
+            
+            // Add unit label (Step F)
+            const unitInput = div.querySelector('.input-unit');
+            if (unitInput && unitInput.value.trim()) inputObj.unit = unitInput.value.trim();
             
             // Add validation settings if enabled
             const minInput = div.querySelector('.input-min');
@@ -1804,12 +2104,21 @@ function saveCustomPage() {
         const formula = div.querySelector('.formula-expression').value.trim();
         
         if (varName && label && formula) {
-            formulas.push({ name: varName, label, formula });
+            const fmtEl = div.querySelector('.formula-format');
+            const notesEl = div.querySelector('.formula-notes');
+            const thLowEl = div.querySelector('.formula-threshold-low');
+            const thHighEl = div.querySelector('.formula-threshold-high');
+            const formulaObj = { name: varName, label, formula };
+            if (fmtEl && fmtEl.value) formulaObj.format = fmtEl.value;
+            if (notesEl && notesEl.value.trim()) formulaObj.notes = notesEl.value.trim();
+            if (thLowEl && thLowEl.value !== '') formulaObj.thresholdLow = parseFloat(thLowEl.value);
+            if (thHighEl && thHighEl.value !== '') formulaObj.thresholdHigh = parseFloat(thHighEl.value);
+            formulas.push(formulaObj);
         }
     });
     
     if (inputs.length === 0 || formulas.length === 0) {
-        showToast('Please add at least one input and one formula', 'warning');
+        showToast(currentLanguage === 'da' ? 'Tilføj venligst mindst ét inputfelt og én formel' : 'Please add at least one input field and one formula', 'warning');
         return;
     }
     
@@ -1865,7 +2174,7 @@ function saveCustomPage() {
     }
     
     closeCustomPageModal();
-    showToast(`✅ Page "${name}" saved successfully!`, 'success');
+    showToast(currentLanguage === 'da' ? `✅ Siden "${name}" blev gemt!` : `✅ Page "${name}" saved successfully!`, 'success');
 }
 
 // Render custom pages grid
@@ -1972,16 +2281,16 @@ function renderCustomPagesGridOld() {
             <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">${page.description || translate('no-description')}</p>
             <div class="flex gap-2 text-xs mb-3">
                 <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded">
-                    ${page.inputs.length} inputs
+                    ${page.inputs.length} ${currentLanguage === 'da' ? 'input' : 'inputs'}
                 </span>
                 <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded">
-                    ${page.formulas.length} formulas
+                    ${page.formulas.length} ${currentLanguage === 'da' ? 'formler' : 'formulas'}
                 </span>
-                ${page.graph ? '<span class="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded">📊 Graph</span>' : ''}
-                ${page.simulation ? '<span class="px-2 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded">⏱️ Simulation</span>' : ''}
+                ${page.graph ? '<span class="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded">📊 ' + (currentLanguage === 'da' ? 'Graf' : 'Graph') + '</span>' : ''}
+                ${page.simulation ? '<span class="px-2 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded">⏱️ ' + (currentLanguage === 'da' ? 'Simulering' : 'Simulation') + '</span>' : ''}
             </div>
             <button onclick="openCustomPage('${page.id}')" class="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-colors">
-                Open Page →
+                ${currentLanguage === 'da' ? 'Åbn Side' : 'Open Page'} →
             </button>
         `;
         
@@ -2039,13 +2348,13 @@ function generateCustomPageSections() {
                         <p class="text-gray-600 dark:text-gray-400">${page.description || ''}</p>
                     </div>
                     <button onclick="exportCustomPage('${page.id}')" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition-colors">
-                        📤 Export
+                        📤 ${currentLanguage === 'da' ? 'Eksporter' : 'Export'}
                     </button>
                 </div>
                 
                 <!-- Inputs -->
                 <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">📝 Inputs</h3>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">📝 ${currentLanguage === 'da' ? 'Inputfelter' : 'Inputs'}</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="inputs-${page.id}">
                         ${renderPageInputs(page)}
                     </div>
@@ -2074,7 +2383,7 @@ function generateCustomPageSections() {
                 <!-- Graph -->
                 ${page.graph ? `
                     <div id="graph-container-${page.id}" class="hidden">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">📊 Visualization</h3>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">📊 ${currentLanguage === 'da' ? 'Visualisering' : 'Visualization'}</h3>
                         <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                             <canvas id="graph-${page.id}"></canvas>
                         </div>
@@ -2084,7 +2393,7 @@ function generateCustomPageSections() {
                 <!-- Simulation Canvas -->
                 ${page.simulation ? `
                     <div id="simulation-container-${page.id}" class="hidden mt-6">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">⏱️ Simulation</h3>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">⏱️ ${currentLanguage === 'da' ? 'Simulering' : 'Simulation'}</h3>
                         <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                             <canvas id="simulation-${page.id}"></canvas>
                         </div>
@@ -2101,13 +2410,13 @@ function generateCustomPageSections() {
 function renderPageInputs(page) {
     return page.inputs.map(input => `
         <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">${input.label}</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">${input.label}${input.unit ? ` <span class="text-xs text-gray-400 font-normal">(${input.unit})</span>` : ''}</label>
             <input 
                 type="${input.type}" 
                 id="input-${page.id}-${input.name}" 
                 class="input-field" 
                 value="${input.defaultValue || ''}"
-                placeholder="${input.label}"
+                placeholder="${input.label}${input.unit ? ' (' + input.unit + ')' : ''}"
                 onkeypress="if(event.key === 'Enter') calculateCustomPage('${page.id}')">
         </div>
     `).join('');
@@ -2116,9 +2425,10 @@ function renderPageInputs(page) {
 // Render page results HTML
 function renderPageResults(page) {
     return page.formulas.map(formula => `
-        <div class="result-card">
+        <div class="result-card" id="result-card-${page.id}-${formula.name}">
             <h4 class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">${formula.label}</h4>
             <p id="result-${page.id}-${formula.name}" class="text-3xl font-bold text-purple-600 dark:text-purple-400">-</p>
+            ${formula.notes ? `<p class="text-xs text-gray-400 dark:text-gray-500 mt-1 italic">${formula.notes}</p>` : ''}
         </div>
     `).join('');
 }
@@ -2145,20 +2455,45 @@ function calculateCustomPage(pageId) {
                 const result = math.evaluate(formula.formula, scope);
                 scope[formula.name] = result;
                 
-                // Display result
+                // Display result with formatting (Step D)
                 const resultElement = document.getElementById(`result-${pageId}-${formula.name}`);
+                const cardElement = document.getElementById(`result-card-${pageId}-${formula.name}`);
                 if (resultElement) {
+                    let displayValue;
                     if (typeof result === 'number') {
-                        resultElement.textContent = result.toFixed(2);
+                        const fmt = formula.format || 'number';
+                        if (fmt === 'integer') displayValue = Math.round(result).toString();
+                        else if (fmt === 'currency') displayValue = '\u20AC\u00A0' + result.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        else if (fmt === 'percent') displayValue = result.toFixed(1) + '%';
+                        else if (fmt === 'text') displayValue = result.toString();
+                        else displayValue = result.toFixed(2);
                     } else {
-                        resultElement.textContent = result;
+                        displayValue = result;
+                    }
+                    resultElement.textContent = displayValue;
+                    
+                    // Apply color threshold (Step E)
+                    if (cardElement && typeof result === 'number') {
+                        cardElement.classList.remove('threshold-good', 'threshold-warn', 'threshold-neutral');
+                        const hasLow = formula.thresholdLow !== undefined;
+                        const hasHigh = formula.thresholdHigh !== undefined;
+                        if (hasLow && result < formula.thresholdLow) {
+                            cardElement.classList.add('threshold-warn');
+                            resultElement.className = resultElement.className.replace(/text-\S+-600/, 'text-red-600').replace(/dark:text-\S+-400/, 'dark:text-red-400');
+                        } else if (hasHigh && result >= formula.thresholdHigh) {
+                            cardElement.classList.add('threshold-good');
+                            resultElement.className = resultElement.className.replace(/text-\S+-600/, 'text-green-600').replace(/dark:text-\S+-400/, 'dark:text-green-400');
+                        } else {
+                            cardElement.classList.add('threshold-neutral');
+                            resultElement.className = resultElement.className.replace(/text-\S+-600/, 'text-purple-600').replace(/dark:text-\S+-400/, 'dark:text-purple-400');
+                        }
                     }
                 }
             } catch (error) {
                 console.error(`Error calculating formula ${formula.name}:`, error);
                 const resultElement = document.getElementById(`result-${pageId}-${formula.name}`);
                 if (resultElement) {
-                    resultElement.textContent = 'Error';
+                    resultElement.textContent = currentLanguage === 'da' ? 'Fejl' : 'Error';
                 }
             }
         });
@@ -2171,10 +2506,10 @@ function calculateCustomPage(pageId) {
             renderCustomGraph(pageId, page, scope);
         }
         
-        showToast('✅ Calculation complete!', 'success');
+        showToast(currentLanguage === 'da' ? '✅ Beregning fuldført!' : '✅ Calculation complete!', 'success');
     } catch (error) {
         console.error('Calculation error:', error);
-        showToast('❌ Calculation error: ' + error.message, 'error');
+        showToast((currentLanguage === 'da' ? '❌ Beregningsfejl: ' : '❌ Calculation error: ') + error.message, 'error');
     }
 }
 
@@ -2247,7 +2582,7 @@ function renderCustomGraph(pageId, page, scope) {
                 },
                 title: {
                     display: true,
-                    text: page.name + ' - Visualization'
+                    text: page.name + (currentLanguage === 'da' ? ' - Visualisering' : ' - Visualization')
                 }
             },
             scales: {
@@ -2260,7 +2595,7 @@ function renderCustomGraph(pageId, page, scope) {
                 y: {
                     title: {
                         display: true,
-                        text: 'Value'
+                        text: currentLanguage === 'da' ? 'Værdi' : 'Value'
                     }
                 }
             }
@@ -2335,7 +2670,7 @@ function runSimulation(pageId) {
                 },
                 title: {
                     display: true,
-                    text: `${page.name} - Simulation Over Time`
+                    text: currentLanguage === 'da' ? `${page.name} - Simulering over tid` : `${page.name} - Simulation Over Time`
                 }
             },
             scales: {
@@ -2348,7 +2683,7 @@ function runSimulation(pageId) {
                 y: {
                     title: {
                         display: true,
-                        text: 'Value'
+                        text: currentLanguage === 'da' ? 'Værdi' : 'Value'
                     }
                 }
             }
@@ -2359,7 +2694,7 @@ function runSimulation(pageId) {
     simulationIntervalId = setInterval(() => {
         if (currentStep > end) {
             stopSimulation();
-            showToast('✅ Simulation complete!', 'success');
+            showToast(currentLanguage === 'da' ? '✅ Simulering fuldført!' : '✅ Simulation complete!', 'success');
             return;
         }
         
@@ -2420,6 +2755,8 @@ function editCustomPage(pageId) {
             lastInput.querySelector('.input-label').value = input.label;
             lastInput.querySelector('.input-type').value = input.type;
             lastInput.querySelector('.input-default').value = input.defaultValue || '';
+            const unitEl = lastInput.querySelector('.input-unit');
+            if (unitEl && input.unit) unitEl.value = input.unit;
         });
     
         // Clear and populate formulas
@@ -2431,6 +2768,14 @@ function editCustomPage(pageId) {
             lastFormula.querySelector('.formula-var-name').value = formula.name;
             lastFormula.querySelector('.formula-label').value = formula.label;
             lastFormula.querySelector('.formula-expression').value = formula.formula;
+            const fmtEl = lastFormula.querySelector('.formula-format');
+            const notesEl = lastFormula.querySelector('.formula-notes');
+            const thLowEl = lastFormula.querySelector('.formula-threshold-low');
+            const thHighEl = lastFormula.querySelector('.formula-threshold-high');
+            if (fmtEl && formula.format) fmtEl.value = formula.format;
+            if (notesEl && formula.notes) notesEl.value = formula.notes;
+            if (thLowEl && formula.thresholdLow !== undefined) thLowEl.value = formula.thresholdLow;
+            if (thHighEl && formula.thresholdHigh !== undefined) thHighEl.value = formula.thresholdHigh;
         });
         
         // Populate graph config
@@ -2470,7 +2815,7 @@ function deleteCustomPage(pageId) {
         saveCustomPagesToStorage();
         renderCustomPagesGrid();
         renderCustomPagesTabs();
-        showToast(`🗑️ Page "${page.name}" deleted`, 'info');
+        showToast(currentLanguage === 'da' ? `🗑️ Siden "${page.name}" slettet` : `🗑️ Page "${page.name}" deleted`, 'info');
     }
 }
 
@@ -2489,7 +2834,7 @@ function exportCustomPages() {
     link.download = `custom-pages-${new Date().toISOString().split('T')[0]}.json`;
     link.click();
     URL.revokeObjectURL(url);
-    showToast('📥 Custom pages exported!', 'success');
+    showToast(currentLanguage === 'da' ? '📥 Brugerdefinerede sider eksporteret!' : '📥 Custom pages exported!', 'success');
 }
 
 // Export single page
@@ -2505,7 +2850,7 @@ function exportCustomPage(pageId) {
     link.download = `${page.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.json`;
     link.click();
     URL.revokeObjectURL(url);
-    showToast(`📤 "${page.name}" exported!`, 'success');
+    showToast(currentLanguage === 'da' ? `📤 "${page.name}" eksporteret!` : `📤 "${page.name}" exported!`, 'success');
 }
 
 // Import custom pages
@@ -2530,10 +2875,10 @@ function importCustomPages(event) {
             saveCustomPagesToStorage();
             renderCustomPagesGrid();
             renderCustomPagesTabs();
-            showToast(`✅ Imported ${imported.length} page(s)!`, 'success');
+            showToast(currentLanguage === 'da' ? `✅ ${imported.length} side(r) importeret!` : `✅ Imported ${imported.length} page(s)!`, 'success');
         } catch (error) {
             console.error('Import error:', error);
-            showToast('❌ Import failed: Invalid file format', 'error');
+            showToast(currentLanguage === 'da' ? '❌ Import mislykkedes: Ugyldigt filformat' : '❌ Import failed: Invalid file format', 'error');
         }
     };
     reader.readAsText(file);
@@ -2562,12 +2907,12 @@ function renderTemplates(searchTerm = '', category = 'all') {
     const countSpan = document.getElementById('templateCount');
     grid.innerHTML = '';
     
-    // Combine all templates with categories
+    // Combine all templates with categories and preserve original indices
     const allTemplates = [
-        ...logisticsTemplates.map(t => ({...t, category: 'logistics'})),
-        ...leanTemplates.map(t => ({...t, category: 'lean'})),
-        ...financeTemplates.map(t => ({...t, category: 'finance'})),
-        ...mathTemplates.map(t => ({...t, category: 'math'}))
+        ...logisticsTemplates.map((t, idx) => ({...t, category: 'logistics', originalIndex: idx, sourceArray: 'logistics'})),
+        ...leanTemplates.map((t, idx) => ({...t, category: 'lean', originalIndex: idx, sourceArray: 'lean'})),
+        ...financeTemplates.map((t, idx) => ({...t, category: 'finance', originalIndex: idx, sourceArray: 'finance'})),
+        ...mathTemplates.map((t, idx) => ({...t, category: 'math', originalIndex: idx, sourceArray: 'math'}))
     ];
     
     // Filter templates
@@ -2621,14 +2966,14 @@ function renderTemplates(searchTerm = '', category = 'all') {
                 grid.appendChild(section);
                 
                 categoryTemplates.forEach(template => {
-                    grid.appendChild(createTemplateCard(template));
+                    grid.appendChild(createTemplateCard(template, template.originalIndex));
                 });
             }
         });
     } else {
         // Show all filtered templates without grouping
         filteredTemplates.forEach(template => {
-            grid.appendChild(createTemplateCard(template));
+            grid.appendChild(createTemplateCard(template, template.originalIndex));
         });
     }
 }
@@ -2648,7 +2993,7 @@ function clearTemplateFilters() {
 }
 
 // Create template card
-function createTemplateCard(template) {
+function createTemplateCard(template, templateIndex) {
     const card = document.createElement('div');
     card.className = 'bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border-2 border-gray-200 dark:border-gray-600 hover:border-purple-400 dark:hover:border-purple-600 transition-all cursor-pointer';
     
@@ -2664,24 +3009,50 @@ function createTemplateCard(template) {
     const formulasLabel = translate('template-formulas-label') || 'formulas';
     const useButtonLabel = translate('template-use-button') || 'Use Template';
     
+    // Compute difficulty badge (Step H)
+    const complexityTotal = template.inputs.length + template.formulas.length;
+    const difficulty = complexityTotal <= 5  ? { label: '🟢 Beginner',     cls: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' } :
+                       complexityTotal <= 10 ? { label: '🟡 Intermediate', cls: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300' } :
+                       complexityTotal <= 15 ? { label: '🟠 Advanced',     cls: 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' } :
+                                              { label: '🔴 Expert',        cls: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300' };
+    
     card.innerHTML = `
         <div class="text-3xl mb-2">${template.icon}</div>
         <h5 class="font-bold text-gray-900 dark:text-white mb-1">${translatedName}</h5>
         <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">${translatedDesc}</p>
-        <div class="flex gap-2 text-xs mb-3">
+        <div class="flex flex-wrap gap-2 text-xs mb-3">
             <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded">
                 ${template.inputs.length} ${inputsLabel}
             </span>
             <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded">
                 ${template.formulas.length} ${formulasLabel}
             </span>
+            <span class="px-2 py-1 rounded ${difficulty.cls}">${difficulty.label}</span>
         </div>
-        <button onclick='loadTemplate(${JSON.stringify(template)})' class="w-full px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded font-medium transition-colors">
+        <button onclick='loadTemplateByIndex(${templateIndex}, "${template.sourceArray || 'logistics'}")' class="w-full px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded font-medium transition-colors">
             ${useButtonLabel}
         </button>
     `;
     
     return card;
+}
+
+// Load template by index from the correct template array
+function loadTemplateByIndex(index, sourceArray = 'logistics') {
+    let templateArrays = {
+        'logistics': logisticsTemplates,
+        'lean': leanTemplates,
+        'finance': financeTemplates,
+        'math': mathTemplates
+    };
+    
+    const templates = templateArrays[sourceArray] || logisticsTemplates;
+    
+    if (index >= 0 && index < templates.length) {
+        loadTemplate(templates[index]);
+    } else {
+        console.error('Invalid template index:', index, 'for source:', sourceArray);
+    }
 }
 
 // Load template
@@ -2727,7 +3098,7 @@ function loadTemplate(template) {
     renderCustomPagesGrid();
     renderCustomPagesTabs();
     closeTemplateLibrary();
-    showToast(`✅ Template "${translatedName}" loaded!`, 'success');
+    showToast(currentLanguage === 'da' ? `✅ Skabelon "${translatedName}" indlæst!` : `✅ Template "${translatedName}" loaded!`, 'success');
     
     // Open the new page
     setTimeout(() => {
@@ -2844,10 +3215,10 @@ function importCustomPage() {
                 saveCustomPagesToStorage();
                 renderCustomPagesGrid();
                 renderCustomPagesTabs();
-                showToast(`✅ Imported ${pages.length} page(s)!`, 'success');
+                showToast(currentLanguage === 'da' ? `✅ ${pages.length} side(r) importeret!` : `✅ Imported ${pages.length} page(s)!`, 'success');
             } catch (error) {
                 console.error('Import error:', error);
-                showToast('❌ Import failed: Invalid file format', 'error');
+                showToast(currentLanguage === 'da' ? '❌ Import mislykkedes: Ugyldigt filformat' : '❌ Import failed: Invalid file format', 'error');
             }
         };
         reader.readAsText(file);
@@ -2899,17 +3270,17 @@ function previewCustomPage() {
     
     // Validation
     if (!pageName) {
-        showToast('❌ Please enter a page name', 'error');
+        showToast(currentLanguage === 'da' ? '❌ Angiv venligst et sidenavn' : '❌ Please enter a page name', 'error');
         return;
     }
     
     if (inputs.length === 0) {
-        showToast('❌ Please add at least one input field', 'error');
+        showToast(currentLanguage === 'da' ? '❌ Tilføj venligst mindst ét inputfelt' : '❌ Please add at least one input field', 'error');
         return;
     }
     
     if (formulas.length === 0) {
-        showToast('❌ Please add at least one formula', 'error');
+        showToast(currentLanguage === 'da' ? '❌ Tilføj venligst mindst én formel' : '❌ Please add at least one formula', 'error');
         return;
     }
     
@@ -2949,7 +3320,7 @@ function previewCustomPage() {
         </div>
         
         <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-6">
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">📊 Results</h3>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">📊 ${currentLanguage === 'da' ? 'Resultater' : 'Results'}</h3>
             <div id="previewResults" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <!-- Results will be calculated here -->
             </div>
@@ -3050,7 +3421,7 @@ function insertFormulaSnippet(name, formula) {
         lastFormula.value = formula;
         lastFormula.focus();
         validateFormula(lastFormula);
-        showToast(`✨ "${name}" formula inserted!`, 'success');
+        showToast(currentLanguage === 'da' ? `✨ "${name}" formel indsat!` : `✨ "${name}" formula inserted!`, 'success');
     }
 }
 
@@ -3058,7 +3429,7 @@ function insertFormulaSnippet(name, formula) {
 function exportCurrentPage() {
     const name = document.getElementById('customPageName').value.trim();
     if (!name) {
-        showToast('⚠️ Please enter a page name first', 'warning');
+        showToast(currentLanguage === 'da' ? '⚠️ Angiv venligst et sidenavn først' : '⚠️ Please enter a page name first', 'warning');
         return;
     }
     
@@ -3108,7 +3479,7 @@ function exportCurrentPage() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     
-    showToast(`📤 "${name}" exported successfully!`, 'success');
+    showToast(currentLanguage === 'da' ? `📤 "${name}" eksporteret!` : `📤 "${name}" exported successfully!`, 'success');
 }
 
 // Export a saved custom page
@@ -3138,7 +3509,7 @@ function exportCustomPage(pageId) {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     
-    showToast(`📤 "${page.name}" exported!`, 'success');
+    showToast(currentLanguage === 'da' ? `📤 "${page.name}" eksporteret!` : `📤 "${page.name}" exported!`, 'success');
 }
 
 // Import page from JSON file
@@ -3157,7 +3528,7 @@ function importPage() {
                 
                 // Validate required fields
                 if (!importData.name || !importData.inputs || !importData.formulas) {
-                    showToast('❌ Invalid page file format', 'error');
+                    showToast(currentLanguage === 'da' ? '❌ Ugyldigt sidefilformat' : '❌ Invalid page file format', 'error');
                     return;
                 }
                 
@@ -3189,9 +3560,9 @@ function importPage() {
                     lastFormula.querySelector('.formula-expression').value = formula.formula;
                 });
                 
-                showToast(`📥 "${importData.name}" imported successfully!`, 'success');
+                showToast(currentLanguage === 'da' ? `📥 "${importData.name}" importeret!` : `📥 "${importData.name}" imported successfully!`, 'success');
             } catch (error) {
-                showToast('❌ Failed to import page: ' + error.message, 'error');
+                showToast((currentLanguage === 'da' ? '❌ Import af side mislykkedes: ' : '❌ Failed to import page: ') + error.message, 'error');
             }
         };
         reader.readAsText(file);
@@ -3207,7 +3578,7 @@ function duplicateCustomPage(pageId) {
     const duplicatedPage = {
         ...page,
         id: 'custom_' + Date.now(),
-        name: page.name + ' (Copy)',
+        name: page.name + (currentLanguage === 'da' ? ' (Kopi)' : ' (Copy)'),
         inputs: JSON.parse(JSON.stringify(page.inputs)),
         formulas: JSON.parse(JSON.stringify(page.formulas))
     };
@@ -3216,7 +3587,7 @@ function duplicateCustomPage(pageId) {
     saveCustomPagesToStorage();
     renderCustomPagesGrid();
     renderCustomPagesTabs();
-    showToast(`📋 "${page.name}" duplicated successfully!`, 'success');
+    showToast(currentLanguage === 'da' ? `📋 "${page.name}" duplikeret!` : `📋 "${page.name}" duplicated successfully!`, 'success');
 }
 
 // Update input type options based on selection
@@ -3233,11 +3604,11 @@ function updateInputTypeOptions(selectElement) {
             break;
         case 'text':
             defaultInput.type = 'text';
-            defaultInput.placeholder = 'Default text';
+            defaultInput.placeholder = currentLanguage === 'da' ? 'Standardtekst' : 'Default text';
             break;
         case 'range':
             defaultInput.type = 'number';
-            defaultInput.placeholder = 'Default value (e.g., 50)';
+            defaultInput.placeholder = currentLanguage === 'da' ? 'Standardværdi (f.eks. 50)' : 'Default value (e.g., 50)';
             break;
         case 'date':
             defaultInput.type = 'date';
@@ -3245,20 +3616,20 @@ function updateInputTypeOptions(selectElement) {
             break;
         case 'checkbox':
             defaultInput.type = 'text';
-            defaultInput.placeholder = 'true or false';
+            defaultInput.placeholder = currentLanguage === 'da' ? 'sand eller falsk' : 'true or false';
             defaultInput.value = 'false';
             break;
         case 'percentage':
             defaultInput.type = 'number';
-            defaultInput.placeholder = 'Default % (e.g., 15)';
+            defaultInput.placeholder = currentLanguage === 'da' ? 'Standard % (f.eks. 15)' : 'Default % (e.g., 15)';
             break;
         case 'currency':
             defaultInput.type = 'number';
-            defaultInput.placeholder = 'Default amount (e.g., 100)';
+            defaultInput.placeholder = currentLanguage === 'da' ? 'Standardbeløb (f.eks. 100)' : 'Default amount (e.g., 100)';
             break;
         case 'select':
             defaultInput.type = 'text';
-            defaultInput.placeholder = 'option1, option2, option3';
+            defaultInput.placeholder = currentLanguage === 'da' ? 'valg1, valg2, valg3' : 'option1, option2, option3';
             break;
     }
 }

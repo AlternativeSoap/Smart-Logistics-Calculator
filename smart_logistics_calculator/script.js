@@ -195,7 +195,7 @@ const ImportPreview = {
             // Show indicator if type was manually changed
             const typeChanged = col.userSelectedType && col.userSelectedType !== col.originalDetectedType;
             const typeChangeIndicator = typeChanged 
-                ? '<span class="ml-1 text-xs text-orange-500" title="Manually changed">✎</span>' 
+                ? `<span class="ml-1 text-xs text-orange-500" title="${currentLanguage === 'da' ? 'Manuelt ændret' : 'Manually changed'}">✎</span>` 
                 : '';
             
             return `
@@ -313,12 +313,12 @@ const ImportPreview = {
             statusDiv.innerHTML = `
                 <div class="flex items-center gap-2 text-green-700 dark:text-green-300">
                     <span class="text-xl">✅</span>
-                    <span class="font-medium">All required fields mapped!</span>
+                    <span class="font-medium">${currentLanguage === 'da' ? 'Alle påkrævede felter tildelt!' : 'All required fields mapped!'}</span>
                 </div>
                 <div class="mt-2 text-sm text-green-600 dark:text-green-400">
-                    <span class="font-medium">Name:</span> ${mapped.name} • 
-                    <span class="font-medium">Consumption:</span> ${mapped.consumption} • 
-                    <span class="font-medium">Price:</span> ${mapped.price}
+                    <span class="font-medium">${currentLanguage === 'da' ? 'Varenavn:' : 'Name:'}</span> ${mapped.name} • 
+                    <span class="font-medium">${currentLanguage === 'da' ? 'Forbrug:' : 'Consumption:'}</span> ${mapped.consumption} • 
+                    <span class="font-medium">${currentLanguage === 'da' ? 'Pris:' : 'Price:'}</span> ${mapped.price}
                 </div>
             `;
         } else {
@@ -327,10 +327,10 @@ const ImportPreview = {
             statusDiv.innerHTML = `
                 <div class="flex items-center gap-2 text-red-700 dark:text-red-300">
                     <span class="text-xl">⚠️</span>
-                    <span class="font-medium">Missing required fields: ${missing.join(', ')}</span>
+                    <span class="font-medium">${currentLanguage === 'da' ? `Manglende påkrævede felter: ${missing.join(', ')}` : `Missing required fields: ${missing.join(', ')}`}</span>
                 </div>
                 <p class="mt-1 text-sm text-red-600 dark:text-red-400">
-                    Please assign columns to all required fields before continuing.
+                    ${currentLanguage === 'da' ? 'Tildel venligst kolonner til alle påkrævede felter før du fortsætter.' : 'Please assign columns to all required fields before continuing.'}
                 </p>
             `;
         }
@@ -374,11 +374,11 @@ const ImportPreview = {
         const summaryEl = document.getElementById('validationSummary');
         
         if (allIssues.length === 0) {
-            summaryEl.innerHTML = '✅ <strong>No issues found!</strong> Your data looks clean and ready to import.';
+            summaryEl.innerHTML = currentLanguage === 'da' ? '✅ <strong>Ingen problemer fundet!</strong> Dine data ser rene ud og er klar til import.' : '✅ <strong>No issues found!</strong> Your data looks clean and ready to import.';
             summaryEl.parentElement.className = 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4';
             issuesContainer.innerHTML = '';
         } else {
-            summaryEl.innerHTML = `Found <strong>${allIssues.length}</strong> issues in your data. You can fix them manually or use the quick actions below.`;
+            summaryEl.innerHTML = currentLanguage === 'da' ? `Fundet <strong>${allIssues.length}</strong> problemer i dine data. Du kan rette dem manuelt eller bruge hurtighandlingerne nedenfor.` : `Found <strong>${allIssues.length}</strong> issues in your data. You can fix them manually or use the quick actions below.`;
             
             // Group issues by type
             const grouped = {};
@@ -389,10 +389,10 @@ const ImportPreview = {
             
             issuesContainer.innerHTML = Object.entries(grouped).map(([type, issues]) => {
                 const typeLabels = {
-                    'empty': '📭 Empty Values',
-                    'type-mismatch': '🔄 Type Mismatches',
-                    'format': '📝 Format Issues',
-                    'missing-required': '❗ Missing Required Data'
+                    'empty': currentLanguage === 'da' ? '📭 Tomme værdier' : '📭 Empty Values',
+                    'type-mismatch': currentLanguage === 'da' ? '🔄 Type uoverensstemmelser' : '🔄 Type Mismatches',
+                    'format': currentLanguage === 'da' ? '📝 Formatproblemer' : '📝 Format Issues',
+                    'missing-required': currentLanguage === 'da' ? '❗ Manglende påkrævede data' : '❗ Missing Required Data'
                 };
                 
                 return `
@@ -509,7 +509,7 @@ const ImportPreview = {
         document.getElementById('previewShowingFrom').textContent = totalRows > 0 ? start + 1 : 0;
         document.getElementById('previewShowingTo').textContent = Math.min(end, totalRows);
         document.getElementById('previewShowingTotal').textContent = totalRows;
-        document.getElementById('previewPageInfo').textContent = `Page ${this.currentPage} of ${Math.ceil(totalRows / this.rowsPerPage) || 1}`;
+        document.getElementById('previewPageInfo').textContent = currentLanguage === 'da' ? `Side ${this.currentPage} af ${Math.ceil(totalRows / this.rowsPerPage) || 1}` : `Page ${this.currentPage} of ${Math.ceil(totalRows / this.rowsPerPage) || 1}`;
     },
     
     // Check if row has issues
@@ -892,6 +892,12 @@ const translations = {
         'total-cost-line': 'Totalomkostning',
         'optimal-point': 'Optimalt punkt (EOQ)',
         'dashboard-tab': 'Dashboard',
+        'barcode-tab': 'Stregkoder & QR',
+        'abc-subtab-analysis': 'ABC-analyse',
+        'abc-subtab-compare': 'Sammenlign Perioder',
+        'not-found-title': 'Side ikke fundet',
+        'not-found-desc': 'Den side du leder efter eksisterer ikke eller er blevet fjernet.',
+        'not-found-btn': 'G\u00e5 til Dashboard',
         'compare-tab': 'Sammenlign',
         'dashboard-title': 'Dashboard Oversigt',
         'total-items': 'Samlede Varer',
@@ -1003,6 +1009,7 @@ const translations = {
         'download-samples': '📥 Download Eksempelfiler',
         'auto-column-mapping': '🔄 Automatisk Kolonnemapping',
         'learn-tab': 'Lær',
+        'lean-tab': 'LEAN Værktøjer',
         'customize-dashboard': 'Tilpas Dashboard',
         'customize-dashboard-description': 'Vælg hvilke Quick Actions der vises på dashboard',
         'customize-btn': 'Tilpas',
@@ -2151,6 +2158,105 @@ const translations = {
         'template-math-compound-name': 'Renters Rente',
         'template-math-compound-desc': 'Beregn renters rente over tid',
         
+        // Cargo Securing
+        'cargo-tab': 'Lastsikring',
+        'cargo-title': 'Lastsikring',
+        'cargo-intro-title': '📖 Om Lastsikring - Dansk Transportguide',
+        'cargo-intro-text': 'Denne beregner er baseret på den danske guide "Lastsikring ved transport ad landevej" med standardværdier LC 1600 daN og STF 400 daN.',
+        'cargo-friction-table-title': 'Friktionskoefficient (μ) - Referencetabel',
+        'cargo-acceleration-title': 'Accelerationskræfter ved Transport',
+        'cargo-tips-title': 'Vigtige Regler fra Lastsikringsguiden',
+        'cargo-standards-title': '📏 Standardværdier',
+        'cargo-standard-lc': 'Standard LC (Lashing Capacity)',
+        'cargo-standard-stf': 'Standard STF (Standard Tension Force)',
+        'cargo-actual-lc': 'Aktuel LC (daN)',
+        'cargo-actual-stf': 'Aktuel STF (daN)',
+        'cargo-formula': 'Formel:',
+        'cargo-conversion-factor': 'Omregningsfaktor:',
+        'cargo-type1-title': 'Loop-/Frictional-/Direkte Surring',
+        'cargo-type2-title': 'Overfaldssurring',
+        'cargo-sliding': 'Ved Glidning',
+        'cargo-tipping': 'Ved Tipning',
+        'cargo-tipping-rule': 'Regel:',
+        'cargo-tipping-desc': 'Den laveste værdi af:',
+        'cargo-tips-title': 'Gode Råd',
+        'cargo-tip1': 'En omregningsfaktor > 1.0 betyder at dit surringsgrej er stærkere end standarden',
+        'cargo-tip2': 'Hvis omregningsfaktoren er mindre end 1.0, skal du bruge flere surringer eller stærkere grej',
+        'cargo-tip3': 'Ved overfaldssurring og tipning skal du altid bruge den laveste værdi for at være på den sikre side',
+        'cargo-tip4': 'Husk at kontrollere dit surringsgrej regelmæssigt for slitage og skader',
+        'cargo-reference-title': 'Hurtig Reference',
+        'cargo-ref-type': 'Type',
+        'cargo-ref-scenario': 'Scenarie',
+        'cargo-ref-formula': 'Formel',
+        'cargo-ref-loop': 'Loop Surring',
+        'cargo-ref-frictional': 'Frictional Surring',
+        'cargo-ref-direct': 'Direkte Surring',
+        'cargo-ref-topover': 'Overfaldssurring',
+        'cargo-ref-all': 'Alle',
+        
+        // Cargo Securing - Advanced
+        'cargo-weight': 'Lastvægt (kg)',
+        'cargo-weight-help': 'Total vægt af last',
+        'cargo-lc-help': 'Lashing Capacity - maksimal bæreevne',
+        'cargo-stf-help': 'Standard Tension Force - forspændingskraft',
+        'cargo-accel-forward': 'Acceleration fremad (g)',
+        'cargo-accel-forward-help': 'Standard: 0.8g (opbremsning)',
+        'cargo-accel-backward': 'Acceleration bagud (g)',
+        'cargo-accel-backward-help': 'Standard: 0.5g (acceleration)',
+        'cargo-accel-sideways': 'Acceleration sideværts (g)',
+        'cargo-accel-sideways-help': 'Standard: 0.5g (kurve)',
+        'cargo-friction': 'Friktionskoefficient (μ)',
+        'cargo-friction-help': 'Vælg baseret på kontaktflade',
+        'cargo-angle': 'Surring vinkel (°)',
+        'cargo-angle-help': '90° = lodret, < 90° = vinkel',
+        'cargo-safety-factor': 'Sikkerhedsfaktor',
+        'cargo-safety-help': 'Anbefalet: 1.5 (50% reserve)',
+        'cargo-advanced-title': 'Avancerede Beregninger (EN 12195)',
+        'cargo-force-forward': 'Kraft fremad (daN)',
+        'cargo-force-backward': 'Kraft bagud (daN)',
+        'cargo-force-sideways': 'Kraft sideværts (daN)',
+        'cargo-friction-force': 'Friktionskraft (daN)',
+        'cargo-friction-help-text': 'Naturlig modstand mod glidning',
+        'cargo-lashings-forward': 'Antal surringer fremad',
+        'cargo-lashings-backward': 'Antal surringer bagud',
+        'cargo-lashings-sideways': 'Antal surringer sideværts',
+        'cargo-lashings-braking': 'Ved opbremsning',
+        'cargo-lashings-accel': 'Ved acceleration',
+        'cargo-lashings-curve': 'Ved sving',
+        'cargo-safety-recommendations': 'Sikkerhedsanbefalinger',
+        'cargo-lashings-needed': 'Antal surringer nødvendigt:',
+        'cargo-angle-warning-title': 'Advarsel om vinkel!',
+        'cargo-sliding-title': 'Overfaldssurring - GLIDNING',
+        'cargo-tipping-title': 'Overfaldssurring - TIPNING',
+        'cargo-final-title': 'Samlet Anbefaling',
+        'cargo-use-most': 'Brug det højeste antal:',
+        'cargo-hb-ratio': 'H/B forhold (Sideretning)',
+        'cargo-hb-help': 'Højde / Bredde (for tipning til siden)',
+        'cargo-rows': 'Antal rækker surringer',
+        'cargo-rows-help': 'Placér båndstrammere skiftevis på hver side',
+        'cargo-calculate-btn': '⚡ Beregn Antal Surringer',
+        
+        // Section titles
+        'cargo-section1-title': 'DEL 1: Omregningsfaktorer (Loop/Grime/Direkte Surring)',
+        'cargo-section1-desc': 'Indtast din aktuelle LC-værdi for at beregne omregningsfaktoren i forhold til standard LC 1600 daN',
+        'cargo-section2-title': 'DEL 2: Overfaldssurring - Beregning af Antal Surringer',
+        'cargo-section2-desc': 'Baseret på danske transportstandarder - beregn hvor mange overfaldssurringer der skal bruges',
+        
+        // Loop/Frictional/Direct Lashing
+        'cargo-lashing-types-title': 'Omregningsfaktorer for Forskellige Typer Surringer',
+        'cargo-loop-lashing-title': 'Løkkesurring (Loop Lashing)',
+        'cargo-loop-actual-lc': 'Aktuel LC (daN)',
+        'cargo-loop-factor': 'Omregningsfaktor:',
+        'cargo-loop-formula': 'Aktuel LC ÷ 1600',
+        'cargo-frictional-lashing-title': 'Grimesurring (Frictional Lashing)',
+        'cargo-frictional-actual-lc': 'Aktuel LC (daN)',
+        'cargo-frictional-factor': 'Omregningsfaktor:',
+        'cargo-frictional-formula': 'Aktuel LC ÷ 1600',
+        'cargo-direct-lashing-title': 'Direkte Surring (Direct Lashing)',
+        'cargo-direct-actual-lc': 'Aktuel LC (daN)',
+        'cargo-direct-factor': 'Omregningsfaktor:',
+        'cargo-direct-formula': 'Aktuel LC ÷ 1600',
+        
         // Budget Editor
         'budget-tab': 'Budget',
         'budget-title': 'Budget',
@@ -2315,7 +2421,90 @@ const translations = {
         
         // Budget Keyboard Shortcuts
         'budget-undo-label': 'Fortryd',
-        'budget-redo-label': 'Gentag'
+        'budget-redo-label': 'Gentag',
+        
+        // Budget Overview Dashboard
+        'budget-transfer-main-title': 'Budget Oversigt',
+        'budget-settings-btn': 'Indstillinger',
+        'budget-how-btn': 'Hvordan?',
+        'budget-total-income-label': 'Total Indtægt',
+        'budget-total-expenses-label': 'Total Udgifter',
+        'budget-balance-label': 'Balance',
+        'budget-monthly-label': 'Månedlig',
+        'budget-biweekly-label': 'Hver 14. dag',
+        'budget-whole-year': 'Hele året',
+        'budget-surplus-deficit': 'Overskud/Underskud',
+        'budget-first-of-month': 'den 1. i måneden',
+        'budget-every-other-week': 'Hver anden uge',
+        'budget-monthly-trends': 'Månedlige Tendenser',
+        'budget-calc-explanation': 'Beregningsforklaring',
+        'budget-yearly-calc': 'Årsberegning',
+        'budget-total-income-year': 'Total indtægt (hele året):',
+        'budget-total-expenses-year': 'Total udgifter (hele året):',
+        'budget-required-savings': 'Påkrævet opsparing (årligt):',
+        'budget-monthly-breakdown': 'Månedlig opdeling',
+        'budget-monthly-breakdown-desc': 'Hvis du overfører <strong>hver måned</strong> (12 gange om året):',
+        'budget-monthly-math': 'Årligt beløb ÷ 12 måneder =',
+        'budget-biweekly-breakdown': '14-dages opdeling',
+        'budget-biweekly-breakdown-desc': 'Hvis du overfører <strong>hver 14. dag</strong> (26 gange om året):',
+        'budget-biweekly-math': 'Årligt beløb ÷ 26 perioder =',
+        'budget-why-it-works': 'Hvorfor dette virker',
+        'budget-why-1': 'Ved at spare op <strong>regelmæssigt</strong>, har du altid penge klar til dine faste udgifter.',
+        'budget-why-2': 'Automatiske overførsler betyder, at du <strong>ikke glemmer</strong> at spare op.',
+        'budget-why-3': 'Mindre beløb oftere er <strong>lettere at håndtere</strong> end store beløb sjældent.',
+        'budget-calc-settings': 'Beregningsindstillinger',
+        'budget-split-partner': 'Del udgifter med partner',
+        'budget-split-partner-desc': 'Hvis du deler husstandsudgifter med en partner, kan du beregne kun din andel',
+        'budget-your-share': 'Din andel:',
+        'budget-add-buffer': 'Tilføj sikkerhedsbuffer',
+        'budget-add-buffer-desc': 'Tilføj ekstra procent til udgifter for uforudsete udgifter eller stigninger',
+        'budget-buffer-pct-label': 'Buffer procent:',
+        'budget-example': 'Eksempel',
+        'budget-income-btn': 'Indtægt',
+        'budget-expense-btn': 'Udgift',
+        'budget-cat-income-short': 'Kat. (I)',
+        'budget-cat-expense-short': 'Kat. (E)',
+        'budget-sidebar-income': 'INDTÆGTER',
+        'budget-sidebar-expenses': 'UDGIFTER',
+        'budget-actual-label': 'Faktiske:',
+        'budget-unnamed': 'Unavngivet',
+        'budget-year-overview-title': 'Årsoversigt',
+        'budget-total-income-yr': 'Total indtægter',
+        'budget-total-expenses-yr': 'Total udgifter',
+        'budget-yearly-net': 'Årligt netto',
+        'budget-month-income': 'Indtægter:',
+        'budget-month-expenses': 'Udgifter:',
+        'budget-month-net': 'Netto:',
+        'budget-year': 'år',
+        'budget-month': 'måned',
+        'budget-months': 'måneder',
+        'budget-periods': 'perioder',
+        'budget-per-month': 'per måned',
+        'budget-per-14days': 'per 14. dag',
+        'budget-with-buffer': 'Med buffer',
+        'budget-surplus': 'Overskud:',
+        'budget-deficit': 'Underskud:',
+        'budget-or': 'eller',
+        'budget-every-14-days': 'hver 14. dag',
+        'budget-avg-per-month': 'Dit budget viser følgende gennemsnit per måned:',
+        'budget-can-afford': 'Med denne plan har du råd til at spare',
+        'budget-warning-deficit': 'Advarsel - Underskud i budgettet:',
+        'budget-shortfall': 'Du mangler',
+        'budget-shortfall2': 'over året. Overvej at:',
+        'budget-reduce-expenses': 'Reducere dine udgifter',
+        'budget-increase-income': 'Øge dine indtægter',
+        'budget-review-budget': 'Gennemgå dit budget for urealistiske tal',
+        'budget-found-recurring': 'Fundet',
+        'budget-fixed-expenses': 'faste udgifter',
+        'budget-info-columns-title': 'ℹ️ Om Budget Kolonner',
+        'budget-info-col-1': '• <strong>"Faktiske"</strong> kolonne er kun til sammenligning og tælles IKKE med i årsberegningen',
+        'budget-info-col-2': '• <strong>Måneds-kolonner</strong> (Jan, Feb, etc.) bruges til at beregne dit årlige budget',
+        'budget-info-col-3': '• Systemet summerer kun de 12 måneders kolonner for at beregne hvor meget du skal spare',
+        'budget-example-desc': 'Med disse indstillinger, hvis dine samlede udgifter er <strong>10.000 kr/måned</strong>:',
+        'budget-example-step1': '1. <strong>Total udgifter:</strong> 10.000 kr',
+        'budget-example-step2': '2. <strong>Din andel (50%):</strong> 5.000 kr',
+        'budget-example-step3': '3. <strong>Med buffer (+5%):</strong> 5.250 kr <span class="text-green-600">← Anbefalet overførsel</span>',
+        'budget-settings-note': '<strong>ℹ️ Bemærk:</strong> Ændringer træder i kraft med det samme og opdaterer alle beregninger automatisk.'
     },
     en: {
         'abc-tab': 'ABC Analysis',
@@ -2369,6 +2558,12 @@ const translations = {
         'total-cost-line': 'Total Cost',
         'optimal-point': 'Optimal Point (EOQ)',
         'dashboard-tab': 'Dashboard',
+        'barcode-tab': 'Barcodes & QR',
+        'abc-subtab-analysis': 'ABC Analysis',
+        'abc-subtab-compare': 'Compare Periods',
+        'not-found-title': 'Page not found',
+        'not-found-desc': 'The page you are looking for does not exist or has been removed.',
+        'not-found-btn': 'Go to Dashboard',
         'compare-tab': 'Compare',
         'dashboard-title': 'Dashboard Overview',
         'total-items': 'Total Items',
@@ -2470,6 +2665,15 @@ const translations = {
         'print-report': 'Print Report',
         'help-btn': 'Help & Guide',
         'print-report-desc': 'Printable format',
+        'import-templates-title': 'Import Templates',
+        'show-more': 'Show More',
+        'show-less': 'Show Less',
+        'template-warehouse': 'Warehouse',
+        'template-retail': 'Retail',
+        'template-manufacturing': 'Manufacturing',
+        'template-custom': 'Custom',
+        'download-samples': '📥 Download Sample Files',
+        'auto-column-mapping': '🔄 Auto Column Mapping',
         'learn-tab': 'Learn',
         'customize-dashboard': 'Customize Dashboard',
         'customize-dashboard-description': 'Choose which Quick Actions appear on your dashboard',
@@ -3627,6 +3831,105 @@ const translations = {
         'template-math-compound-name': 'Compound Interest',
         'template-math-compound-desc': 'Calculate compound interest over time',
         
+        // Cargo Securing
+        'cargo-tab': 'Cargo Securing',
+        'cargo-title': 'Cargo Securing',
+        'cargo-intro-title': '📖 About Cargo Securing - Danish Transport Guide',
+        'cargo-intro-text': 'This calculator is based on the Danish guide "Lastsikring ved transport ad landevej" with standard values LC 1600 daN and STF 400 daN.',
+        'cargo-friction-table-title': 'Friction Coefficient (μ) - Reference Table',
+        'cargo-acceleration-title': 'Acceleration Forces During Transport',
+        'cargo-tips-title': 'Important Rules from the Cargo Securing Guide',
+        'cargo-standards-title': '📏 Standard Values',
+        'cargo-standard-lc': 'Standard LC (Lashing Capacity)',
+        'cargo-standard-stf': 'Standard STF (Standard Tension Force)',
+        'cargo-actual-lc': 'Actual LC (daN)',
+        'cargo-actual-stf': 'Actual STF (daN)',
+        'cargo-formula': 'Formula:',
+        'cargo-conversion-factor': 'Conversion Factor:',
+        'cargo-type1-title': 'Loop/Frictional/Direct Lashing',
+        'cargo-type2-title': 'Top-Over Lashing',
+        'cargo-sliding': 'Sliding',
+        'cargo-tipping': 'Tipping',
+        'cargo-tipping-rule': 'Rule:',
+        'cargo-tipping-desc': 'The lowest value of:',
+        'cargo-tips-title': 'Good Advice',
+        'cargo-tip1': 'A conversion factor > 1.0 means your lashing equipment is stronger than the standard',
+        'cargo-tip2': 'If the conversion factor is less than 1.0, you need more lashings or stronger equipment',
+        'cargo-tip3': 'For top-over lashing and tipping, always use the lowest value to be on the safe side',
+        'cargo-tip4': 'Remember to regularly check your lashing equipment for wear and damage',
+        'cargo-reference-title': 'Quick Reference',
+        'cargo-ref-type': 'Type',
+        'cargo-ref-scenario': 'Scenario',
+        'cargo-ref-formula': 'Formula',
+        'cargo-ref-loop': 'Loop Lashing',
+        'cargo-ref-frictional': 'Frictional Lashing',
+        'cargo-ref-direct': 'Direct Lashing',
+        'cargo-ref-topover': 'Top-Over Lashing',
+        'cargo-ref-all': 'All',
+        
+        // Cargo Securing - Advanced
+        'cargo-weight': 'Cargo Weight (kg)',
+        'cargo-weight-help': 'Total weight of cargo',
+        'cargo-lc-help': 'Lashing Capacity - maximum load capacity',
+        'cargo-stf-help': 'Standard Tension Force - pre-tension force',
+        'cargo-accel-forward': 'Forward Acceleration (g)',
+        'cargo-accel-forward-help': 'Standard: 0.8g (braking)',
+        'cargo-accel-backward': 'Backward Acceleration (g)',
+        'cargo-accel-backward-help': 'Standard: 0.5g (acceleration)',
+        'cargo-accel-sideways': 'Sideways Acceleration (g)',
+        'cargo-accel-sideways-help': 'Standard: 0.5g (cornering)',
+        'cargo-friction': 'Friction Coefficient (μ)',
+        'cargo-friction-help': 'Select based on contact surface',
+        'cargo-angle': 'Lashing Angle (°)',
+        'cargo-angle-help': '90° = vertical, < 90° = angled',
+        'cargo-safety-factor': 'Safety Factor',
+        'cargo-safety-help': 'Recommended: 1.5 (50% reserve)',
+        'cargo-advanced-title': 'Advanced Calculations (EN 12195)',
+        'cargo-force-forward': 'Forward Force (daN)',
+        'cargo-force-backward': 'Backward Force (daN)',
+        'cargo-force-sideways': 'Sideways Force (daN)',
+        'cargo-friction-force': 'Friction Force (daN)',
+        'cargo-friction-help-text': 'Natural resistance to sliding',
+        'cargo-lashings-forward': 'Forward Lashings Required',
+        'cargo-lashings-backward': 'Backward Lashings Required',
+        'cargo-lashings-sideways': 'Sideways Lashings Required',
+        'cargo-lashings-braking': 'For braking',
+        'cargo-lashings-accel': 'For acceleration',
+        'cargo-lashings-curve': 'For cornering',
+        'cargo-safety-recommendations': 'Safety Recommendations',
+        'cargo-lashings-needed': 'Number of Lashings Required:',
+        'cargo-angle-warning-title': 'Angle Warning!',
+        'cargo-sliding-title': 'Top-Over Lashing - SLIDING',
+        'cargo-tipping-title': 'Top-Over Lashing - TIPPING',
+        'cargo-final-title': 'Final Recommendation',
+        'cargo-use-most': 'Use the highest number:',
+        'cargo-hb-ratio': 'H/B Ratio (Sideways)',
+        'cargo-hb-help': 'Height / Width (for sideways tipping)',
+        'cargo-rows': 'Number of lashing rows',
+        'cargo-rows-help': 'Place tensioners alternately on each side',
+        'cargo-calculate-btn': '⚡ Calculate Lashings',
+        
+        // Section titles
+        'cargo-section1-title': 'PART 1: Conversion Factors (Loop/Frictional/Direct Lashing)',
+        'cargo-section1-desc': 'Enter your actual LC value to calculate the conversion factor relative to standard LC 1600 daN',
+        'cargo-section2-title': 'PART 2: Top-Over Lashing - Calculate Number of Lashings',
+        'cargo-section2-desc': 'Based on Danish transport standards - calculate how many top-over lashings are needed',
+        
+        // Loop/Frictional/Direct Lashing
+        'cargo-lashing-types-title': 'Conversion Factors for Different Types of Lashings',
+        'cargo-loop-lashing-title': 'Loop Lashing',
+        'cargo-loop-actual-lc': 'Actual LC (daN)',
+        'cargo-loop-factor': 'Conversion Factor:',
+        'cargo-loop-formula': 'Actual LC ÷ 1600',
+        'cargo-frictional-lashing-title': 'Frictional Lashing',
+        'cargo-frictional-actual-lc': 'Actual LC (daN)',
+        'cargo-frictional-factor': 'Conversion Factor:',
+        'cargo-frictional-formula': 'Actual LC ÷ 1600',
+        'cargo-direct-lashing-title': 'Direct Lashing',
+        'cargo-direct-actual-lc': 'Actual LC (daN)',
+        'cargo-direct-factor': 'Conversion Factor:',
+        'cargo-direct-formula': 'Actual LC ÷ 1600',
+        
         // Budget Editor
         'budget-tab': 'Budget',
         'budget-title': 'Budget',
@@ -3791,7 +4094,90 @@ const translations = {
         
         // Budget Keyboard Shortcuts
         'budget-undo-label': 'Undo',
-        'budget-redo-label': 'Redo'
+        'budget-redo-label': 'Redo',
+        
+        // Budget Overview Dashboard
+        'budget-transfer-main-title': 'Budget Overview',
+        'budget-settings-btn': 'Settings',
+        'budget-how-btn': 'How?',
+        'budget-total-income-label': 'Total Income',
+        'budget-total-expenses-label': 'Total Expenses',
+        'budget-balance-label': 'Balance',
+        'budget-monthly-label': 'Monthly',
+        'budget-biweekly-label': 'Every 14 Days',
+        'budget-whole-year': 'Full year',
+        'budget-surplus-deficit': 'Surplus / Deficit',
+        'budget-first-of-month': 'On the 1st',
+        'budget-every-other-week': 'Every other week',
+        'budget-monthly-trends': 'Monthly Trends',
+        'budget-calc-explanation': 'Calculation Explanation',
+        'budget-yearly-calc': 'Annual Calculation',
+        'budget-total-income-year': 'Total income (full year):',
+        'budget-total-expenses-year': 'Total expenses (full year):',
+        'budget-required-savings': 'Required savings (yearly):',
+        'budget-monthly-breakdown': 'Monthly Breakdown',
+        'budget-monthly-breakdown-desc': 'If you transfer <strong>every month</strong> (12 times a year):',
+        'budget-monthly-math': 'Annual amount ÷ 12 months =',
+        'budget-biweekly-breakdown': '14-Day Breakdown',
+        'budget-biweekly-breakdown-desc': 'If you transfer <strong>every 14 days</strong> (26 times a year):',
+        'budget-biweekly-math': 'Annual amount ÷ 26 periods =',
+        'budget-why-it-works': 'Why This Works',
+        'budget-why-1': 'By saving <strong>regularly</strong>, you always have money ready for your fixed expenses.',
+        'budget-why-2': 'Automatic transfers mean you <strong>never forget</strong> to save.',
+        'budget-why-3': 'Smaller amounts more often are <strong>easier to manage</strong> than large amounts rarely.',
+        'budget-calc-settings': 'Calculation Settings',
+        'budget-split-partner': 'Split expenses with partner',
+        'budget-split-partner-desc': 'If you share household expenses with a partner, you can calculate only your share',
+        'budget-your-share': 'Your share:',
+        'budget-add-buffer': 'Add safety buffer',
+        'budget-add-buffer-desc': 'Add extra percentage to expenses for unexpected costs or increases',
+        'budget-buffer-pct-label': 'Buffer percentage:',
+        'budget-example': 'Example',
+        'budget-income-btn': 'Income',
+        'budget-expense-btn': 'Expense',
+        'budget-cat-income-short': 'Cat. (I)',
+        'budget-cat-expense-short': 'Cat. (E)',
+        'budget-sidebar-income': 'INCOME',
+        'budget-sidebar-expenses': 'EXPENSES',
+        'budget-actual-label': 'Actual:',
+        'budget-unnamed': 'Unnamed',
+        'budget-year-overview-title': 'Annual Overview',
+        'budget-total-income-yr': 'Total income',
+        'budget-total-expenses-yr': 'Total expenses',
+        'budget-yearly-net': 'Yearly net',
+        'budget-month-income': 'Income:',
+        'budget-month-expenses': 'Expenses:',
+        'budget-month-net': 'Net:',
+        'budget-year': 'year',
+        'budget-month': 'month',
+        'budget-months': 'months',
+        'budget-periods': 'periods',
+        'budget-per-month': 'per month',
+        'budget-per-14days': 'per 14 days',
+        'budget-with-buffer': 'With buffer',
+        'budget-surplus': 'Surplus:',
+        'budget-deficit': 'Deficit:',
+        'budget-or': 'or',
+        'budget-every-14-days': 'every 14 days',
+        'budget-avg-per-month': 'Your budget shows the following average per month:',
+        'budget-can-afford': 'With this plan you can afford to save',
+        'budget-warning-deficit': 'Warning - Budget Deficit:',
+        'budget-shortfall': 'You are',
+        'budget-shortfall2': 'short over the year. Consider:',
+        'budget-reduce-expenses': 'Reduce your expenses',
+        'budget-increase-income': 'Increase your income',
+        'budget-review-budget': 'Review your budget for unrealistic figures',
+        'budget-found-recurring': 'Found',
+        'budget-fixed-expenses': 'recurring expenses',
+        'budget-info-columns-title': 'ℹ️ About Budget Columns',
+        'budget-info-col-1': '• The <strong>"Actual"</strong> column is for comparison only and is NOT counted in the annual calculation',
+        'budget-info-col-2': '• <strong>Month columns</strong> (Jan, Feb, etc.) are used to calculate your annual budget',
+        'budget-info-col-3': '• The system sums only the 12 monthly columns to calculate how much you need to save',
+        'budget-example-desc': 'With these settings, if your total expenses are <strong>10,000 kr/month</strong>:',
+        'budget-example-step1': '1. <strong>Total expenses:</strong> 10,000 kr',
+        'budget-example-step2': '2. <strong>Your share (50%):</strong> 5,000 kr',
+        'budget-example-step3': '3. <strong>With buffer (+5%):</strong> 5,250 kr <span class="text-green-600">← Recommended transfer</span>',
+        'budget-settings-note': '<strong>ℹ️ Note:</strong> Changes take effect immediately and update all calculations automatically.'
     }
 };
 
@@ -3942,12 +4328,12 @@ window.addEventListener('beforeprint', function() {
     const timestampEl = document.querySelector('.print-timestamp');
     if (timestampEl) {
         const now = new Date().toLocaleString();
-        timestampEl.textContent = `Generated: ${now}`;
+        timestampEl.textContent = currentLanguage === 'da' ? `Genereret: ${now}` : `Generated: ${now}`;
     }
 });
 
 // Loading Spinner Functions
-function showLoadingSpinner(message = 'Loading...') {
+function showLoadingSpinner(message = (currentLanguage === 'da' ? 'Indlæser...' : 'Loading...')) {
     let spinner = document.getElementById('loadingSpinner');
     if (!spinner) {
         spinner = document.createElement('div');
@@ -4993,6 +5379,29 @@ function switchTab(tabName, clickedButton) {
     if (targetSection) {
         targetSection.classList.remove('hidden');
         targetSection.classList.add('active');
+    } else {
+        const notFound = document.getElementById('not-found-section');
+        if (notFound) {
+            notFound.classList.remove('hidden');
+            notFound.classList.add('active');
+        }
+    }
+
+    // Tab-specific initialization
+    if (tabName === 'barcode') {
+        setTimeout(() => {
+            if (typeof initBarcodeTab === 'function') initBarcodeTab();
+        }, 50);
+    }
+    if (tabName === 'warehouse') {
+        setTimeout(() => {
+            if (typeof WarehouseLayout !== 'undefined') WarehouseLayout.init();
+        }, 50);
+    }
+    if (tabName === 'dashboard') {
+        setTimeout(() => {
+            if (typeof KPIDashboard !== 'undefined') KPIDashboard.refresh();
+        }, 100);
     }
 }
 
@@ -5081,12 +5490,12 @@ function populateQuickActionsCheckboxes() {
         const customButtons = action.custom ? `
             <button onclick="editCustomShortcut('${action.id}')" 
                 class="px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-xs transition-colors"
-                title="Rediger genvej">
+                title="${currentLanguage === 'da' ? 'Rediger genvej' : 'Edit shortcut'}">
                 ✏️
             </button>
             <button onclick="deleteCustomShortcut('${action.id}')" 
                 class="px-2 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-xs transition-colors"
-                title="Slet genvej">
+                title="${currentLanguage === 'da' ? 'Slet genvej' : 'Delete shortcut'}">
                 🗑️
             </button>
         ` : '';
@@ -5105,7 +5514,7 @@ function populateQuickActionsCheckboxes() {
                 <p class="text-xs text-gray-500 dark:text-gray-400">${action.custom ? action.desc : (translations[currentLanguage][action.desc] || action.desc)}</p>
             </div>
             <span class="text-xs px-2 py-1 rounded ${action.enabled ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'}">
-                ${action.enabled ? 'Synlig' : 'Skjult'}
+                ${action.enabled ? (currentLanguage === 'da' ? 'Synlig' : 'Visible') : (currentLanguage === 'da' ? 'Skjult' : 'Hidden')}
             </span>
             <div class="flex gap-1">
                 ${customButtons}
@@ -5176,7 +5585,7 @@ function handleDrop(e) {
         // Update order in config and re-render
         updateQuickActionsOrder();
         renderQuickActions();
-        showToast('📌 Rækkefølge opdateret', 'info');
+        showToast(currentLanguage === 'da' ? '📌 Rækkefølge opdateret' : '📌 Order updated', 'info');
     }
     
     return false;
@@ -5221,7 +5630,7 @@ function updateQuickActionState(actionId, enabled) {
             const badge = wrapper.querySelector('span:last-child');
             if (badge) {
                 badge.className = `text-xs px-2 py-1 rounded ${enabled ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'}`;
-                badge.textContent = enabled ? 'Synlig' : 'Skjult';
+                badge.textContent = enabled ? (currentLanguage === 'da' ? 'Synlig' : 'Visible') : (currentLanguage === 'da' ? 'Skjult' : 'Hidden');
             }
         }
         
@@ -5240,21 +5649,21 @@ function selectAllQuickActions(enable) {
     
     localStorage.setItem('quickActionsConfig', JSON.stringify(actions));
     populateQuickActionsCheckboxes();
-    showToast(enable ? 'Alle Quick Actions vist' : 'Alle Quick Actions skjult', 'info');
+    showToast(enable ? (currentLanguage === 'da' ? 'Alle Quick Actions vist' : 'All Quick Actions shown') : (currentLanguage === 'da' ? 'Alle Quick Actions skjult' : 'All Quick Actions hidden'), 'info');
 }
 
 function saveQuickActionsConfig() {
     renderQuickActions();
     toggleQuickActionsCustomizer();
-    showToast('💾 Quick Actions gemt og opdateret!', 'success');
+    showToast(currentLanguage === 'da' ? '💾 Quick Actions gemt og opdateret!' : '💾 Quick Actions saved and updated!', 'success');
 }
 
 function resetQuickActions() {
-    if (confirm(translate('confirm-reset-settings') || 'Er du sikker på at du vil nulstille til standardindstillinger?')) {
+    if (confirm(translate('confirm-reset-settings') || (currentLanguage === 'da' ? 'Er du sikker på at du vil nulstille til standardindstillinger?' : 'Are you sure you want to reset to default settings?'))) {
         localStorage.removeItem('quickActionsConfig');
         populateQuickActionsCheckboxes();
         renderQuickActions();
-        showToast('🔄 Quick Actions nulstillet til standard', 'success');
+        showToast(currentLanguage === 'da' ? '🔄 Quick Actions nulstillet til standard' : '🔄 Quick Actions reset to default', 'success');
     }
 }
 
@@ -5282,26 +5691,26 @@ function toggleCustomShortcutForm(skipReset = false) {
             
             // Reset form state
             form.removeAttribute('data-editing-id');
-            document.getElementById('customShortcutFormTitle').textContent = 'Tilføj Brugerdefineret Genvej';
-            document.getElementById('saveShortcutBtn').innerHTML = '💾 Gem Genvej';
+            document.getElementById('customShortcutFormTitle').textContent = currentLanguage === 'da' ? 'Tilføj Brugerdefineret Genvej' : 'Add Custom Shortcut';
+            document.getElementById('saveShortcutBtn').innerHTML = currentLanguage === 'da' ? '💾 Gem Genvej' : '💾 Save Shortcut';
         }
         
         if (isHidden) {
             // Update button text when opening
-            btn.innerHTML = '<span>✖</span><span>Luk Formular</span>';
+            btn.innerHTML = '<span>✖</span><span>' + (currentLanguage === 'da' ? 'Luk Formular' : 'Close Form') + '</span>';
             btn.className = 'w-full px-4 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-all flex items-center justify-center gap-2 font-semibold';
         } else {
             // Closing form - cleanup
             form.removeAttribute('data-editing-id');
-            document.getElementById('customShortcutFormTitle').textContent = 'Tilføj Brugerdefineret Genvej';
-            document.getElementById('saveShortcutBtn').innerHTML = '💾 Gem Genvej';
+            document.getElementById('customShortcutFormTitle').textContent = currentLanguage === 'da' ? 'Tilføj Brugerdefineret Genvej' : 'Add Custom Shortcut';
+            document.getElementById('saveShortcutBtn').innerHTML = currentLanguage === 'da' ? '💾 Gem Genvej' : '💾 Save Shortcut';
             
             // Close emoji picker if open
             if (emojiPicker && !emojiPicker.classList.contains('hidden')) {
                 emojiPicker.classList.add('hidden');
             }
             
-            btn.innerHTML = '<span>➕</span><span data-i18n="add-custom-shortcut">Opret Brugerdefineret Genvej</span>';
+            btn.innerHTML = '<span>➕</span><span data-i18n="add-custom-shortcut">' + (currentLanguage === 'da' ? 'Opret Brugerdefineret Genvej' : 'Create Custom Shortcut') + '</span>';
             btn.className = 'w-full px-4 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-lg transition-all flex items-center justify-center gap-2 font-semibold shadow-md hover:shadow-lg';
         }
     }
@@ -5369,7 +5778,7 @@ function updateShortcutActionFields() {
         case 'url':
             html = `
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" data-i18n="shortcut-url-label">URL</label>
-                <input type="url" id="shortcutUrl" placeholder="https://example.com eller www.example.com" class="input-field w-full mb-2">
+                <input type="url" id="shortcutUrl" placeholder="${currentLanguage === 'da' ? 'https://example.com eller www.example.com' : 'https://example.com or www.example.com'}" class="input-field w-full mb-2">
                 <label class="flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-300">
                     <input type="checkbox" id="shortcutUrlNewWindow" checked class="w-4 h-4 text-purple-600 rounded focus:ring-2 focus:ring-purple-500">
                     <span data-i18n="shortcut-url-new-window">Åbn i nyt vindue</span>
@@ -5604,7 +6013,7 @@ function saveCustomShortcut() {
     
     // Validation
     if (!title) {
-        showToast('⚠️ Angiv venligst en titel', 'warning');
+        showToast(currentLanguage === 'da' ? '⚠️ Angiv venligst en titel' : '⚠️ Please enter a title', 'warning');
         return;
     }
     
@@ -5616,13 +6025,13 @@ function saveCustomShortcut() {
             action = `switchTab('${tabName}')`;
             break;
         case 'function':
-            action = document.getElementById('shortcutFunctionName')?.value || 'alert("Ingen funktion valgt")';
+            action = document.getElementById('shortcutFunctionName')?.value || (currentLanguage === 'da' ? 'alert("Ingen funktion valgt")' : 'alert("No function selected")');
             break;
         case 'url':
             let url = document.getElementById('shortcutUrl')?.value?.trim();
             console.log('Saving URL - Raw value:', url);
             if (!url) {
-                showToast('⚠️ Angiv venligst en URL', 'warning');
+                showToast(currentLanguage === 'da' ? '⚠️ Angiv venligst en URL' : '⚠️ Please enter a URL', 'warning');
                 return;
             }
             // Add protocol if missing
@@ -5636,7 +6045,7 @@ function saveCustomShortcut() {
                 console.log('URL validation passed');
             } catch (e) {
                 console.error('URL validation failed:', e);
-                showToast('⚠️ Ugyldig URL format', 'warning');
+                showToast(currentLanguage === 'da' ? '⚠️ Ugyldig URL format' : '⚠️ Invalid URL format', 'warning');
                 return;
             }
             const openInNewWindow = document.getElementById('shortcutUrlNewWindow')?.checked !== false;
@@ -5665,7 +6074,7 @@ function saveCustomShortcut() {
                 ...actions[index],
                 icon: icon,
                 title: title,
-                desc: desc || 'Brugerdefineret genvej',
+                desc: desc || (currentLanguage === 'da' ? 'Brugerdefineret genvej' : 'Custom shortcut'),
                 action: action,
                 color: color
             };
@@ -5675,17 +6084,17 @@ function saveCustomShortcut() {
         form.removeAttribute('data-editing-id');
         
         // Reset form UI
-        document.getElementById('customShortcutFormTitle').textContent = 'Tilføj Brugerdefineret Genvej';
-        document.getElementById('saveShortcutBtn').innerHTML = '💾 Gem Genvej';
+        document.getElementById('customShortcutFormTitle').textContent = currentLanguage === 'da' ? 'Tilføj Brugerdefineret Genvej' : 'Add Custom Shortcut';
+        document.getElementById('saveShortcutBtn').innerHTML = currentLanguage === 'da' ? '💾 Gem Genvej' : '💾 Save Shortcut';
         
-        showToast('✅ Genvej opdateret: ' + title, 'success');
+        showToast((currentLanguage === 'da' ? '✅ Genvej opdateret: ' : '✅ Shortcut updated: ') + title, 'success');
     } else {
         // Create new shortcut
         const customShortcut = {
             id: 'custom-' + Date.now(),
             icon: icon,
             title: title,
-            desc: desc || 'Brugerdefineret genvej',
+            desc: desc || (currentLanguage === 'da' ? 'Brugerdefineret genvej' : 'Custom shortcut'),
             action: action,
             color: color,
             enabled: true,
@@ -5694,7 +6103,7 @@ function saveCustomShortcut() {
         
         actions.push(customShortcut);
         
-        showToast('✅ Genvej oprettet: ' + title, 'success');
+        showToast((currentLanguage === 'da' ? '✅ Genvej oprettet: ' : '✅ Shortcut created: ') + title, 'success');
     }
     
     // Save and update UI
@@ -5709,7 +6118,7 @@ function saveCustomShortcut() {
 }
 
 function deleteCustomShortcut(actionId) {
-    if (confirm(translate('confirm-delete-shortcut') || 'Er du sikker på at du vil slette denne genvej?')) {
+    if (confirm(translate('confirm-delete-shortcut') || (currentLanguage === 'da' ? 'Er du sikker på at du vil slette denne genvej?' : 'Are you sure you want to delete this shortcut?'))) {
         let config = localStorage.getItem('quickActionsConfig');
         let actions = config ? JSON.parse(config) : [...defaultQuickActions];
         
@@ -5719,7 +6128,7 @@ function deleteCustomShortcut(actionId) {
         populateQuickActionsCheckboxes();
         renderQuickActions();
         
-        showToast('🗑️ Genvej slettet', 'info');
+        showToast(currentLanguage === 'da' ? '🗑️ Genvej slettet' : '🗑️ Shortcut deleted', 'info');
     }
 }
 
@@ -5735,7 +6144,7 @@ function editCustomShortcut(actionId) {
     console.log('Found shortcut:', shortcut);
     
     if (!shortcut || !shortcut.custom) {
-        showToast('⚠️ Genvej ikke fundet', 'warning');
+        showToast(currentLanguage === 'da' ? '⚠️ Genvej ikke fundet' : '⚠️ Shortcut not found', 'warning');
         return;
     }
     
@@ -5840,13 +6249,13 @@ function editCustomShortcut(actionId) {
             }
             
             // Update UI text
-            document.getElementById('customShortcutFormTitle').textContent = 'Rediger Genvej';
-            document.getElementById('saveShortcutBtn').innerHTML = '✏️ Opdater Genvej';
+            document.getElementById('customShortcutFormTitle').textContent = currentLanguage === 'da' ? 'Rediger Genvej' : 'Edit Shortcut';
+            document.getElementById('saveShortcutBtn').innerHTML = currentLanguage === 'da' ? '✏️ Opdater Genvej' : '✏️ Update Shortcut';
             
             // Scroll to form
             form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             
-            showToast('✏️ Redigerer: ' + shortcut.title, 'info');
+            showToast((currentLanguage === 'da' ? '✏️ Redigerer: ' : '✏️ Editing: ') + shortcut.title, 'info');
         }, 150);
     });
 }
@@ -5865,11 +6274,11 @@ function toggleUploadSection() {
         
         if (isMinimized) {
             dropZone.classList.remove('hidden');
-            toggleText.textContent = '🔽 Minimer';
+            toggleText.textContent = currentLanguage === 'da' ? '🔽 Minimer' : '🔽 Minimize';
             toggleText.setAttribute('data-i18n', 'minimize-upload');
         } else {
             dropZone.classList.add('hidden');
-            toggleText.textContent = '📂 Udvid';
+            toggleText.textContent = currentLanguage === 'da' ? '📂 Udvid' : '📂 Expand';
             toggleText.setAttribute('data-i18n', 'expand-upload');
         }
     }
@@ -5883,7 +6292,7 @@ function minimizeUploadSection() {
     if (dropZone && toggleBtn && toggleText) {
         dropZone.classList.add('hidden');
         toggleBtn.classList.remove('hidden');
-        toggleText.textContent = '📂 Udvid';
+        toggleText.textContent = currentLanguage === 'da' ? '📂 Udvid' : '📂 Expand';
         toggleText.setAttribute('data-i18n', 'expand-upload');
     }
 }
@@ -5948,6 +6357,9 @@ function setTheme(theme) {
     
     localStorage.setItem('theme', theme);
     updateThemeButtons();
+
+    // Apply dark/light palette to all Chart.js instances (Step M)
+    applyChartPalette(theme === 'dark');
     
     // Refresh charts if they exist
     if (abcResults.length > 0) {
@@ -5956,6 +6368,56 @@ function setTheme(theme) {
             renderABCChart(chartTypeSelect.value);
         }
     }
+}
+
+// Step M: Update Chart.js global defaults for dark / light mode
+function applyChartPalette(isDark) {
+    if (typeof Chart === 'undefined') return;
+    const textColor  = isDark ? '#e5e7eb' : '#374151';
+    const gridColor  = isDark ? '#374151' : '#e5e7eb';
+    const tickColor  = isDark ? '#9ca3af' : '#6b7280';
+
+    // Global defaults — affects all charts that don't override explicitly
+    Chart.defaults.color = textColor;
+    Chart.defaults.borderColor = gridColor;
+
+    // Update scale defaults
+    if (Chart.defaults.scales) {
+        ['linear', 'logarithmic', 'category', 'time'].forEach(scaleType => {
+            const scale = Chart.defaults.scales[scaleType];
+            if (scale) {
+                if (scale.ticks) scale.ticks.color = tickColor;
+                if (scale.grid) scale.grid.color = gridColor;
+                if (scale.title) scale.title.color = textColor;
+            }
+        });
+    }
+
+    // Re-render any visible charts that don't auto-update
+    [window.periodicReviewChartInstance, window.minMaxChartInstance].forEach(chart => {
+        if (chart) {
+            try {
+                // Update axis colors on existing chart instances
+                chart.options.plugins.title = chart.options.plugins.title || {};
+                chart.options.plugins.title.color = textColor;
+                chart.options.plugins.legend = chart.options.plugins.legend || {};
+                chart.options.plugins.legend.labels = chart.options.plugins.legend.labels || {};
+                chart.options.plugins.legend.labels.color = textColor;
+                ['x', 'y', 'x1', 'y1'].forEach(axis => {
+                    if (chart.options.scales && chart.options.scales[axis]) {
+                        const s = chart.options.scales[axis];
+                        if (!s.ticks) s.ticks = {};
+                        if (!s.grid) s.grid = {};
+                        if (!s.title) s.title = {};
+                        s.ticks.color = tickColor;
+                        s.grid.color = gridColor;
+                        s.title.color = textColor;
+                    }
+                });
+                chart.update('none'); // 'none' = no animation, just re-paint
+            } catch(e) { /* chart may be partially destroyed */ }
+        }
+    });
 }
 
 function updateThemeButtons() {
@@ -5978,6 +6440,14 @@ function setLanguage(lang) {
         const key = element.getAttribute('data-i18n');
         if (translations[lang][key]) {
             element.textContent = translations[lang][key];
+        }
+    });
+    
+    // Update all translatable HTML elements (supports markup like <strong>)
+    document.querySelectorAll('[data-i18n-html]').forEach(element => {
+        const key = element.getAttribute('data-i18n-html');
+        if (translations[lang][key]) {
+            element.innerHTML = translations[lang][key];
         }
     });
     
@@ -6247,8 +6717,11 @@ function generateLogisticsOperatorExcel() {
     }
     
     // Sheet 1: Varelager (Inventory)
+    const varelagerHeaders = currentLanguage === 'da'
+        ? ['SKU', 'Varenavn', 'Kategori', 'Underkategori', 'Lokation', 'Zone', 'Reol', 'Hylde', 'Lagerbestand', 'Min Lager', 'Max Lager', 'Genbestillingspunkt', 'Årsforbrug', 'Pris pr. enhed', 'Lagerværdi', 'ABC Klasse', 'Leverandør ID', 'Lead Time (dage)', 'Sidst Optalt']
+        : ['SKU', 'Item Name', 'Category', 'Subcategory', 'Location', 'Zone', 'Rack', 'Shelf', 'Stock Level', 'Min Stock', 'Max Stock', 'Reorder Point', 'Annual Consumption', 'Price per Unit', 'Inventory Value', 'ABC Class', 'Supplier ID', 'Lead Time (days)', 'Last Counted'];
     const varelager = [
-        ['SKU', 'Varenavn', 'Kategori', 'Underkategori', 'Lokation', 'Zone', 'Reol', 'Hylde', 'Lagerbestand', 'Min Lager', 'Max Lager', 'Genbestillingspunkt', 'Årsforbrug', 'Pris pr. enhed', 'Lagerværdi', 'ABC Klasse', 'Leverandør ID', 'Lead Time (dage)', 'Sidst Optalt'],
+        varelagerHeaders,
         ['LOG-001', 'EUR Palle 120x80cm', 'Paller', 'Euro Standard', 'Lager A', 'A', '01', '01', 2450, 500, 3000, 800, 12500, 145, 355250, 'A', 'LEV-001', 3, '2024-01-15'],
         ['LOG-002', 'DK Palle 100x120cm', 'Paller', 'Dansk Standard', 'Lager A', 'A', '01', '02', 1850, 400, 2500, 600, 8900, 165, 305250, 'A', 'LEV-001', 3, '2024-01-15'],
         ['LOG-003', 'Halvpalle 80x60cm', 'Paller', 'Halvpalle', 'Lager A', 'A', '02', '01', 980, 200, 1500, 350, 4500, 95, 93100, 'B', 'LEV-001', 5, '2024-01-15'],
@@ -6277,8 +6750,11 @@ function generateLogisticsOperatorExcel() {
     ];
     
     // Sheet 2: Leverandører (Suppliers)
+    const leverandorerHeaders = currentLanguage === 'da'
+        ? ['Leverandør ID', 'Firmanavn', 'Kontaktperson', 'Email', 'Telefon', 'Adresse', 'Postnummer', 'By', 'Land', 'Betalingsbetingelser', 'Standard Lead Time', 'Min. Ordre', 'Rating', 'Aktiv']
+        : ['Supplier ID', 'Company Name', 'Contact Person', 'Email', 'Phone', 'Address', 'Postal Code', 'City', 'Country', 'Payment Terms', 'Standard Lead Time', 'Min. Order', 'Rating', 'Active'];
     const leverandorer = [
-        ['Leverandør ID', 'Firmanavn', 'Kontaktperson', 'Email', 'Telefon', 'Adresse', 'Postnummer', 'By', 'Land', 'Betalingsbetingelser', 'Standard Lead Time', 'Min. Ordre', 'Rating', 'Aktiv'],
+        leverandorerHeaders,
         ['LEV-001', 'Nordic Pallet Solutions A/S', 'Hans Jensen', 'hj@nordicpallet.dk', '+45 70 20 30 40', 'Industrivej 45', '4600', 'Køge', 'Danmark', 'Netto 30', 3, 500, 4.8, 'Ja'],
         ['LEV-002', 'PackPro Emballage', 'Mette Olsen', 'mo@packpro.dk', '+45 45 67 89 01', 'Emballagevej 12', '2650', 'Hvidovre', 'Danmark', 'Netto 14', 2, 200, 4.5, 'Ja'],
         ['LEV-003', 'Kartonnage Danmark', 'Per Andersen', 'pa@kartonnage.dk', '+45 86 12 34 56', 'Papvej 8', '8600', 'Silkeborg', 'Danmark', 'Netto 30', 5, 1000, 4.6, 'Ja'],
@@ -6292,8 +6768,11 @@ function generateLogisticsOperatorExcel() {
     ];
     
     // Sheet 3: Ordrehistorik (Order History)
+    const ordrehistorikHeaders = currentLanguage === 'da'
+        ? ['Ordre ID', 'Dato', 'Leverandør ID', 'SKU', 'Antal', 'Pris pr. enhed', 'Total Beløb', 'Status', 'Forventet Levering', 'Faktisk Levering', 'Noter']
+        : ['Order ID', 'Date', 'Supplier ID', 'SKU', 'Quantity', 'Price per Unit', 'Total Amount', 'Status', 'Expected Delivery', 'Actual Delivery', 'Notes'];
     const ordrehistorik = [
-        ['Ordre ID', 'Dato', 'Leverandør ID', 'SKU', 'Antal', 'Pris pr. enhed', 'Total Beløb', 'Status', 'Forventet Levering', 'Faktisk Levering', 'Noter'],
+        ordrehistorikHeaders,
         ['ORD-2024-001', '2024-01-02', 'LEV-001', 'LOG-001', 1000, 145, 145000, 'Leveret', '2024-01-05', '2024-01-05', ''],
         ['ORD-2024-002', '2024-01-03', 'LEV-002', 'LOG-004', 200, 285, 57000, 'Leveret', '2024-01-05', '2024-01-04', 'Leveret 1 dag før tid'],
         ['ORD-2024-003', '2024-01-05', 'LEV-003', 'LOG-008', 2500, 18, 45000, 'Leveret', '2024-01-10', '2024-01-10', ''],
@@ -6307,8 +6786,11 @@ function generateLogisticsOperatorExcel() {
     ];
     
     // Sheet 4: Lagerflytninger (Warehouse Movements)
+    const lagerflytningerHeaders = currentLanguage === 'da'
+        ? ['Flytter ID', 'Dato', 'Tidspunkt', 'SKU', 'Fra Lokation', 'Til Lokation', 'Antal', 'Type', 'Reference', 'Medarbejder', 'Noter']
+        : ['Movement ID', 'Date', 'Time', 'SKU', 'From Location', 'To Location', 'Quantity', 'Type', 'Reference', 'Employee', 'Notes'];
     const lagerflytninger = [
-        ['Flytter ID', 'Dato', 'Tidspunkt', 'SKU', 'Fra Lokation', 'Til Lokation', 'Antal', 'Type', 'Reference', 'Medarbejder', 'Noter'],
+        lagerflytningerHeaders,
         ['MOV-001', '2024-01-15', '08:15', 'LOG-001', 'Modtagelse', 'A-01-01', 500, 'Indgående', 'ORD-2024-001', 'Peter J', 'Modtaget fra Nordic Pallet'],
         ['MOV-002', '2024-01-15', '09:30', 'LOG-008', 'C-01-01', 'Pakkeri', 200, 'Intern', 'PICK-0115', 'Anna M', 'Til pakkelinje 3'],
         ['MOV-003', '2024-01-15', '10:45', 'LOG-004', 'B-01-01', 'Pakkeri', 50, 'Intern', 'PICK-0116', 'Lars H', ''],
@@ -6322,8 +6804,11 @@ function generateLogisticsOperatorExcel() {
     ];
     
     // Sheet 5: KPI Målinger (KPI Metrics)
+    const kpiMalingerHeaders = currentLanguage === 'da'
+        ? ['Måned', 'Lageromkostning', 'Ordreomkostninger', 'Lageromsætning', 'Fill Rate %', 'On-Time Delivery %', 'Plukkefejl %', 'Pladsudnyttelse %', 'Arbejdstimer', 'Antal Ordrer']
+        : ['Month', 'Storage Cost', 'Order Costs', 'Inventory Turnover', 'Fill Rate %', 'On-Time Delivery %', 'Pick Error %', 'Space Utilization %', 'Work Hours', 'Number of Orders'];
     const kpiMalinger = [
-        ['Måned', 'Lageromkostning', 'Ordreomkostninger', 'Lageromsætning', 'Fill Rate %', 'On-Time Delivery %', 'Plukkefejl %', 'Pladsudnyttelse %', 'Arbejdstimer', 'Antal Ordrer'],
+        kpiMalingerHeaders,
         ['Jan 2024', 125000, 48000, 4.2, 98.5, 96.2, 0.8, 78, 1680, 2450],
         ['Dec 2023', 132000, 52000, 3.9, 97.8, 94.5, 1.2, 82, 1720, 2680],
         ['Nov 2023', 118000, 45000, 4.5, 98.2, 95.8, 0.9, 75, 1650, 2320],
@@ -6339,8 +6824,11 @@ function generateLogisticsOperatorExcel() {
     ];
     
     // Sheet 6: Parametre (Parameters for calculations)
+    const parametreHeaders = currentLanguage === 'da'
+        ? ['Parameter', 'Værdi', 'Enhed', 'Beskrivelse']
+        : ['Parameter', 'Value', 'Unit', 'Description'];
     const parametre = [
-        ['Parameter', 'Værdi', 'Enhed', 'Beskrivelse'],
+        parametreHeaders,
         ['Standard Ordreomkostning', 250, 'DKK', 'Gennemsnitlig omkostning pr. ordre inkl. administration'],
         ['Lagerrentesats', 8, '%', 'Årlig lagerrentesats (kapital + forsikring + svind)'],
         ['Kapitalbinding', 4, '%', 'Rentesats for bundet kapital'],
@@ -6388,15 +6876,15 @@ function generateLogisticsOperatorExcel() {
         {wch: 28}, {wch: 10}, {wch: 10}, {wch: 50}
     ];
     
-    XLSX.utils.book_append_sheet(wb, ws1, 'Varelager');
-    XLSX.utils.book_append_sheet(wb, ws2, 'Leverandører');
-    XLSX.utils.book_append_sheet(wb, ws3, 'Ordrehistorik');
-    XLSX.utils.book_append_sheet(wb, ws4, 'Lagerflytninger');
-    XLSX.utils.book_append_sheet(wb, ws5, 'KPI Målinger');
-    XLSX.utils.book_append_sheet(wb, ws6, 'Parametre');
+    XLSX.utils.book_append_sheet(wb, ws1, currentLanguage === 'da' ? 'Varelager' : 'Inventory');
+    XLSX.utils.book_append_sheet(wb, ws2, currentLanguage === 'da' ? 'Leverandører' : 'Suppliers');
+    XLSX.utils.book_append_sheet(wb, ws3, currentLanguage === 'da' ? 'Ordrehistorik' : 'Order History');
+    XLSX.utils.book_append_sheet(wb, ws4, currentLanguage === 'da' ? 'Lagerflytninger' : 'Warehouse Movements');
+    XLSX.utils.book_append_sheet(wb, ws5, currentLanguage === 'da' ? 'KPI Målinger' : 'KPI Metrics');
+    XLSX.utils.book_append_sheet(wb, ws6, currentLanguage === 'da' ? 'Parametre' : 'Parameters');
     
     // Download the file
-    XLSX.writeFile(wb, 'Lager_og_Logistik_Eksempel.xlsx');
+    XLSX.writeFile(wb, currentLanguage === 'da' ? 'Lager_og_Logistik_Eksempel.xlsx' : 'Inventory_and_Logistics_Example.xlsx');
     
     showToast(
         currentLanguage === 'da' 
@@ -6448,7 +6936,7 @@ function handleFileUpload(event) {
     } else if (fileExtension === 'xlsx' || fileExtension === 'xls') {
         parseExcel(file);
     } else {
-        alert('Please upload a CSV or Excel file.');
+        showToast(currentLanguage === 'da' ? 'Upload venligst en CSV- eller Excel-fil (.csv, .xlsx, .xls)' : 'Please upload a CSV or Excel file (.csv, .xlsx, .xls)', 'error');
     }
 }
 
@@ -6494,14 +6982,14 @@ function parseCSV(file) {
             },
             error: (error) => {
                 console.error('CSV parsing error:', error);
-                alert(translate('alert-csv-parse-error') || 'Error parsing CSV file.');
+                showToast(currentLanguage === 'da' ? 'Fejl ved læsning af CSV-fil' : 'Error parsing CSV file', 'error');
             }
         });
     };
     
     reader.onerror = (error) => {
         console.error('File reading error:', error);
-        alert(translate('alert-csv-parse-error') || 'Error reading CSV file.');
+        showToast(currentLanguage === 'da' ? 'Fejl ved læsning af filen' : 'Error reading file', 'error');
     };
     
     // Read file as text with UTF-8 encoding
@@ -6525,7 +7013,7 @@ function parseExcel(file) {
             }
         } catch (error) {
             console.error('Excel parsing error:', error);
-            alert(translate('alert-excel-parse-error') || 'Error parsing Excel file.');
+            showToast(currentLanguage === 'da' ? 'Fejl ved læsning af Excel-fil' : 'Error parsing Excel file', 'error');
         }
     };
     
@@ -6815,7 +7303,7 @@ function displayPreview(showAll = false) {
                 <tr>
                     <td colspan="${hasColumns ? columnsToShow.length : 3}" class="text-center">
                         <button onclick="displayPreview(true)" class="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer font-medium">
-                            ... show all ${uploadedData.length} rows
+                            ... vis alle ${uploadedData.length} rækker
                         </button>
                     </td>
                 </tr>
@@ -6824,7 +7312,7 @@ function displayPreview(showAll = false) {
                 <tr>
                     <td colspan="${hasColumns ? columnsToShow.length : 3}" class="text-center">
                         <button onclick="displayPreview(false)" class="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer font-medium">
-                            show less
+                            vis færre
                         </button>
                     </td>
                 </tr>
@@ -7019,7 +7507,7 @@ function displayResults() {
                     </td>
                     ${eoqColumns}
                     <td>
-                        <button onclick="showItemDetails(${index})" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-xl" title="Se detaljer">
+                        <button onclick="showItemDetails(${index})" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-xl" title="${currentLanguage === 'da' ? 'Se detaljer' : 'View details'}">
                             ℹ️
                         </button>
                     </td>
@@ -7076,11 +7564,15 @@ function showPerformanceInfo() {
     
     if (totalItems > 10000) {
         banner.classList.remove('hidden');
-        const chartSampling = totalItems > 500 ? ` Chart displays ~500 sampled points.` : '';
-        message.textContent = `⚡ Large dataset: ${totalItems.toLocaleString()} items. Showing first 200 rows.${chartSampling} Use +100/+1,000/+5,000 buttons below to load more.`;
+        const chartSampling = totalItems > 500 ? (currentLanguage === 'da' ? ` Grafik viser ~500 samplingsepunkter.` : ` Charts show ~500 sampling points.`) : '';
+        message.textContent = currentLanguage === 'da'
+            ? `⚡ Stort datasæt: ${totalItems.toLocaleString()} varer. Viser første 200 rækker.${chartSampling} Brug +100/+1.000/+5.000 knapperne nedenfor for at indlæse mere.`
+            : `⚡ Large dataset: ${totalItems.toLocaleString()} items. Showing first 200 rows.${chartSampling} Use the +100/+1,000/+5,000 buttons below to load more.`;
     } else if (totalItems > 1000) {
         banner.classList.remove('hidden');
-        message.textContent = `Dataset: ${totalItems.toLocaleString()} items. Showing first 200 rows for fast loading. Use buttons below to load more.`;
+        message.textContent = currentLanguage === 'da'
+            ? `Datasæt: ${totalItems.toLocaleString()} varer. Viser første 200 rækker for hurtig indlæsning. Brug knapperne nedenfor for at indlæse mere.`
+            : `Dataset: ${totalItems.toLocaleString()} items. Showing first 200 rows for fast loading. Use buttons below to load more.`;
     } else {
         banner.classList.add('hidden');
     }
@@ -8683,7 +9175,7 @@ function resetApp() {
     categories.forEach(cat => {
         const countEl = document.getElementById(`count-${cat}`);
         const valueEl = document.getElementById(`value-${cat}`);
-        if (countEl) countEl.textContent = '0 items';
+        if (countEl) countEl.textContent = currentLanguage === 'da' ? '0 varer' : '0 items';
         if (valueEl) valueEl.textContent = '0 kr';
     });
     
@@ -8691,7 +9183,7 @@ function resetApp() {
     const dashTopItems = document.getElementById('dashTopItems');
     if (dashTopItems) {
         const itemsContainer = dashTopItems.querySelector('.space-y-2');
-        if (itemsContainer) itemsContainer.innerHTML = '<p class="text-gray-500 dark:text-gray-400 text-center py-4">Ingen data tilgængelig</p>';
+        if (itemsContainer) itemsContainer.innerHTML = `<p class="text-gray-500 dark:text-gray-400 text-center py-4">${currentLanguage === 'da' ? 'Ingen data tilgængelig' : 'No data available'}</p>`;
     }
     
     // Clear summary stats
@@ -9115,7 +9607,7 @@ function setupDragDrop() {
                 // Trigger the file upload handler
                 handleFileUpload({ target: fileInput });
             } else {
-                alert('Please upload a CSV or Excel file (.csv, .xlsx, .xls)');
+                showToast(currentLanguage === 'da' ? 'Upload venligst en CSV- eller Excel-fil (.csv, .xlsx, .xls)' : 'Please upload a CSV or Excel file (.csv, .xlsx, .xls)', 'error');
             }
         }
     });
@@ -9161,7 +9653,7 @@ function preventGlobalFileDrop() {
 // View Uploaded Data
 function viewUploadedData() {
     if (uploadedData.length === 0) {
-        showToast('No data uploaded yet', 'warning');
+        showToast(currentLanguage === 'da' ? 'Ingen data uploadet endnu' : 'No data uploaded yet', 'warning');
         return;
     }
     
@@ -9244,39 +9736,39 @@ function showItemDetails(index) {
         <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 rounded-lg p-4 mb-4">
             <h4 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">${item.name}</h4>
             <div class="flex items-center gap-3">
-                <span class="group-badge group-${item.group} text-lg px-4 py-1">Gruppe ${item.group}</span>
-                <span class="text-gray-600 dark:text-gray-300">Ranking: #${rank} af ${abcResults.length}</span>
+                <span class="group-badge group-${item.group} text-lg px-4 py-1">${currentLanguage === 'da' ? 'Gruppe' : 'Group'} ${item.group}</span>
+                <span class="text-gray-600 dark:text-gray-300">Ranking: #${rank} ${currentLanguage === 'da' ? 'af' : 'of'} ${abcResults.length}</span>
             </div>
         </div>
         
         <div class="grid grid-cols-2 gap-4 mb-4">
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">Forbrug (årligt)</div>
+                <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">${currentLanguage === 'da' ? 'Forbrug (årligt)' : 'Consumption (yearly)'}</div>
                 <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">${item.consumption.toLocaleString()}</div>
-                <div class="text-xs text-gray-500 dark:text-gray-400">enheder</div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">${currentLanguage === 'da' ? 'enheder' : 'units'}</div>
             </div>
             
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">Pris pr. enhed</div>
+                <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">${currentLanguage === 'da' ? 'Pris pr. enhed' : 'Price per unit'}</div>
                 <div class="text-2xl font-bold text-green-600 dark:text-green-400">${item.price.toLocaleString()}</div>
                 <div class="text-xs text-gray-500 dark:text-gray-400">DKK</div>
             </div>
             
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Værdi (årlig)</div>
+                <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">${currentLanguage === 'da' ? 'Total Værdi (årlig)' : 'Total Value (yearly)'}</div>
                 <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">${item.value.toLocaleString()}</div>
                 <div class="text-xs text-gray-500 dark:text-gray-400">DKK</div>
             </div>
             
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">Værdi %</div>
+                <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">${currentLanguage === 'da' ? 'Værdi %' : 'Value %'}</div>
                 <div class="text-2xl font-bold text-orange-600 dark:text-orange-400">${valuePercent}%</div>
-                <div class="text-xs text-gray-500 dark:text-gray-400">af total</div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">${currentLanguage === 'da' ? 'af total' : 'of total'}</div>
             </div>
         </div>
         
         <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-900 rounded-lg p-4 mb-4">
-            <h5 class="font-semibold text-gray-800 dark:text-white mb-2">📊 Kumulativ Position</h5>
+            <h5 class="font-semibold text-gray-800 dark:text-white mb-2">📊 ${currentLanguage === 'da' ? 'Kumulativ Position' : 'Cumulative Position'}</h5>
             <div class="flex items-center gap-2">
                 <div class="flex-1 bg-gray-200 dark:bg-gray-600 rounded-full h-4">
                     <div class="bg-blue-500 h-4 rounded-full" style="width: ${item.cumulativePercent}%"></div>
@@ -9286,13 +9778,13 @@ function showItemDetails(index) {
         </div>
         
         <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-            <h5 class="font-semibold text-gray-800 dark:text-white mb-2">💡 ${item.group}-Gruppe Information</h5>
+            <h5 class="font-semibold text-gray-800 dark:text-white mb-2">💡 ${item.group}-${currentLanguage === 'da' ? 'Gruppe' : 'Group'} Information</h5>
             <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">${groupDescriptions[item.group]}</p>
         </div>
         
         <div class="mt-4 flex gap-2">
             <button onclick="closeItemDetailsModal()" class="flex-1 px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-medium transition-colors">
-                Luk
+                ${currentLanguage === 'da' ? 'Luk' : 'Close'}
             </button>
         </div>
     `;
@@ -9313,21 +9805,21 @@ function validateDataQuality(data) {
     const names = data.map(item => item.name.toLowerCase());
     const duplicates = names.filter((name, index) => names.indexOf(name) !== index);
     if (duplicates.length > 0) {
-        issues.push(`${duplicates.length} duplicate item names found`);
+        issues.push(currentLanguage === 'da' ? `${duplicates.length} duplikerede varenavne fundet` : `${duplicates.length} duplicate item names found`);
         score -= 20;
     }
     
     // Check for zero values
     const zeros = data.filter(item => item.consumption === 0 || item.price === 0);
     if (zeros.length > 0) {
-        issues.push(`${zeros.length} items with zero consumption or price`);
+        issues.push(currentLanguage === 'da' ? `${zeros.length} varer med nul forbrug eller pris` : `${zeros.length} items with zero consumption or price`);
         score -= 15;
     }
     
     // Check for missing data
     const missing = data.filter(item => !item.name || item.consumption === undefined || item.price === undefined);
     if (missing.length > 0) {
-        issues.push(`${missing.length} items with missing data`);
+        issues.push(currentLanguage === 'da' ? `${missing.length} varer med manglende data` : `${missing.length} items with missing data`);
         score -= 30;
     }
     
@@ -9342,8 +9834,8 @@ function validateDataQuality(data) {
         const outlierNames = outlierItems.slice(0, displayLimit).map(o => 
             `<span class="inline-block px-2 py-1 bg-yellow-100 dark:bg-yellow-900 rounded text-sm mr-2 mb-1"><strong>${o.name}</strong>: ${o.value.toLocaleString(currentLanguage === 'da' ? 'da-DK' : 'en-US')}</span>`
         ).join('');
-        const moreText = outlierItems.length > displayLimit ? `<span class="text-gray-600 dark:text-gray-400">+ ${outlierItems.length - displayLimit} more items</span>` : '';
-        issues.push(`${outlierItems.length} potential outliers detected (values >3 std deviations from mean):<br><div class="mt-2">${outlierNames}${moreText}</div>`);
+        const moreText = outlierItems.length > displayLimit ? `<span class="text-gray-600 dark:text-gray-400">+ ${outlierItems.length - displayLimit} ${currentLanguage === 'da' ? 'flere varer' : 'more items'}</span>` : '';
+        issues.push(currentLanguage === 'da' ? `${outlierItems.length} potentielle outliers fundet (værdier >3 standardafvigelser fra gennemsnit):<br><div class="mt-2">${outlierNames}${moreText}</div>` : `${outlierItems.length} potential outliers detected (values >3 std deviations from mean):<br><div class="mt-2">${outlierNames}${moreText}</div>`);
         score -= 10;
     }
     
@@ -10480,7 +10972,7 @@ function unlockData() {
     
     const encryptedData = localStorage.getItem('encryptedData');
     if (!encryptedData) {
-        showToast('No encrypted data found', 'error');
+        showToast(currentLanguage === 'da' ? 'Ingen krypterede data fundet' : 'No encrypted data found', 'error');
         return;
     }
     
@@ -11109,7 +11601,7 @@ function applyABCPreset(preset) {
         thresholdA.value = values.A;
         thresholdB.value = values.B;
         thresholdC.value = values.C;
-        showToast(`ABC tærskler sat til ${preset}`, 'success');
+        showToast(currentLanguage === 'da' ? `ABC tærskler sat til ${preset}` : `ABC thresholds set to ${preset}`, 'success');
     }
 }
 
@@ -11354,6 +11846,87 @@ function exportDoubleABCExcel() {
 
     XLSX.writeFile(wb, `Double_ABC_Analysis_${new Date().toISOString().split('T')[0]}.xlsx`);
     showToast(currentLanguage === 'da' ? 'Excel fil eksporteret!' : 'Excel file exported!', 'success');
+}
+
+// ========================================
+// Inventory Management - Sub-tab System
+// ========================================
+
+function switchInventoryTool(tool) {
+    // Hide all tool panels
+    document.querySelectorAll('.inv-tool-content').forEach(el => el.classList.add('hidden'));
+    // Reset all tabs
+    document.querySelectorAll('.inv-tool-tab').forEach(btn => {
+        btn.classList.remove('border-purple-500', 'text-purple-600', 'dark:text-purple-400',
+            'border-green-500', 'text-green-600', 'dark:text-green-400',
+            'border-blue-500', 'text-blue-600', 'dark:text-blue-400');
+        btn.classList.add('border-transparent', 'text-gray-500', 'dark:text-gray-400');
+    });
+
+    const colors = {
+        rop: ['border-purple-500', 'text-purple-600', 'dark:text-purple-400'],
+        periodic: ['border-green-500', 'text-green-600', 'dark:text-green-400'],
+        minmax: ['border-blue-500', 'text-blue-600', 'dark:text-blue-400']
+    };
+    const panelMap = { rop: 'invToolROP', periodic: 'invToolPeriodic', minmax: 'invToolMinMax' };
+    const tabMap = { rop: 'invTabROP', periodic: 'invTabPeriodic', minmax: 'invTabMinMax' };
+
+    const panel = document.getElementById(panelMap[tool]);
+    const tab = document.getElementById(tabMap[tool]);
+    if (panel) panel.classList.remove('hidden');
+    if (tab) {
+        tab.classList.remove('border-transparent', 'text-gray-500', 'dark:text-gray-400');
+        colors[tool].forEach(c => tab.classList.add(c));
+    }
+}
+
+function syncSharedParams() {
+    const demand = document.getElementById('invSharedDemand')?.value || '';
+    const leadTime = document.getElementById('invSharedLeadTime')?.value || '';
+    const stock = document.getElementById('invSharedStock')?.value || '';
+    const safety = document.getElementById('invSharedSafety')?.value || '';
+    const autoSync = document.getElementById('invAutoSync')?.checked;
+
+    // Sync to ROP hidden fields
+    const ropDemand = document.getElementById('ropDailyDemand');
+    const ropLead = document.getElementById('ropLeadTime');
+    const ropStock = document.getElementById('ropCurrentStock');
+    if (ropDemand) ropDemand.value = demand;
+    if (ropLead) ropLead.value = leadTime;
+    if (ropStock) ropStock.value = stock;
+
+    // Sync to Periodic Review hidden fields
+    const prDemand = document.getElementById('prDailyDemand');
+    const prLead = document.getElementById('prLeadTime');
+    const prSafety = document.getElementById('prSafetyStock');
+    const prStock = document.getElementById('prCurrentStock');
+    if (prDemand) prDemand.value = demand;
+    if (prLead) prLead.value = leadTime;
+    if (prSafety) prSafety.value = safety;
+    if (prStock) prStock.value = stock;
+
+    // Sync to Min/Max hidden fields
+    const mmDemand = document.getElementById('mmDailyDemand');
+    const mmSafety = document.getElementById('mmSafetyStock');
+    const mmCurrent = document.getElementById('mmCurrentLevel');
+    if (mmDemand) mmDemand.value = demand;
+    if (mmSafety) mmSafety.value = safety;
+    if (mmCurrent) mmCurrent.value = stock;
+
+    // Auto-calculate all if enabled
+    if (autoSync) {
+        calculateReorderPoint();
+        calculatePeriodicReview();
+        calculateMinMax();
+    }
+}
+
+function toggleInventoryAutoSync() {
+    const autoSync = document.getElementById('invAutoSync')?.checked;
+    if (autoSync) {
+        syncSharedParams();
+        showToast(currentLanguage === 'da' ? 'Auto-synkronisering aktiveret' : 'Auto-sync enabled', 'success');
+    }
 }
 
 // ========================================
@@ -12306,6 +12879,251 @@ function syncAllInventory() {
 }
 
 // ========================================
+// Cargo Securing Calculator
+// ========================================
+
+function toggleLashingReference() {
+    const ref = document.getElementById('lashingReference');
+    const arrow = document.getElementById('lashingReferenceArrow');
+    ref.classList.toggle('hidden');
+    arrow.textContent = ref.classList.contains('hidden') ? '▼' : '▲';
+}
+
+function toggleSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    const arrow = document.getElementById(sectionId + 'Arrow');
+    section.classList.toggle('hidden');
+    arrow.textContent = section.classList.contains('hidden') ? '▶' : '▼';
+}
+
+function updateLashingMethodUI() {
+    const method = document.getElementById('lashingMethod')?.value;
+    const descDiv = document.getElementById('methodDescription');
+    
+    if (!descDiv) return;
+    
+    const descriptions = {
+        'overfald': '<strong>Overfaldssurring:</strong> Den mest brugte metode. Båndene går hen over godset og skaber friktion mod underlaget. Kræver god friktion mellem gods og lad.',
+        'loop': '<strong>Loopsurring:</strong> Effektiv metode til sideretning og tipning. Godset skal altid sikres med mindst 2 loopsurringspar. Kræver faste monteringspunkter.',
+        'friction': '<strong>Grimesurring:</strong> Særligt effektiv til fremad/bagud sikring. Max 45° vinkel! Høj sikkerhedsfaktor (k=2.0). God løsning når friktion er lav.',
+        'direct': '<strong>Direkt Surring:</strong> Mest effektive metode hvor godset fastgøres direkte til køretøjet. Høj sikkerhedsfaktor (k=2.0). Kræver gode fastgørelsespunkter på godset.'
+    };
+    
+    descDiv.innerHTML = '<p class="text-sm text-blue-900 dark:text-blue-200">' + (descriptions[method] || '') + '</p>';
+}
+
+function handleFrictionChange() {
+    const select = document.getElementById('cargoFrictionSelect');
+    const input = document.getElementById('cargoFriction');
+    
+    if (select.value === 'custom') {
+        input.classList.remove('hidden');
+        input.focus();
+    } else {
+        input.classList.add('hidden');
+        input.value = select.value;
+        calculateCargoSecuring();
+    }
+}
+
+function handleRowsChange() {
+    const select = document.getElementById('cargoRowsSelect');
+    const input = document.getElementById('cargoRows');
+    
+    if (select.value === 'custom') {
+        input.classList.remove('hidden');
+        input.focus();
+    } else {
+        input.classList.add('hidden');
+        input.value = select.value;
+        calculateCargoSecuring();
+    }
+}
+
+function calculateCargoSecuring() {
+    // Top-over lashing calculations (simplified - all 4 methods use same inputs)
+    const cargoWeight = parseFloat(document.getElementById('cargoWeight')?.value);
+    const friction = parseFloat(document.getElementById('cargoFriction')?.value) || 0.30;
+    const angle = parseFloat(document.getElementById('cargoAngle')?.value) || 90;
+    const actualSTF = parseFloat(document.getElementById('cargoActualSTF')?.value) || 400;
+    const hbRatio = parseFloat(document.getElementById('cargoHBRatio')?.value);
+    const rows = parseInt(document.getElementById('cargoRows')?.value) || 1;
+    
+    const resultsDiv = document.getElementById('cargoResults');
+    
+    // Validate basic inputs
+    if (!cargoWeight || cargoWeight <= 0) {
+        if (resultsDiv) resultsDiv.classList.add('hidden');
+        return;
+    }
+    
+    // Show results
+    if (resultsDiv) resultsDiv.classList.remove('hidden');
+    
+    const standardSTF = 400; // Standard STF value from the book
+    const stfFactor = actualSTF / standardSTF;
+    
+    // === GLIDNING TABLE (Sliding) - From book page 3 ===
+    // Antal ton goods, en overfaldssurring forhindrer i at glide
+    const slidingTable = {
+        0.15: { side: 0.31, forward: 0.15, backward: 0.31 },
+        0.20: { side: 0.48, forward: 0.21, backward: 0.48 },
+        0.25: { side: 0.72, forward: 0.29, backward: 0.72 },
+        0.30: { side: 1.1, forward: 0.38, backward: 1.1 },
+        0.35: { side: 1.7, forward: 0.49, backward: 1.7 },
+        0.40: { side: 2.9, forward: 0.63, backward: 2.9 },
+        0.45: { side: 6.4, forward: 0.81, backward: 6.4 },
+        0.50: { side: 999, forward: 1.1, backward: 999 }, // ÷ glidning means no sliding
+        0.55: { side: 999, forward: 1.4, backward: 999 },
+        0.60: { side: 999, forward: 1.9, backward: 999 },
+        0.65: { side: 999, forward: 2.7, backward: 999 },
+        0.70: { side: 999, forward: 4.4, backward: 999 }
+    };
+    
+    // Find closest friction value in table
+    const frictionKeys = Object.keys(slidingTable).map(parseFloat).sort((a,b) => a - b);
+    let closestFriction = frictionKeys[0];
+    for (let key of frictionKeys) {
+        if (Math.abs(key - friction) < Math.abs(closestFriction - friction)) {
+            closestFriction = key;
+        }
+    }
+    
+    const slidingCapacity = slidingTable[closestFriction];
+    
+    // Apply STF factor
+    const slidingSide = slidingCapacity.side * stfFactor;
+    const slidingForward = slidingCapacity.forward * stfFactor;
+    const slidingBackward = slidingCapacity.backward * stfFactor;
+    
+    // Display sliding capacity
+    document.getElementById('cargoSlidingSide').textContent = slidingSide >= 999 ? '÷ glidning' : slidingSide.toFixed(2);
+    document.getElementById('cargoSlidingForward').textContent = slidingForward.toFixed(2);
+    document.getElementById('cargoSlidingBackward').textContent = slidingBackward >= 999 ? '÷ glidning' : slidingBackward.toFixed(2);
+    
+    // Calculate lashings needed for sliding (use the most critical direction)
+    let slidingLashings = 0;
+    if (slidingSide < 999) {
+        slidingLashings = Math.max(slidingLashings, Math.ceil(cargoWeight / slidingSide));
+    }
+    slidingLashings = Math.max(slidingLashings, Math.ceil(cargoWeight / slidingForward));
+    if (slidingBackward < 999) {
+        slidingLashings = Math.max(slidingLashings, Math.ceil(cargoWeight / slidingBackward));
+    }
+    
+    // Apply angle correction
+    let angleWarningText = '';
+    const angleWarningDiv = document.getElementById('cargoAngleWarning');
+    
+    if (angle < 30) {
+        angleWarningText = currentLanguage === 'da'
+            ? '⚠️ Vinkel under 30° - Anvend en anden lastsikringsmetode!'
+            : '⚠️ Angle below 30° - Use a different cargo securing method!';
+        angleWarningDiv?.classList.remove('hidden');
+        slidingLashings = 999; // Invalid
+    } else if (angle >= 30 && angle < 75) {
+        angleWarningText = currentLanguage === 'da'
+            ? `⚠️ Vinkel ${angle}° kræver DOBBELT antal surringer eller halvering af tabelværdier`
+            : `⚠️ Angle ${angle}° requires DOUBLE the number of lashings or halving table values`;
+        angleWarningDiv?.classList.remove('hidden');
+        slidingLashings = slidingLashings * 2; // Double for angle 30-75°
+    } else {
+        angleWarningDiv?.classList.add('hidden');
+    }
+    
+    document.getElementById('cargoAngleWarningText').textContent = angleWarningText;
+    document.getElementById('cargoSlidingResult').textContent = slidingLashings >= 999 ? 'N/A' : slidingLashings;
+    document.getElementById('cargoSlidingNote').textContent = slidingLashings >= 999 
+        ? (currentLanguage === 'da' ? 'Ugyldig vinkel' : 'Invalid angle')
+        : (currentLanguage === 'da' ? `Baseret på μ=${closestFriction}, STF=${actualSTF}` : `Based on μ=${closestFriction}, STF=${actualSTF}`);
+    
+    // === TIPNING TABLE (Tipping) - From book page 2 ===
+    // Antal ton goods, en overfaldssurring forhindrer i at tippe (Sideretning)
+    const tippingTableSide = {
+        0.6: { 1: 999, 2: 999, 3: 5.8, 4: 2.9, 5: 2.9 },
+        0.8: { 1: 999, 2: 999, 3: 4.9, 4: 2.1, 5: 1.5 },
+        1.0: { 1: 999, 2: 999, 3: 2.2, 4: 1.3, 5: 0.97 },
+        1.2: { 1: 999, 2: 4.1, 3: 1.4, 4: 0.91, 5: 0.73 },
+        1.4: { 1: 999, 2: 2.3, 3: 0.99, 4: 0.71, 5: 0.58 },
+        1.6: { 1: 999, 2: 1.5, 3: 0.78, 4: 0.58, 5: 0.49 },
+        1.8: { 1: 999, 2: 1.1, 3: 0.64, 4: 0.49, 5: 0.42 },
+        2.0: { 1: 999, 2: 0.90, 3: 0.54, 4: 0.42, 5: 0.36 },
+        2.2: { 1: 4.5, 2: 0.75, 3: 0.47, 4: 0.37, 5: 0.32 },
+        2.4: { 1: 3.3, 2: 0.64, 3: 0.42, 4: 0.33, 5: 0.29 },
+        2.6: { 1: 2.6, 2: 0.56, 3: 0.37, 4: 0.30, 5: 0.26 },
+        2.8: { 1: 1.8, 2: 0.50, 3: 0.34, 4: 0.28, 5: 0.24 },
+        3.0: { 1: 1.4, 2: 0.45, 3: 0.31, 4: 0.25, 5: 0.22 },
+        3.2: { 1: 1.2, 2: 0.41, 3: 0.29, 4: 0.24, 5: 0.21 }
+    };
+    
+    let tippingCapacity = 0;
+    let tippingLashings = 999;
+    
+    if (hbRatio && hbRatio > 0) {
+        // Find closest H/B ratio
+        const hbKeys = Object.keys(tippingTableSide).map(parseFloat).sort((a,b) => a - b);
+        let closestHB = hbKeys[0];
+        for (let key of hbKeys) {
+            if (Math.abs(key - hbRatio) < Math.abs(closestHB - hbRatio)) {
+                closestHB = key;
+            }
+        }
+        
+        tippingCapacity = tippingTableSide[closestHB][rows] || 0;
+        
+        // Apply STF factor
+        tippingCapacity = tippingCapacity * stfFactor;
+        
+        // Apply angle correction
+        if (angle >= 30 && angle < 75) {
+            tippingCapacity = tippingCapacity / 2; // Halve table value for angle 30-75°
+        }
+        
+        // Calculate lashings needed
+        if (tippingCapacity >= 999) {
+            tippingLashings = 999; // ÷ tipning
+        } else if (tippingCapacity > 0) {
+            tippingLashings = Math.ceil(cargoWeight / tippingCapacity);
+        }
+        
+        document.getElementById('cargoTippingHBDisplay').textContent = closestHB.toFixed(1);
+        document.getElementById('cargoTippingRowsDisplay').textContent = `${rows} række${rows > 1 ? 'r' : ''}`;
+        document.getElementById('cargoTippingCapacity').textContent = tippingCapacity >= 999 ? '÷ tipning' : tippingCapacity.toFixed(2);
+        document.getElementById('cargoTippingResult').textContent = tippingLashings >= 999 ? 'N/A' : tippingLashings;
+        document.getElementById('cargoTippingNote').textContent = tippingLashings >= 999
+            ? (currentLanguage === 'da' ? 'Ikke relevant (÷ tipning)' : 'Not relevant (÷ tipping)')
+            : (currentLanguage === 'da' ? `Baseret på H/B=${closestHB}, ${rows} række${rows > 1 ? 'r' : ''}` : `Based on H/B=${closestHB}, ${rows} row${rows > 1 ? 's' : ''}`);
+    } else {
+        document.getElementById('cargoTippingHBDisplay').textContent = '-';
+        document.getElementById('cargoTippingRowsDisplay').textContent = '-';
+        document.getElementById('cargoTippingCapacity').textContent = '-';
+        document.getElementById('cargoTippingResult').textContent = '-';
+        document.getElementById('cargoTippingNote').textContent = currentLanguage === 'da' 
+            ? 'Indtast H/B forhold' 
+            : 'Enter H/B ratio';
+    }
+    
+    // === FINAL RECOMMENDATION ===
+    // Use the highest number of lashings (most critical scenario)
+    const finalLashings = Math.max(
+        slidingLashings < 999 ? slidingLashings : 0,
+        tippingLashings < 999 ? tippingLashings : 0
+    );
+    
+    if (finalLashings > 0 && finalLashings < 999) {
+        document.getElementById('cargoFinalResult').textContent = finalLashings;
+        document.getElementById('cargoFinalNote').textContent = currentLanguage === 'da'
+            ? `Glidning: ${slidingLashings < 999 ? slidingLashings : 'N/A'} | Tipning: ${tippingLashings < 999 ? tippingLashings : 'N/A'}`
+            : `Sliding: ${slidingLashings < 999 ? slidingLashings : 'N/A'} | Tipping: ${tippingLashings < 999 ? tippingLashings : 'N/A'}`;
+    } else {
+        document.getElementById('cargoFinalResult').textContent = '-';
+        document.getElementById('cargoFinalNote').textContent = currentLanguage === 'da'
+            ? 'Indtast alle nødvendige værdier'
+            : 'Enter all required values';
+    }
+}
+
+// ========================================
 // Settings Helper Functions
 // ========================================
 
@@ -12518,7 +13336,7 @@ function handleBatchWilsonUpload(event) {
             },
             error: (error) => {
                 console.error('CSV parsing error:', error);
-                showToast('Error parsing CSV file', 'error');
+                showToast('Fejl ved læsning af CSV-fil', 'error');
             }
         });
     } else if (fileExtension === 'xlsx' || fileExtension === 'xls') {
@@ -12532,7 +13350,7 @@ function handleBatchWilsonUpload(event) {
                 processBatchWilsonData(jsonData, file.name);
             } catch (error) {
                 console.error('Excel parsing error:', error);
-                showToast('Error parsing Excel file', 'error');
+                showToast('Fejl ved læsning af Excel-fil', 'error');
             }
         };
         reader.readAsArrayBuffer(file);
@@ -12622,7 +13440,7 @@ function processBatchWilsonData(data, fileName) {
     // Calculate EOQ for all items
     calculateBatchWilson();
     
-    showToast(`Loaded ${batchWilsonData.length} items successfully`, 'success');
+    showToast(currentLanguage === 'da' ? `${batchWilsonData.length} varer indlæst` : `${batchWilsonData.length} items loaded`, 'success');
 }
 
 // Sample data function removed - use real file uploads only
@@ -12682,7 +13500,7 @@ function calculateBatchWilson() {
 
 function exportBatchToExcel() {
     if (!window.batchWilsonResults || window.batchWilsonResults.length === 0) {
-        showToast('No batch data to export', 'warning');
+        showToast(currentLanguage === 'da' ? 'Ingen batch-data at eksportere' : 'No batch data to export', 'warning');
         return;
     }
     
@@ -12722,16 +13540,16 @@ function exportBatchToExcel() {
     XLSX.utils.book_append_sheet(wb, ws, 'Batch EOQ Results');
     XLSX.writeFile(wb, `Batch_Wilson_EOQ_${new Date().toISOString().split('T')[0]}.xlsx`);
     
-    showToast('Excel file exported successfully', 'success');
+    showToast(currentLanguage === 'da' ? 'Excel-fil eksporteret' : 'Excel file exported', 'success');
 }
 
 function exportBatchToPDF() {
     if (!window.batchWilsonResults || window.batchWilsonResults.length === 0) {
-        showToast('No batch data to export', 'warning');
+        showToast(currentLanguage === 'da' ? 'Ingen batch-data at eksportere' : 'No batch data to export', 'warning');
         return;
     }
     
-    showToast('PDF export requires jsPDF library. Please use Excel export for now.', 'info');
+    showToast(currentLanguage === 'da' ? 'PDF-eksport kræver jsPDF-biblioteket. Brug Excel-eksport i stedet.' : 'PDF export requires the jsPDF library. Use Excel export instead.', 'info');
 }
 
 // ========================================
@@ -12739,7 +13557,7 @@ function exportBatchToPDF() {
 // ========================================
 
 function exportSectionToPDF(sectionId) {
-    showToast('PDF export feature coming soon! Use Excel export or Print for now.', 'info');
+    showToast(currentLanguage === 'da' ? 'PDF-eksport kommer snart! Brug Excel-eksport eller udskriv.' : 'PDF export coming soon! Use Excel export or print.', 'info');
 }
 
 function exportDashboardToPDF() {
@@ -12795,14 +13613,14 @@ document.addEventListener('keydown', (e) => {
     // Ctrl+Z - Undo (placeholder for future implementation)
     if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
         e.preventDefault();
-        showToast('⚠️ Undo feature coming soon', 'info');
+        showToast(currentLanguage === 'da' ? '⚠️ Fortryd-funktion kommer snart' : '⚠️ Undo feature coming soon', 'info');
         return;
     }
     
     // Ctrl+Shift+Z or Ctrl+Y - Redo (placeholder)
     if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
         e.preventDefault();
-        showToast('⚠️ Redo feature coming soon', 'info');
+        showToast(currentLanguage === 'da' ? '⚠️ Gendan-funktion kommer snart' : '⚠️ Redo feature coming soon', 'info');
         return;
     }
 });
@@ -12923,7 +13741,7 @@ function updateAvailableVariables() {
             badge.onclick = () => {
                 // Copy variable name to clipboard
                 navigator.clipboard.writeText(varInput.value.trim());
-                showToast(`Copied "${varInput.value.trim()}" to clipboard`, 'success');
+                showToast(currentLanguage === 'da' ? `"${varInput.value.trim()}" kopieret til udklipsholder` : `"${varInput.value.trim()}" copied to clipboard`, 'success');
             };
             container.appendChild(badge);
         }
@@ -13090,7 +13908,7 @@ function updateLivePreview() {
             html += `
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">${label}</label>
-                    <input type="${type}" class="input-field" placeholder="Enter ${label.toLowerCase()}">
+                    <input type="${type}" class="input-field" placeholder="${currentLanguage === 'da' ? `Indtast ${label.toLowerCase()}` : `Enter ${label.toLowerCase()}`}">
                 </div>
             `;
         });
@@ -13412,6 +14230,455 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof setupMinMaxEnterKey === 'function') setupMinMaxEnterKey();
     }, 500);
 });
+
+// ========================================
+// BARCODE & QR CODE GENERATOR
+// ========================================
+
+// State
+let currentQRInstance = null;
+let currentQRType = 'url';
+let batchBarcodeData = [];
+
+// --- QR Type Switching ---
+
+function setQRType(type) {
+    currentQRType = type;
+
+    // Update tab button styles
+    document.querySelectorAll('.qr-type-btn').forEach(btn => {
+        btn.classList.remove('active-qr-type', 'bg-blue-100', 'dark:bg-blue-900/40', 'text-blue-700', 'dark:text-blue-300');
+        btn.classList.add('bg-gray-100', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300', 'hover:bg-gray-200', 'dark:hover:bg-gray-600');
+    });
+    const activeBtn = document.getElementById(`qrType${type.charAt(0).toUpperCase() + type.slice(1)}`);
+    if (activeBtn) {
+        activeBtn.classList.remove('bg-gray-100', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300', 'hover:bg-gray-200', 'dark:hover:bg-gray-600');
+        activeBtn.classList.add('active-qr-type', 'bg-blue-100', 'dark:bg-blue-900/40', 'text-blue-700', 'dark:text-blue-300');
+    }
+
+    const container = document.getElementById('qrContentFields');
+    if (!container) return;
+
+    const inputClass = 'input-field w-full mb-2';
+    const labelClass = 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1';
+
+    const templates = {
+        url: `
+            <label class="${labelClass}">URL</label>
+            <input type="url" id="qrInput_url" class="${inputClass}" placeholder="${currentLanguage === 'da' ? 'https://eksempel.dk' : 'https://example.com'}"
+                   oninput="if(document.getElementById('qrLive').checked) generateQRCode()">`,
+        text: `
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Tekst' : 'Text'}</label>
+            <textarea id="qrInput_text" rows="3" class="${inputClass}" placeholder="${currentLanguage === 'da' ? 'Skriv din tekst her...' : 'Type your text here...'}"
+                      oninput="if(document.getElementById('qrLive').checked) generateQRCode()"></textarea>`,
+        email: `
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Email-adresse' : 'Email address'}</label>
+            <input type="email" id="qrInput_email" class="${inputClass}" placeholder="${currentLanguage === 'da' ? 'kontakt@virksomhed.dk' : 'contact@company.com'}"
+                   oninput="if(document.getElementById('qrLive').checked) generateQRCode()">
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Emne (valgfri)' : 'Subject (optional)'}</label>
+            <input type="text" id="qrInput_subject" class="${inputClass}" placeholder="${currentLanguage === 'da' ? 'Forespørgsel' : 'Inquiry'}"
+                   oninput="if(document.getElementById('qrLive').checked) generateQRCode()">
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Besked (valgfri)' : 'Message (optional)'}</label>
+            <textarea id="qrInput_body" rows="2" class="${inputClass}" placeholder="${currentLanguage === 'da' ? 'Hej...' : 'Hello...'}"
+                      oninput="if(document.getElementById('qrLive').checked) generateQRCode()"></textarea>`,
+        phone: `
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Telefonnummer' : 'Phone number'}</label>
+            <input type="tel" id="qrInput_phone" class="${inputClass}" placeholder="+4512345678"
+                   oninput="if(document.getElementById('qrLive').checked) generateQRCode()">`,
+        wifi: `
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Netværksnavn (SSID)' : 'Network name (SSID)'}</label>
+            <input type="text" id="qrInput_ssid" class="${inputClass}" placeholder="${currentLanguage === 'da' ? 'MitNetværk' : 'MyNetwork'}"
+                   oninput="if(document.getElementById('qrLive').checked) generateQRCode()">
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Adgangskode' : 'Password'}</label>
+            <input type="text" id="qrInput_pass" class="${inputClass}" placeholder="${currentLanguage === 'da' ? 'MinKode123' : 'MyCode123'}"
+                   oninput="if(document.getElementById('qrLive').checked) generateQRCode()">
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Krypteringstype' : 'Encryption type'}</label>
+            <select id="qrInput_enc" class="${inputClass}" onchange="if(document.getElementById('qrLive').checked) generateQRCode()">
+                <option value="WPA">WPA/WPA2</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass">${currentLanguage === 'da' ? 'Ingen (åbent netværk)' : 'None (open network)'}</option>
+            </select>`,
+        vcard: `
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Navn' : 'Name'}</label>
+            <input type="text" id="qrInput_name" class="${inputClass}" placeholder="${currentLanguage === 'da' ? 'Lars Hansen' : 'John Smith'}"
+                   oninput="if(document.getElementById('qrLive').checked) generateQRCode()">
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Firma (valgfri)' : 'Company (optional)'}</label>
+            <input type="text" id="qrInput_org" class="${inputClass}" placeholder="${currentLanguage === 'da' ? 'Acme ApS' : 'Acme Inc.'}"
+                   oninput="if(document.getElementById('qrLive').checked) generateQRCode()">
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Telefon (valgfri)' : 'Phone (optional)'}</label>
+            <input type="tel" id="qrInput_vcardPhone" class="${inputClass}" placeholder="+4512345678"
+                   oninput="if(document.getElementById('qrLive').checked) generateQRCode()">
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Email (valgfri)' : 'Email (optional)'}</label>
+            <input type="email" id="qrInput_vcardEmail" class="${inputClass}" placeholder="lars@acme.dk"
+                   oninput="if(document.getElementById('qrLive').checked) generateQRCode()">`
+    };
+
+    container.innerHTML = templates[type] || templates.url;
+}
+
+function buildQRContent() {
+    const type = currentQRType;
+    const val = id => { const el = document.getElementById(`qrInput_${id}`); return el ? el.value.trim() : ''; };
+
+    switch (type) {
+        case 'url':   return val('url') || 'https://eksempel.dk';
+        case 'text':  return val('text') || (currentLanguage === 'da' ? 'Intet indhold' : 'No content');
+        case 'email': {
+            const email = val('email');
+            const subject = val('subject');
+            const body = val('body');
+            if (!email) return 'mailto:';
+            let mailto = `mailto:${email}`;
+            const params = [];
+            if (subject) params.push(`subject=${encodeURIComponent(subject)}`);
+            if (body)    params.push(`body=${encodeURIComponent(body)}`);
+            if (params.length) mailto += '?' + params.join('&');
+            return mailto;
+        }
+        case 'phone': return `tel:${val('phone') || '+45'}`;
+        case 'wifi': {
+            const ssid = val('ssid');
+            const pass = val('pass');
+            const enc  = val('enc') || 'WPA';
+            return `WIFI:T:${enc};S:${ssid};P:${pass};;`;
+        }
+        case 'vcard': {
+            const name  = val('name')       || '';
+            const org   = val('org')        || '';
+            const phone = val('vcardPhone') || '';
+            const email = val('vcardEmail') || '';
+            return `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\n${org ? 'ORG:' + org + '\n' : ''}${phone ? 'TEL:' + phone + '\n' : ''}${email ? 'EMAIL:' + email + '\n' : ''}END:VCARD`;
+        }
+        default: return '';
+    }
+}
+
+// --- QR Generation ---
+
+function generateQRCode() {
+    const preview = document.getElementById('qrPreview');
+    const errorEl = document.getElementById('qrError');
+    const infoBox = document.getElementById('qrContentInfo');
+    const infoDisplay = document.getElementById('qrContentDisplay');
+
+    if (!preview) return;
+
+    const content = buildQRContent();
+    const size    = parseInt(document.getElementById('qrSize')?.value  || 250);
+    const fgColor = document.getElementById('qrFgColor')?.value || '#000000';
+    const bgColor = document.getElementById('qrBgColor')?.value || '#ffffff';
+    const errorLevelKey = document.getElementById('qrErrorLevel')?.value || 'M';
+
+    if (!content) {
+        preview.innerHTML = '<p class="text-gray-400 dark:text-gray-500 text-sm">' + (currentLanguage === 'da' ? 'Udfyld indholdet ovenfor' : 'Fill in the content above') + '</p>';
+        if (infoBox) infoBox.classList.add('hidden');
+        return;
+    }
+
+    const errorLevels = { L: QRCode.CorrectLevel.L, M: QRCode.CorrectLevel.M, Q: QRCode.CorrectLevel.Q, H: QRCode.CorrectLevel.H };
+
+    // Destroy old instance
+    if (currentQRInstance) {
+        try { currentQRInstance.clear(); } catch(e) {}
+    }
+
+    // Clean container
+    preview.innerHTML = '';
+    const qrContainer = document.createElement('div');
+    preview.appendChild(qrContainer);
+
+    try {
+        currentQRInstance = new QRCode(qrContainer, {
+            text: content,
+            width: size,
+            height: size,
+            colorDark: fgColor,
+            colorLight: bgColor,
+            correctLevel: errorLevels[errorLevelKey] || QRCode.CorrectLevel.M
+        });
+
+        if (errorEl) errorEl.classList.add('hidden');
+
+        // Show content preview
+        if (infoBox && infoDisplay) {
+            infoDisplay.textContent = content.length > 150 ? content.substring(0, 150) + '…' : content;
+            infoBox.classList.remove('hidden');
+        }
+    } catch(err) {
+        preview.innerHTML = '<p class="text-gray-400 dark:text-gray-500 text-sm">' + (currentLanguage === 'da' ? 'Udfyld indholdet ovenfor' : 'Fill in the content above') + '</p>';
+        if (errorEl) {
+            errorEl.textContent = (currentLanguage === 'da' ? 'Kunne ikke generere QR-kode: ' : 'Could not generate QR code: ') + err.message;
+            errorEl.classList.remove('hidden');
+        }
+        if (infoBox) infoBox.classList.add('hidden');
+    }
+}
+
+function downloadQRCode(format) {
+    const preview = document.getElementById('qrPreview');
+    if (!preview) return;
+
+    const canvas = preview.querySelector('canvas');
+    const img    = preview.querySelector('img');
+
+    if (format === 'png') {
+        let dataUrl;
+        if (canvas) {
+            dataUrl = canvas.toDataURL('image/png');
+        } else if (img) {
+            // Draw img onto canvas to download
+            const c = document.createElement('canvas');
+            c.width = img.width || 250;
+            c.height = img.height || 250;
+            c.getContext('2d').drawImage(img, 0, 0);
+            dataUrl = c.toDataURL('image/png');
+        } else {
+            showToast(currentLanguage === 'da' ? 'Generer en QR-kode først' : 'Generate a QR code first', 'warning');
+            return;
+        }
+        const link = document.createElement('a');
+        link.href     = dataUrl;
+        link.download = `qrcode_${Date.now()}.png`;
+        link.click();
+        showToast(currentLanguage === 'da' ? 'QR-kode downloadet som PNG' : 'QR code downloaded as PNG', 'success');
+    } else if (format === 'svg') {
+        // Build a simple SVG from the canvas
+        if (!canvas) { showToast(currentLanguage === 'da' ? 'Generer en QR-kode først' : 'Generate a QR code first', 'warning'); return; }
+        const size    = parseInt(document.getElementById('qrSize')?.value || 250);
+        const fgColor = document.getElementById('qrFgColor')?.value || '#000000';
+        const bgColor = document.getElementById('qrBgColor')?.value || '#ffffff';
+        const svgContent = canvasToSVG(canvas, size, fgColor, bgColor);
+        const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+        const url  = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href     = url;
+        link.download = `qrcode_${Date.now()}.svg`;
+        link.click();
+        URL.revokeObjectURL(url);
+        showToast(currentLanguage === 'da' ? 'QR-kode downloadet som SVG' : 'QR code downloaded as SVG', 'success');
+    }
+}
+
+// Helper: convert canvas pixel data to SVG rects
+function canvasToSVG(canvas, size, fgColor, bgColor) {
+    const ctx  = canvas.getContext('2d');
+    const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const scale = canvas.width / size;
+    let rects = '';
+    // Sample at cell-level (every ~scale pixels)
+    const step = Math.max(1, Math.round(scale));
+    for (let y = 0; y < canvas.height; y += step) {
+        for (let x = 0; x < canvas.width; x += step) {
+            const i = (y * canvas.width + x) * 4;
+            const r = data.data[i], g = data.data[i+1], b = data.data[i+2];
+            if (r < 128 && g < 128 && b < 128) {
+                rects += `<rect x="${(x/canvas.width*size).toFixed(1)}" y="${(y/canvas.height*size).toFixed(1)}" width="${step/scale*size/step > 1 ? (1).toFixed(1) : (step/scale).toFixed(1)}" height="${(step/canvas.height*size).toFixed(1)}" fill="${fgColor}"/>`;
+            }
+        }
+    }
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}"><rect width="${size}" height="${size}" fill="${bgColor}"/>${rects}</svg>`;
+}
+
+// --- Barcode Generation ---
+
+function updateBarcodeHint() {
+    const format = document.getElementById('barcodeFormat')?.value;
+    const hintEl = document.getElementById('barcodeHint');
+    if (!hintEl) return;
+    const hints = {
+        EAN13:  currentLanguage === 'da' ? 'EAN-13: Indtast 12 cifre — check-cifret (det 13.) beregnes automatisk.' : 'EAN-13: Enter 12 digits — the check digit (13th) is calculated automatically.',
+        EAN8:   currentLanguage === 'da' ? 'EAN-8: Indtast 7 cifre — check-cifret (det 8.) beregnes automatisk.' : 'EAN-8: Enter 7 digits — the check digit (8th) is calculated automatically.',
+        UPCA:   currentLanguage === 'da' ? 'UPC-A: Indtast 11 cifre — check-cifret beregnes automatisk.' : 'UPC-A: Enter 11 digits — the check digit is calculated automatically.',
+        CODE128:currentLanguage === 'da' ? 'CODE-128: Fri tekst og tal op til ~80 tegn.' : 'CODE-128: Free text and numbers up to ~80 characters.',
+        CODE39: currentLanguage === 'da' ? 'CODE-39: Store bogstaver, cifre og tegnene: -.$/+%SPACE' : 'CODE-39: Uppercase letters, digits and characters: -.$/+%SPACE',
+        ITF14:  currentLanguage === 'da' ? 'ITF-14: Indtast 13 cifre — check-cifret beregnes automatisk.' : 'ITF-14: Enter 13 digits — the check digit is calculated automatically.',
+        MSI:    currentLanguage === 'da' ? 'MSI: Kun cifre, fri længde.' : 'MSI: Digits only, any length.'
+    };
+    hintEl.textContent = hints[format] || '';
+    if (document.getElementById('barcodeLive')?.checked) generateBarcode();
+}
+
+function generateBarcode() {
+    const preview  = document.getElementById('barcodePreview');
+    const errorEl  = document.getElementById('barcodeError');
+    if (!preview) return;
+
+    const format    = document.getElementById('barcodeFormat')?.value || 'EAN13';
+    const value     = document.getElementById('barcodeValue')?.value?.trim() || '';
+    const lineColor = document.getElementById('barcodeLineColor')?.value || '#000000';
+    const bgColor   = document.getElementById('barcodeBgColor')?.value || '#ffffff';
+    const width     = parseFloat(document.getElementById('barcodeWidth')?.value || 2);
+    const height    = parseInt(document.getElementById('barcodeHeight')?.value || 100);
+    const displayValue = document.getElementById('barcodeShowText')?.checked !== false;
+
+    if (!value) {
+        preview.innerHTML = '<p class="text-gray-400 dark:text-gray-500 text-sm">' + (currentLanguage === 'da' ? 'Ingen stregkode endnu — klik Generer' : 'No barcode yet — click Generate') + '</p>';
+        if (errorEl) errorEl.classList.add('hidden');
+        return;
+    }
+
+    preview.innerHTML = '';
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('id', 'barcodeSVG');
+    preview.appendChild(svg);
+
+    try {
+        JsBarcode(svg, value, {
+            format,
+            lineColor,
+            background: bgColor,
+            width,
+            height,
+            displayValue,
+            margin: 10,
+            fontSize: 14,
+            font: 'monospace'
+        });
+        if (errorEl) errorEl.classList.add('hidden');
+    } catch(err) {
+        preview.innerHTML = '<p class="text-gray-400 dark:text-gray-500 text-sm">' + (currentLanguage === 'da' ? 'Kunne ikke generere — tjek format og indhold.' : 'Could not generate — check format and content.') + '</p>';
+        if (errorEl) {
+            errorEl.textContent = err.message || (currentLanguage === 'da' ? 'Ugyldigt indhold for det valgte format.' : 'Invalid content for the selected format.');
+            errorEl.classList.remove('hidden');
+        }
+    }
+}
+
+function downloadBarcode(format) {
+    const svgEl = document.getElementById('barcodeSVG');
+    if (!svgEl) { showToast(currentLanguage === 'da' ? 'Generer en stregkode først' : 'Generate a barcode first', 'warning'); return; }
+
+    if (format === 'svg') {
+        const serializer = new XMLSerializer();
+        const svgStr = serializer.serializeToString(svgEl);
+        const blob = new Blob([svgStr], { type: 'image/svg+xml' });
+        const link = document.createElement('a');
+        link.href     = URL.createObjectURL(blob);
+        link.download = `barcode_${Date.now()}.svg`;
+        link.click();
+        showToast(currentLanguage === 'da' ? 'Stregkode downloadet som SVG' : 'Barcode downloaded as SVG', 'success');
+    } else if (format === 'png') {
+        const svgData = new XMLSerializer().serializeToString(svgEl);
+        const img = new Image();
+        const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(svgBlob);
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width  = img.width  || svgEl.getBoundingClientRect().width  || 400;
+            canvas.height = img.height || svgEl.getBoundingClientRect().height || 150;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            const link = document.createElement('a');
+            link.href     = canvas.toDataURL('image/png');
+            link.download = `barcode_${Date.now()}.png`;
+            link.click();
+            URL.revokeObjectURL(url);
+            showToast(currentLanguage === 'da' ? 'Stregkode downloadet som PNG' : 'Barcode downloaded as PNG', 'success');
+        };
+        img.src = url;
+    }
+}
+
+// --- Batch Barcodes ---
+
+function generateBatchBarcodes() {
+    const textarea = document.getElementById('barcodeBatch');
+    const results  = document.getElementById('batchBarcodeResults');
+    const dlBtn    = document.getElementById('downloadBatchBtn');
+    if (!textarea || !results) return;
+
+    const lines = textarea.value.split('\n').map(l => l.trim()).filter(Boolean);
+    if (lines.length === 0) { showToast(currentLanguage === 'da' ? 'Ingen værdier at generere' : 'No values to generate', 'warning'); return; }
+
+    const format    = document.getElementById('barcodeFormat')?.value || 'EAN13';
+    const lineColor = document.getElementById('barcodeLineColor')?.value || '#000000';
+    const bgColor   = document.getElementById('barcodeBgColor')?.value || '#ffffff';
+    const width     = parseFloat(document.getElementById('barcodeWidth')?.value || 2);
+    const height    = parseInt(document.getElementById('barcodeHeight')?.value || 100);
+    const displayValue = document.getElementById('barcodeShowText')?.checked !== false;
+
+    results.innerHTML = '';
+    batchBarcodeData = [];
+    let successCount = 0;
+    let errorCount   = 0;
+
+    lines.forEach((value, i) => {
+        const card = document.createElement('div');
+        card.className = 'p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600';
+
+        const label = document.createElement('p');
+        label.className = 'text-xs font-medium text-gray-600 dark:text-gray-400 mb-2';
+        label.textContent = `#${i + 1}: ${value}`;
+        card.appendChild(label);
+
+        const svgEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svgEl.setAttribute('id', `batchSVG_${i}`);
+        card.appendChild(svgEl);
+
+        try {
+            JsBarcode(svgEl, value, { format, lineColor, background: bgColor, width, height, displayValue, margin: 8, fontSize: 12 });
+            batchBarcodeData.push({ value, svg: new XMLSerializer().serializeToString(svgEl) });
+            successCount++;
+        } catch(err) {
+            svgEl.remove();
+            const errEl = document.createElement('p');
+            errEl.className = 'text-xs text-red-500';
+            errEl.textContent = '❌ ' + (err.message || 'Ugyldig');
+            card.appendChild(errEl);
+            errorCount++;
+        }
+
+        results.appendChild(card);
+    });
+
+    if (dlBtn) dlBtn.classList.toggle('hidden', successCount === 0);
+    showToast(currentLanguage === 'da' ? `✅ ${successCount} stregkode${successCount !== 1 ? 'r' : ''} genereret${errorCount > 0 ? `, ${errorCount} fejl` : ''}` : `✅ ${successCount} barcode${successCount !== 1 ? 's' : ''} generated${errorCount > 0 ? `, ${errorCount} error${errorCount !== 1 ? 's' : ''}` : ''}`, successCount > 0 ? 'success' : 'error');
+}
+
+function downloadBatchBarcodes() {
+    if (batchBarcodeData.length === 0) { showToast(currentLanguage === 'da' ? 'Generer stregkoderne først' : 'Generate the barcodes first', 'warning'); return; }
+
+    // If JSZip is available, zip them all; otherwise download one by one
+    if (typeof JSZip !== 'undefined') {
+        const zip = new JSZip();
+        batchBarcodeData.forEach((item, i) => {
+            zip.file(`barcode_${i + 1}_${item.value}.svg`, item.svg);
+        });
+        zip.generateAsync({ type: 'blob' }).then(blob => {
+            const link = document.createElement('a');
+            link.href     = URL.createObjectURL(blob);
+            link.download = currentLanguage === 'da' ? 'stregkoder.zip' : 'barcodes.zip';
+            link.click();
+            showToast(currentLanguage === 'da' ? `${batchBarcodeData.length} stregkoder downloadet som ZIP` : `${batchBarcodeData.length} barcodes downloaded as ZIP`, 'success');
+        });
+    } else {
+        // Fallback: download as a single HTML page with all barcodes
+        const combined = batchBarcodeData.map((item, i) =>
+            `<div style="margin:16px;display:inline-block;border:1px solid #ddd;padding:8px;border-radius:4px">
+                <p style="font-size:11px;color:#666;margin-bottom:4px">#${i+1}: ${item.value}</p>
+                ${item.svg}
+            </div>`
+        ).join('');
+        const html = `<!DOCTYPE html><html><head><title>${currentLanguage === 'da' ? 'Stregkoder' : 'Barcodes'}</title></head><body style="background:#fff;font-family:sans-serif;padding:16px"><h1 style="font-size:18px">${currentLanguage === 'da' ? 'Stregkoder' : 'Barcodes'}</h1>${combined}</body></html>`;
+        const blob = new Blob([html], { type: 'text/html' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = currentLanguage === 'da' ? 'stregkoder.html' : 'barcodes.html';
+        link.click();
+        showToast(currentLanguage === 'da' ? `${batchBarcodeData.length} stregkoder downloadet som HTML` : `${batchBarcodeData.length} barcodes downloaded as HTML`, 'success');
+    }
+}
+
+// Initialize barcode page when tab is switched to (only once)
+let _barcodeTabInitialized = false;
+function initBarcodeTab() {
+    if (_barcodeTabInitialized) return;
+    _barcodeTabInitialized = true;
+    // Set up default QR type fields
+    setQRType('url');
+    // Set hint for default barcode format
+    updateBarcodeHint();
+}
 
 // ========================================
 // LEAN TOOLS CALCULATORS
@@ -13837,7 +15104,7 @@ function saveSWOT() {
     const btn = event?.target || document.querySelector('[onclick*="saveSWOT"]');
     if (btn) {
         const original = btn.innerHTML;
-        btn.innerHTML = '✅ Saved!';
+        btn.innerHTML = currentLanguage === 'da' ? '✅ Gemt!' : '✅ Saved!';
         btn.style.backgroundColor = '#10b981';
         setTimeout(() => {
             btn.innerHTML = original;
@@ -14126,13 +15393,21 @@ function copyTimeResults() {
     const lead = document.getElementById('leadTimeResult')?.textContent || '';
     const capacity = document.getElementById('capacityUtilization')?.textContent || '';
     
-    const text = `Production Time Analysis\n` +
-                 `========================\n` +
-                 `Takt Time: ${takt}\n` +
-                 `Cycle Time: ${cycle}\n` +
-                 `Lead Time: ${lead}\n` +
-                 `Capacity Utilization: ${capacity}\n` +
-                 `\nGenerated: ${new Date().toLocaleString()}`;
+    const text = currentLanguage === 'da'
+        ? `Produktionstid Analyse\n` +
+          `========================\n` +
+          `Takttid: ${takt}\n` +
+          `Cyklustid: ${cycle}\n` +
+          `Gennemløbstid: ${lead}\n` +
+          `Kapacitetsudnyttelse: ${capacity}\n` +
+          `\nGenereret: ${new Date().toLocaleString()}`
+        : `Production Time Analysis\n` +
+          `========================\n` +
+          `Takt Time: ${takt}\n` +
+          `Cycle Time: ${cycle}\n` +
+          `Lead Time: ${lead}\n` +
+          `Capacity Utilization: ${capacity}\n` +
+          `\nGenerated: ${new Date().toLocaleString()}`;
     
     navigator.clipboard.writeText(text).then(() => {
         alert(currentLanguage === 'da' ? '✅ Resultater kopieret!' : '✅ Results copied!');
@@ -15211,7 +16486,7 @@ function exportVSM() {
     tempCtx.fillStyle = '#374151';
     tempCtx.font = 'bold 14px Arial';
     tempCtx.textAlign = 'left';
-    tempCtx.fillText('Value Stream Map - ' + new Date().toLocaleDateString(), 10, tempCanvas.height - 30);
+    tempCtx.fillText((currentLanguage === 'da' ? 'Værdistrøms Kort - ' : 'Value Stream Map - ') + new Date().toLocaleDateString(), 10, tempCanvas.height - 30);
     
     const pce = document.getElementById('vsmPCE').textContent;
     tempCtx.fillText(`PCE: ${pce}`, 10, tempCanvas.height - 10);

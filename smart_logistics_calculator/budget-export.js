@@ -10,7 +10,7 @@ class BudgetExporter {
     }
 
     // ===================================================================
-    // Export to Excel - Using ExcelJS with Full Styling Support
+    // Export to Excel - Clean Design with Muted Colors
     // ===================================================================
     async exportToExcel() {
         const data = this.storage.getData();
@@ -18,166 +18,210 @@ class BudgetExporter {
         // Create a new workbook and worksheet
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('Budget', {
-            views: [{ state: 'frozen', xSplit: 1, ySplit: 4 }]
+            views: [{ state: 'frozen', xSplit: 2, ySplit: 3 }]
         });
         
-        const monthNamesDA = ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'December'];
+        const monthNamesDA = currentLanguage === 'da' ? ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'December'] : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         
-        // Month column colors - base colors for Mdr columns
-        const monthBaseColors = [
-            'B4C7E7', 'C5E0B4', 'FFE699', 'F8CBAD', 'E2EFDA', 'DEEBF7',
-            'FCE4D6', 'FFF2CC', 'D9E1F2', 'EDEDED', 'E7E6E6', 'D9D2E9'
-        ];
+        // Muted, professional color scheme
+        const colors = {
+            // Header colors - soft blue-gray
+            headerBg: 'D6E4F0',
+            headerText: '2C5282',
+            
+            // Income colors - soft greens
+            incomeHeader: 'C6E1D4',
+            incomeData: 'F0F7F4',
+            incomeText: '2D5F3F',
+            incomeTotal: 'B8D7CA',
+            
+            // Expense colors - soft reds/pinks
+            expenseHeader: 'F4D4D8',
+            expenseData: 'FBF5F5',
+            expenseText: '7C2D37',
+            expenseTotal: 'ECC4C8',
+            
+            // Month columns - alternating soft grays
+            monthEven: 'F5F5F5',
+            monthOdd: 'FFFFFF',
+            month14Even: 'FAFAFA',
+            month14Odd: 'F8F8F8',
+            
+            // Category color
+            category: 'E8EDF2',
+            categoryText: '4A5568',
+            
+            // Faktiske column
+            faktiskeBg: 'FFF8DC',
+            faktiskeText: '5D4E37'
+        };
         
-        // Lighter versions for 14-day columns (30% lighter)
-        const month14DayColors = [
-            'DCE6F1', 'E2EFD9', 'FFF2CC', 'FCE4D6', 'F2F2F2', 'EAF1F7',
-            'FEF2E8', 'FFF9E6', 'E9EFF7', 'F5F5F5', 'F3F3F3', 'EDE9F4'
-        ];
+        // Set column widths
+        worksheet.getColumn(1).width = 30; // Name
+        worksheet.getColumn(2).width = 12; // Faktiske
+        for (let i = 3; i <= 26; i++) {
+            worksheet.getColumn(i).width = 11; // Month columns
+        }
         
-        // Header column colors (blue gradient for headers)
-        const headerColors = [
-            '4472C4', '5B9BD5', '70A3DB', '85B3E1', 
-            '9AC4E7', 'AFD4ED', '4A5F8C', '5E7BAF',
-            '7297C2', '86B3D5', '9ACFE8', 'AEE0FB'
-        ];
-        
-        // Row 1: Title
+        // Row 1: Title and Year
         worksheet.mergeCells('A1:Z1');
         const titleCell = worksheet.getCell('A1');
         titleCell.value = `Budget ${data.year}`;
-        titleCell.font = { bold: true, size: 16, color: { argb: 'FF1F4788' } };
-        titleCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE7F3FF' } };
+        titleCell.font = { bold: true, size: 18, color: { argb: 'FF' + colors.headerText } };
+        titleCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + colors.headerBg } };
         titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
-        worksheet.getRow(1).height = 25;
+        titleCell.border = {
+            bottom: { style: 'medium', color: { argb: 'FF' + colors.headerText } }
+        };
+        worksheet.getRow(1).height = 30;
         
-        // Row 2: Legend
-        worksheet.mergeCells('A2:Z2');
-        const legendCell = worksheet.getCell('A2');
-        legendCell.value = 'Konto: [B] = Budget Konto  |  [D] = Daglig Brug Konto';
-        legendCell.font = { italic: true, size: 10, color: { argb: 'FF666666' } };
-        legendCell.alignment = { horizontal: 'center', vertical: 'middle' };
-        worksheet.getRow(2).height = 15;
+        // Row 2: Empty spacing
+        worksheet.getRow(2).height = 8;
         
-        // Row 3: Empty
-        worksheet.getRow(3).height = 10;
+        // Row 3: Column Headers
+        const headerRow = worksheet.getRow(3);
+        headerRow.height = 22;
         
-        // Row 4: Column Headers
-        const headerRow = worksheet.getRow(4);
-        headerRow.height = 20;
+        // Name header
+        const nameHeader = headerRow.getCell(1);
+        nameHeader.value = currentLanguage === 'da' ? 'Navn' : 'Name';
+        nameHeader.font = { bold: true, size: 11, color: { argb: 'FF' + colors.headerText } };
+        nameHeader.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + colors.headerBg } };
+        nameHeader.alignment = { horizontal: 'center', vertical: 'middle' };
+        nameHeader.border = {
+            top: { style: 'medium' }, bottom: { style: 'medium' },
+            left: { style: 'medium' }, right: { style: 'thin' }
+        };
         
-        // Set column headers with styling
-        headerRow.getCell(1).value = 'Navn';
-        headerRow.getCell(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
-        headerRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF4472C4' } };
-        headerRow.getCell(1).alignment = { horizontal: 'center', vertical: 'middle' };
-        headerRow.getCell(1).border = {
-            top: { style: 'thin' }, bottom: { style: 'thin' },
+        // Faktiske header
+        const faktiskeHeader = headerRow.getCell(2);
+        faktiskeHeader.value = currentLanguage === 'da' ? 'Faktiske*' : 'Actuals*';
+        faktiskeHeader.font = { bold: true, size: 11, color: { argb: 'FF' + colors.faktiskeText } };
+        faktiskeHeader.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + colors.faktiskeBg } };
+        faktiskeHeader.alignment = { horizontal: 'center', vertical: 'middle' };
+        faktiskeHeader.border = {
+            top: { style: 'medium' }, bottom: { style: 'medium' },
             left: { style: 'thin' }, right: { style: 'thin' }
         };
         
-        headerRow.getCell(2).value = 'Faktiske';
-        headerRow.getCell(2).font = { bold: true, color: { argb: 'FFFFFFFF' } };
-        headerRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF4472C4' } };
-        headerRow.getCell(2).alignment = { horizontal: 'center', vertical: 'middle' };
-        headerRow.getCell(2).border = {
-            top: { style: 'thin' }, bottom: { style: 'thin' },
-            left: { style: 'thin' }, right: { style: 'thin' }
-        };
-        
+        // Month column headers
         let colIndex = 3;
         monthNamesDA.forEach((month, idx) => {
-            const color = headerColors[idx];
+            const isEven = idx % 2 === 0;
             
-            // Month column
+            // Month (Mdr) column
             const mdrCell = headerRow.getCell(colIndex);
-            mdrCell.value = `${month} Mdr.`;
-            mdrCell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
-            mdrCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + color } };
-            mdrCell.alignment = { horizontal: 'center', vertical: 'middle' };
+            mdrCell.value = currentLanguage === 'da' ? `${month} Mdr` : `${month} Mo.`;
+            mdrCell.font = { bold: true, size: 10, color: { argb: 'FF' + colors.headerText } };
+            mdrCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + colors.headerBg } };
+            mdrCell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
             mdrCell.border = {
-                top: { style: 'thin' }, bottom: { style: 'thin' },
+                top: { style: 'medium' }, bottom: { style: 'medium' },
                 left: { style: 'thin' }, right: { style: 'thin' }
             };
             
             // 14-day column
             const dag14Cell = headerRow.getCell(colIndex + 1);
-            dag14Cell.value = `${month} 14.Dag`;
-            dag14Cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
-            dag14Cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + color } };
-            dag14Cell.alignment = { horizontal: 'center', vertical: 'middle' };
+            dag14Cell.value = currentLanguage === 'da' ? `${month} 14.Dag` : `${month} 14.Day`;
+            dag14Cell.font = { bold: true, size: 10, color: { argb: 'FF' + colors.headerText } };
+            dag14Cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + colors.headerBg } };
+            dag14Cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
             dag14Cell.border = {
-                top: { style: 'thin' }, bottom: { style: 'thin' },
+                top: { style: 'medium' }, bottom: { style: 'medium' },
                 left: { style: 'thin' }, right: { style: 'thin' }
             };
             
             colIndex += 2;
         });
         
-        let currentRow = 5; // Start after title, legend, empty row, and headers
+        let currentRow = 4; // Start after title, empty row, and headers
         
         // Income section header
         worksheet.mergeCells(`A${currentRow}:Z${currentRow}`);
         const incomeHeaderCell = worksheet.getCell(`A${currentRow}`);
-        incomeHeaderCell.value = 'INDTÆGTER';
-        incomeHeaderCell.font = { bold: true, size: 12, color: { argb: 'FFFFFFFF' } };
-        incomeHeaderCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF70AD47' } };
-        incomeHeaderCell.alignment = { horizontal: 'left', vertical: 'middle' };
-        worksheet.getRow(currentRow).height = 18;
+        incomeHeaderCell.value = currentLanguage === 'da' ? '💰 INDTÆGTER' : '💰 INCOME';
+        incomeHeaderCell.font = { bold: true, size: 13, color: { argb: 'FF' + colors.incomeText } };
+        incomeHeaderCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + colors.incomeHeader } };
+        incomeHeaderCell.alignment = { horizontal: 'left', vertical: 'middle', indent: 1 };
+        incomeHeaderCell.border = {
+            top: { style: 'medium' }, bottom: { style: 'thin' },
+            left: { style: 'medium' }, right: { style: 'medium' }
+        };
+        worksheet.getRow(currentRow).height = 20;
         currentRow++;
         
-        // Calculate totals
-        const incomeTotals = this.calculateTotals(data.income);
+        const incomeStartRow = currentRow;
         
         // Income rows
-        data.income.forEach(row => {
+        data.income.forEach((row, idx) => {
             const dataRow = worksheet.getRow(currentRow);
-            dataRow.height = 16;
+            dataRow.height = 18;
             
             if (row.isCategory) {
-                // Category row
+                // Category row - spans all columns
                 worksheet.mergeCells(`A${currentRow}:Z${currentRow}`);
                 const catCell = worksheet.getCell(`A${currentRow}`);
-                catCell.value = `📁 ${row.name}`;
-                catCell.font = { bold: true, italic: true, color: { argb: 'FF0070C0' } };
-                catCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFDDEBF7' } };
+                catCell.value = `  📂 ${row.name}`;
+                catCell.font = { bold: true, italic: true, size: 10, color: { argb: 'FF' + colors.categoryText } };
+                catCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + colors.category } };
                 catCell.alignment = { horizontal: 'left', vertical: 'middle' };
+                catCell.border = {
+                    left: { style: 'thin' }, right: { style: 'thin' }
+                };
             } else {
-                // Name cell with account indicator
-                const accountLabel = row.account === 'budget' ? '[B]' : '[D]';
-                dataRow.getCell(1).value = `${accountLabel} ${row.name}`;
-                dataRow.getCell(1).border = { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } };
+                // Name cell
+                const nameCell = dataRow.getCell(1);
+                nameCell.value = row.name;
+                nameCell.font = { size: 10 };
+                nameCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + colors.incomeData } };
+                nameCell.alignment = { horizontal: 'left', vertical: 'middle', indent: 1 };
+                nameCell.border = {
+                    top: { style: 'hair' }, bottom: { style: 'hair' },
+                    left: { style: 'thin' }, right: { style: 'thin' }
+                };
                 
                 // Faktiske cell
-                dataRow.getCell(2).value = row.faktiske;
-                dataRow.getCell(2).numFmt = '#,##0.00';
-                dataRow.getCell(2).font = { color: { argb: 'FF006400' } };
-                dataRow.getCell(2).alignment = { horizontal: 'right', vertical: 'middle' };
-                dataRow.getCell(2).border = { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } };
+                const faktCell = dataRow.getCell(2);
+                faktCell.value = parseFloat(row.faktiske) || 0;
+                faktCell.numFmt = '#,##0.00';
+                faktCell.font = { size: 10, color: { argb: 'FF' + colors.faktiskeText } };
+                faktCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + colors.faktiskeBg } };
+                faktCell.alignment = { horizontal: 'right', vertical: 'middle' };
+                faktCell.border = {
+                    top: { style: 'hair' }, bottom: { style: 'hair' },
+                    left: { style: 'thin' }, right: { style: 'thin' }
+                };
                 
                 // Month columns
                 let colIdx = 3;
                 this.monthNames.forEach((month, mIdx) => {
-                    const baseColor = monthBaseColors[mIdx];
-                    const lighterColor = month14DayColors[mIdx];
+                    const isEven = mIdx % 2 === 0;
+                    const mdrBg = isEven ? colors.monthEven : colors.monthOdd;
+                    const dag14Bg = isEven ? colors.month14Even : colors.month14Odd;
                     
                     // Mdr cell
                     const mdrCell = dataRow.getCell(colIdx);
-                    mdrCell.value = row[month].mdr;
+                    mdrCell.value = parseFloat(row[month].mdr) || 0;
                     mdrCell.numFmt = '#,##0.00';
-                    mdrCell.font = { color: { argb: 'FF006400' } };
-                    mdrCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + baseColor } };
+                    mdrCell.font = { size: 10, color: { argb: 'FF' + colors.incomeText } };
+                    mdrCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + mdrBg } };
                     mdrCell.alignment = { horizontal: 'right', vertical: 'middle' };
-                    mdrCell.border = { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } };
+                    mdrCell.border = {
+                        top: { style: 'hair' }, bottom: { style: 'hair' },
+                        left: { style: 'thin' }, right: { style: 'hair' }
+                    };
                     
-                    // 14-day cell (lighter version)
+                    // 14-day cell
                     const dag14Cell = dataRow.getCell(colIdx + 1);
-                    dag14Cell.value = row[month].dag14;
+                    dag14Cell.value = parseFloat(row[month].dag14) || 0;
                     dag14Cell.numFmt = '#,##0.00';
-                    dag14Cell.font = { color: { argb: 'FF006400' } };
-                    dag14Cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + lighterColor } };
+                    dag14Cell.font = { size: 9, color: { argb: 'FF' + colors.incomeText } };
+                    dag14Cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + dag14Bg } };
                     dag14Cell.alignment = { horizontal: 'right', vertical: 'middle' };
-                    dag14Cell.border = { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } };
+                    dag14Cell.border = {
+                        top: { style: 'hair' }, bottom: { style: 'hair' },
+                        left: { style: 'hair' }, right: { style: 'thin' }
+                    };
                     
                     colIdx += 2;
                 });
@@ -185,111 +229,161 @@ class BudgetExporter {
             currentRow++;
         });
         
+        const incomeEndRow = currentRow - 1;
+        
         // Income totals row
         const incomeTotalRow = worksheet.getRow(currentRow);
-        const incomeStartRow = currentRow - data.income.length;
-        const incomeEndRow = currentRow - 1;
-        incomeTotalRow.height = 18;
+        incomeTotalRow.height = 22;
         
-        incomeTotalRow.getCell(1).value = 'TOTAL INDTÆGTER';
-        incomeTotalRow.getCell(1).font = { bold: true };
-        incomeTotalRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFD966' } };
-        incomeTotalRow.getCell(1).alignment = { horizontal: 'left', vertical: 'middle' };
-        incomeTotalRow.getCell(1).border = { top: { style: 'medium' }, bottom: { style: 'medium' }, left: { style: 'medium' }, right: { style: 'thin' } };
+        const incTotalName = incomeTotalRow.getCell(1);
+        incTotalName.value = currentLanguage === 'da' ? 'TOTAL INDTÆGTER' : 'TOTAL INCOME';
+        incTotalName.font = { bold: true, size: 11, color: { argb: 'FF' + colors.incomeText } };
+        incTotalName.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + colors.incomeTotal } };
+        incTotalName.alignment = { horizontal: 'left', vertical: 'middle', indent: 1 };
+        incTotalName.border = {
+            top: { style: 'medium' }, bottom: { style: 'medium' },
+            left: { style: 'medium' }, right: { style: 'thin' }
+        };
         
-        // Add SUM formula for Faktiske
-        incomeTotalRow.getCell(2).value = { formula: `SUM(B${incomeStartRow}:B${incomeEndRow})`, result: incomeTotals.faktiske };
-        incomeTotalRow.getCell(2).numFmt = '#,##0.00';
-        incomeTotalRow.getCell(2).font = { bold: true };
-        incomeTotalRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFD966' } };
-        incomeTotalRow.getCell(2).alignment = { horizontal: 'right', vertical: 'middle' };
-        incomeTotalRow.getCell(2).border = { top: { style: 'medium' }, bottom: { style: 'medium' }, left: { style: 'thin' }, right: { style: 'thin' } };
+        // Faktiske total
+        const incTotalFakt = incomeTotalRow.getCell(2);
+        incTotalFakt.value = { formula: `SUMIF(B${incomeStartRow}:B${incomeEndRow},"<>"")",B${incomeStartRow}:B${incomeEndRow})` };
+        incTotalFakt.numFmt = '#,##0.00';
+        incTotalFakt.font = { bold: true, size: 11, color: { argb: 'FF' + colors.faktiskeText } };
+        incTotalFakt.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + colors.faktiskeBg } };
+        incTotalFakt.alignment = { horizontal: 'right', vertical: 'middle' };
+        incTotalFakt.border = {
+            top: { style: 'medium' }, bottom: { style: 'medium' },
+            left: { style: 'thin' }, right: { style: 'thin' }
+        };
         
-        // Add SUM formulas for each month column
+        // Month totals
         let colIdx = 3;
-        this.monthNames.forEach(month => {
-            const colLetter = String.fromCharCode(64 + colIdx);
-            incomeTotalRow.getCell(colIdx).value = { formula: `SUM(${colLetter}${incomeStartRow}:${colLetter}${incomeEndRow})`, result: incomeTotals[month].mdr };
-            incomeTotalRow.getCell(colIdx).numFmt = '#,##0.00';
-            incomeTotalRow.getCell(colIdx).font = { bold: true };
-            incomeTotalRow.getCell(colIdx).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFD966' } };
-            incomeTotalRow.getCell(colIdx).alignment = { horizontal: 'right', vertical: 'middle' };
-            incomeTotalRow.getCell(colIdx).border = { top: { style: 'medium' }, bottom: { style: 'medium' }, left: { style: 'thin' }, right: { style: 'thin' } };
+        this.monthNames.forEach((month, mIdx) => {
+            const isEven = mIdx % 2 === 0;
+            const mdrBg = isEven ? colors.monthEven : colors.monthOdd;
+            const dag14Bg = isEven ? colors.month14Even : colors.month14Odd;
+            const colLetter = this.getColumnLetter(colIdx);
+            const col14Letter = this.getColumnLetter(colIdx + 1);
             
-            const col14Letter = String.fromCharCode(64 + colIdx + 1);
-            incomeTotalRow.getCell(colIdx + 1).value = { formula: `SUM(${col14Letter}${incomeStartRow}:${col14Letter}${incomeEndRow})`, result: incomeTotals[month].dag14 };
-            incomeTotalRow.getCell(colIdx + 1).numFmt = '#,##0.00';
-            incomeTotalRow.getCell(colIdx + 1).font = { bold: true };
-            incomeTotalRow.getCell(colIdx + 1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFD966' } };
-            incomeTotalRow.getCell(colIdx + 1).alignment = { horizontal: 'right', vertical: 'middle' };
-            incomeTotalRow.getCell(colIdx + 1).border = { top: { style: 'medium' }, bottom: { style: 'medium' }, left: { style: 'thin' }, right: { style: 'thin' } };
+            // Mdr total
+            const mdrTotal = incomeTotalRow.getCell(colIdx);
+            mdrTotal.value = { formula: `SUMIF(${colLetter}${incomeStartRow}:${colLetter}${incomeEndRow},"<>""",${colLetter}${incomeStartRow}:${colLetter}${incomeEndRow})` };
+            mdrTotal.numFmt = '#,##0.00';
+            mdrTotal.font = { bold: true, size: 10, color: { argb: 'FF' + colors.incomeText } };
+            mdrTotal.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + mdrBg } };
+            mdrTotal.alignment = { horizontal: 'right', vertical: 'middle' };
+            mdrTotal.border = {
+                top: { style: 'medium' }, bottom: { style: 'medium' },
+                left: { style: 'thin' }, right: { style: 'hair' }
+            };
+            
+            // 14-day total
+            const dag14Total = incomeTotalRow.getCell(colIdx + 1);
+            dag14Total.value = { formula: `SUMIF(${col14Letter}${incomeStartRow}:${col14Letter}${incomeEndRow},"<>""",${col14Letter}${incomeStartRow}:${col14Letter}${incomeEndRow})` };
+            dag14Total.numFmt = '#,##0.00';
+            dag14Total.font = { bold: true, size: 9, color: { argb: 'FF' + colors.incomeText } };
+            dag14Total.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + dag14Bg } };
+            dag14Total.alignment = { horizontal: 'right', vertical: 'middle' };
+            dag14Total.border = {
+                top: { style: 'medium' }, bottom: { style: 'medium' },
+                left: { style: 'hair' }, right: { style: 'thin' }
+            };
             
             colIdx += 2;
         });
-        const incomeTotalRowNum = currentRow;
         currentRow++;
         
-        // Empty row
-        worksheet.getRow(currentRow).height = 10;
+        // Empty separator row
+        worksheet.getRow(currentRow).height = 12;
         currentRow++;
         
         // Expenses section header
         worksheet.mergeCells(`A${currentRow}:Z${currentRow}`);
         const expenseHeaderCell = worksheet.getCell(`A${currentRow}`);
-        expenseHeaderCell.value = 'UDGIFTER';
-        expenseHeaderCell.font = { bold: true, size: 12, color: { argb: 'FFFFFFFF' } };
-        expenseHeaderCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE74C3C' } };
-        expenseHeaderCell.alignment = { horizontal: 'left', vertical: 'middle' };
-        worksheet.getRow(currentRow).height = 18;
+        expenseHeaderCell.value = currentLanguage === 'da' ? '💳 UDGIFTER' : '💳 EXPENSES';
+        expenseHeaderCell.font = { bold: true, size: 13, color: { argb: 'FF' + colors.expenseText } };
+        expenseHeaderCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + colors.expenseHeader } };
+        expenseHeaderCell.alignment = { horizontal: 'left', vertical: 'middle', indent: 1 };
+        expenseHeaderCell.border = {
+            top: { style: 'medium' }, bottom: { style: 'thin' },
+            left: { style: 'medium' }, right: { style: 'medium' }
+        };
+        worksheet.getRow(currentRow).height = 20;
         currentRow++;
         
-        // Calculate expense totals
-        const expenseTotals = this.calculateTotals(data.expenses);
+        const expenseStartRow = currentRow;
         
         // Expense rows
-        data.expenses.forEach(row => {
+        data.expenses.forEach((row, idx) => {
             const dataRow = worksheet.getRow(currentRow);
-            dataRow.height = 16;
+            dataRow.height = 18;
             
             if (row.isCategory) {
+                // Category row
                 worksheet.mergeCells(`A${currentRow}:Z${currentRow}`);
                 const catCell = worksheet.getCell(`A${currentRow}`);
-                catCell.value = `📁 ${row.name}`;
-                catCell.font = { bold: true, italic: true, color: { argb: 'FF0070C0' } };
-                catCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFDDEBF7' } };
+                catCell.value = `  📂 ${row.name}`;
+                catCell.font = { bold: true, italic: true, size: 10, color: { argb: 'FF' + colors.categoryText } };
+                catCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + colors.category } };
                 catCell.alignment = { horizontal: 'left', vertical: 'middle' };
+                catCell.border = {
+                    left: { style: 'thin' }, right: { style: 'thin' }
+                };
             } else {
-                // Name cell with account indicator
-                const accountLabel = row.account === 'budget' ? '[B]' : '[D]';
-                dataRow.getCell(1).value = `${accountLabel} ${row.name}`;
-                dataRow.getCell(1).border = { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } };
+                // Name cell
+                const nameCell = dataRow.getCell(1);
+                nameCell.value = row.name;
+                nameCell.font = { size: 10 };
+                nameCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + colors.expenseData } };
+                nameCell.alignment = { horizontal: 'left', vertical: 'middle', indent: 1 };
+                nameCell.border = {
+                    top: { style: 'hair' }, bottom: { style: 'hair' },
+                    left: { style: 'thin' }, right: { style: 'thin' }
+                };
                 
-                dataRow.getCell(2).value = row.faktiske;
-                dataRow.getCell(2).numFmt = '#,##0.00';
-                dataRow.getCell(2).font = { color: { argb: 'FFCC0000' } };
-                dataRow.getCell(2).alignment = { horizontal: 'right', vertical: 'middle' };
-                dataRow.getCell(2).border = { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } };
+                // Faktiske cell
+                const faktCell = dataRow.getCell(2);
+                faktCell.value = parseFloat(row.faktiske) || 0;
+                faktCell.numFmt = '#,##0.00';
+                faktCell.font = { size: 10, color: { argb: 'FF' + colors.faktiskeText } };
+                faktCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + colors.faktiskeBg } };
+                faktCell.alignment = { horizontal: 'right', vertical: 'middle' };
+                faktCell.border = {
+                    top: { style: 'hair' }, bottom: { style: 'hair' },
+                    left: { style: 'thin' }, right: { style: 'thin' }
+                };
                 
+                // Month columns
                 let colIdx = 3;
                 this.monthNames.forEach((month, mIdx) => {
-                    const baseColor = monthBaseColors[mIdx];
-                    const lighterColor = month14DayColors[mIdx];
+                    const isEven = mIdx % 2 === 0;
+                    const mdrBg = isEven ? colors.monthEven : colors.monthOdd;
+                    const dag14Bg = isEven ? colors.month14Even : colors.month14Odd;
                     
+                    // Mdr cell
                     const mdrCell = dataRow.getCell(colIdx);
-                    mdrCell.value = row[month].mdr;
+                    mdrCell.value = parseFloat(row[month].mdr) || 0;
                     mdrCell.numFmt = '#,##0.00';
-                    mdrCell.font = { color: { argb: 'FFCC0000' } };
-                    mdrCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + baseColor } };
+                    mdrCell.font = { size: 10, color: { argb: 'FF' + colors.expenseText } };
+                    mdrCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + mdrBg } };
                     mdrCell.alignment = { horizontal: 'right', vertical: 'middle' };
-                    mdrCell.border = { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } };
+                    mdrCell.border = {
+                        top: { style: 'hair' }, bottom: { style: 'hair' },
+                        left: { style: 'thin' }, right: { style: 'hair' }
+                    };
                     
+                    // 14-day cell
                     const dag14Cell = dataRow.getCell(colIdx + 1);
-                    dag14Cell.value = row[month].dag14;
+                    dag14Cell.value = parseFloat(row[month].dag14) || 0;
                     dag14Cell.numFmt = '#,##0.00';
-                    dag14Cell.font = { color: { argb: 'FFCC0000' } };
-                    dag14Cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + lighterColor } };
+                    dag14Cell.font = { size: 9, color: { argb: 'FF' + colors.expenseText } };
+                    dag14Cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + dag14Bg } };
                     dag14Cell.alignment = { horizontal: 'right', vertical: 'middle' };
-                    dag14Cell.border = { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } };
+                    dag14Cell.border = {
+                        top: { style: 'hair' }, bottom: { style: 'hair' },
+                        left: { style: 'hair' }, right: { style: 'thin' }
+                    };
                     
                     colIdx += 2;
                 });
@@ -297,209 +391,150 @@ class BudgetExporter {
             currentRow++;
         });
         
+        const expenseEndRow = currentRow - 1;
+        
         // Expense totals row
         const expenseTotalRow = worksheet.getRow(currentRow);
-        const expenseStartRow = currentRow - data.expenses.length;
-        const expenseEndRow = currentRow - 1;
-        expenseTotalRow.height = 18;
+        expenseTotalRow.height = 22;
         
-        expenseTotalRow.getCell(1).value = 'TOTAL UDGIFTER';
-        expenseTotalRow.getCell(1).font = { bold: true };
-        expenseTotalRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFD966' } };
-        expenseTotalRow.getCell(1).alignment = { horizontal: 'left', vertical: 'middle' };
-        expenseTotalRow.getCell(1).border = { top: { style: 'medium' }, bottom: { style: 'medium' }, left: { style: 'medium' }, right: { style: 'thin' } };
+        const expTotalName = expenseTotalRow.getCell(1);
+        expTotalName.value = currentLanguage === 'da' ? 'TOTAL UDGIFTER' : 'TOTAL EXPENSES';
+        expTotalName.font = { bold: true, size: 11, color: { argb: 'FF' + colors.expenseText } };
+        expTotalName.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + colors.expenseTotal } };
+        expTotalName.alignment = { horizontal: 'left', vertical: 'middle', indent: 1 };
+        expTotalName.border = {
+            top: { style: 'medium' }, bottom: { style: 'medium' },
+            left: { style: 'medium' }, right: { style: 'thin' }
+        };
         
-        // Add SUM formula for Faktiske
-        expenseTotalRow.getCell(2).value = { formula: `SUM(B${expenseStartRow}:B${expenseEndRow})`, result: expenseTotals.faktiske };
-        expenseTotalRow.getCell(2).numFmt = '#,##0.00';
-        expenseTotalRow.getCell(2).font = { bold: true };
-        expenseTotalRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFD966' } };
-        expenseTotalRow.getCell(2).alignment = { horizontal: 'right', vertical: 'middle' };
-        expenseTotalRow.getCell(2).border = { top: { style: 'medium' }, bottom: { style: 'medium' }, left: { style: 'thin' }, right: { style: 'thin' } };
+        // Faktiske total
+        const expTotalFakt = expenseTotalRow.getCell(2);
+        expTotalFakt.value = { formula: `SUMIF(B${expenseStartRow}:B${expenseEndRow},"<>""",B${expenseStartRow}:B${expenseEndRow})` };
+        expTotalFakt.numFmt = '#,##0.00';
+        expTotalFakt.font = { bold: true, size: 11, color: { argb: 'FF' + colors.faktiskeText } };
+        expTotalFakt.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + colors.faktiskeBg } };
+        expTotalFakt.alignment = { horizontal: 'right', vertical: 'middle' };
+        expTotalFakt.border = {
+            top: { style: 'medium' }, bottom: { style: 'medium' },
+            left: { style: 'thin' }, right: { style: 'thin' }
+        };
         
-        // Add SUM formulas for each month column
+        // Month totals
         colIdx = 3;
-        this.monthNames.forEach(month => {
-            const colLetter = String.fromCharCode(64 + colIdx);
-            expenseTotalRow.getCell(colIdx).value = { formula: `SUM(${colLetter}${expenseStartRow}:${colLetter}${expenseEndRow})`, result: expenseTotals[month].mdr };
-            expenseTotalRow.getCell(colIdx).numFmt = '#,##0.00';
-            expenseTotalRow.getCell(colIdx).font = { bold: true };
-            expenseTotalRow.getCell(colIdx).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFD966' } };
-            expenseTotalRow.getCell(colIdx).alignment = { horizontal: 'right', vertical: 'middle' };
-            expenseTotalRow.getCell(colIdx).border = { top: { style: 'medium' }, bottom: { style: 'medium' }, left: { style: 'thin' }, right: { style: 'thin' } };
+        this.monthNames.forEach((month, mIdx) => {
+            const isEven = mIdx % 2 === 0;
+            const mdrBg = isEven ? colors.monthEven : colors.monthOdd;
+            const dag14Bg = isEven ? colors.month14Even : colors.month14Odd;
+            const colLetter = this.getColumnLetter(colIdx);
+            const col14Letter = this.getColumnLetter(colIdx + 1);
             
-            const col14Letter = String.fromCharCode(64 + colIdx + 1);
-            expenseTotalRow.getCell(colIdx + 1).value = { formula: `SUM(${col14Letter}${expenseStartRow}:${col14Letter}${expenseEndRow})`, result: expenseTotals[month].dag14 };
-            expenseTotalRow.getCell(colIdx + 1).numFmt = '#,##0.00';
-            expenseTotalRow.getCell(colIdx + 1).font = { bold: true };
-            expenseTotalRow.getCell(colIdx + 1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFD966' } };
-            expenseTotalRow.getCell(colIdx + 1).alignment = { horizontal: 'right', vertical: 'middle' };
-            expenseTotalRow.getCell(colIdx + 1).border = { top: { style: 'medium' }, bottom: { style: 'medium' }, left: { style: 'thin' }, right: { style: 'thin' } };
+            // Mdr total
+            const mdrTotal = expenseTotalRow.getCell(colIdx);
+            mdrTotal.value = { formula: `SUMIF(${colLetter}${expenseStartRow}:${colLetter}${expenseEndRow},"<>""",${colLetter}${expenseStartRow}:${colLetter}${expenseEndRow})` };
+            mdrTotal.numFmt = '#,##0.00';
+            mdrTotal.font = { bold: true, size: 10, color: { argb: 'FF' + colors.expenseText } };
+            mdrTotal.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + mdrBg } };
+            mdrTotal.alignment = { horizontal: 'right', vertical: 'middle' };
+            mdrTotal.border = {
+                top: { style: 'medium' }, bottom: { style: 'medium' },
+                left: { style: 'thin' }, right: { style: 'hair' }
+            };
+            
+            // 14-day total
+            const dag14Total = expenseTotalRow.getCell(colIdx + 1);
+            dag14Total.value = { formula: `SUMIF(${col14Letter}${expenseStartRow}:${col14Letter}${expenseEndRow},"<>""",${col14Letter}${expenseStartRow}:${col14Letter}${expenseEndRow})` };
+            dag14Total.numFmt = '#,##0.00';
+            dag14Total.font = { bold: true, size: 9, color: { argb: 'FF' + colors.expenseText } };
+            dag14Total.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + dag14Bg } };
+            dag14Total.alignment = { horizontal: 'right', vertical: 'middle' };
+            dag14Total.border = {
+                top: { style: 'medium' }, bottom: { style: 'medium' },
+                left: { style: 'hair' }, right: { style: 'thin' }
+            };
             
             colIdx += 2;
         });
+        
         const expenseTotalRowNum = currentRow;
         currentRow++;
         
-        // Empty row
-        worksheet.getRow(currentRow).height = 10;
+        // Empty separator row
+        worksheet.getRow(currentRow).height = 12;
         currentRow++;
         
-        // Summary section header
-        worksheet.mergeCells(`A${currentRow}:Z${currentRow}`);
-        const summaryHeaderCell = worksheet.getCell(`A${currentRow}`);
-        summaryHeaderCell.value = 'OVERSIGT';
-        summaryHeaderCell.font = { bold: true, size: 12, color: { argb: 'FFFFFFFF' } };
-        summaryHeaderCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF9B59B6' } };
-        summaryHeaderCell.alignment = { horizontal: 'left', vertical: 'middle' };
-        worksheet.getRow(currentRow).height = 18;
-        currentRow++;
+        // Net balance row
+        const netBalanceRow = worksheet.getRow(currentRow);
+        netBalanceRow.height = 24;
         
-        // Summary row with conditional coloring
-        const summaryRow = worksheet.getRow(currentRow);
-        summaryRow.height = 18;
+        const netBalanceName = netBalanceRow.getCell(1);
+        netBalanceName.value = currentLanguage === 'da' ? '💰 NETTO RESULTAT' : '💰 NET RESULT';
+        netBalanceName.font = { bold: true, size: 12, color: { argb: 'FF1A365D' } };
+        netBalanceName.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFEDF5FF' } };
+        netBalanceName.alignment = { horizontal: 'left', vertical: 'middle', indent: 1 };
+        netBalanceName.border = {
+            top: { style: 'double' }, bottom: { style: 'double' },
+            left: { style: 'medium' }, right: { style: 'thin' }
+        };
         
-        summaryRow.getCell(1).value = 'Overskud/Underskud';
-        summaryRow.getCell(1).font = { bold: true };
-        summaryRow.getCell(1).alignment = { horizontal: 'left', vertical: 'middle' };
-        summaryRow.getCell(1).border = { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } };
+        // Faktiske balance
+        const netBalanceFakt = netBalanceRow.getCell(2);
+        netBalanceFakt.value = { formula: `B${incomeTotalRowNum}-B${expenseTotalRowNum}` };
+        netBalanceFakt.numFmt = '#,##0.00';
+        netBalanceFakt.font = { bold: true, size: 11, color: { argb: 'FF1A365D' } };
+        netBalanceFakt.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF0F9FF' } };
+        netBalanceFakt.alignment = { horizontal: 'right', vertical: 'middle' };
+        netBalanceFakt.border = {
+            top: { style: 'double' }, bottom: { style: 'double' },
+            left: { style: 'thin' }, right: { style: 'thin' }
+        };
         
-        // Add subtraction formula for Faktiske (income - expense)
-        const netFaktiske = incomeTotals.faktiske - expenseTotals.faktiske;
-        summaryRow.getCell(2).value = { formula: `B${incomeTotalRowNum}-B${expenseTotalRowNum}`, result: netFaktiske };
-        summaryRow.getCell(2).numFmt = '#,##0.00';
-        summaryRow.getCell(2).font = { bold: true, color: { argb: netFaktiske >= 0 ? 'FF006400' : 'FFCC0000' } };
-        summaryRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: netFaktiske >= 0 ? 'FFC5E0B4' : 'FFFFCCCC' } };
-        summaryRow.getCell(2).alignment = { horizontal: 'right', vertical: 'middle' };
-        summaryRow.getCell(2).border = { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } };
-        
-        // Add subtraction formulas for each month column
+        // Month balances
         colIdx = 3;
-        this.monthNames.forEach(month => {
-            const netMdr = incomeTotals[month].mdr - expenseTotals[month].mdr;
-            const netDag14 = incomeTotals[month].dag14 - expenseTotals[month].dag14;
+        this.monthNames.forEach((month, mIdx) => {
+            const colLetter = this.getColumnLetter(colIdx);
+            const col14Letter = this.getColumnLetter(colIdx + 1);
             
-            const colLetter = String.fromCharCode(64 + colIdx);
-            summaryRow.getCell(colIdx).value = { formula: `${colLetter}${incomeTotalRowNum}-${colLetter}${expenseTotalRowNum}`, result: netMdr };
-            summaryRow.getCell(colIdx).numFmt = '#,##0.00';
-            summaryRow.getCell(colIdx).font = { bold: true, color: { argb: netMdr >= 0 ? 'FF006400' : 'FFCC0000' } };
-            summaryRow.getCell(colIdx).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: netMdr >= 0 ? 'FFC5E0B4' : 'FFFFCCCC' } };
-            summaryRow.getCell(colIdx).alignment = { horizontal: 'right', vertical: 'middle' };
-            summaryRow.getCell(colIdx).border = { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } };
+            // Mdr balance
+            const mdrBalance = netBalanceRow.getCell(colIdx);
+            mdrBalance.value = { formula: `${colLetter}${incomeTotalRowNum}-${colLetter}${expenseTotalRowNum}` };
+            mdrBalance.numFmt = '#,##0.00';
+            mdrBalance.font = { bold: true, size: 10, color: { argb: 'FF1A365D' } };
+            mdrBalance.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF0F9FF' } };
+            mdrBalance.alignment = { horizontal: 'right', vertical: 'middle' };
+            mdrBalance.border = {
+                top: { style: 'double' }, bottom: { style: 'double' },
+                left: { style: 'thin' }, right: { style: 'hair' }
+            };
             
-            const col14Letter = String.fromCharCode(64 + colIdx + 1);
-            summaryRow.getCell(colIdx + 1).value = { formula: `${col14Letter}${incomeTotalRowNum}-${col14Letter}${expenseTotalRowNum}`, result: netDag14 };
-            summaryRow.getCell(colIdx + 1).numFmt = '#,##0.00';
-            summaryRow.getCell(colIdx + 1).font = { bold: true, color: { argb: netDag14 >= 0 ? 'FF006400' : 'FFCC0000' } };
-            summaryRow.getCell(colIdx + 1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: netDag14 >= 0 ? 'FFC5E0B4' : 'FFFFCCCC' } };
-            summaryRow.getCell(colIdx + 1).alignment = { horizontal: 'right', vertical: 'middle' };
-            summaryRow.getCell(colIdx + 1).border = { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } };
+            // 14-day balance
+            const dag14Balance = netBalanceRow.getCell(colIdx + 1);
+            dag14Balance.value = { formula: `${col14Letter}${incomeTotalRowNum}-${col14Letter}${expenseTotalRowNum}` };
+            dag14Balance.numFmt = '#,##0.00';
+            dag14Balance.font = { bold: true, size: 9, color: { argb: 'FF1A365D' } };
+            dag14Balance.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF0F9FF' } };
+            dag14Balance.alignment = { horizontal: 'right', vertical: 'middle' };
+            dag14Balance.border = {
+                top: { style: 'double' }, bottom: { style: 'double' },
+                left: { style: 'hair' }, right: { style: 'thin' }
+            };
             
             colIdx += 2;
         });
         
         currentRow++;
         
+        // Footer note
+        currentRow += 2;
+        worksheet.mergeCells(`A${currentRow}:E${currentRow}`);
+        const noteCell = worksheet.getCell(`A${currentRow}`);
+        noteCell.value = currentLanguage === 'da' ? '* Faktiske = Faktiske værdier fra den valgte konto' : '* Actuals = Actual values from selected account';
+        noteCell.font = { italic: true, size: 9, color: { argb: 'FF5D4E37' } };
+        noteCell.alignment = { horizontal: 'left', vertical: 'middle' };
+        currentRow++;
+        
         // Empty row
         worksheet.getRow(currentRow).height = 10;
         currentRow++;
-        
-        // ===================================================================
-        // ACCOUNT TRANSFER RECOMMENDATIONS SECTION
-        // ===================================================================
-        
-        // Section header
-        worksheet.mergeCells(`A${currentRow}:Z${currentRow}`);
-        const transferHeaderCell = worksheet.getCell(`A${currentRow}`);
-        transferHeaderCell.value = 'KONTO OVERFØRSEL ANBEFALINGER';
-        transferHeaderCell.font = { bold: true, size: 12, color: { argb: 'FFFFFFFF' } };
-        transferHeaderCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF4A90E2' } };
-        transferHeaderCell.alignment = { horizontal: 'left', vertical: 'middle' };
-        worksheet.getRow(currentRow).height = 18;
-        currentRow++;
-        
-        // Calculate account totals for each month
-        const accountData = [];
-        this.monthNames.forEach(month => {
-            const budgetExpenses = data.expenses
-                .filter(row => !row.isCategory && row.account === 'budget')
-                .reduce((sum, row) => sum + (row[month].mdr || 0) + (row[month].dag14 || 0), 0);
-            
-            const dailyIncome = data.income
-                .filter(row => !row.isCategory && row.account === 'daily')
-                .reduce((sum, row) => sum + (row[month].mdr || 0) + (row[month].dag14 || 0), 0);
-            
-            const dailyExpenses = data.expenses
-                .filter(row => !row.isCategory && row.account === 'daily')
-                .reduce((sum, row) => sum + (row[month].mdr || 0) + (row[month].dag14 || 0), 0);
-            
-            accountData.push({
-                month: month,
-                required: budgetExpenses,
-                dailyIncome: dailyIncome,
-                dailyExpenses: dailyExpenses,
-                remaining: dailyIncome - dailyExpenses - budgetExpenses
-            });
-        });
-        
-        // Transfer recommendation rows
-        const transferRows = [
-            { label: 'Påkrævet Overførsel', field: 'required', color: 'FFE7F3FF' },
-            { label: 'Daglig Indtægt', field: 'dailyIncome', color: 'FFE2EFDA' },
-            { label: 'Daglig Udgifter', field: 'dailyExpenses', color: 'FFFCE4D6' },
-            { label: 'Tilbage på Daglig', field: 'remaining', color: 'FFFFF2CC' }
-        ];
-        
-        transferRows.forEach(rowDef => {
-            const row = worksheet.getRow(currentRow);
-            row.height = 18;
-            
-            row.getCell(1).value = rowDef.label;
-            row.getCell(1).font = { bold: true };
-            row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: rowDef.color } };
-            row.getCell(1).alignment = { horizontal: 'left', vertical: 'middle' };
-            row.getCell(1).border = { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } };
-            
-            // Faktiske column (empty for transfer rows)
-            row.getCell(2).value = '';
-            row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: rowDef.color } };
-            row.getCell(2).border = { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } };
-            
-            // Month columns
-            colIdx = 3;
-            accountData.forEach((monthData, idx) => {
-                const value = monthData[rowDef.field];
-                const baseColor = monthBaseColors[idx];
-                const lighterColor = month14DayColors[idx];
-                
-                // Mdr column
-                row.getCell(colIdx).value = value;
-                row.getCell(colIdx).numFmt = '#,##0.00';
-                row.getCell(colIdx).font = { bold: rowDef.field === 'required' || rowDef.field === 'remaining', color: { argb: value >= 0 ? 'FF006400' : 'FFCC0000' } };
-                row.getCell(colIdx).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + baseColor } };
-                row.getCell(colIdx).alignment = { horizontal: 'right', vertical: 'middle' };
-                row.getCell(colIdx).border = { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } };
-                
-                // 14-day column (same value for consistency)
-                row.getCell(colIdx + 1).value = value;
-                row.getCell(colIdx + 1).numFmt = '#,##0.00';
-                row.getCell(colIdx + 1).font = { bold: rowDef.field === 'required' || rowDef.field === 'remaining', color: { argb: value >= 0 ? 'FF006400' : 'FFCC0000' } };
-                row.getCell(colIdx + 1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + lighterColor } };
-                row.getCell(colIdx + 1).alignment = { horizontal: 'right', vertical: 'middle' };
-                row.getCell(colIdx + 1).border = { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } };
-                
-                colIdx += 2;
-            });
-            
-            currentRow++;
-        });
-        
-        // Set column widths
-        worksheet.getColumn(1).width = 35; // Name column
-        worksheet.getColumn(2).width = 12; // Faktiske
-        for (let i = 3; i <= 26; i++) {
-            worksheet.getColumn(i).width = 12; // Month columns
-        }
         
         // Generate Excel file and download
         const filename = `Budget_${data.year}.xlsx`;
@@ -517,10 +552,25 @@ class BudgetExporter {
             URL.revokeObjectURL(url);
         } catch (error) {
             console.error('Error generating Excel file:', error);
-            alert('Failed to generate Excel file. Please try again.');
+            if (typeof showToast === 'function') {
+                showToast(currentLanguage === 'da' ? 'Fejl ved generering af Excel-fil. Prøv igen.' : 'Error generating Excel file. Please try again.', 'error');
+            } else {
+                alert(currentLanguage === 'da' ? 'Fejl ved generering af Excel-fil. Prøv igen.' : 'Error generating Excel file. Please try again.');
+            }
         }
         
         return filename;
+    }
+    
+    // Helper function to convert column index to Excel column letter
+    getColumnLetter(colIdx) {
+        let letter = '';
+        while (colIdx > 0) {
+            const remainder = (colIdx - 1) % 26;
+            letter = String.fromCharCode(65 + remainder) + letter;
+            colIdx = Math.floor((colIdx - 1) / 26);
+        }
+        return letter;
     }
     
     // Helper function to calculate totals
@@ -562,15 +612,15 @@ class BudgetExporter {
         let csv = `Budget ${data.year}\n\n`;
         
         // Headers
-        csv += 'Navn,Faktiske';
-        const monthNamesDA = ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'December'];
+        csv += currentLanguage === 'da' ? 'Navn,Faktiske' : 'Name,Actuals';
+        const monthNamesDA = currentLanguage === 'da' ? ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'December'] : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         monthNamesDA.forEach(month => {
-            csv += `,${month} Mdr.,${month} 14.Dag`;
+            csv += currentLanguage === 'da' ? `,${month} Mdr.,${month} 14.Dag` : `,${month} Mo.,${month} 14.Day`;
         });
         csv += '\n';
         
         // Income
-        csv += 'INDTÆGTER\n';
+        csv += currentLanguage === 'da' ? 'INDTÆGTER\n' : 'INCOME\n';
         data.income.forEach(row => {
             csv += `"${row.name}",${row.faktiske}`;
             this.monthNames.forEach(month => {
@@ -582,7 +632,7 @@ class BudgetExporter {
         csv += '\n';
         
         // Expenses
-        csv += 'UDGIFTER\n';
+        csv += currentLanguage === 'da' ? 'UDGIFTER\n' : 'EXPENSES\n';
         data.expenses.forEach(row => {
             csv += `"${row.name}",${row.faktiske}`;
             this.monthNames.forEach(month => {

@@ -107,6 +107,45 @@ h4 { font-size: 1.25rem; }
     border-bottom-color: #60a5fa;
 }
 
+/* Section Sub-tabs (within page sections like ABC/Compare) */
+.section-sub-tab {
+    position: relative;
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6b7280;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.2s ease;
+    background: transparent;
+    cursor: pointer;
+}
+
+.section-sub-tab:hover {
+    color: #3b82f6;
+    background-color: rgba(59, 130, 246, 0.04);
+}
+
+.section-sub-tab.active {
+    color: #3b82f6;
+    border-bottom-color: #3b82f6;
+    font-weight: 600;
+}
+
+.dark .section-sub-tab {
+    color: #9ca3af;
+}
+
+.dark .section-sub-tab:hover {
+    color: #60a5fa;
+    background-color: rgba(96, 165, 250, 0.08);
+}
+
+.dark .section-sub-tab.active {
+    color: #60a5fa;
+    border-bottom-color: #60a5fa;
+}
+
 /* Tab Content */
 .tab-content {
     display: none;
@@ -383,6 +422,15 @@ button:disabled {
 /* Utility Classes */
 .hidden {
     display: none !important;
+}
+
+/* Hide scrollbar but allow scrolling */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 /* Scrollbar Styling */
@@ -2759,6 +2807,138 @@ kbd {
 }
 
 /* Print Styles for Enhancements */
+/* ========================================
+   BUDGET FOCUS MODE
+   ======================================== */
+
+/* Focus mode overlay strip */
+.focus-strip {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9900;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.4rem 1rem;
+    background: #1f2937;
+    color: #fff;
+    font-size: 0.8rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+body.budget-focus-active .focus-strip { display: flex; }
+
+.focus-strip-left { font-weight: 700; color: #a78bfa; white-space: nowrap; }
+.focus-strip-center { flex: 1; display: flex; justify-content: center; gap: 1.5rem; }
+.focus-income { color: #34d399; }
+.focus-expense { color: #f87171; }
+.focus-net { color: #e5e7eb; }
+.focus-strip-exit {
+    padding: 0.25rem 0.75rem;
+    background: #dc2626;
+    color: #fff;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s;
+}
+.focus-strip-exit:hover { background: #b91c1c; }
+
+/* Body class hides elements in focus mode */
+body.budget-focus-active nav { display: none !important; }
+body.budget-focus-active #budget-controls-bar { display: none !important; }
+body.budget-focus-active #budget-help-section { display: none !important; }
+body.budget-focus-active #budget-sidebar { display: none !important; }
+body.budget-focus-active #budget-summary-stats { display: none !important; }
+body.budget-focus-active #budget-section { padding-top: 3rem !important; }
+
+/* ========================================
+   STICKY BUDGET TABLE HEADERS (Step L)
+   ======================================== */
+
+#budget-table-wrapper {
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: calc(100vh - 280px);
+}
+
+body.budget-focus-active #budget-table-wrapper {
+    max-height: calc(100vh - 3.5rem);
+}
+
+#budget-table thead th,
+#budget-table thead td {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background-color: #f9fafb;
+}
+
+.dark #budget-table thead th,
+.dark #budget-table thead td {
+    background-color: #111827;
+}
+
+/* ========================================
+   PRINT / PDF EXPORT (Step K)
+   ======================================== */
+
+@media print {
+    /* Hide everything by default */
+    body > * { display: none !important; }
+
+    /* Show only budget section */
+    body.printing-budget #budget-section { display: block !important; }
+    #budget-section { display: block !important; }
+
+    /* Hide non-printable controls inside budget */
+    #budget-controls-bar,
+    #budget-help-section,
+    #budget-sidebar,
+    #budget-table-toolbar,
+    .budget-action-buttons,
+    #budgetFocusMode,
+    nav,
+    .focus-strip {
+        display: none !important;
+    }
+
+    /* Reset padding */
+    #budget-section { padding-top: 0 !important; }
+    #budget-summary-stats { display: grid !important; }
+    #budget-content { overflow: visible !important; }
+    #budget-table-wrapper { overflow: visible !important; max-height: none !important; }
+
+    /* Nice print styling */
+    #budget-table { font-size: 8pt; }
+    #budget-table thead th { background-color: #e5e7eb !important; color: #111 !important; }
+    .budget-print-header { display: block !important; }
+    @page { margin: 1cm; }
+}
+
+/* Hidden print header (shown only when printing) */
+.budget-print-header {
+    display: none;
+    margin-bottom: 0.5rem;
+    font-size: 11pt;
+    font-weight: 700;
+    color: #111;
+}
+
+/* Original print rules */
+.suggestions-bar,
+.history-panel,
+.autocomplete-dropdown,
+#enhanced-modal,
+#importPreviewModal {
+    /* keep non-budget print rules */
+}
+
 @media print {
     .suggestions-bar,
     .history-panel,
@@ -2767,10 +2947,476 @@ kbd {
     #importPreviewModal {
         display: none !important;
     }
-    
+
     .safety-stock-gauge,
     .quality-score-card,
     .unified-inventory-card {
         break-inside: avoid;
+    }
+}
+
+/* ============================================================
+   Custom Page Result Threshold Colors (Steps D/E)
+   ============================================================ */
+.result-card {
+    transition: border-color 0.3s, background-color 0.3s;
+}
+.result-card.threshold-good {
+    border-left: 3px solid #10b981;
+    background-color: rgba(16, 185, 129, 0.05);
+}
+.result-card.threshold-warn {
+    border-left: 3px solid #ef4444;
+    background-color: rgba(239, 68, 68, 0.05);
+}
+.result-card.threshold-neutral {
+    border-left: 3px solid transparent;
+}
+
+/* ============================================================
+   Inventory Sub-tab Styles
+   ============================================================ */
+.inv-tool-tab {
+    transition: all 0.2s ease;
+    position: relative;
+}
+.inv-tool-tab:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+.dark .inv-tool-tab:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+.inv-tool-content {
+    animation: invFadeIn 0.25s ease;
+}
+@keyframes invFadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   Advanced Warehouse Floor Plan
+   ============================================================ */
+
+/* ---------- Toolbar buttons ---------- */
+.wh-tb-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #4b5563;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    user-select: none;
+}
+.wh-tb-btn:hover {
+    background: rgba(59, 130, 246, 0.08);
+    color: #2563eb;
+}
+.wh-tb-active {
+    background: rgba(59, 130, 246, 0.15) !important;
+    color: #1d4ed8 !important;
+    border-color: rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.15);
+}
+.dark .wh-tb-btn {
+    color: #9ca3af;
+}
+.dark .wh-tb-btn:hover {
+    background: rgba(96, 165, 250, 0.12);
+    color: #60a5fa;
+}
+.dark .wh-tb-active {
+    background: rgba(96, 165, 250, 0.2) !important;
+    color: #93bbfd !important;
+    border-color: rgba(96, 165, 250, 0.35);
+}
+
+/* ---------- Toolbar group separators ---------- */
+.wh-toolbar-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding-right: 8px;
+    margin-right: 8px;
+    border-right: 1px solid #e5e7eb;
+}
+.wh-toolbar-group:last-child {
+    border-right: none;
+    margin-right: 0;
+    padding-right: 0;
+}
+.dark .wh-toolbar-group {
+    border-right-color: #374151;
+}
+
+/* ---------- Canvas container ---------- */
+#whCanvasContainer {
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    touch-action: none;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    min-height: 500px;
+}
+.dark #whCanvasContainer {
+    background: #0f172a;
+    border-color: #1e293b;
+}
+
+/* ---------- Canvas itself ---------- */
+#warehouseCanvas {
+    display: block;
+    transform-origin: 0 0;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+/* ---------- Mini-map ---------- */
+#whMinimap {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: #ffffffee;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    z-index: 20;
+    transition: opacity 0.2s;
+}
+#whMinimap:hover {
+    opacity: 1 !important;
+}
+.dark #whMinimap {
+    background: #1e293bee;
+    border-color: #334155;
+}
+#whMinimapCanvas {
+    display: block;
+    border-radius: 4px;
+}
+
+/* ---------- Scale ruler ---------- */
+#whScaleRuler {
+    position: absolute;
+    bottom: 14px;
+    left: 14px;
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    z-index: 20;
+    pointer-events: none;
+}
+#whScaleRuler .ruler-bar {
+    width: 80px;
+    height: 4px;
+    background: #3b82f6;
+    border-radius: 2px;
+    position: relative;
+}
+#whScaleRuler .ruler-bar::before,
+#whScaleRuler .ruler-bar::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 2px;
+    height: 10px;
+    background: #3b82f6;
+    border-radius: 1px;
+}
+#whScaleRuler .ruler-bar::before { left: 0; }
+#whScaleRuler .ruler-bar::after { right: 0; }
+#whScaleLabel {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #3b82f6;
+    line-height: 1;
+}
+
+/* ---------- Coordinate display ---------- */
+#whCoordDisplay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(15, 23, 42, 0.8);
+    color: #e2e8f0;
+    font-size: 0.7rem;
+    font-weight: 500;
+    font-family: 'Courier New', monospace;
+    padding: 4px 10px;
+    border-radius: 6px;
+    z-index: 20;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    letter-spacing: 0.5px;
+}
+
+/* ---------- Context menu ---------- */
+#whContextMenu {
+    position: fixed;
+    z-index: 9999;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.06);
+    padding: 6px 0;
+    min-width: 200px;
+    animation: whCtxIn 0.12s ease-out;
+}
+.dark #whContextMenu {
+    background: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+@keyframes whCtxIn {
+    from { opacity: 0; transform: scale(0.95) translateY(-4px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+#whContextMenu button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 7px 14px;
+    font-size: 0.82rem;
+    background: none;
+    border: none;
+    color: #374151;
+    cursor: pointer;
+    transition: background 0.1s;
+}
+#whContextMenu button:hover {
+    background: rgba(59, 130, 246, 0.08);
+    color: #2563eb;
+}
+.dark #whContextMenu button {
+    color: #d1d5db;
+}
+.dark #whContextMenu button:hover {
+    background: rgba(96, 165, 250, 0.12);
+    color: #93bbfd;
+}
+#whContextMenu button .ctx-shortcut {
+    font-size: 0.7rem;
+    color: #9ca3af;
+    margin-left: 20px;
+}
+#whContextMenu hr {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 4px 0;
+}
+.dark #whContextMenu hr {
+    border-top-color: #374151;
+}
+
+/* ---------- Zoom controls ---------- */
+.wh-zoom-display {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6b7280;
+    min-width: 42px;
+    justify-content: center;
+}
+.dark .wh-zoom-display {
+    color: #9ca3af;
+}
+
+/* ---------- Palette scroll container ---------- */
+.wh-palette-scroll {
+    max-height: 340px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: #94a3b8 transparent;
+    padding-right: 2px;
+}
+.wh-palette-scroll::-webkit-scrollbar {
+    width: 5px;
+}
+.wh-palette-scroll::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+.wh-palette-scroll::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+    transition: background 0.2s;
+}
+.wh-palette-scroll::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+.dark .wh-palette-scroll {
+    scrollbar-color: #475569 transparent;
+}
+.dark .wh-palette-scroll::-webkit-scrollbar-thumb {
+    background: #475569;
+}
+.dark .wh-palette-scroll::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+/* ---------- Palette buttons ---------- */
+.wh-palette-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 8px 4px;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: #64748b;
+    text-align: center;
+    line-height: 1.2;
+}
+.wh-palette-btn:hover {
+    border-color: #cbd5e1;
+    background: #f1f5f9;
+    transform: translateY(-1px);
+}
+.wh-palette-btn.ring-2 {
+    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.06);
+    color: #1d4ed8;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+}
+.dark .wh-palette-btn {
+    background: #1e293b;
+    color: #94a3b8;
+}
+.dark .wh-palette-btn:hover {
+    border-color: #475569;
+    background: #334155;
+}
+.dark .wh-palette-btn.ring-2 {
+    border-color: #60a5fa;
+    background: rgba(96, 165, 250, 0.1);
+    color: #93bbfd;
+}
+
+/* ---------- Layers panel ---------- */
+#whLayersPanel label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 6px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: background 0.12s;
+}
+#whLayersPanel label:hover {
+    background: rgba(0, 0, 0, 0.03);
+}
+.dark #whLayersPanel label:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+#whLayersPanel input[type="checkbox"] {
+    accent-color: #3b82f6;
+    width: 14px;
+    height: 14px;
+}
+
+/* ---------- Properties panel ---------- */
+#whPropsPanel {
+    transition: opacity 0.2s;
+}
+#whPropsPanel input,
+#whPropsPanel select {
+    font-size: 0.82rem;
+}
+
+/* ---------- Dimensions bar ---------- */
+.wh-dim-bar input[type="number"] {
+    width: 70px;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 6px;
+}
+.wh-dim-bar .dim-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #6b7280;
+}
+.dark .wh-dim-bar .dim-label {
+    color: #9ca3af;
+}
+
+/* ---------- Stats bar ---------- */
+.wh-stat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: #f1f5f9;
+    color: #475569;
+}
+.dark .wh-stat-pill {
+    background: #1e293b;
+    color: #94a3b8;
+}
+
+/* ---------- Template select ---------- */
+#whTemplateSelect {
+    font-size: 0.78rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    background: white;
+    color: #374151;
+    cursor: pointer;
+}
+.dark #whTemplateSelect {
+    border-color: #4b5563;
+    background: #1e293b;
+    color: #d1d5db;
+}
+
+/* ---------- Warehouse responsive ---------- */
+@media (max-width: 1024px) {
+    #whCanvasContainer {
+        min-height: 350px;
+    }
+    #whMinimap {
+        display: none;
+    }
+}
+@media (max-width: 640px) {
+    .wh-toolbar-group {
+        flex-wrap: wrap;
+    }
+    .wh-tb-btn {
+        padding: 4px 7px;
+        font-size: 0.72rem;
+    }
+    #whContextMenu {
+        min-width: 170px;
+    }
+    .wh-palette-btn {
+        padding: 6px 2px;
+        font-size: 0.62rem;
     }
 }
