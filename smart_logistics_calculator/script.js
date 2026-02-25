@@ -16981,29 +16981,20 @@ function toggleLeanHelp(forceOpen = null) {
 }
 
 function updateLeanToolSummary() {
-    const cards = document.querySelectorAll('#leanToolGrid .lean-tool-card');
-    if (!cards.length) return;
-
-    let calculators = 0;
-    let planning = 0;
-    let reference = 0;
-
-    cards.forEach(card => {
-        const tags = card.querySelectorAll('span');
-        const badge = tags.length ? tags[tags.length - 1].textContent.trim().toLowerCase() : '';
-
-        if (badge.includes('calculator')) calculators++;
-        else if (badge.includes('planning')) planning++;
-        else if (badge.includes('reference')) reference++;
-    });
-
     const calculatorsEl = document.getElementById('leanSummaryCalculators');
     const planningEl = document.getElementById('leanSummaryPlanning');
     const referenceEl = document.getElementById('leanSummaryReference');
 
-    if (calculatorsEl) calculatorsEl.textContent = `🧮 ${calculators} Calculators`;
-    if (planningEl) planningEl.textContent = `🎯 ${planning} Planning Tools`;
-    if (referenceEl) referenceEl.textContent = `📚 ${reference} Reference Tools`;
+    // Count tools inside each category group
+    const groups = document.querySelectorAll('#leanToolGrid .lean-category-group');
+    const counts = [0, 0, 0];
+    groups.forEach((g, i) => {
+        counts[i] = g.querySelectorAll('.lean-tool-card').length;
+    });
+
+    if (calculatorsEl) calculatorsEl.textContent = `${counts[0]} tools`;
+    if (planningEl) planningEl.textContent = `${counts[1]} tools`;
+    if (referenceEl) referenceEl.textContent = `${counts[2]} tools`;
 }
 
 // Load saved LEAN data from localStorage
@@ -17109,8 +17100,18 @@ function openLeanBox(box) {
     backBtn.className = 'lean-back-btn flex items-center gap-2 mb-4 px-4 py-2.5 bg-white dark:bg-gray-800 ' +
         'border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-200 ' +
         'hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors font-semibold text-sm shadow-sm';
-    backBtn.innerHTML = '← <span data-i18n="lean-back-all">Back to all tools</span>';
-    backBtn.onclick = () => closeLeanBox(panel);
+    
+    if (leanNavigatedFromDashboard) {
+        backBtn.innerHTML = '← <span data-i18n="lean-back-dashboard">Back to Dashboard</span>';
+        backBtn.onclick = () => {
+            closeLeanBox(panel);
+            leanNavigatedFromDashboard = false;
+            switchLeanSubTab('dashboard');
+        };
+    } else {
+        backBtn.innerHTML = '← <span data-i18n="lean-back-all">Back to all tools</span>';
+        backBtn.onclick = () => closeLeanBox(panel);
+    }
     panel.insertBefore(backBtn, panel.firstElementChild);
 
     // Hide all other boxes, show clicked one
@@ -17154,6 +17155,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initLeanBoxIsolation();
     updateLeanToolSummary();
     toggleLeanHelp(false);
+    renderLeanRecent();
 });
 
 // ============================================
@@ -17207,8 +17209,60 @@ const leanQuickJumps = {
     ]
 };
 
+// Track recently used lean tools
+let leanRecentTools = JSON.parse(localStorage.getItem('lean_recent_tools') || '[]');
+
+function trackLeanToolUsage(tabName, sectionId) {
+    // Build a record
+    const toolBtn = document.querySelector(`#leanToolGrid .lean-tool-card`);
+    const allBtns = document.querySelectorAll('#leanToolGrid .lean-tool-card');
+    let icon = '🔧', label = sectionId;
+    allBtns.forEach(btn => {
+        const onclick = btn.getAttribute('onclick') || '';
+        if (onclick.includes(`'${sectionId}'`)) {
+            const spans = btn.querySelectorAll('span');
+            if (spans[0]) icon = spans[0].textContent.trim();
+            const nameEl = btn.querySelector('.font-semibold');
+            if (nameEl) label = nameEl.textContent.trim();
+        }
+    });
+    // Remove duplicate
+    leanRecentTools = leanRecentTools.filter(t => !(t.tab === tabName && t.id === sectionId));
+    // Add to front
+    leanRecentTools.unshift({ tab: tabName, id: sectionId, icon, label, ts: Date.now() });
+    // Keep max 5
+    leanRecentTools = leanRecentTools.slice(0, 5);
+    localStorage.setItem('lean_recent_tools', JSON.stringify(leanRecentTools));
+    renderLeanRecent();
+}
+
+function renderLeanRecent() {
+    const container = document.getElementById('leanRecentlyUsed');
+    const list = document.getElementById('leanRecentList');
+    if (!container || !list) return;
+    if (leanRecentTools.length === 0) {
+        container.classList.add('hidden');
+        return;
+    }
+    container.classList.remove('hidden');
+    list.innerHTML = leanRecentTools.map(t =>
+        `<button onclick="navigateToLeanTool('${t.tab}','${t.id}')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-400 dark:hover:border-emerald-500 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10 transition-all text-left text-xs font-medium text-gray-700 dark:text-gray-300">
+            <span>${t.icon}</span> ${t.label}
+        </button>`
+    ).join('');
+}
+
+// Track whether we came from dashboard
+let leanNavigatedFromDashboard = false;
+
 // Navigate from dashboard tool card to specific tool
 function navigateToLeanTool(tabName, sectionId) {
+    // Remember if we came from dashboard
+    leanNavigatedFromDashboard = (currentLeanSubTab === 'dashboard');
+    
+    // Track usage
+    trackLeanToolUsage(tabName, sectionId);
+    
     // Switch to the correct sub-tab
     switchLeanSubTab(tabName);
     
