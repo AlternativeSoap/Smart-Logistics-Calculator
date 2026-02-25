@@ -308,8 +308,8 @@ const WarehouseLayout = (function () {
     function screenToWorld(sx, sy) {
         var rect = container.getBoundingClientRect();
         return {
-            x: (sx - rect.left - panX) / zoom,
-            y: (sy - rect.top - panY) / zoom,
+            x: (sx - rect.left - (container.clientLeft || 0) - panX) / zoom,
+            y: (sy - rect.top - (container.clientTop || 0) - panY) / zoom,
         };
     }
     function worldToCell(wx, wy) {

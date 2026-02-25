@@ -1055,3 +1055,291 @@ function smartExportText() { SmartGoalsManager.exportText(); }
         setTimeout(smartRenderTimeline, 50);
     };
 })();
+
+// ============================================================
+//  KOTTER'S 8-STEP CHANGE MODEL
+// ============================================================
+const KotterManager = (() => {
+    const STORAGE_KEY = 'lean_kotter';
+    const NOTES_KEY   = 'lean_kotter_notes';
+
+    // The 8 steps grouped into 3 phases
+    const PHASES = [
+        {
+            id: 1,
+            title: 'Fase 1 — Skab klima for forandring',
+            color: 'orange',
+            steps: [
+                { id: 1, title: 'Skab en følelse af nødvendighed', emoji: '🔥',
+                  desc: 'Identificer trusler og muligheder. Vis hvorfor forandring er uundgåelig — brug data, konkurrentanalyser og kundehistorier.',
+                  checklist: [
+                      'Vi har identificeret eksterne trusler/muligheder',
+                      'Ledelsen anerkender behovet for forandring',
+                      'Der er delt fakta og data med organisationen',
+                      'Vi har skabt dialog om konsekvenserne af status quo'
+                  ]},
+                { id: 2, title: 'Skab en styrende koalition', emoji: '🤝',
+                  desc: 'Sammensæt et team af indflydelsesrige ledere og medarbejdere med magt, ekspertise, troværdighed og lederskab.',
+                  checklist: [
+                      'Koalitionen repræsenterer alle nøgleområder',
+                      'Teamet har opbakning fra topledelsen',
+                      'Roller og ansvar er defineret',
+                      'Teamet mødes regelmæssigt'
+                  ]},
+                { id: 3, title: 'Udvikl en vision og strategi', emoji: '🎯',
+                  desc: 'Formuler en klar og inspirerende vision der guider forandringsinitiativet, samt en strategi for at realisere visionen.',
+                  checklist: [
+                      'Visionen er klar og let at kommunikere (< 5 min)',
+                      'Strategien er konkret med milepæle',
+                      'Visionen er forankret i organisationens værdier',
+                      'Alle i koalitionen kan forklare visionen'
+                  ]}
+            ]
+        },
+        {
+            id: 2,
+            title: 'Fase 2 — Engagér og muliggør hele organisationen',
+            color: 'blue',
+            steps: [
+                { id: 4, title: 'Kommuniker forandringsvisionen', emoji: '📢',
+                  desc: 'Brug enhver mulighed til at kommunikere visionen. Ledere skal "walk the talk" og agere som rollemodeller.',
+                  checklist: [
+                      'Visionen er kommunikeret bredt og ofte',
+                      'Ledere demonstrerer ny adfærd',
+                      'Feedback-kanaler er åbne og aktive',
+                      'Kommunikation er tilpasset forskellige målgrupper'
+                  ]},
+                { id: 5, title: 'Fjern barrierer — styrk handlekraft', emoji: '💪',
+                  desc: 'Identificer og fjern forhindringer for forandring: forældede strukturer, systemer, kompetencemangler eller modstand.',
+                  checklist: [
+                      'Strukturelle barrierer er identificeret',
+                      'Medarbejdere har fået nødvendig træning',
+                      'Systemer/processer er opdateret',
+                      'Modstandere er hørt og adresseret'
+                  ]},
+                { id: 6, title: 'Skab hurtige gevinster (quick wins)', emoji: '🏆',
+                  desc: 'Planlæg og fejr synlige, kortsigtede succeser der viser at forandringen virker og motiverer videre indsats.',
+                  checklist: [
+                      'Quick wins er planlagt og tidsbestemt',
+                      'Resultater er målbare og synlige',
+                      'Succeser er kommunikeret og fejret',
+                      'Bidragydere er anerkendt'
+                  ]}
+            ]
+        },
+        {
+            id: 3,
+            title: 'Fase 3 — Implementér og fasthold forandringen',
+            color: 'green',
+            steps: [
+                { id: 7, title: 'Konsolidér og byg videre', emoji: '📈',
+                  desc: 'Brug momentum fra quick wins til at tackle større forandringer. Undgå at erklære sejr for tidligt.',
+                  checklist: [
+                      'Nye, større projekter er igangsat',
+                      'Nye forandringsagenter er rekrutteret',
+                      'Vi undgår at falde tilbage til gamle vaner',
+                      'Forbedringer er dokumenteret og delt'
+                  ]},
+                { id: 8, title: 'Forankre forandringen i kulturen', emoji: '🏛️',
+                  desc: 'Gør den nye tilgang til "måden vi gør tingene på". Indlejr forandringer i normer, værdier, rekruttering og onboarding.',
+                  checklist: [
+                      'Nye metoder er standard-procedurer',
+                      'Onboarding inkluderer nye arbejdsmetoder',
+                      'KPI\'er afspejler den nye tilgang',
+                      'Lederskabsudvikling understøtter kulturen'
+                  ]}
+            ]
+        }
+    ];
+
+    let data = { checks: {}, notes: '' };
+    let activePhase = 1;
+
+    function load() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) { data.checks = JSON.parse(raw); }
+            data.notes = localStorage.getItem(NOTES_KEY) || '';
+        } catch(e) { console.warn('Kotter load error:', e); }
+    }
+
+    function saveChecks() {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data.checks)); } catch(e) {}
+    }
+
+    function saveNotes() {
+        const ta = document.getElementById('kotterActionPlan');
+        if (ta) { data.notes = ta.value; }
+        try { localStorage.setItem(NOTES_KEY, data.notes); } catch(e) {}
+    }
+
+    function getStepProgress(stepId) {
+        const c = data.checks[stepId];
+        if (!c) return 0;
+        const step = PHASES.flatMap(p => p.steps).find(s => s.id === stepId);
+        if (!step) return 0;
+        const done = step.checklist.filter((_, i) => c[i]).length;
+        return Math.round((done / step.checklist.length) * 100);
+    }
+
+    function getOverallProgress() {
+        const allSteps = PHASES.flatMap(p => p.steps);
+        const total = allSteps.reduce((s, st) => s + st.checklist.length, 0);
+        let done = 0;
+        allSteps.forEach(st => {
+            const c = data.checks[st.id];
+            if (c) { st.checklist.forEach((_, i) => { if (c[i]) done++; }); }
+        });
+        return total ? Math.round((done / total) * 100) : 0;
+    }
+
+    function updateOverallBar() {
+        const pct = getOverallProgress();
+        const bar = document.getElementById('kotterOverallBar');
+        const txt = document.getElementById('kotterOverallPct');
+        if (bar) bar.style.width = pct + '%';
+        if (txt) txt.textContent = pct + '%';
+    }
+
+    function toggleCheck(stepId, idx) {
+        if (!data.checks[stepId]) data.checks[stepId] = {};
+        data.checks[stepId][idx] = !data.checks[stepId][idx];
+        saveChecks();
+        render();
+    }
+
+    function showPhase(phaseId) {
+        activePhase = phaseId;
+        // Update buttons
+        for (let i = 1; i <= 3; i++) {
+            const btn = document.getElementById('kotterPhaseBtn' + i);
+            if (!btn) continue;
+            if (i === phaseId) {
+                btn.className = 'kotter-phase-btn px-4 py-2 rounded-lg text-sm font-bold transition-colors bg-orange-600 text-white';
+            } else {
+                btn.className = 'kotter-phase-btn px-4 py-2 rounded-lg text-sm font-bold transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600';
+            }
+        }
+        render();
+    }
+
+    function render() {
+        const container = document.getElementById('kotterStepsContainer');
+        if (!container) return;
+
+        const phase = PHASES.find(p => p.id === activePhase);
+        if (!phase) return;
+
+        const colorMap = { orange: { bg: 'bg-orange-50 dark:bg-orange-900/20', border: 'border-orange-300 dark:border-orange-700', bar: 'bg-orange-500', text: 'text-orange-700 dark:text-orange-400', check: 'text-orange-600' },
+                          blue:   { bg: 'bg-blue-50 dark:bg-blue-900/20', border: 'border-blue-300 dark:border-blue-700', bar: 'bg-blue-500', text: 'text-blue-700 dark:text-blue-400', check: 'text-blue-600' },
+                          green:  { bg: 'bg-green-50 dark:bg-green-900/20', border: 'border-green-300 dark:border-green-700', bar: 'bg-green-500', text: 'text-green-700 dark:text-green-400', check: 'text-green-600' }};
+        const c = colorMap[phase.color] || colorMap.orange;
+
+        let html = `<div class="mb-3"><h4 class="font-bold ${c.text} text-lg">${phase.title}</h4></div>`;
+
+        phase.steps.forEach(step => {
+            const pct = getStepProgress(step.id);
+            const checks = data.checks[step.id] || {};
+
+            html += `
+            <div class="rounded-xl border ${c.border} ${c.bg} p-4 shadow-sm">
+                <div class="flex items-center justify-between mb-2">
+                    <h5 class="font-bold text-gray-800 dark:text-white flex items-center gap-2">
+                        <span class="text-xl">${step.emoji}</span>
+                        <span>Trin ${step.id}: ${step.title}</span>
+                    </h5>
+                    <span class="text-sm font-bold ${c.text}">${pct}%</span>
+                </div>
+                <div class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full mb-3 overflow-hidden">
+                    <div class="h-full ${c.bar} rounded-full transition-all duration-300" style="width:${pct}%"></div>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">${step.desc}</p>
+                <div class="space-y-2">`;
+
+            step.checklist.forEach((item, idx) => {
+                const checked = checks[idx];
+                html += `
+                    <label class="flex items-start gap-2 cursor-pointer group" onclick="KotterManager.toggleCheck(${step.id}, ${idx})">
+                        <span class="mt-0.5 w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors ${checked ? c.bar + ' border-transparent text-white' : 'border-gray-300 dark:border-gray-600 group-hover:border-gray-400'}">
+                            ${checked ? '<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>' : ''}
+                        </span>
+                        <span class="text-sm ${checked ? 'line-through text-gray-400 dark:text-gray-500' : 'text-gray-700 dark:text-gray-300'}">${item}</span>
+                    </label>`;
+            });
+
+            html += `</div></div>`;
+        });
+
+        container.innerHTML = html;
+        updateOverallBar();
+    }
+
+    function exportPlan() {
+        const isDa = (typeof currentLanguage !== 'undefined' && currentLanguage === 'da');
+        let text = '=== Kotter\'s 8-Step Change Model ===\n';
+        text += isDa ? 'Eksporteret: ' : 'Exported: ';
+        text += new Date().toLocaleString(isDa ? 'da-DK' : 'en-US') + '\n';
+        text += `Samlet fremskridt: ${getOverallProgress()}%\n\n`;
+
+        PHASES.forEach(phase => {
+            text += `── ${phase.title} ──\n`;
+            phase.steps.forEach(step => {
+                const pct = getStepProgress(step.id);
+                text += `\n  ${step.emoji} Trin ${step.id}: ${step.title}  [${pct}%]\n`;
+                text += `     ${step.desc}\n`;
+                const checks = data.checks[step.id] || {};
+                step.checklist.forEach((item, idx) => {
+                    text += `     ${checks[idx] ? '☑' : '☐'} ${item}\n`;
+                });
+            });
+            text += '\n';
+        });
+
+        if (data.notes) {
+            text += `── Handlingsplan ──\n${data.notes}\n`;
+        }
+
+        const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href = url;
+        a.download = `kotter_plan_${new Date().toISOString().slice(0,10)}.txt`;
+        a.click();
+        URL.revokeObjectURL(url);
+        if (typeof showToast === 'function') showToast(isDa ? 'Kotter-plan eksporteret' : 'Kotter plan exported', 'success');
+    }
+
+    function resetAll() {
+        const isDa = (typeof currentLanguage !== 'undefined' && currentLanguage === 'da');
+        if (!confirm(isDa ? 'Nulstil alle Kotter-data? Dette kan ikke fortrydes.' : 'Reset all Kotter data? This cannot be undone.')) return;
+        data.checks = {};
+        data.notes = '';
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(NOTES_KEY);
+        const ta = document.getElementById('kotterActionPlan');
+        if (ta) ta.value = '';
+        render();
+        if (typeof showToast === 'function') showToast(isDa ? 'Kotter-data nulstillet' : 'Kotter data reset', 'success');
+    }
+
+    function init() {
+        load();
+        const ta = document.getElementById('kotterActionPlan');
+        if (ta) ta.value = data.notes;
+        render();
+    }
+
+    // Auto-init when Kotter section is opened
+    document.addEventListener('DOMContentLoaded', () => {
+        // Observe the kotter-content div becoming visible
+        const target = document.getElementById('kotter-content');
+        if (target) {
+            const obs = new MutationObserver(() => {
+                if (target.style.display !== 'none') { init(); obs.disconnect(); }
+            });
+            obs.observe(target, { attributes: true, attributeFilter: ['style'] });
+        }
+    });
+
+    return { showPhase, toggleCheck, saveNotes, exportPlan, resetAll, init };
+})();

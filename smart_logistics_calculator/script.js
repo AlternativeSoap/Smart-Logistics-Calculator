@@ -1009,7 +1009,7 @@ const translations = {
         'download-samples': '📥 Download Eksempelfiler',
         'auto-column-mapping': '🔄 Automatisk Kolonnemapping',
         'learn-tab': 'Lær',
-        'lean-tab': 'LEAN Værktøjer',
+        'lean-tab': 'LEAN & Operations',
         'customize-dashboard': 'Tilpas Dashboard',
         'customize-dashboard-description': 'Vælg hvilke Quick Actions der vises på dashboard',
         'customize-btn': 'Tilpas',
@@ -1812,8 +1812,8 @@ const translations = {
         'mm-chart-label-min-current': 'Min → Aktuelt',
         'mm-chart-label-current-max': 'Aktuelt → Max',
         
-        // LEAN Tools translations (Danish)
-        'lean-title': 'LEAN Værktøjer',
+        // LEAN & Operations translations (Danish)
+        'lean-title': 'LEAN & Operations',
         'lean-calculators-title': 'Interaktive Beregnere',
         'lean-oee-title': 'OEE Beregner',
         'lean-oee-subtitle': 'Samlet Udstyrs Effektivitet',
@@ -2359,13 +2359,13 @@ const translations = {
         
         // LEAN Help & Guide
         'lean-help-guide': 'Hjælp & Vejledning',
-        'lean-help-title': 'LEAN Værktøjer Hjælp',
+        'lean-help-title': 'LEAN & Operations Hjælp',
         'lean-help-intro': 'LEAN værktøjer hjælper dig med at identificere spild, forbedre effektivitet og optimere dine operationer ved hjælp af dokumenterede produktions- og logistikprincipper.',
         'lean-help-calc-title': 'Beregnere',
         'lean-help-calc-1': '<strong>OEE (Overall Equipment Effectiveness):</strong> Måler hvor effektivt udstyr bruges. Beregnes fra Tilgængelighed × Ydelse × Kvalitet. World-class er 85%+.',
         'lean-help-calc-2': '<strong>SMED (Single-Minute Exchange of Die):</strong> Beregn tids- og omkostningsbesparelser fra reduktion af opstillings-/omstillingstider.',
         'lean-help-calc-3': '<strong>7 Spildtyper:</strong> Spor omkostninger forbundet med de 7 typer af Muda (spild): overproduktion, ventetid, transport, overbearbejdning, lager, bevægelse og defekter.',
-        'lean-help-tips-title': 'Brug af LEAN Værktøjer',
+        'lean-help-tips-title': 'Brug af LEAN & Operations',
         'lean-help-tip-1': '<strong>SWOT Analyse:</strong> Brug til strategisk planlægning for at identificere Styrker, Svagheder, Muligheder og Trusler.',
         'lean-help-tip-2': '<strong>Reference Bibliotek:</strong> Hurtig adgang til LEAN koncepter som 5S, 7R, 3M, PDCA, JIT, Kanban, FIFO og Kaizen.',
         'lean-help-tip-3': '<strong>Integration:</strong> Forbind LEAN principper med din ABC-analyse, EOQ-beregninger og lagerstyring for en holistisk tilgang.',
@@ -3484,9 +3484,9 @@ const translations = {
         'mm-chart-label-min-current': 'Min → Current',
         'mm-chart-label-current-max': 'Current → Max',
         
-        // LEAN Tools translations (English)
-        'lean-tab': 'LEAN Tools',
-        'lean-title': 'LEAN Tools',
+        // LEAN & Operations translations (English)
+        'lean-tab': 'LEAN & Operations',
+        'lean-title': 'LEAN & Operations',
         'lean-calculators-title': 'Interactive Calculators',
         'lean-oee-title': 'OEE Calculator',
         'lean-oee-subtitle': 'Overall Equipment Effectiveness',
@@ -4032,13 +4032,13 @@ const translations = {
         
         // LEAN Help & Guide
         'lean-help-guide': 'Help & Guide',
-        'lean-help-title': 'LEAN Tools Help',
-        'lean-help-intro': 'LEAN tools help you identify waste, improve efficiency, and optimize your operations using proven manufacturing and logistics principles.',
+        'lean-help-title': 'LEAN & Operations Help',
+        'lean-help-intro': 'LEAN & Operations tools help you identify waste, improve efficiency, and optimize your operations using proven manufacturing and logistics principles.',
         'lean-help-calc-title': 'Calculators',
         'lean-help-calc-1': '<strong>OEE (Overall Equipment Effectiveness):</strong> Measures how effectively equipment is used. Calculated from Availability × Performance × Quality. World-class is 85%+.',
         'lean-help-calc-2': '<strong>SMED (Single-Minute Exchange of Die):</strong> Calculate time and cost savings from reducing setup/changeover times.',
         'lean-help-calc-3': '<strong>7 Waste Types:</strong> Track costs associated with the 7 types of Muda (waste): overproduction, waiting, transport, overprocessing, inventory, motion, and defects.',
-        'lean-help-tips-title': 'Using LEAN Tools',
+        'lean-help-tips-title': 'Using LEAN & Operations',
         'lean-help-tip-1': '<strong>SWOT Analysis:</strong> Use for strategic planning to identify Strengths, Weaknesses, Opportunities, and Threats.',
         'lean-help-tip-2': '<strong>Reference Library:</strong> Quick access to LEAN concepts like 5S, 7R, 3M, PDCA, JIT, Kanban, FIFO, and Kaizen.',
         'lean-help-tip-3': '<strong>Integration:</strong> Connect LEAN principles with your ABC analysis, EOQ calculations, and inventory management for a holistic approach.',
@@ -4723,8 +4723,8 @@ function loadPageTutorial(pageName) {
         'lean': [
             {
                 element: '#lean-section',
-                title: { da: '🏭 LEAN Værktøjer', en: '🏭 LEAN Tools' },
-                message: { da: 'LEAN værktøjer hjælper dig med at identificere spild, forbedre effektivitet og optimere dine operationer ved hjælp af dokumenterede produktions- og logistikprincipper.', en: 'LEAN tools help you identify waste, improve efficiency, and optimize your operations using proven manufacturing and logistics principles.' },
+                title: { da: '🏭 LEAN & Operations', en: '🏭 LEAN & Operations' },
+                message: { da: 'LEAN & Operations hjælper dig med at identificere spild, forbedre effektivitet og optimere dine operationer ved hjælp af dokumenterede produktions- og logistikprincipper.', en: 'LEAN & Operations tools help you identify waste, improve efficiency, and optimize your operations using proven manufacturing and logistics principles.' },
                 action: () => {}
             },
             {
@@ -5402,6 +5402,11 @@ function switchTab(tabName, clickedButton) {
         setTimeout(() => {
             if (typeof KPIDashboard !== 'undefined') KPIDashboard.refresh();
         }, 100);
+    }
+    if (tabName === 'lean') {
+        setTimeout(() => {
+            if (typeof switchLeanSubTab === 'function') switchLeanSubTab(currentLeanSubTab || 'dashboard');
+        }, 50);
     }
 }
 
@@ -14239,6 +14244,60 @@ document.addEventListener('DOMContentLoaded', () => {
 let currentQRInstance = null;
 let currentQRType = 'url';
 let batchBarcodeData = [];
+let qrLogoImage = null; // loaded Image object for QR overlay
+let currentQRStyle = 'square'; // square | rounded | dots | diamond | star
+
+// --- QR Logo Upload ---
+function handleQRLogoUpload(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+        const img = new Image();
+        img.onload = function() {
+            qrLogoImage = img;
+            const thumb = document.getElementById('qrLogoPreviewThumb');
+            const wrap  = document.getElementById('qrLogoPreviewWrap');
+            const clearBtn = document.getElementById('qrLogoClearBtn');
+            if (thumb) thumb.src = ev.target.result;
+            if (wrap)  wrap.classList.remove('hidden');
+            if (clearBtn) clearBtn.classList.remove('hidden');
+            const sel = document.getElementById('qrErrorLevel');
+            if (sel) sel.value = 'H';
+            if (document.getElementById('qrLive')?.checked) generateQRCode();
+        };
+        img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+function clearQRLogo() {
+    qrLogoImage = null;
+    const thumb    = document.getElementById('qrLogoPreviewThumb');
+    const wrap     = document.getElementById('qrLogoPreviewWrap');
+    const clearBtn = document.getElementById('qrLogoClearBtn');
+    const fileInput = document.getElementById('qrLogoFile');
+    if (thumb) thumb.src = '';
+    if (wrap)  wrap.classList.add('hidden');
+    if (clearBtn) clearBtn.classList.add('hidden');
+    if (fileInput) fileInput.value = '';
+    if (document.getElementById('qrLive')?.checked) generateQRCode();
+}
+
+// --- QR Style Switching ---
+function setQRStyle(style) {
+    currentQRStyle = style;
+    document.querySelectorAll('.qr-style-btn').forEach(btn => {
+        btn.classList.remove('bg-blue-100', 'dark:bg-blue-900/40', 'text-blue-700', 'dark:text-blue-300', 'border-blue-400');
+        btn.classList.add('bg-gray-100', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300', 'border-transparent');
+    });
+    const active = document.getElementById('qrStyle' + style.charAt(0).toUpperCase() + style.slice(1));
+    if (active) {
+        active.classList.remove('bg-gray-100', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300', 'border-transparent');
+        active.classList.add('bg-blue-100', 'dark:bg-blue-900/40', 'text-blue-700', 'dark:text-blue-300', 'border-blue-400');
+    }
+    if (document.getElementById('qrLive')?.checked) generateQRCode();
+}
 
 // --- QR Type Switching ---
 
@@ -14355,6 +14414,81 @@ function buildQRContent() {
 
 // --- QR Generation ---
 
+/**
+ * Draw a single QR module with the selected style
+ */
+function _drawQRModule(ctx, x, y, w, h, style) {
+    switch (style) {
+        case 'rounded': {
+            const r = Math.min(w, h) * 0.35;
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + w - r, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+            ctx.lineTo(x + w, y + h - r);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            ctx.lineTo(x + r, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+            ctx.lineTo(x, y + r);
+            ctx.quadraticCurveTo(x, y, x + r, y);
+            ctx.closePath();
+            ctx.fill();
+            break;
+        }
+        case 'dots': {
+            const radius = Math.min(w, h) * 0.45;
+            ctx.beginPath();
+            ctx.arc(x + w / 2, y + h / 2, radius, 0, Math.PI * 2);
+            ctx.fill();
+            break;
+        }
+        case 'diamond': {
+            const cx = x + w / 2, cy = y + h / 2;
+            ctx.beginPath();
+            ctx.moveTo(cx, y);
+            ctx.lineTo(x + w, cy);
+            ctx.lineTo(cx, y + h);
+            ctx.lineTo(x, cy);
+            ctx.closePath();
+            ctx.fill();
+            break;
+        }
+        case 'star': {
+            const cx = x + w / 2, cy = y + h / 2;
+            const outerR = Math.min(w, h) * 0.5;
+            const innerR = outerR * 0.4;
+            const spikes = 4;
+            ctx.beginPath();
+            for (let i = 0; i < spikes * 2; i++) {
+                const r = i % 2 === 0 ? outerR : innerR;
+                const angle = (Math.PI * i / spikes) - Math.PI / 2;
+                const px = cx + Math.cos(angle) * r;
+                const py = cy + Math.sin(angle) * r;
+                if (i === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            }
+            ctx.closePath();
+            ctx.fill();
+            break;
+        }
+        default: // square
+            ctx.fillRect(x, y, w, h);
+    }
+}
+
+/**
+ * Check if a cell belongs to a finder pattern (the 3 big corners)
+ */
+function _isFinderModule(row, col, moduleCount) {
+    // Top-left 7×7
+    if (row < 7 && col < 7) return true;
+    // Top-right 7×7
+    if (row < 7 && col >= moduleCount - 7) return true;
+    // Bottom-left 7×7
+    if (row >= moduleCount - 7 && col < 7) return true;
+    return false;
+}
+
 function generateQRCode() {
     const preview = document.getElementById('qrPreview');
     const errorEl = document.getElementById('qrError');
@@ -14367,7 +14501,10 @@ function generateQRCode() {
     const size    = parseInt(document.getElementById('qrSize')?.value  || 250);
     const fgColor = document.getElementById('qrFgColor')?.value || '#000000';
     const bgColor = document.getElementById('qrBgColor')?.value || '#ffffff';
-    const errorLevelKey = document.getElementById('qrErrorLevel')?.value || 'M';
+    let   errorLevelKey = document.getElementById('qrErrorLevel')?.value || 'M';
+
+    // Force H error correction when logo overlay is active
+    if (qrLogoImage) errorLevelKey = 'H';
 
     if (!content) {
         preview.innerHTML = '<p class="text-gray-400 dark:text-gray-500 text-sm">' + (currentLanguage === 'da' ? 'Udfyld indholdet ovenfor' : 'Fill in the content above') + '</p>';
@@ -14384,11 +14521,14 @@ function generateQRCode() {
 
     // Clean container
     preview.innerHTML = '';
-    const qrContainer = document.createElement('div');
-    preview.appendChild(qrContainer);
 
     try {
-        currentQRInstance = new QRCode(qrContainer, {
+        // Step 1: Generate QR into a hidden container to extract module data
+        const tempDiv = document.createElement('div');
+        tempDiv.style.cssText = 'position:absolute;left:-9999px;top:-9999px;';
+        document.body.appendChild(tempDiv);
+
+        currentQRInstance = new QRCode(tempDiv, {
             text: content,
             width: size,
             height: size,
@@ -14397,6 +14537,87 @@ function generateQRCode() {
             correctLevel: errorLevels[errorLevelKey] || QRCode.CorrectLevel.M
         });
 
+        // Step 2: Access the internal module grid directly from qrcodejs
+        // qrcodejs2 stores the model in _oQRCode with .modules (boolean[][]) and .moduleCount
+        const qrModel = currentQRInstance._oQRCode;
+        if (!qrModel || !qrModel.modules) {
+            // Fallback: just show the default canvas
+            const fallback = tempDiv.querySelector('canvas');
+            if (fallback) {
+                const clone = document.createElement('canvas');
+                clone.width = fallback.width;
+                clone.height = fallback.height;
+                clone.getContext('2d').drawImage(fallback, 0, 0);
+                preview.appendChild(clone);
+            }
+            document.body.removeChild(tempDiv);
+            if (errorEl) errorEl.classList.add('hidden');
+            if (infoBox && infoDisplay) {
+                infoDisplay.textContent = content.length > 150 ? content.substring(0, 150) + '…' : content;
+                infoBox.classList.remove('hidden');
+            }
+            return;
+        }
+
+        const moduleCount = qrModel.moduleCount;
+        const modules = qrModel.modules; // boolean[][]
+
+        document.body.removeChild(tempDiv);
+
+        // Step 3: Draw styled QR on a new canvas
+        const outCanvas = document.createElement('canvas');
+        outCanvas.width = size;
+        outCanvas.height = size;
+        const ctx = outCanvas.getContext('2d');
+
+        // Background
+        ctx.fillStyle = bgColor;
+        ctx.fillRect(0, 0, size, size);
+
+        // Quiet zone + drawing area
+        const margin = Math.round(size * 0.04);
+        const drawArea = size - margin * 2;
+        const cellW = drawArea / moduleCount;
+
+        ctx.fillStyle = fgColor;
+
+        for (let row = 0; row < moduleCount; row++) {
+            for (let col = 0; col < moduleCount; col++) {
+                if (!modules[row][col]) continue;
+                const cx = margin + col * cellW;
+                const cy = margin + row * cellW;
+
+                // Finder patterns always drawn as squares for scan reliability
+                if (_isFinderModule(row, col, moduleCount)) {
+                    ctx.fillRect(cx, cy, Math.ceil(cellW), Math.ceil(cellW));
+                } else {
+                    _drawQRModule(ctx, cx, cy, Math.ceil(cellW), Math.ceil(cellW), currentQRStyle);
+                }
+            }
+        }
+
+        // Step 4: Logo overlay
+        if (qrLogoImage) {
+            const logoSizePct = parseInt(document.getElementById('qrLogoSize')?.value || 20);
+            const logoW = Math.round(size * logoSizePct / 100);
+            const logoH = Math.round(size * logoSizePct / 100);
+            const lx = Math.round((size - logoW) / 2);
+            const ly = Math.round((size - logoH) / 2);
+            const pad = Math.round(logoW * 0.1);
+            const r = Math.round(pad * 0.8);
+            // Background behind logo for readability
+            ctx.fillStyle = bgColor;
+            ctx.beginPath();
+            if (ctx.roundRect) {
+                ctx.roundRect(lx - pad, ly - pad, logoW + pad * 2, logoH + pad * 2, r);
+            } else {
+                ctx.rect(lx - pad, ly - pad, logoW + pad * 2, logoH + pad * 2);
+            }
+            ctx.fill();
+            ctx.drawImage(qrLogoImage, lx, ly, logoW, logoH);
+        }
+
+        preview.appendChild(outCanvas);
         if (errorEl) errorEl.classList.add('hidden');
 
         // Show content preview
@@ -16790,36 +17011,316 @@ function loadLEANData() {
 
 // Toggle LEAN section expand/collapse
 function toggleLEANSection(sectionId) {
-    const content = document.getElementById(`${sectionId}-content`);
-    const toggle = document.getElementById(`${sectionId}-toggle`);
-    const section = document.getElementById(sectionId);
+    // Sections are now always open — no toggle needed.
+    // Kept for backward compatibility if any stale references exist.
+    return;
+}
+
+// ============================================
+// LEAN BOX CLICK-TO-ISOLATE
+// ============================================
+
+/**
+ * When a section-box header is clicked, hide all sibling boxes in the
+ * same panel and show only the clicked one (full-width). A "← Back"
+ * button appears at the top to restore the grid view.
+ */
+function initLeanBoxIsolation() {
+    document.querySelectorAll('.lean-section-box').forEach(box => {
+        // The first child div (the colored header) is the click target
+        const header = box.querySelector(':scope > div:first-child');
+        if (!header) return;
+
+        header.style.cursor = 'pointer';
+        header.addEventListener('click', (e) => {
+            // Don't trigger if user clicked a button/link/input inside the header
+            if (e.target.closest('button, a, input, select, textarea')) return;
+            openLeanBox(box);
+        });
+    });
+}
+
+function openLeanBox(box) {
+    const panel = box.closest('.lean-panel');
+    if (!panel) return;
+
+    // Already isolated? Do nothing
+    if (panel.querySelector('.lean-back-btn')) return;
+
+    // Insert back button before the first section box
+    const backBtn = document.createElement('button');
+    backBtn.className = 'lean-back-btn flex items-center gap-2 mb-4 px-4 py-2.5 bg-white dark:bg-gray-800 ' +
+        'border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-200 ' +
+        'hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors font-semibold text-sm shadow-sm';
+    backBtn.innerHTML = '← <span data-i18n="lean-back-all">Back to all tools</span>';
+    backBtn.onclick = () => closeLeanBox(panel);
+    panel.insertBefore(backBtn, panel.firstElementChild);
+
+    // Hide all other boxes, show clicked one
+    panel.querySelectorAll('.lean-section-box').forEach(b => {
+        if (b === box) {
+            b.style.display = '';
+            b.classList.add('lean-box-isolated');
+        } else {
+            b.style.display = 'none';
+        }
+    });
+
+    // Scroll to top of the panel
+    const nav = document.querySelector('#lean-section .sticky');
+    if (nav) nav.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function closeLeanBox(panel) {
+    // Remove back button
+    const backBtn = panel.querySelector('.lean-back-btn');
+    if (backBtn) backBtn.remove();
+
+    // Show all boxes again
+    panel.querySelectorAll('.lean-section-box').forEach(b => {
+        b.style.display = '';
+        b.classList.remove('lean-box-isolated');
+    });
+
+    // Scroll to top
+    const nav = document.querySelector('#lean-section .sticky');
+    if (nav) nav.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', initLeanBoxIsolation);
+
+// ============================================
+// LEAN SUB-TAB NAVIGATION, QUICK-JUMP & SEARCH
+// ============================================
+
+// Sub-tab color config
+const leanSubTabColors = {
+    dashboard:   'bg-emerald-600 text-white shadow-md',
+    calculators: 'bg-cyan-600 text-white shadow-md',
+    planning:    'bg-violet-600 text-white shadow-md',
+    reference:   'bg-amber-600 text-white shadow-md'
+};
+const leanSubTabInactive = 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600';
+
+// Quick-jump items per sub-tab
+const leanQuickJumps = {
+    dashboard: [],  // Dashboard is now a tool launcher grid — no quick-jumps needed
+    calculators: [
+        { id: 'leanDash',      icon: '📈', label: 'Dashboard KPIs',    selector: '#leanDashboardOverview' },
+        { id: 'leanTracker',   icon: '📊', label: 'Tracker',           selector: '.lean-searchable[data-lean-keywords*="tracker"]' },
+        { id: 'oee',           icon: '⚙️', label: 'OEE',              selector: '.lean-searchable[data-lean-keywords*="oee overall"]' },
+        { id: 'timeAnalysis',  icon: '⏱️', label: 'Time Analysis',    selector: '.lean-searchable[data-lean-keywords*="takt cycle lead"]' },
+        { id: 'smed',          icon: '⏱️', label: 'SMED',             selector: '.lean-searchable[data-lean-keywords*="smed setup"]' },
+        { id: 'wastes',        icon: '🗑️', label: '7 Wastes',         selector: '.lean-searchable[data-lean-keywords*="7 wastes"]' },
+        { id: 'kaizen',        icon: '📅', label: 'Kaizen',            selector: '.lean-searchable[data-lean-keywords*="kaizen event"]' }
+    ],
+    planning: [
+        { id: 'swot',          icon: '🎯', label: 'SWOT',             selector: '.lean-searchable[data-lean-keywords*="swot strengths"]' },
+        { id: 'vsm',           icon: '🗺️', label: 'VSM',             selector: '.lean-searchable[data-lean-keywords*="vsm value stream"]' },
+        { id: 'leanWhatIf',    icon: '🔮', label: 'What-If',           selector: '.lean-searchable[data-lean-keywords*="what-if"]' }
+    ],
+    reference: [
+        { id: 'ref5s',         icon: '🧹', label: '5S',               selector: '.lean-searchable[data-lean-keywords*="5s system"]' },
+        { id: 'ref7r',         icon: '📦', label: '7R',               selector: '.lean-searchable[data-lean-keywords*="7r rigtige"]' },
+        { id: 'ref3m',         icon: '⚠️', label: '3M',               selector: '.lean-searchable[data-lean-keywords*="3m muda"]' },
+        { id: 'refPdca',       icon: '🔄', label: 'PDCA',             selector: '.lean-searchable[data-lean-keywords*="pdca plan"]' },
+        { id: 'refJitKanban',  icon: '📋', label: 'JIT & Kanban',     selector: '.lean-searchable[data-lean-keywords*="jit just in time"]' },
+        { id: 'refFifoKaizen', icon: '🔄', label: 'FIFO & Kaizen',   selector: '.lean-searchable[data-lean-keywords*="fifo first in"]' },
+        { id: 'refGemba',      icon: '🚶', label: 'Gemba',            selector: '.lean-searchable[data-lean-keywords*="gemba walk"]' },
+        { id: 'refPokaYoke',   icon: '🛡️', label: 'Poka-Yoke',       selector: '.lean-searchable[data-lean-keywords*="poka yoke"]' },
+        { id: 'refAndon',      icon: '🚦', label: 'Andon',            selector: '.lean-searchable[data-lean-keywords*="andon visual"]' },
+        { id: 'ref5whys',      icon: '❓', label: '5 Whys',            selector: '.lean-searchable[data-lean-keywords*="5 whys root"]' },
+        { id: 'supplychain',   icon: '🔗', label: 'Supply Chain',     selector: '.lean-searchable[data-lean-keywords*="supply chain"]' },
+        { id: 'smartgoals',    icon: '🎯', label: 'SMART Goals',      selector: '.lean-searchable[data-lean-keywords*="smart goals"]' },
+        { id: 'kotter',        icon: '🔥', label: "Kotter's 8-Step",  selector: '.lean-searchable[data-lean-keywords*="kotter"]' },
+        { id: 'integration',   icon: '💡', label: 'Integration',      selector: '.lean-searchable[data-lean-keywords*="integration"]' }
+    ]
+};
+
+// Navigate from dashboard tool card to specific tool
+function navigateToLeanTool(tabName, sectionId) {
+    // Switch to the correct sub-tab
+    switchLeanSubTab(tabName);
     
-    // Handle help section (no toggle arrow)
-    if (sectionId === 'lean-help' && section) {
-        section.style.display = section.style.display === 'none' ? 'block' : 'none';
+    // Wait for panel to render, then isolate + scroll
+    setTimeout(() => {
+        // Find the target section box
+        let target = document.getElementById(sectionId);
+        if (!target) {
+            const panel = document.getElementById(`leanPanel-${tabName}`);
+            if (panel) {
+                const jumps = leanQuickJumps[tabName] || [];
+                const jumpItem = jumps.find(j => j.id === sectionId);
+                if (jumpItem && jumpItem.selector) {
+                    target = panel.querySelector(jumpItem.selector);
+                }
+            }
+        }
+        
+        if (target) {
+            // Find the closest section-box wrapper
+            const box = target.closest('.lean-section-box') || target;
+            if (box.classList.contains('lean-section-box')) {
+                openLeanBox(box);
+            }
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            target.classList.add('lean-highlight-flash');
+            setTimeout(() => target.classList.remove('lean-highlight-flash'), 1500);
+        }
+    }, 120);
+}
+
+let currentLeanSubTab = 'dashboard';
+let leanSearchActive = false;
+
+function switchLeanSubTab(tabName) {
+    // If in search mode, clear it first
+    if (leanSearchActive) {
+        clearLeanSearch();
+    }
+
+    // Reset any box isolation in all panels
+    document.querySelectorAll('.lean-panel').forEach(p => closeLeanBox(p));
+
+    currentLeanSubTab = tabName;
+    
+    // Hide all panels, but skip scroll if navigateToLeanTool will handle it
+    document.querySelectorAll('.lean-panel').forEach(p => p.style.display = 'none');
+    
+    // Show selected panel
+    const panel = document.getElementById(`leanPanel-${tabName}`);
+    if (panel) {
+        panel.style.display = '';
+    }
+    
+    // Update button styles
+    document.querySelectorAll('.lean-sub-btn').forEach(btn => {
+        const btnTab = btn.id.replace('leanSubBtn-', '');
+        btn.className = 'lean-sub-btn px-4 py-2 rounded-lg text-sm font-bold transition-all ' +
+            (btnTab === tabName ? (leanSubTabColors[tabName] || leanSubTabColors.dashboard) : leanSubTabInactive);
+    });
+    
+    // Update quick-jump toolbar
+    updateLeanQuickJumps(tabName);
+    
+    // Scroll to top of section
+    const navBar = document.querySelector('#lean-section .sticky');
+    if (navBar) {
+        navBar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+function updateLeanQuickJumps(tabName) {
+    const container = document.getElementById('leanQuickJump');
+    if (!container) return;
+    
+    const items = leanQuickJumps[tabName] || [];
+    if (items.length === 0) {
+        container.innerHTML = '';
         return;
     }
     
-    if (content && toggle) {
-        const isHidden = content.style.display === 'none';
-        
-        // Simplified instant toggle with fade
-        if (isHidden) {
-            content.style.display = 'block';
-            requestAnimationFrame(() => {
-                content.classList.add('expanding');
-            });
-            toggle.style.transform = 'rotate(90deg)';
-        } else {
-            content.classList.remove('expanding');
-            toggle.style.transform = 'rotate(0deg)';
-            setTimeout(() => {
-                content.style.display = 'none';
-            }, 200);
+    container.innerHTML = '<span class="text-gray-400 dark:text-gray-500 mr-1 self-center">Jump to:</span>' +
+        items.map(item => 
+            `<button onclick="leanQuickJumpTo('${item.id}')" class="px-2.5 py-1 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
+                <span>${item.icon}</span> ${item.label}
+            </button>`
+        ).join('');
+}
+
+function leanQuickJumpTo(sectionId) {
+    // Scroll to the section
+    let target = document.getElementById(sectionId);
+    if (!target) {
+        // Try finding by the searchable wrapper
+        const jumps = leanQuickJumps[currentLeanSubTab] || [];
+        const jumpItem = jumps.find(j => j.id === sectionId);
+        if (jumpItem && jumpItem.selector) {
+            const panel = document.getElementById(`leanPanel-${currentLeanSubTab}`);
+            if (panel) target = panel.querySelector(jumpItem.selector);
         }
-        
-        toggle.textContent = isHidden ? '▼' : '▶';
     }
+    
+    if (target) {
+        // Isolate the target box
+        const box = target.closest('.lean-section-box') || target;
+        if (box.classList.contains('lean-section-box')) {
+            openLeanBox(box);
+        }
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Briefly highlight
+        target.classList.add('ring-2', 'ring-emerald-400', 'ring-offset-2');
+        setTimeout(() => {
+            target.classList.remove('ring-2', 'ring-emerald-400', 'ring-offset-2');
+        }, 1500);
+    }
+}
+
+// ============================================
+// LEAN SEARCH / FILTER
+// ============================================
+
+function filterLeanTools(query) {
+    const clearBtn = document.getElementById('leanSearchClear');
+    
+    if (!query || query.trim() === '') {
+        clearLeanSearch();
+        return;
+    }
+    
+    leanSearchActive = true;
+    if (clearBtn) clearBtn.classList.remove('hidden');
+    
+    const q = query.toLowerCase().trim();
+    
+    // Show ALL panels so we can search across them
+    document.querySelectorAll('.lean-panel').forEach(p => p.style.display = '');
+    
+    // Dim all sub-tab buttons
+    document.querySelectorAll('.lean-sub-btn').forEach(btn => {
+        btn.className = 'lean-sub-btn px-4 py-2 rounded-lg text-sm font-bold transition-all ' + leanSubTabInactive;
+    });
+    
+    // Update quick-jump to show search hint
+    const qj = document.getElementById('leanQuickJump');
+    if (qj) qj.innerHTML = '<span class="text-gray-400 dark:text-gray-500 text-xs">🔍 Showing results for: <em>"' + query + '"</em></span>';
+    
+    // Filter each searchable block
+    let foundCount = 0;
+    document.querySelectorAll('#lean-section .lean-searchable').forEach(block => {
+        const keywords = (block.getAttribute('data-lean-keywords') || '').toLowerCase();
+        const textContent = block.textContent.toLowerCase();
+        const matches = keywords.includes(q) || textContent.includes(q);
+        
+        block.style.display = matches ? '' : 'none';
+        if (matches) {
+            foundCount++;
+        }
+    });
+    
+    // Show count
+    if (qj && foundCount === 0) {
+        qj.innerHTML = '<span class="text-red-500 dark:text-red-400 text-xs">No tools match "' + query + '". Try a different search term.</span>';
+    }
+}
+
+function clearLeanSearch() {
+    leanSearchActive = false;
+    
+    const input = document.getElementById('leanToolSearch');
+    const clearBtn = document.getElementById('leanSearchClear');
+    
+    if (input) input.value = '';
+    if (clearBtn) clearBtn.classList.add('hidden');
+    
+    // Restore all searchable blocks to visible
+    document.querySelectorAll('#lean-section .lean-searchable').forEach(block => {
+        block.style.display = '';
+    });
+    
+    // Re-activate the current sub-tab
+    switchLeanSubTab(currentLeanSubTab);
 }
 
 // ============================================
