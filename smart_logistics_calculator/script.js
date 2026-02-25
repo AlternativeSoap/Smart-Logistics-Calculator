@@ -17117,8 +17117,7 @@ const leanQuickJumps = {
     ],
     planning: [
         { id: 'swot',          icon: '🎯', label: 'SWOT',             selector: '.lean-searchable[data-lean-keywords*="swot strengths"]' },
-        { id: 'vsm',           icon: '🗺️', label: 'VSM',             selector: '.lean-searchable[data-lean-keywords*="vsm value stream"]' },
-        { id: 'leanWhatIf',    icon: '🔮', label: 'What-If',           selector: '.lean-searchable[data-lean-keywords*="what-if"]' }
+        { id: 'vsm',           icon: '🗺️', label: 'VSM',             selector: '.lean-searchable[data-lean-keywords*="vsm value stream"]' }
     ],
     reference: [
         { id: 'ref5s',         icon: '🧹', label: '5S',               selector: '.lean-searchable[data-lean-keywords*="5s system"]' },
