@@ -2360,7 +2360,7 @@ const translations = {
         // LEAN Help & Guide
         'lean-help-guide': 'Hjælp & Vejledning',
         'lean-help-title': 'LEAN & Operations Hjælp',
-        'lean-help-intro': 'LEAN værktøjer hjælper dig med at identificere spild, forbedre effektivitet og optimere dine operationer ved hjælp af dokumenterede produktions- og logistikprincipper.',
+        'lean-help-intro': 'Brug dette område til at køre LEAN-beregnere, planlægge forbedringer og slå op i praktiske referenceværktøjer. Start i Dashboard for hurtig adgang, og fokusér derefter på ét værktøj ad gangen.',
         'lean-help-calc-title': 'Beregnere',
         'lean-help-calc-1': '<strong>OEE (Overall Equipment Effectiveness):</strong> Måler hvor effektivt udstyr bruges. Beregnes fra Tilgængelighed × Ydelse × Kvalitet. World-class er 85%+.',
         'lean-help-calc-2': '<strong>SMED (Single-Minute Exchange of Die):</strong> Beregn tids- og omkostningsbesparelser fra reduktion af opstillings-/omstillingstider.',
@@ -4033,7 +4033,7 @@ const translations = {
         // LEAN Help & Guide
         'lean-help-guide': 'Help & Guide',
         'lean-help-title': 'LEAN & Operations Help',
-        'lean-help-intro': 'LEAN & Operations tools help you identify waste, improve efficiency, and optimize your operations using proven manufacturing and logistics principles.',
+        'lean-help-intro': 'Use this area to run LEAN calculators, plan improvements, and access practical reference tools. Start in Dashboard for quick access, then focus on one tool at a time.',
         'lean-help-calc-title': 'Calculators',
         'lean-help-calc-1': '<strong>OEE (Overall Equipment Effectiveness):</strong> Measures how effectively equipment is used. Calculated from Availability × Performance × Quality. World-class is 85%+.',
         'lean-help-calc-2': '<strong>SMED (Single-Minute Exchange of Die):</strong> Calculate time and cost savings from reducing setup/changeover times.',
@@ -16927,6 +16927,10 @@ function initializeLEANTools() {
     
     // Initialize keyboard shortcuts
     initKeyboardShortcuts();
+
+    // Keep LEAN dashboard summary counters in sync
+    updateLeanToolSummary();
+    toggleLeanHelp(false);
     
     // Optimize scroll performance
     optimizeLEANScroll();
@@ -16956,6 +16960,50 @@ function initializeLEANTools() {
             }
         }
     });
+}
+
+function toggleLeanHelp(forceOpen = null) {
+    const helpSection = document.getElementById('lean-help');
+    const toggleBtn = document.getElementById('leanHelpToggle');
+    if (!helpSection) return;
+
+    const currentlyOpen = helpSection.style.display !== 'none';
+    const shouldOpen = forceOpen === null ? !currentlyOpen : !!forceOpen;
+
+    helpSection.style.display = shouldOpen ? 'block' : 'none';
+
+    if (toggleBtn) {
+        toggleBtn.setAttribute('aria-expanded', shouldOpen ? 'true' : 'false');
+        toggleBtn.className = shouldOpen
+            ? 'px-3 py-2 rounded-lg text-sm font-bold transition-all bg-blue-600 text-white shadow-md'
+            : 'px-3 py-2 rounded-lg text-sm font-bold transition-all bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/50';
+    }
+}
+
+function updateLeanToolSummary() {
+    const cards = document.querySelectorAll('#leanToolGrid .lean-tool-card');
+    if (!cards.length) return;
+
+    let calculators = 0;
+    let planning = 0;
+    let reference = 0;
+
+    cards.forEach(card => {
+        const tags = card.querySelectorAll('span');
+        const badge = tags.length ? tags[tags.length - 1].textContent.trim().toLowerCase() : '';
+
+        if (badge.includes('calculator')) calculators++;
+        else if (badge.includes('planning')) planning++;
+        else if (badge.includes('reference')) reference++;
+    });
+
+    const calculatorsEl = document.getElementById('leanSummaryCalculators');
+    const planningEl = document.getElementById('leanSummaryPlanning');
+    const referenceEl = document.getElementById('leanSummaryReference');
+
+    if (calculatorsEl) calculatorsEl.textContent = `🧮 ${calculators} Calculators`;
+    if (planningEl) planningEl.textContent = `🎯 ${planning} Planning Tools`;
+    if (referenceEl) referenceEl.textContent = `📚 ${reference} Reference Tools`;
 }
 
 // Load saved LEAN data from localStorage
@@ -17032,10 +17080,19 @@ function initLeanBoxIsolation() {
         if (!header) return;
 
         header.style.cursor = 'pointer';
+        header.setAttribute('role', 'button');
+        header.setAttribute('tabindex', '0');
+        header.setAttribute('aria-expanded', 'false');
         header.addEventListener('click', (e) => {
             // Don't trigger if user clicked a button/link/input inside the header
             if (e.target.closest('button, a, input, select, textarea')) return;
             openLeanBox(box);
+        });
+        header.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openLeanBox(box);
+            }
         });
     });
 }
@@ -17058,11 +17115,14 @@ function openLeanBox(box) {
 
     // Hide all other boxes, show clicked one
     panel.querySelectorAll('.lean-section-box').forEach(b => {
+        const header = b.querySelector(':scope > div:first-child');
         if (b === box) {
             b.style.display = '';
             b.classList.add('lean-box-isolated');
+            if (header) header.setAttribute('aria-expanded', 'true');
         } else {
             b.style.display = 'none';
+            if (header) header.setAttribute('aria-expanded', 'false');
         }
     });
 
@@ -17080,6 +17140,8 @@ function closeLeanBox(panel) {
     panel.querySelectorAll('.lean-section-box').forEach(b => {
         b.style.display = '';
         b.classList.remove('lean-box-isolated');
+        const header = b.querySelector(':scope > div:first-child');
+        if (header) header.setAttribute('aria-expanded', 'false');
     });
 
     // Scroll to top
@@ -17088,7 +17150,11 @@ function closeLeanBox(panel) {
 }
 
 // Initialize on page load
-document.addEventListener('DOMContentLoaded', initLeanBoxIsolation);
+document.addEventListener('DOMContentLoaded', () => {
+    initLeanBoxIsolation();
+    updateLeanToolSummary();
+    toggleLeanHelp(false);
+});
 
 // ============================================
 // LEAN SUB-TAB NAVIGATION, QUICK-JUMP & SEARCH
@@ -17117,7 +17183,11 @@ const leanQuickJumps = {
     ],
     planning: [
         { id: 'swot',          icon: '🎯', label: 'SWOT',             selector: '.lean-searchable[data-lean-keywords*="swot strengths"]' },
-        { id: 'vsm',           icon: '🗺️', label: 'VSM',             selector: '.lean-searchable[data-lean-keywords*="vsm value stream"]' }
+        { id: 'vsm',           icon: '🗺️', label: 'VSM',             selector: '.lean-searchable[data-lean-keywords*="vsm value stream"]' },
+        { id: 'priorityMatrix', icon: '🧭', label: 'Prioriteringsmatrix', selector: '.lean-searchable[data-lean-keywords*="prioriteringsmatrix"]' },
+        { id: 'kompetencetrappen', icon: '🪜', label: 'Kompetencetrappen', selector: '.lean-searchable[data-lean-keywords*="kompetencetrappen"]' },
+        { id: 'brainstorm',    icon: '💡', label: 'Brainstorm',      selector: '.lean-searchable[data-lean-keywords*="brainstorm"]' },
+        { id: 'negativeBrainstorm', icon: '🧨', label: 'Negativ Brainstorm', selector: '.lean-searchable[data-lean-keywords*="negativ brainstorm"]' }
     ],
     reference: [
         { id: 'ref5s',         icon: '🧹', label: '5S',               selector: '.lean-searchable[data-lean-keywords*="5s system"]' },
@@ -17191,6 +17261,11 @@ function switchLeanSubTab(tabName) {
     const panel = document.getElementById(`leanPanel-${tabName}`);
     if (panel) {
         panel.style.display = '';
+    }
+
+    // Keep help panel tied to dashboard context
+    if (tabName !== 'dashboard') {
+        toggleLeanHelp(false);
     }
     
     // Update button styles
@@ -17283,7 +17358,7 @@ function filterLeanTools(query) {
     
     // Update quick-jump to show search hint
     const qj = document.getElementById('leanQuickJump');
-    if (qj) qj.innerHTML = '<span class="text-gray-400 dark:text-gray-500 text-xs">🔍 Showing results for: <em>"' + query + '"</em></span>';
+    if (qj) qj.innerHTML = '<span class="text-gray-400 dark:text-gray-500 text-xs">🔍 Searching all LEAN tools for: <em>"' + query + '"</em></span>';
     
     // Filter each searchable block
     let foundCount = 0;
@@ -17299,6 +17374,9 @@ function filterLeanTools(query) {
     });
     
     // Show count
+    if (qj && foundCount > 0) {
+        qj.innerHTML = '<span class="text-emerald-600 dark:text-emerald-400 text-xs">✅ ' + foundCount + ' tool' + (foundCount === 1 ? '' : 's') + ' found for <em>"' + query + '"</em></span>';
+    }
     if (qj && foundCount === 0) {
         qj.innerHTML = '<span class="text-red-500 dark:text-red-400 text-xs">No tools match "' + query + '". Try a different search term.</span>';
     }
@@ -17320,6 +17398,9 @@ function clearLeanSearch() {
     
     // Re-activate the current sub-tab
     switchLeanSubTab(currentLeanSubTab);
+
+    // Refresh summary counts after search reset
+    updateLeanToolSummary();
 }
 
 // ============================================

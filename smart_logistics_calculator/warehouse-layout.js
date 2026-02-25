@@ -853,11 +853,18 @@ const WarehouseLayout = (function () {
             dragState = {
                 mode: 'move',
                 startCell: cell,
+                startWorldCell: { x: world.x / CELL, y: world.y / CELL },
                 origPositions: Array.from(selectedIds).map(function(id) {
                     var el = elements.find(function(e) { return e.id === id; });
                     return { id: id, x: el.x, y: el.y };
                 }),
             };
+            if (selectedIds.size === 1) {
+                dragState.grabOffset = {
+                    x: (world.x / CELL) - hit.x,
+                    y: (world.y / CELL) - hit.y,
+                };
+            }
             render();
             updatePropertiesPanel();
         } else {
@@ -890,26 +897,39 @@ const WarehouseLayout = (function () {
         }
 
         if (dragState && dragState.mode === 'move') {
-            var dx = cell.x - dragState.startCell.x;
-            var dy = cell.y - dragState.startCell.y;
             activeGuides = [];
 
-            dragState.origPositions.forEach(function(orig) {
-                var el = elements.find(function(e) { return e.id === orig.id; });
-                if (!el) return;
-                var nx = orig.x + dx;
-                var ny = orig.y + dy;
+            if (selectedIds.size === 1 && dragState.grabOffset) {
+                var onlyOrig = dragState.origPositions[0];
+                var onlyEl = elements.find(function(e) { return e.id === onlyOrig.id; });
+                if (onlyEl) {
+                    var nxSingle = Math.round((world.x / CELL) - dragState.grabOffset.x);
+                    var nySingle = Math.round((world.y / CELL) - dragState.grabOffset.y);
 
-                if (snapEnabled && selectedIds.size === 1) {
-                    var snapped = calcSnap(el, nx, ny);
-                    nx = snapped.x;
-                    ny = snapped.y;
-                    activeGuides = snapped.guides;
+                    if (snapEnabled) {
+                        var snappedSingle = calcSnap(onlyEl, nxSingle, nySingle);
+                        nxSingle = snappedSingle.x;
+                        nySingle = snappedSingle.y;
+                        activeGuides = snappedSingle.guides;
+                    }
+
+                    onlyEl.x = Math.max(0, Math.min(COLS - onlyEl.w, nxSingle));
+                    onlyEl.y = Math.max(0, Math.min(ROWS - onlyEl.h, nySingle));
                 }
+            } else {
+                var dx = Math.round((world.x / CELL) - dragState.startWorldCell.x);
+                var dy = Math.round((world.y / CELL) - dragState.startWorldCell.y);
 
-                el.x = Math.max(0, Math.min(COLS - el.w, nx));
-                el.y = Math.max(0, Math.min(ROWS - el.h, ny));
-            });
+                dragState.origPositions.forEach(function(orig) {
+                    var el = elements.find(function(e) { return e.id === orig.id; });
+                    if (!el) return;
+                    var nx = orig.x + dx;
+                    var ny = orig.y + dy;
+
+                    el.x = Math.max(0, Math.min(COLS - el.w, nx));
+                    el.y = Math.max(0, Math.min(ROWS - el.h, ny));
+                });
+            }
             render();
             return;
         }
