@@ -948,7 +948,7 @@ function smartExportText() { SmartGoalsManager.exportText(); }
 
         goals.forEach(goal => {
             // Find the goal card and inject milestones section
-            const progressBar = document.querySelector(`input[oninput*="smartUpdateProgress('${goal.id}'"]`);
+            const progressBar = document.querySelector(`input[onchange*="smartUpdateProgress('${goal.id}'"]`);
             if (!progressBar) return;
             const card = progressBar.closest('.bg-gradient-to-br, .bg-white, [class*="rounded"]');
             if (!card) return;
@@ -1331,15 +1331,301 @@ const KotterManager = (() => {
 
     // Auto-init when Kotter section is opened
     document.addEventListener('DOMContentLoaded', () => {
-        // Observe the kotter-content div becoming visible
-        const target = document.getElementById('kotter-content');
+        // Observe the kotter box becoming visible (openLeanBox sets display on #kotter)
+        const target = document.getElementById('kotter');
         if (target) {
+            // Init immediately if already visible
+            if (target.style.display !== 'none') { init(); }
             const obs = new MutationObserver(() => {
-                if (target.style.display !== 'none') { init(); obs.disconnect(); }
+                if (target.style.display !== 'none') { init(); }
             });
             obs.observe(target, { attributes: true, attributeFilter: ['style'] });
         }
+        // Also init if we're already on the reference tab
+        setTimeout(() => init(), 500);
     });
 
     return { showPhase, toggleCheck, saveNotes, exportPlan, resetAll, init };
+})();
+
+
+// ============================================================
+//  PRIORITERINGSMATRIX — Save / Load / Export
+// ============================================================
+const PriorityMatrixManager = (() => {
+    const STORAGE_KEY = 'lean_priority_matrix';
+    const FIELDS = ['pmQuickWins', 'pmStrategic', 'pmFillIns', 'pmReconsider'];
+
+    function save() {
+        try {
+            const data = {};
+            FIELDS.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) data[id] = el.value;
+            });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        } catch (e) { console.warn('PriorityMatrix save error:', e); }
+    }
+
+    function load() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return;
+            const data = JSON.parse(raw);
+            FIELDS.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && data[id] !== undefined) el.value = data[id];
+            });
+        } catch (e) { console.warn('PriorityMatrix load error:', e); }
+    }
+
+    function clearAll() {
+        if (!confirm('Ryd alle felter i prioriteringsmatricen?')) return;
+        FIELDS.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.value = '';
+        });
+        localStorage.removeItem(STORAGE_KEY);
+        if (typeof showToast === 'function') showToast('Prioriteringsmatrix ryddet', 'success');
+    }
+
+    function exportText() {
+        const labels = {
+            pmQuickWins: '⚡ Quick Wins (Høj effekt / Lav indsats)',
+            pmStrategic: '🎯 Strategiske Projekter (Høj effekt / Høj indsats)',
+            pmFillIns: '📝 Fill-ins (Lav effekt / Lav indsats)',
+            pmReconsider: '⛔ Revurdér (Lav effekt / Høj indsats)'
+        };
+        let text = '=== PRIORITERINGSMATRIX ===\n';
+        text += `Eksporteret: ${new Date().toLocaleDateString('da-DK')}\n\n`;
+        FIELDS.forEach(id => {
+            const el = document.getElementById(id);
+            text += `── ${labels[id]} ──\n`;
+            text += (el && el.value.trim() ? el.value.trim() : '(tom)') + '\n\n';
+        });
+        const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `prioriteringsmatrix_${new Date().toISOString().slice(0, 10)}.txt`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+        if (typeof showToast === 'function') showToast('Prioriteringsmatrix eksporteret', 'success');
+    }
+
+    // Auto-load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', load);
+    } else {
+        load();
+    }
+
+    return { save, load, clearAll, exportText };
+})();
+
+
+// ============================================================
+//  KOMPETENCETRAPPEN — Save / Load / Multi-entry management
+// ============================================================
+const KompetencetrappenManager = (() => {
+    const STORAGE_KEY = 'lean_kompetencetrappen';
+    let entries = [];
+
+    function save() {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+        } catch (e) { console.warn('Kompetencetrappen save error:', e); }
+    }
+
+    function load() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) entries = JSON.parse(raw);
+        } catch (e) { entries = []; }
+        render();
+    }
+
+    function addEntry() {
+        const employee = document.getElementById('ktEmployee');
+        const currentLvl = document.getElementById('ktCurrentLevel');
+        const targetLvl = document.getElementById('ktTargetLevel');
+        const plan = document.getElementById('ktPlan');
+
+        const name = employee?.value.trim();
+        if (!name) {
+            if (typeof showToast === 'function') showToast('Udfyld venligst medarbejder/team', 'warning');
+            return;
+        }
+
+        entries.push({
+            id: Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+            name: name,
+            currentLevel: currentLvl?.value || '',
+            targetLevel: targetLvl?.value || '',
+            plan: plan?.value.trim() || '',
+            createdAt: new Date().toISOString()
+        });
+        save();
+        render();
+
+        // Clear form
+        if (employee) employee.value = '';
+        if (currentLvl) currentLvl.value = '';
+        if (targetLvl) targetLvl.value = '';
+        if (plan) plan.value = '';
+
+        if (typeof showToast === 'function') showToast('Medarbejder tilføjet', 'success');
+    }
+
+    function removeEntry(id) {
+        entries = entries.filter(e => e.id !== id);
+        save();
+        render();
+    }
+
+    function render() {
+        const container = document.getElementById('ktEntriesList');
+        if (!container) return;
+
+        if (entries.length === 0) {
+            container.innerHTML = '<p class="text-xs text-gray-400 italic text-center py-2">Ingen medarbejdere tilføjet endnu</p>';
+            return;
+        }
+
+        const levelLabels = { '1': 'Introduktion', '2': 'Under oplæring', '3': 'Selvstændig', '4': 'Erfaren', '5': 'Ekspert' };
+        const levelColors = { '1': 'red', '2': 'amber', '3': 'blue', '4': 'green', '5': 'purple' };
+
+        container.innerHTML = entries.map(e => {
+            const curColor = levelColors[e.currentLevel] || 'gray';
+            const tgtColor = levelColors[e.targetLevel] || 'gray';
+            return `
+                <div class="flex items-center gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 group">
+                    <div class="flex-1 min-w-0">
+                        <p class="font-semibold text-sm text-gray-900 dark:text-white truncate">${_escapeHtml(e.name)}</p>
+                        <div class="flex items-center gap-2 mt-1 text-xs">
+                            <span class="px-1.5 py-0.5 rounded bg-${curColor}-100 dark:bg-${curColor}-900/30 text-${curColor}-700 dark:text-${curColor}-400 font-medium">Niveau ${e.currentLevel || '?'}</span>
+                            <span class="text-gray-400">→</span>
+                            <span class="px-1.5 py-0.5 rounded bg-${tgtColor}-100 dark:bg-${tgtColor}-900/30 text-${tgtColor}-700 dark:text-${tgtColor}-400 font-medium">Mål ${e.targetLevel || '?'}</span>
+                        </div>
+                        ${e.plan ? `<p class="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate">📝 ${_escapeHtml(e.plan)}</p>` : ''}
+                    </div>
+                    <button onclick="KompetencetrappenManager.removeEntry('${e.id}')" class="text-red-400 hover:text-red-600 text-sm opacity-0 group-hover:opacity-100 transition-opacity" title="Fjern">&times;</button>
+                </div>`;
+        }).join('');
+    }
+
+    function clearAll() {
+        if (!confirm('Ryd alle medarbejdere i kompetencetrappen?')) return;
+        entries = [];
+        localStorage.removeItem(STORAGE_KEY);
+        render();
+        if (typeof showToast === 'function') showToast('Kompetencetrappen ryddet', 'success');
+    }
+
+    function exportText() {
+        if (entries.length === 0) {
+            if (typeof showToast === 'function') showToast('Ingen data at eksportere', 'warning');
+            return;
+        }
+        const levelLabels = { '1': 'Introduktion', '2': 'Under oplæring', '3': 'Selvstændig', '4': 'Erfaren', '5': 'Ekspert' };
+        let text = '=== KOMPETENCETRAPPEN ===\n';
+        text += `Eksporteret: ${new Date().toLocaleDateString('da-DK')}\n`;
+        text += `Antal medarbejdere: ${entries.length}\n\n`;
+        entries.forEach((e, i) => {
+            text += `── ${i + 1}. ${e.name} ──\n`;
+            text += `   Nuværende niveau: ${e.currentLevel || '-'} (${levelLabels[e.currentLevel] || '-'})\n`;
+            text += `   Målniveau:        ${e.targetLevel || '-'} (${levelLabels[e.targetLevel] || '-'})\n`;
+            text += `   Udviklingsplan:   ${e.plan || '-'}\n\n`;
+        });
+        const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `kompetencetrappen_${new Date().toISOString().slice(0, 10)}.txt`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+        if (typeof showToast === 'function') showToast('Kompetencetrappen eksporteret', 'success');
+    }
+
+    function _escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str || '';
+        return div.innerHTML;
+    }
+
+    // Auto-load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', load);
+    } else {
+        load();
+    }
+
+    return { save, load, addEntry, removeEntry, clearAll, exportText };
+})();
+
+
+// ============================================================
+//  NEGATIV BRAINSTORM — Save / Load / Export
+// ============================================================
+const NegativBrainstormManager = (() => {
+    const STORAGE_KEY = 'lean_negativ_brainstorm';
+    const FIELDS = ['nbFailures', 'nbCountermeasures'];
+
+    function save() {
+        try {
+            const data = {};
+            FIELDS.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) data[id] = el.value;
+            });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        } catch (e) { console.warn('NegativBrainstorm save error:', e); }
+    }
+
+    function load() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return;
+            const data = JSON.parse(raw);
+            FIELDS.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && data[id] !== undefined) el.value = data[id];
+            });
+        } catch (e) { console.warn('NegativBrainstorm load error:', e); }
+    }
+
+    function clearAll() {
+        if (!confirm('Ryd alle felter i Negativ Brainstorm?')) return;
+        FIELDS.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.value = '';
+        });
+        localStorage.removeItem(STORAGE_KEY);
+        if (typeof showToast === 'function') showToast('Negativ Brainstorm ryddet', 'success');
+    }
+
+    function exportText() {
+        let text = '=== NEGATIV BRAINSTORM ===\n';
+        text += `Eksporteret: ${new Date().toLocaleDateString('da-DK')}\n\n`;
+        const failures = document.getElementById('nbFailures');
+        const counters = document.getElementById('nbCountermeasures');
+        text += '── 1) Hvordan kan processen fejle? ──\n';
+        text += (failures && failures.value.trim() ? failures.value.trim() : '(tom)') + '\n\n';
+        text += '── 2) Forebyggende modtræk ──\n';
+        text += (counters && counters.value.trim() ? counters.value.trim() : '(tom)') + '\n';
+        const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `negativ_brainstorm_${new Date().toISOString().slice(0, 10)}.txt`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+        if (typeof showToast === 'function') showToast('Negativ Brainstorm eksporteret', 'success');
+    }
+
+    // Auto-load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', load);
+    } else {
+        load();
+    }
+
+    return { save, load, clearAll, exportText };
 })();

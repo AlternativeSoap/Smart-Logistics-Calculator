@@ -315,45 +315,39 @@ const KPIDashboard = (function () {
         const dashSection = document.getElementById('dashboard-section');
         if (!dashSection) return;
 
-        // Find the existing 4-card grid and replace it with our 8-card grid
+        // Find the existing 4-card grid and replace it with our enhanced KPI grid
         const existingGrid = dashSection.querySelector('.grid.grid-cols-1.md\\:grid-cols-4');
-        if (existingGrid) {
-            // Create new container
-            const wrapper = document.createElement('div');
-            wrapper.innerHTML = `
-                <!-- KPI Dashboard Cards -->
-                <div id="kpiCardsContainer" class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-                    <!-- Cards rendered by JS -->
-                </div>
+        if (!existingGrid || !existingGrid.parentNode) return;
 
-                <!-- Top Movers -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 mb-6">
-                    <div class="flex items-center justify-between mb-3">
-                        <h4 class="font-semibold text-gray-800 dark:text-white flex items-center gap-2">
-                            <span>📈</span>
-                            <span data-i18n="kpi-top-movers">Top ændringer</span>
-                        </h4>
-                        <span class="text-xs text-gray-400 dark:text-gray-500" data-i18n="kpi-since-last">Siden sidst</span>
-                    </div>
-                    <table class="w-full">
-                        <tbody id="kpiMoversBody"></tbody>
-                    </table>
-                </div>
-            `;
+        // Build replacement elements in a document fragment
+        const frag = document.createDocumentFragment();
 
-            existingGrid.replaceWith(wrapper.firstElementChild.nextElementSibling ? wrapper : wrapper.firstElementChild);
-            
-            // Actually we need both elements. Let's do it properly:
-            const frag = document.createDocumentFragment();
-            while (wrapper.firstChild) frag.appendChild(wrapper.firstChild);
-            
-            // Re-query since we replaced
-            const spot = dashSection.querySelector('#kpiCardsContainer') || dashSection.firstElementChild;
-            if (!document.getElementById('kpiCardsContainer')) {
-                existingGrid.parentNode.insertBefore(frag, existingGrid);
-                existingGrid.remove();
-            }
-        }
+        // KPI Cards container
+        const kpiDiv = document.createElement('div');
+        kpiDiv.id = 'kpiCardsContainer';
+        kpiDiv.className = 'grid grid-cols-2 md:grid-cols-4 gap-3 mb-6';
+        frag.appendChild(kpiDiv);
+
+        // Top Movers section
+        const moversDiv = document.createElement('div');
+        moversDiv.className = 'bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 mb-6';
+        moversDiv.innerHTML = `
+            <div class="flex items-center justify-between mb-3">
+                <h4 class="font-semibold text-gray-800 dark:text-white flex items-center gap-2">
+                    <span>📈</span>
+                    <span data-i18n="kpi-top-movers">Top ændringer</span>
+                </h4>
+                <span class="text-xs text-gray-400 dark:text-gray-500" data-i18n="kpi-since-last">Siden sidst</span>
+            </div>
+            <table class="w-full">
+                <tbody id="kpiMoversBody"></tbody>
+            </table>
+        `;
+        frag.appendChild(moversDiv);
+
+        // Insert before the existing grid, then remove it
+        existingGrid.parentNode.insertBefore(frag, existingGrid);
+        existingGrid.remove();
     }
 
     // Init on DOM ready

@@ -2131,23 +2131,40 @@ button,
     animation: lean-box-flash 0.75s ease 2;
 }
 
-/* Isolated box (when clicked to expand) */
-.lean-box-isolated {
-    animation: lean-box-expand 0.3s ease forwards;
+/* ── LEAN home: category chip active state ───────────────────── */
+.lean-cat-chip-active {
+    background-color: #111827 !important;
+    color: #ffffff !important;
+}
+.dark .lean-cat-chip-active {
+    background-color: #f9fafb !important;
+    color: #111827 !important;
 }
 
-@keyframes lean-box-expand {
-    from { opacity: 0.7; transform: scale(0.98); }
-    to   { opacity: 1;   transform: scale(1); }
+/* ── LEAN home: tool cards ───────────────────────────────────── */
+.lean-card {
+    border: 2px solid transparent;
+    transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+.lean-card:hover {
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.11);
 }
 
-.lean-back-btn {
-    animation: lean-fade-in 0.25s ease;
+/* ── LEAN tool view: enter animation ────────────────────────── */
+#lean-tool-view .lean-tool-item {
+    animation: lean-tool-enter 0.18s ease forwards;
+}
+@keyframes lean-tool-enter {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes lean-fade-in {
-    from { opacity: 0; transform: translateX(-10px); }
-    to   { opacity: 1; transform: translateX(0); }
+/* Drag-over visual feedback (supply chain drag-drop) */
+.drag-over {
+    outline: 2px dashed #3b82f6;
+    outline-offset: -2px;
+    background-color: rgba(59, 130, 246, 0.08) !important;
+    transition: outline 0.15s ease, background-color 0.15s ease;
 }
 
 /* ============================================
@@ -2398,21 +2415,10 @@ button,
    LEAN SECTION PERFORMANCE OPTIMIZATIONS
    ============================================ */
 
-/* Enable content-visibility for massive performance boost */
-#lean-section {
-    contain: layout style paint;
-    content-visibility: auto;
-}
-
-/* Lazy-render collapsed sections */
-#metrics-content,
-#improvement-content,
-#planning-content,
-#reference-content {
-    content-visibility: auto;
-    contain-intrinsic-size: 0 800px;
-    contain: layout style paint;
-}
+/* Removed content-visibility: auto and contain from #lean-section
+   because it caused blank/invisible content when navigating to tools
+   via the dashboard or Jump To menu. GPU acceleration is kept only
+   for gradient backgrounds. */
 
 /* Simplified GPU acceleration */
 #lean-section .bg-gradient-to-br {
@@ -2509,19 +2515,19 @@ button,
    ENHANCED ANIMATIONS
    ============================================ */
 
-/* Card hover effects */
-#lean-section .rounded-xl {
+/* Card hover effects - only on the tool cards in the dashboard grid */
+#leanToolGrid .lean-tool-card {
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
                 box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#lean-section .rounded-xl:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+#leanToolGrid .lean-tool-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
 }
 
-.dark #lean-section .rounded-xl:hover {
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+.dark #leanToolGrid .lean-tool-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
 }
 
 /* Button press effect */

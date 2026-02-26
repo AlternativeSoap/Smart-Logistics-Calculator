@@ -2925,37 +2925,47 @@
             <div class="space-y-6">
 
                 <!-- ============================================
-                     LEAN SUB-TAB NAVIGATION + SEARCH
+                     LEAN HEADER — two states: home / tool
                      ============================================ -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sticky top-0 z-30 border border-gray-200 dark:border-gray-700">
-                    <!-- Sub-tab buttons -->
-                    <div class="flex flex-wrap items-center gap-2 mb-3">
-                        <button onclick="switchLeanSubTab('dashboard')" id="leanSubBtn-dashboard" class="lean-sub-btn px-4 py-2 rounded-lg text-sm font-bold transition-all bg-emerald-600 text-white shadow-md">
-                            📈 <span data-i18n="lean-subtab-dashboard">Dashboard</span>
-                        </button>
-                        <button onclick="switchLeanSubTab('calculators')" id="leanSubBtn-calculators" class="lean-sub-btn px-4 py-2 rounded-lg text-sm font-bold transition-all bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">
-                            🧮 <span data-i18n="lean-subtab-calculators">Calculators</span>
-                        </button>
-                        <button onclick="switchLeanSubTab('planning')" id="leanSubBtn-planning" class="lean-sub-btn px-4 py-2 rounded-lg text-sm font-bold transition-all bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">
-                            🎯 <span data-i18n="lean-subtab-planning">Planning</span>
-                        </button>
-                        <button onclick="switchLeanSubTab('reference')" id="leanSubBtn-reference" class="lean-sub-btn px-4 py-2 rounded-lg text-sm font-bold transition-all bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">
-                            📚 <span data-i18n="lean-subtab-reference">Reference Library</span>
-                        </button>
-                        <button onclick="toggleLeanHelp()" id="leanHelpToggle" class="px-3 py-2 rounded-lg text-sm font-bold transition-all bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/50">
-                            📖 <span data-i18n="lean-help-guide">Help & Guide</span>
-                        </button>
-                        <div class="flex-1"></div>
-                        <!-- Search / Filter -->
-                        <div class="relative">
-                            <input type="text" id="leanToolSearch" class="pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white w-48 focus:w-64 transition-all focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400" placeholder="Search tools..." oninput="filterLeanTools(this.value)" data-i18n-placeholder="lean-search-placeholder">
-                            <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm">🔍</span>
-                            <button onclick="clearLeanSearch()" id="leanSearchClear" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-sm hidden">&times;</button>
+                <div id="lean-header" class="sticky top-0 z-30 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+
+                    <!-- HOME STATE bar (visible when browsing the menu) -->
+                    <div id="lean-bar-home" class="px-4 py-3">
+                        <div class="flex flex-wrap items-center gap-2 mb-2.5">
+                            <div class="flex items-center gap-2 mr-2">
+                                <span class="text-2xl">🏭</span>
+                                <div>
+                                    <h2 class="font-bold text-gray-900 dark:text-white leading-none text-sm">LEAN &amp; Operations</h2>
+                                    <p class="text-xs text-gray-400 dark:text-gray-500">28 tools</p>
+                                </div>
+                            </div>
+                            <!-- Category chips -->
+                            <button onclick="leanSetCategory('all')" data-cat="all" class="lean-cat-chip lean-cat-chip-active px-3 py-1 rounded-full text-xs font-semibold transition-all">🔍 All</button>
+                            <button onclick="leanSetCategory('calculators')" data-cat="calculators" class="lean-cat-chip px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-200 dark:hover:bg-emerald-800/60 transition-all">🧮 Calculators</button>
+                            <button onclick="leanSetCategory('planning')" data-cat="planning" class="lean-cat-chip px-3 py-1 rounded-full text-xs font-semibold bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300 hover:bg-violet-200 dark:hover:bg-violet-800/60 transition-all">🎯 Planning</button>
+                            <button onclick="leanSetCategory('reference')" data-cat="reference" class="lean-cat-chip px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 hover:bg-amber-200 dark:hover:bg-amber-800/60 transition-all">📚 Reference</button>
+                            <div class="flex-1"></div>
+                            <!-- Search -->
+                            <div class="relative">
+                                <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm pointer-events-none">🔍</span>
+                                <input type="text" id="lean-search"
+                                       class="pl-8 pr-7 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white w-44 focus:w-60 transition-all focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400"
+                                       placeholder="Search tools…"
+                                       oninput="leanSearchCards(this.value)">
+                                <button onclick="leanClearSearch()" id="lean-search-clear"
+                                        class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-sm leading-none"
+                                        style="display:none">&times;</button>
+                            </div>
                         </div>
                     </div>
-                    <!-- Quick-jump toolbar (changes per sub-tab) -->
-                    <div id="leanQuickJump" class="flex flex-wrap gap-1.5 text-xs">
-                        <!-- Populated by JS based on active sub-tab -->
+
+                    <!-- TOOL STATE bar (visible when a tool is open) -->
+                    <div id="lean-bar-tool" class="flex items-center gap-3 px-4 py-3" style="display:none">
+                        <button onclick="leanCloseToMenu()"
+                                class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold text-sm transition-colors flex-shrink-0">
+                            ← Back
+                        </button>
+                        <div id="lean-breadcrumb" class="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1 min-w-0 flex-1 truncate"></div>
                     </div>
                 </div>
 
@@ -3020,7 +3030,7 @@
                             <summary class="flex items-center gap-2 cursor-pointer select-none px-4 py-2.5 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-700 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 transition-colors">
                                 <span class="text-sm transition-transform group-open:rotate-90">▶</span>
                                 <span class="font-bold text-sm text-emerald-800 dark:text-emerald-300">🧮 Calculators</span>
-                                <span id="leanSummaryCalculators" class="ml-auto text-xs text-emerald-600/70 dark:text-emerald-400/60">7 tools</span>
+                                <span id="leanSummaryCalculators" class="ml-auto text-xs text-emerald-600/70 dark:text-emerald-400/60">8 tools</span>
                             </summary>
                             <div class="mt-1 grid sm:grid-cols-2 lg:grid-cols-3 gap-1.5 pl-2">
                                 <button onclick="navigateToLeanTool('calculators','leanDash')" class="lean-tool-card flex items-center gap-2.5 px-3 py-2 rounded-md bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-400 dark:hover:border-emerald-500 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10 transition-all text-left">
@@ -3050,6 +3060,10 @@
                                 <button onclick="navigateToLeanTool('calculators','leanTracker')" class="lean-tool-card flex items-center gap-2.5 px-3 py-2 rounded-md bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-400 dark:hover:border-emerald-500 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10 transition-all text-left">
                                     <span class="text-lg">📊</span>
                                     <div><span class="text-xs font-semibold text-gray-900 dark:text-white">Improvement Tracker</span><br><span class="text-[10px] text-gray-500 dark:text-gray-400">Kaizen progress</span></div>
+                                </button>
+                                <button onclick="navigateToLeanTool('calculators','kaffeKaizen')" class="lean-tool-card flex items-center gap-2.5 px-3 py-2 rounded-md bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-400 dark:hover:border-emerald-500 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10 transition-all text-left">
+                                    <span class="text-lg">☕</span>
+                                    <div><span class="text-xs font-semibold text-gray-900 dark:text-white">Kaffe-Kaizen</span><br><span class="text-[10px] text-gray-500 dark:text-gray-400">15-min forbedring</span></div>
                                 </button>
                             </div>
                         </details>
@@ -3169,7 +3183,7 @@
                 <!-- ========================================
                      LEAN DASHBOARD OVERVIEW
                      ======================================== -->
-                <div id="leanDashboardOverview" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="dashboard kpi oee takt cycle lead smed waste overview">
+                <div id="leanDash" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="dashboard kpi oee takt cycle lead smed waste overview">
                     <div class="p-6 bg-gradient-to-r from-emerald-500 to-teal-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">📈</span>
@@ -3278,7 +3292,7 @@
                 <!-- ========================================
                      LEAN IMPROVEMENT TRACKER
                      ======================================== -->
-                <div class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="improvement tracker progress forbedring kaizen history">
+                <div id="leanTracker" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="improvement tracker progress forbedring kaizen history">
                     <div class="p-6 bg-gradient-to-r from-violet-500 to-purple-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">📈</span>
@@ -3353,7 +3367,7 @@
                 <!-- ========================================
                      OEE CALCULATOR
                      ======================================== -->
-                <div class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="oee overall equipment effectiveness availability performance quality benchmark">
+                <div id="oee" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="oee overall equipment effectiveness availability performance quality benchmark">
                     <div class="p-6 bg-gradient-to-r from-green-500 to-emerald-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">⚙️</span>
@@ -3456,7 +3470,7 @@
                 <!-- ========================================
                      PRODUCTION TIME ANALYSIS
                      ======================================== -->
-                <div class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="takt cycle lead time production analysis metrics timing">
+                <div id="timeAnalysis" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="takt cycle lead time production analysis metrics timing">
                     <div class="p-6 bg-gradient-to-r from-cyan-500 to-sky-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">⏱️</span>
@@ -3585,7 +3599,7 @@
                 <!-- ========================================
                      SMED SAVINGS CALCULATOR
                      ======================================== -->
-                <div class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="smed setup changeover single minute exchange die savings reduction">
+                <div id="smed" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="smed setup changeover single minute exchange die savings reduction">
                     <div class="p-6 bg-gradient-to-r from-blue-500 to-indigo-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">⏱️</span>
@@ -3664,7 +3678,7 @@
                 <!-- ========================================
                      7 WASTES COST ESTIMATOR
                      ======================================== -->
-                <div class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="7 wastes waste muda cost overproduction waiting transport processing inventory motion defects">
+                <div id="wastes" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="7 wastes waste muda cost overproduction waiting transport processing inventory motion defects">
                     <div class="p-6 bg-gradient-to-r from-red-500 to-pink-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">🗑️</span>
@@ -3763,7 +3777,7 @@
                 <!-- ========================================
                      KAIZEN EVENT PLANNER
                      ======================================== -->
-                <div class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="kaizen event planner continuous improvement roi action items">
+                <div id="kaizen" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="kaizen event planner continuous improvement roi action items">
                     <div class="p-6 bg-gradient-to-r from-amber-500 to-yellow-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">📅</span>
@@ -3876,6 +3890,109 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- ========================================
+                     KAFFE-KAIZEN (Coffee-Break Improvement)
+                     ======================================== -->
+                <div id="kaffeKaizen" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="kaffe kaizen coffee break quick improvement 15 minute rapid">
+                    <div class="p-6 bg-gradient-to-r from-yellow-600 to-amber-700 text-white">
+                        <h2 class="text-2xl font-bold flex items-center gap-3">
+                            <span class="text-3xl bg-white/20 rounded-lg p-1.5">☕</span>
+                            <span>Kaffe-Kaizen</span>
+                        </h2>
+                        <p class="text-sm text-yellow-100 mt-1">15-minutters hurtig forbedringsrunde over en kop kaffe</p>
+                    </div>
+                    <div id="kaffeKaizen-content" class="p-6">
+                        <div class="p-6 bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 rounded-xl border-2 border-yellow-400 dark:border-yellow-700">
+                            <!-- Timer Section -->
+                            <div class="flex items-center justify-between mb-5">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-1">
+                                        <span class="text-2xl">☕</span> Kaffe-Kaizen Session
+                                    </h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Én kop kaffe = én forbedring. Hurtig, fokuseret, virkningsfuld.</p>
+                                </div>
+                                <div class="text-center">
+                                    <div id="kkTimerDisplay" class="text-4xl font-mono font-bold text-amber-700 dark:text-amber-400">15:00</div>
+                                    <div class="flex gap-2 mt-2">
+                                        <button onclick="KaffeKaizen.startTimer()" id="kkStartBtn" class="px-3 py-1 text-xs bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">▶ Start</button>
+                                        <button onclick="KaffeKaizen.pauseTimer()" id="kkPauseBtn" class="px-3 py-1 text-xs bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition-colors hidden">⏸ Pause</button>
+                                        <button onclick="KaffeKaizen.resetTimer()" class="px-3 py-1 text-xs bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors">↺ Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Progress Bar -->
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-6">
+                                <div id="kkProgressBar" class="bg-gradient-to-r from-yellow-500 to-amber-600 h-2 rounded-full transition-all duration-1000" style="width: 100%"></div>
+                            </div>
+
+                            <!-- 5-Step Quick Kaizen -->
+                            <div class="space-y-4">
+                                <!-- Step 1: Problem -->
+                                <div class="bg-white dark:bg-gray-800 rounded-lg border-2 border-red-300 dark:border-red-700 p-4" id="kkStep1">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <span class="w-7 h-7 rounded-full bg-red-500 text-white flex items-center justify-center text-sm font-bold">1</span>
+                                        <h4 class="font-bold text-red-700 dark:text-red-400">🔍 Hvad er problemet? <span class="text-xs font-normal text-gray-500">(2 min)</span></h4>
+                                    </div>
+                                    <input type="text" id="kkProblem" class="input-field text-sm" placeholder="Beskriv problemet kort og præcist..." oninput="KaffeKaizen.save()">
+                                </div>
+
+                                <!-- Step 2: Root Cause -->
+                                <div class="bg-white dark:bg-gray-800 rounded-lg border-2 border-orange-300 dark:border-orange-700 p-4" id="kkStep2">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <span class="w-7 h-7 rounded-full bg-orange-500 text-white flex items-center justify-center text-sm font-bold">2</span>
+                                        <h4 class="font-bold text-orange-700 dark:text-orange-400">🤔 Hvorfor sker det? <span class="text-xs font-normal text-gray-500">(3 min)</span></h4>
+                                    </div>
+                                    <textarea id="kkRootCause" class="input-field text-sm h-16 resize-none" placeholder="Spørg 'Hvorfor?' 3 gange hurtigt..." oninput="KaffeKaizen.save()"></textarea>
+                                </div>
+
+                                <!-- Step 3: Solution -->
+                                <div class="bg-white dark:bg-gray-800 rounded-lg border-2 border-green-300 dark:border-green-700 p-4" id="kkStep3">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <span class="w-7 h-7 rounded-full bg-green-500 text-white flex items-center justify-center text-sm font-bold">3</span>
+                                        <h4 class="font-bold text-green-700 dark:text-green-400">💡 Hurtig løsning? <span class="text-xs font-normal text-gray-500">(5 min)</span></h4>
+                                    </div>
+                                    <textarea id="kkSolution" class="input-field text-sm h-16 resize-none" placeholder="Hvad kan vi gøre NU — inden kaffen er drukket?" oninput="KaffeKaizen.save()"></textarea>
+                                </div>
+
+                                <!-- Step 4: Who & When -->
+                                <div class="bg-white dark:bg-gray-800 rounded-lg border-2 border-blue-300 dark:border-blue-700 p-4" id="kkStep4">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <span class="w-7 h-7 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-bold">4</span>
+                                        <h4 class="font-bold text-blue-700 dark:text-blue-400">👤 Hvem gør hvad? <span class="text-xs font-normal text-gray-500">(3 min)</span></h4>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <input type="text" id="kkWho" class="input-field text-sm" placeholder="Ansvarlig person" oninput="KaffeKaizen.save()">
+                                        <input type="date" id="kkWhen" class="input-field text-sm" oninput="KaffeKaizen.save()">
+                                    </div>
+                                </div>
+
+                                <!-- Step 5: Expected Result -->
+                                <div class="bg-white dark:bg-gray-800 rounded-lg border-2 border-purple-300 dark:border-purple-700 p-4" id="kkStep5">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <span class="w-7 h-7 rounded-full bg-purple-500 text-white flex items-center justify-center text-sm font-bold">5</span>
+                                        <h4 class="font-bold text-purple-700 dark:text-purple-400">📊 Forventet resultat? <span class="text-xs font-normal text-gray-500">(2 min)</span></h4>
+                                    </div>
+                                    <input type="text" id="kkExpected" class="input-field text-sm" placeholder="Hvad forventer vi at opnå? (fx: 20% hurtigere pluk)" oninput="KaffeKaizen.save()">
+                                </div>
+                            </div>
+
+                            <!-- Session History -->
+                            <div class="mt-6 pt-4 border-t border-amber-200 dark:border-amber-800">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h4 class="font-bold text-amber-700 dark:text-amber-400">📋 Afsluttede Sessioner</h4>
+                                    <div class="flex gap-2">
+                                        <button onclick="KaffeKaizen.completeSession()" class="px-3 py-1 text-xs bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">✓ Afslut Session</button>
+                                        <button onclick="KaffeKaizen.exportSessions()" class="px-3 py-1 text-xs bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">📥 Eksportér</button>
+                                    </div>
+                                </div>
+                                <div id="kkSessionHistory" class="space-y-2 max-h-48 overflow-y-auto">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 text-center py-3">Ingen sessioner endnu. Start din første Kaffe-Kaizen!</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -3889,7 +4006,7 @@
                 <!-- ========================================
                      SWOT ANALYSIS
                      ======================================== -->
-                <div class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="swot strengths weaknesses opportunities threats strategic planning matrix">
+                <div id="swot" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="swot strengths weaknesses opportunities threats strategic planning matrix">
                     <div class="p-6 bg-gradient-to-r from-purple-500 to-violet-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">🎯</span>
@@ -3960,7 +4077,7 @@
                 <!-- ========================================
                      VALUE STREAM MAPPING
                      ======================================== -->
-                <div class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="vsm value stream mapping process flow waste visualization canvas bottleneck">
+                <div id="vsm" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="vsm value stream mapping process flow waste visualization canvas bottleneck takt time future state inventory wip">
                     <div class="p-6 bg-gradient-to-r from-teal-500 to-emerald-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">🗺️</span>
@@ -3980,13 +4097,48 @@
                                     </h3>
                                     <p class="text-sm text-gray-600 dark:text-gray-400" data-i18n="lean-vsm-subtitle">Visualize Process Flow & Waste</p>
                                 </div>
-                                <div class="flex gap-2">
+                                <div class="flex gap-2 flex-wrap justify-end">
+                                    <button onclick="loadVSMExample()" class="px-3 py-1 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">📋 Eksempel</button>
                                     <button onclick="clearVSM()" class="px-3 py-1 text-xs bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors" data-i18n="lean-vsm-clear">Clear</button>
                                     <button onclick="exportVSM()" class="px-3 py-1 text-xs bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition-colors" data-i18n="lean-vsm-export">Export PNG</button>
                                 </div>
                             </div>
                             <div id="vsm-tooltip" class="hidden mb-3 p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg text-xs text-gray-700 dark:text-gray-300 border border-blue-200 dark:border-blue-700">
-                                <strong>Value Stream Mapping</strong> visualiserer material- og informationsflow. Identificerer spild og forbedringspotentiale ved at kortlægge nuværende processer.
+                                <strong>Value Stream Mapping (VSM)</strong> er et lean-værktøj der visualiserer hele processen fra leverandør til kunde. Det hjælper med at identificere:<br>
+                                <ul class="mt-1 ml-4 list-disc space-y-0.5">
+                                    <li><strong>Værditilførende tid</strong> — aktiviteter kunden betaler for</li>
+                                    <li><strong>Spild (Muda)</strong> — ventetid, transport, unødvendige trin</li>
+                                    <li><strong>Flaskehalse</strong> — procestrin med længst cyklustid</li>
+                                    <li><strong>PCE</strong> — Process Cycle Efficiency (mål: &gt;25% = world-class)</li>
+                                </ul>
+                            </div>
+
+                            <!-- State Toggle: Current vs Future -->
+                            <div class="flex items-center gap-3 mb-4 p-3 bg-white dark:bg-gray-800 rounded-lg border border-teal-200 dark:border-teal-800">
+                                <span class="text-sm font-bold text-gray-700 dark:text-gray-300">Tilstand:</span>
+                                <button onclick="switchVSMState('current')" id="vsmStateCurrentBtn" class="px-3 py-1.5 text-xs font-bold rounded-lg transition-all bg-teal-600 text-white">📊 Nuværende (Current)</button>
+                                <button onclick="switchVSMState('future')" id="vsmStateFutureBtn" class="px-3 py-1.5 text-xs font-bold rounded-lg transition-all bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300">🎯 Fremtidig (Future)</button>
+                                <span id="vsmStateLabel" class="ml-auto text-xs text-teal-600 dark:text-teal-400 font-semibold">Current State</span>
+                            </div>
+
+                            <!-- Takt Time Input -->
+                            <div class="mb-4 p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg border border-indigo-200 dark:border-indigo-800">
+                                <div class="flex items-center gap-4 flex-wrap">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-sm font-bold text-indigo-700 dark:text-indigo-400">⏱️ Takt Time:</span>
+                                        <input type="number" id="vsmTaktDemand" class="input-field w-24 py-1 text-sm" placeholder="Efterspørgsel" min="1" oninput="calculateVSMTakt()">
+                                        <span class="text-xs text-gray-500">enheder/dag</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs text-gray-600 dark:text-gray-400">Tilgængelig tid:</span>
+                                        <input type="number" id="vsmTaktAvailable" class="input-field w-24 py-1 text-sm" placeholder="480" value="480" min="1" oninput="calculateVSMTakt()">
+                                        <span class="text-xs text-gray-500">min/dag</span>
+                                    </div>
+                                    <div class="ml-auto text-center px-4 py-1 bg-white dark:bg-gray-800 rounded border border-indigo-300 dark:border-indigo-700">
+                                        <p class="text-xs text-gray-500">Takt Time</p>
+                                        <p id="vsmTaktResult" class="text-lg font-bold text-indigo-600 dark:text-indigo-400">- min</p>
+                                    </div>
+                                </div>
                             </div>
                             
                             <div class="space-y-4">
@@ -3994,11 +4146,15 @@
                                 <div class="bg-white dark:bg-gray-800 rounded-lg border-2 border-teal-300 dark:border-teal-700 p-4">
                                     <div class="flex items-center justify-between mb-3">
                                         <h4 class="font-bold text-teal-700 dark:text-teal-400" data-i18n="lean-vsm-canvas">Process Flow Canvas</h4>
-                                        <button onclick="addVSMProcess()" class="px-3 py-1 text-xs bg-teal-600 hover:bg-teal-700 text-white rounded transition-colors">
-                                            <span data-i18n="lean-vsm-add">+ Add Process</span>
-                                        </button>
+                                        <div class="flex gap-2">
+                                            <button onclick="addVSMProcess()" class="px-3 py-1 text-xs bg-teal-600 hover:bg-teal-700 text-white rounded transition-colors">
+                                                <span data-i18n="lean-vsm-add">+ Add Process</span>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <canvas id="vsmCanvas" width="800" height="400" class="w-full border border-gray-300 dark:border-gray-600 rounded cursor-crosshair bg-gray-50 dark:bg-gray-900"></canvas>
+                                    <div class="overflow-x-auto">
+                                        <canvas id="vsmCanvas" width="800" height="400" class="w-full border border-gray-300 dark:border-gray-600 rounded cursor-crosshair bg-gray-50 dark:bg-gray-900" style="min-width: 800px;"></canvas>
+                                    </div>
                                 </div>
 
                                 <!-- Process List -->
@@ -4010,8 +4166,8 @@
                                     </div>
                                 </div>
 
-                                <!-- VSM Metrics Summary -->
-                                <div class="grid grid-cols-4 gap-3">
+                                <!-- VSM Metrics Summary - Enhanced -->
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                                     <div class="p-3 bg-teal-50 dark:bg-teal-900/30 rounded-lg text-center">
                                         <p class="text-xs text-gray-600 dark:text-gray-400 mb-1" data-i18n="lean-vsm-total-time">Total Lead Time</p>
                                         <p id="vsmTotalTime" class="text-2xl font-bold text-teal-600 dark:text-teal-400">0 min</p>
@@ -4031,6 +4187,26 @@
                                     </div>
                                 </div>
 
+                                <!-- Extended Metrics Row -->
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                    <div class="p-3 bg-orange-50 dark:bg-orange-900/30 rounded-lg text-center">
+                                        <p class="text-xs text-gray-600 dark:text-gray-400 mb-1">Total Ventetid</p>
+                                        <p id="vsmTotalWait" class="text-lg font-bold text-orange-600 dark:text-orange-400">0 min</p>
+                                    </div>
+                                    <div class="p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg text-center">
+                                        <p class="text-xs text-gray-600 dark:text-gray-400 mb-1">Antal Processer</p>
+                                        <p id="vsmProcessCount" class="text-lg font-bold text-blue-600 dark:text-blue-400">0</p>
+                                    </div>
+                                    <div class="p-3 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg text-center">
+                                        <p class="text-xs text-gray-600 dark:text-gray-400 mb-1">Operatører Total</p>
+                                        <p id="vsmTotalOperators" class="text-lg font-bold text-indigo-600 dark:text-indigo-400">0</p>
+                                    </div>
+                                    <div class="p-3 bg-pink-50 dark:bg-pink-900/30 rounded-lg text-center">
+                                        <p class="text-xs text-gray-600 dark:text-gray-400 mb-1">Takt vs Cyklus</p>
+                                        <p id="vsmTaktVsCycle" class="text-lg font-bold text-pink-600 dark:text-pink-400">-</p>
+                                    </div>
+                                </div>
+
                                 <!-- Bottleneck Alert -->
                                 <div id="vsmBottleneckAlert" class="hidden mt-3 p-3 bg-orange-50 dark:bg-orange-900/30 rounded-lg border border-orange-300 dark:border-orange-700">
                                     <div class="flex items-center gap-2">
@@ -4040,6 +4216,12 @@
                                             <p id="vsmBottleneckText" class="text-sm text-orange-600 dark:text-orange-300"></p>
                                         </div>
                                     </div>
+                                </div>
+
+                                <!-- VSM Recommendations -->
+                                <div id="vsmRecommendations" class="hidden mt-3 p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border border-emerald-300 dark:border-emerald-700">
+                                    <h4 class="font-bold text-emerald-700 dark:text-emerald-400 mb-2">💡 Anbefalinger</h4>
+                                    <ul id="vsmRecommendationsList" class="space-y-1 text-sm text-gray-700 dark:text-gray-300"></ul>
                                 </div>
                             </div>
                         </div>
@@ -4153,20 +4335,24 @@
                         <div class="grid md:grid-cols-2 gap-4">
                             <div class="p-4 rounded-lg border border-emerald-300 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/20">
                                 <h3 class="font-bold text-emerald-700 dark:text-emerald-300 mb-2">⚡ Quick Wins (Høj effekt / Lav indsats)</h3>
-                                <textarea class="input-field text-sm h-28 resize-none" placeholder="Skriv ideer, der kan implementeres hurtigt..."></textarea>
+                                <textarea id="pmQuickWins" class="input-field text-sm h-28 resize-none" placeholder="Skriv ideer, der kan implementeres hurtigt..." oninput="PriorityMatrixManager.save()"></textarea>
                             </div>
                             <div class="p-4 rounded-lg border border-indigo-300 dark:border-indigo-700 bg-indigo-50 dark:bg-indigo-900/20">
                                 <h3 class="font-bold text-indigo-700 dark:text-indigo-300 mb-2">🎯 Strategiske Projekter (Høj effekt / Høj indsats)</h3>
-                                <textarea class="input-field text-sm h-28 resize-none" placeholder="Skriv initiativer med høj forretningsværdi..."></textarea>
+                                <textarea id="pmStrategic" class="input-field text-sm h-28 resize-none" placeholder="Skriv initiativer med høj forretningsværdi..." oninput="PriorityMatrixManager.save()"></textarea>
                             </div>
                             <div class="p-4 rounded-lg border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/20">
                                 <h3 class="font-bold text-amber-700 dark:text-amber-300 mb-2">📝 Fill-ins (Lav effekt / Lav indsats)</h3>
-                                <textarea class="input-field text-sm h-28 resize-none" placeholder="Skriv mindre forbedringer her..."></textarea>
+                                <textarea id="pmFillIns" class="input-field text-sm h-28 resize-none" placeholder="Skriv mindre forbedringer her..." oninput="PriorityMatrixManager.save()"></textarea>
                             </div>
                             <div class="p-4 rounded-lg border border-rose-300 dark:border-rose-700 bg-rose-50 dark:bg-rose-900/20">
                                 <h3 class="font-bold text-rose-700 dark:text-rose-300 mb-2">⛔ Revurdér (Lav effekt / Høj indsats)</h3>
-                                <textarea class="input-field text-sm h-28 resize-none" placeholder="Skriv opgaver der bør udskydes eller droppes..."></textarea>
+                                <textarea id="pmReconsider" class="input-field text-sm h-28 resize-none" placeholder="Skriv opgaver der bør udskydes eller droppes..." oninput="PriorityMatrixManager.save()"></textarea>
                             </div>
+                        </div>
+                        <div class="flex gap-3 mt-4">
+                            <button onclick="PriorityMatrixManager.clearAll()" class="px-4 py-2 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg text-sm font-medium hover:bg-red-200 transition-colors">🗑️ Ryd alt</button>
+                            <button onclick="PriorityMatrixManager.exportText()" class="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors">📋 Eksporter som tekst</button>
                         </div>
                     </div>
                 </div>
@@ -4186,27 +4372,34 @@
                         <div class="grid lg:grid-cols-2 gap-5">
                             <div class="space-y-2">
                                 <h3 class="font-bold text-gray-900 dark:text-white">Niveauer</h3>
-                                <div class="p-3 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-sm">1. Introduktion — kender grundbegreber</div>
-                                <div class="p-3 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-sm">2. Under oplæring — kan udføre med støtte</div>
-                                <div class="p-3 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-sm">3. Selvstændig — kan udføre stabilt alene</div>
-                                <div class="p-3 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-sm">4. Erfaren — kan træne andre og forbedre flow</div>
-                                <div class="p-3 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-sm">5. Ekspert — driver standarder og innovation</div>
+                                <div class="p-3 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-sm flex items-center gap-2"><span class="text-lg">1️⃣</span> <span>Introduktion — kender grundbegreber</span></div>
+                                <div class="p-3 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-sm flex items-center gap-2"><span class="text-lg">2️⃣</span> <span>Under oplæring — kan udføre med støtte</span></div>
+                                <div class="p-3 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-sm flex items-center gap-2"><span class="text-lg">3️⃣</span> <span>Selvstændig — kan udføre stabilt alene</span></div>
+                                <div class="p-3 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-sm flex items-center gap-2"><span class="text-lg">4️⃣</span> <span>Erfaren — kan træne andre og forbedre flow</span></div>
+                                <div class="p-3 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-sm flex items-center gap-2"><span class="text-lg">5️⃣</span> <span>Ekspert — driver standarder og innovation</span></div>
                             </div>
                             <div class="p-4 rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-900/20 space-y-3">
                                 <h3 class="font-bold text-sky-800 dark:text-sky-300">Udviklingsplan</h3>
-                                <input class="input-field" placeholder="Medarbejder / team" type="text">
+                                <input id="ktEmployee" class="input-field" placeholder="Medarbejder / team" type="text" oninput="KompetencetrappenManager.save()">
                                 <div class="grid grid-cols-2 gap-3">
-                                    <select class="input-field">
-                                        <option>Nuværende niveau</option>
-                                        <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+                                    <select id="ktCurrentLevel" class="input-field" onchange="KompetencetrappenManager.save()">
+                                        <option value="">Nuværende niveau</option>
+                                        <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
                                     </select>
-                                    <select class="input-field">
-                                        <option>Målniveau</option>
-                                        <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+                                    <select id="ktTargetLevel" class="input-field" onchange="KompetencetrappenManager.save()">
+                                        <option value="">Målniveau</option>
+                                        <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
                                     </select>
                                 </div>
-                                <textarea class="input-field h-24 resize-none" placeholder="Næste læringsaktivitet / coaching-plan..."></textarea>
+                                <textarea id="ktPlan" class="input-field h-24 resize-none" placeholder="Næste læringsaktivitet / coaching-plan..." oninput="KompetencetrappenManager.save()"></textarea>
+                                <!-- Saved entries list -->
+                                <div id="ktEntriesList" class="space-y-2 mt-3"></div>
                             </div>
+                        </div>
+                        <div class="flex gap-3 mt-4">
+                            <button onclick="KompetencetrappenManager.addEntry()" class="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-sm font-medium transition-colors">➕ Tilføj medarbejder</button>
+                            <button onclick="KompetencetrappenManager.clearAll()" class="px-4 py-2 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg text-sm font-medium hover:bg-red-200 transition-colors">🗑️ Ryd alt</button>
+                            <button onclick="KompetencetrappenManager.exportText()" class="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors">📋 Eksporter som tekst</button>
                         </div>
                     </div>
                 </div>
@@ -4214,22 +4407,116 @@
                 <!-- ========================================
                      BRAINSTORM
                      ======================================== -->
-                <div id="brainstorm" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="brainstorm idegenerering ideer workshop lean improvement">
+                <div id="brainstorm" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="brainstorm idegenerering ideer workshop lean improvement timer random selector">
                     <div class="p-6 bg-gradient-to-r from-fuchsia-500 to-purple-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">💡</span>
                             <span>Brainstorm</span>
                         </h2>
-                        <p class="text-sm text-fuchsia-100 mt-1">Generér forbedringsidéer hurtigt og struktureret</p>
+                        <p class="text-sm text-fuchsia-100 mt-1">Generér forbedringsidéer hurtigt og struktureret — med timer og tilfældig udvælgelse</p>
                     </div>
                     <div id="brainstorm-content" class="p-6">
-                        <div class="space-y-4">
-                            <input class="input-field" type="text" placeholder="Problemformulering (fx: Hvordan reducerer vi ventetid i pluk?)">
-                            <textarea class="input-field h-36 resize-none" placeholder="Skriv alle idéer her — én idé pr. linje uden at vurdere dem endnu..."></textarea>
+                        <div class="space-y-5">
+                            <!-- Problem Statement -->
+                            <div class="bg-white dark:bg-gray-800 rounded-lg border border-fuchsia-200 dark:border-fuchsia-800 p-4">
+                                <h4 class="font-bold text-fuchsia-700 dark:text-fuchsia-400 mb-2">🎯 Problemformulering</h4>
+                                <input id="bsProblem" class="input-field" type="text" placeholder="Hvad vil vi forbedre? (fx: Hvordan reducerer vi ventetid i pluk?)" oninput="BrainstormManager.save()">
+                            </div>
+
+                            <!-- Timer Section -->
+                            <div class="bg-gradient-to-r from-fuchsia-100 to-purple-100 dark:from-fuchsia-900/30 dark:to-purple-900/30 rounded-lg border-2 border-fuchsia-300 dark:border-fuchsia-700 p-4">
+                                <div class="flex items-center justify-between flex-wrap gap-3">
+                                    <div>
+                                        <h4 class="font-bold text-fuchsia-700 dark:text-fuchsia-400 flex items-center gap-2">
+                                            ⏱️ Brainstorm Timer
+                                            <span id="bsTimerStatus" class="text-xs font-normal px-2 py-0.5 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400">Ikke startet</span>
+                                        </h4>
+                                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Sæt en timer — når tiden er ude, låses idéerne og du kan vælge tilfældigt</p>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex items-center gap-1">
+                                            <label class="text-xs text-gray-600 dark:text-gray-400">Minutter:</label>
+                                            <select id="bsTimerMinutes" class="input-field py-1 text-sm w-20">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="5" selected>5</option>
+                                                <option value="10">10</option>
+                                                <option value="15">15</option>
+                                            </select>
+                                        </div>
+                                        <div id="bsTimerDisplay" class="text-3xl font-mono font-bold text-fuchsia-700 dark:text-fuchsia-400 min-w-[80px] text-center">5:00</div>
+                                        <div class="flex gap-2">
+                                            <button onclick="BrainstormManager.startTimer()" id="bsStartTimerBtn" class="px-3 py-1.5 text-xs bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors font-bold">▶ Start</button>
+                                            <button onclick="BrainstormManager.pauseTimer()" id="bsPauseTimerBtn" class="px-3 py-1.5 text-xs bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition-colors font-bold hidden">⏸ Pause</button>
+                                            <button onclick="BrainstormManager.resetTimer()" class="px-3 py-1.5 text-xs bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors">↺ Reset</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Timer Progress Bar -->
+                                <div class="mt-3 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div id="bsTimerProgress" class="bg-gradient-to-r from-fuchsia-500 to-purple-500 h-2 rounded-full transition-all duration-1000" style="width: 100%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Idea Input Area -->
+                            <div id="bsInputArea" class="bg-white dark:bg-gray-800 rounded-lg border border-fuchsia-200 dark:border-fuchsia-800 p-4">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h4 class="font-bold text-fuchsia-700 dark:text-fuchsia-400">💡 Tilføj idéer</h4>
+                                    <span id="bsIdeaCount" class="text-xs text-gray-500 dark:text-gray-400">0 idéer</span>
+                                </div>
+                                <div class="flex gap-2 mb-3">
+                                    <input type="text" id="bsNewIdea" class="input-field flex-1 text-sm" placeholder="Skriv en idé og tryk Enter eller klik Tilføj..." onkeydown="if(event.key==='Enter')BrainstormManager.addIdea()">
+                                    <button onclick="BrainstormManager.addIdea()" id="bsAddIdeaBtn" class="px-4 py-2 bg-fuchsia-600 hover:bg-fuchsia-700 text-white rounded-lg text-sm font-bold transition-colors">+ Tilføj</button>
+                                </div>
+                                <!-- Ideas List -->
+                                <div id="bsIdeasList" class="space-y-2 max-h-64 overflow-y-auto">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 text-center py-4">Ingen idéer endnu. Begynd at skrive!</p>
+                                </div>
+                            </div>
+
+                            <!-- Locked State Banner (hidden initially) -->
+                            <div id="bsLockedBanner" class="hidden p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border-2 border-amber-400 dark:border-amber-600 text-center">
+                                <span class="text-3xl">🔒</span>
+                                <p class="font-bold text-amber-700 dark:text-amber-400 mt-1">Tiden er ude! Idéerne er låst.</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Du kan nu gennemgå alle idéer og bruge den tilfældige vælger nedenfor.</p>
+                                <button onclick="BrainstormManager.unlock()" class="mt-2 px-4 py-1.5 text-xs bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition-colors">🔓 Lås op igen</button>
+                            </div>
+
+                            <!-- Random Selector -->
+                            <div class="bg-gradient-to-br from-purple-100 to-fuchsia-100 dark:from-purple-900/30 dark:to-fuchsia-900/30 rounded-lg border-2 border-purple-300 dark:border-purple-700 p-5">
+                                <div class="text-center">
+                                    <h4 class="font-bold text-purple-700 dark:text-purple-400 text-lg mb-1">🎲 Tilfældig Idé-Vælger</h4>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400 mb-4">Kan du ikke vælge? Lad skæbnen bestemme!</p>
+
+                                    <!-- Random Selection Display -->
+                                    <div id="bsRandomResult" class="mb-4 p-5 bg-white dark:bg-gray-800 rounded-xl border-2 border-dashed border-purple-300 dark:border-purple-600 min-h-[80px] flex items-center justify-center">
+                                        <p class="text-gray-400 dark:text-gray-500 text-sm">Klik knappen nedenfor for at vælge en tilfældig idé</p>
+                                    </div>
+
+                                    <button onclick="BrainstormManager.randomSelect()" id="bsRandomBtn" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 text-white rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+                                        🎲 Vælg Tilfældig Idé!
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Evaluation Criteria -->
                             <div class="grid md:grid-cols-3 gap-3 text-sm">
-                                <div class="p-3 rounded-lg bg-fuchsia-50 dark:bg-fuchsia-900/20 border border-fuchsia-200 dark:border-fuchsia-800">🎯 Effekt</div>
-                                <div class="p-3 rounded-lg bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800">⚙️ Gennemførbarhed</div>
-                                <div class="p-3 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800">⏱️ Tid til implementering</div>
+                                <div class="p-3 rounded-lg bg-fuchsia-50 dark:bg-fuchsia-900/20 border border-fuchsia-200 dark:border-fuchsia-800 text-center">
+                                    <span class="text-2xl">🎯</span>
+                                    <p class="font-bold text-fuchsia-700 dark:text-fuchsia-400 mt-1">Effekt</p>
+                                    <p class="text-xs text-gray-500">Hvor stor indflydelse har idéen?</p>
+                                </div>
+                                <div class="p-3 rounded-lg bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 text-center">
+                                    <span class="text-2xl">⚙️</span>
+                                    <p class="font-bold text-purple-700 dark:text-purple-400 mt-1">Gennemførbarhed</p>
+                                    <p class="text-xs text-gray-500">Er det realistisk at gennemføre?</p>
+                                </div>
+                                <div class="p-3 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 text-center">
+                                    <span class="text-2xl">⏱️</span>
+                                    <p class="font-bold text-indigo-700 dark:text-indigo-400 mt-1">Tid til implementering</p>
+                                    <p class="text-xs text-gray-500">Hvor lang tid tager det?</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -4250,12 +4537,16 @@
                         <div class="grid md:grid-cols-2 gap-4">
                             <div>
                                 <h3 class="font-bold text-rose-700 dark:text-rose-300 mb-2">1) Hvordan kan processen fejle?</h3>
-                                <textarea class="input-field h-36 resize-none" placeholder="Skriv potentielle fejl, flaskehalse og risici..."></textarea>
+                                <textarea id="nbFailures" class="input-field h-36 resize-none" placeholder="Skriv potentielle fejl, flaskehalse og risici..." oninput="NegativBrainstormManager.save()"></textarea>
                             </div>
                             <div>
                                 <h3 class="font-bold text-emerald-700 dark:text-emerald-300 mb-2">2) Forebyggende modtræk</h3>
-                                <textarea class="input-field h-36 resize-none" placeholder="Omskriv hver risiko til en konkret handling, standard eller kontrol..."></textarea>
+                                <textarea id="nbCountermeasures" class="input-field h-36 resize-none" placeholder="Omskriv hver risiko til en konkret handling, standard eller kontrol..." oninput="NegativBrainstormManager.save()"></textarea>
                             </div>
+                        </div>
+                        <div class="flex gap-3 mt-4">
+                            <button onclick="NegativBrainstormManager.clearAll()" class="px-4 py-2 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg text-sm font-medium hover:bg-red-200 transition-colors">🗑️ Ryd alt</button>
+                            <button onclick="NegativBrainstormManager.exportText()" class="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors">📋 Eksporter som tekst</button>
                         </div>
                     </div>
                 </div>
@@ -4267,7 +4558,7 @@
                      ============================================= -->
                 <div id="leanPanel-reference" class="lean-panel space-y-6" style="display: none;" data-lean-panel="reference">
 
-                <div class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="5s system sortér systematisér skinnende standardisér selvdisciplin workplace organization">
+                <div id="ref5s" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="5s system sortér systematisér skinnende standardisér selvdisciplin workplace organization">
                     <div class="p-6 bg-gradient-to-r from-yellow-500 to-orange-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">🧹</span>
@@ -4313,7 +4604,7 @@
                     </div>
                 </div>
 
-                <div class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="7r rigtige right product quantity condition place time customer cost logistics">
+                <div id="ref7r" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="7r rigtige right product quantity condition place time customer cost logistics">
                     <div class="p-6 bg-gradient-to-r from-green-500 to-teal-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">📦</span>
@@ -4388,7 +4679,7 @@
                     </div>
                 </div>
 
-                <div class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="3m muda mura muri waste unevenness overburden inefficiency">
+                <div id="ref3m" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="3m muda mura muri waste unevenness overburden inefficiency">
                     <div class="p-6 bg-gradient-to-r from-red-500 to-pink-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">⚠️</span>
@@ -4429,7 +4720,7 @@
                     </div>
                 </div>
 
-                <div class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="pdca plan do check act deming cycle continuous improvement">
+                <div id="refPdca" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="pdca plan do check act deming cycle continuous improvement">
                     <div class="p-6 bg-gradient-to-r from-blue-500 to-cyan-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">🔄</span>
@@ -4487,7 +4778,7 @@
                     </div>
                 </div>
 
-                <div class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="jit just in time kanban pull system wip visual signal">
+                <div id="refJitKanban" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="jit just in time kanban pull system wip visual signal">
                     <div class="p-6 bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">📋</span>
@@ -4533,7 +4824,7 @@
                     </div>
                 </div>
 
-                <div class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="fifo first in first out kaizen continuous improvement">
+                <div id="refFifoKaizen" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="fifo first in first out kaizen continuous improvement">
                     <div class="p-6 bg-gradient-to-r from-pink-500 to-rose-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">🔄</span>
@@ -4579,7 +4870,7 @@
                     </div>
                 </div>
 
-                <div class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="gemba walk observation go see real place process">
+                <div id="refGemba" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="gemba walk observation go see real place process">
                     <div class="p-6 bg-gradient-to-r from-emerald-500 to-green-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">🚶</span>
@@ -4615,7 +4906,7 @@
                     </div>
                 </div>
 
-                <div class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="poka yoke error proofing mistake proofing barcode scanning pick to light">
+                <div id="refPokaYoke" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="poka yoke error proofing mistake proofing barcode scanning pick to light">
                     <div class="p-6 bg-gradient-to-r from-cyan-500 to-sky-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">🛡️</span>
@@ -4658,7 +4949,7 @@
                     </div>
                 </div>
 
-                <div class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="andon visual signal alert stop line green yellow red">
+                <div id="refAndon" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="andon visual signal alert stop line green yellow red">
                     <div class="p-6 bg-gradient-to-r from-amber-500 to-orange-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">🚦</span>
@@ -4702,7 +4993,7 @@
                     </div>
                 </div>
 
-                <div class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="5 whys root cause analysis problem solving why">
+                <div id="ref5whys" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="5 whys root cause analysis problem solving why">
                     <div class="p-6 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">❓</span>
@@ -4759,7 +5050,7 @@
                 <!-- ========================================
                      SECTION 5: SUPPLY CHAIN FLOW (Logistikkæde)
                      ======================================== -->
-                <div class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="supply chain flow logistics transport warehouse production distribution supplier customer risk">
+                <div id="supplychain" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="supply chain flow logistics transport warehouse production distribution supplier customer risk">
                     <div class="p-6 bg-gradient-to-r from-teal-500 to-emerald-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">🔗</span>
@@ -4913,7 +5204,7 @@
                 <!-- ========================================
                      SECTION 6: SMART GOALS
                      ======================================== -->
-                <div class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="smart goals specific measurable achievable relevant time-bound mål target">
+                <div id="smartgoals" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="smart goals specific measurable achievable relevant time-bound mål target">
                     <div class="p-6 bg-gradient-to-r from-rose-500 to-pink-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">🎯</span>
@@ -5081,7 +5372,7 @@
                 </div>
 
                 <!-- Kotter's 8-Step Change Model -->
-                <div class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="kotter 8 step change model transformation leadership urgency coalition vision">
+                <div id="kotter" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="kotter 8 step change model transformation leadership urgency coalition vision">
                     <div class="p-6 bg-gradient-to-r from-orange-500 to-red-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">🔥</span>
@@ -5143,7 +5434,7 @@
                 </div>
 
                 <!-- Integration Tips -->
-                <div class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="integration eoq jit kanban abc rop fifo dashboard tips">
+                <div id="integration" class="lean-searchable lean-section-box bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-lean-keywords="integration eoq jit kanban abc rop fifo dashboard tips">
                     <div class="p-6 bg-gradient-to-r from-sky-500 to-indigo-500 text-white">
                         <h2 class="text-2xl font-bold flex items-center gap-3">
                             <span class="text-3xl bg-white/20 rounded-lg p-1.5">💡</span>
@@ -5660,6 +5951,18 @@
                             <button onclick="setQRType('phone')" id="qrTypePhone" class="qr-type-btn px-3 py-1.5 rounded-lg text-sm font-medium transition-colors bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"><span data-i18n="qr-type-phone">📞 Telefon</span></button>
                             <button onclick="setQRType('wifi')" id="qrTypeWifi" class="qr-type-btn px-3 py-1.5 rounded-lg text-sm font-medium transition-colors bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"><span data-i18n="qr-type-wifi">📶 WiFi</span></button>
                             <button onclick="setQRType('vcard')" id="qrTypeVcard" class="qr-type-btn px-3 py-1.5 rounded-lg text-sm font-medium transition-colors bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"><span data-i18n="qr-type-vcard">👤 Kontakt</span></button>
+                            <button onclick="setQRType('sms')" id="qrTypeSms" class="qr-type-btn px-3 py-1.5 rounded-lg text-sm font-medium transition-colors bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">💬 SMS</button>
+                            <button onclick="setQRType('location')" id="qrTypeLocation" class="qr-type-btn px-3 py-1.5 rounded-lg text-sm font-medium transition-colors bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">📍 Placering</button>
+                            <button onclick="setQRType('calendar')" id="qrTypeCalendar" class="qr-type-btn px-3 py-1.5 rounded-lg text-sm font-medium transition-colors bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">📅 Kalender</button>
+                            <button onclick="setQRType('image')" id="qrTypeImage" class="qr-type-btn px-3 py-1.5 rounded-lg text-sm font-medium transition-colors bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">🖼️ Billed-URL</button>
+                            <button onclick="setQRType('bitcoin')" id="qrTypeBitcoin" class="qr-type-btn px-3 py-1.5 rounded-lg text-sm font-medium transition-colors bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">₿ Bitcoin</button>
+                            <button onclick="setQRType('spotify')" id="qrTypeSpotify" class="qr-type-btn px-3 py-1.5 rounded-lg text-sm font-medium transition-all bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">🎵 Spotify</button>
+                            <button onclick="setQRType('meeting')" id="qrTypeMeeting" class="qr-type-btn px-3 py-1.5 rounded-lg text-sm font-medium transition-all bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">🤝 Mødelink</button>
+                            <!-- Fun types separator -->
+                            <span class="select-none self-center px-1 text-xs font-semibold text-gray-400 dark:text-gray-500 border-l border-gray-300 dark:border-gray-600 pl-2 ml-0.5">🎉 Fun</span>
+                            <button onclick="setQRType('rickroll')" id="qrTypeRickroll" data-fun="true" class="qr-type-btn px-3 py-1.5 rounded-lg text-sm font-medium transition-all bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/60" title="😈 Rickroll your colleagues!">🎵 Rickroll</button>
+                            <button onclick="setQRType('fortune')" id="qrTypeFortune" data-fun="true" class="qr-type-btn px-3 py-1.5 rounded-lg text-sm font-medium transition-all bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400 hover:bg-yellow-200 dark:hover:bg-yellow-900/60">🥠 Spåkage</button>
+                            <button onclick="setQRType('chucknorris')" id="qrTypeChucknorris" data-fun="true" class="qr-type-btn px-3 py-1.5 rounded-lg text-sm font-medium transition-all bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-400 hover:bg-orange-200 dark:hover:bg-orange-900/60">💪 Chuck Norris</button>
                         </div>
 
                         <!-- Dynamic content fields -->

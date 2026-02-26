@@ -5403,11 +5403,6 @@ function switchTab(tabName, clickedButton) {
             if (typeof KPIDashboard !== 'undefined') KPIDashboard.refresh();
         }, 100);
     }
-    if (tabName === 'lean') {
-        setTimeout(() => {
-            if (typeof switchLeanSubTab === 'function') switchLeanSubTab(currentLeanSubTab || 'dashboard');
-        }, 50);
-    }
 }
 
 // ========================================
@@ -14246,6 +14241,7 @@ let currentQRType = 'url';
 let batchBarcodeData = [];
 let qrLogoImage = null; // loaded Image object for QR overlay
 let currentQRStyle = 'square'; // square | rounded | dots | diamond | star
+let currentQRLogoShape = 'square'; // square | rounded | circle
 
 // --- QR Logo Upload ---
 function handleQRLogoUpload(e) {
@@ -14284,6 +14280,21 @@ function clearQRLogo() {
     if (document.getElementById('qrLive')?.checked) generateQRCode();
 }
 
+// --- QR Logo Shape ---
+function setQRLogoShape(shape) {
+    currentQRLogoShape = shape;
+    document.querySelectorAll('.qr-logo-shape-btn').forEach(btn => {
+        btn.classList.remove('bg-blue-100', 'dark:bg-blue-900/40', 'text-blue-700', 'dark:text-blue-300', 'border-blue-400');
+        btn.classList.add('bg-gray-100', 'dark:bg-gray-700', 'text-gray-600', 'dark:text-gray-300', 'border-transparent');
+    });
+    const active = document.getElementById('qrLogoShape' + shape.charAt(0).toUpperCase() + shape.slice(1));
+    if (active) {
+        active.classList.remove('bg-gray-100', 'dark:bg-gray-700', 'text-gray-600', 'dark:text-gray-300', 'border-transparent');
+        active.classList.add('bg-blue-100', 'dark:bg-blue-900/40', 'text-blue-700', 'dark:text-blue-300', 'border-blue-400');
+    }
+    if (document.getElementById('qrLive')?.checked) generateQRCode();
+}
+
 // --- QR Style Switching ---
 function setQRStyle(style) {
     currentQRStyle = style;
@@ -14304,15 +14315,28 @@ function setQRStyle(style) {
 function setQRType(type) {
     currentQRType = type;
 
-    // Update tab button styles
+    // Update tab button styles.
+    // Standard buttons: swap background blue/gray.
+    // Fun buttons (data-fun="true"): keep their own color; use ring + scale for active state.
     document.querySelectorAll('.qr-type-btn').forEach(btn => {
-        btn.classList.remove('active-qr-type', 'bg-blue-100', 'dark:bg-blue-900/40', 'text-blue-700', 'dark:text-blue-300');
-        btn.classList.add('bg-gray-100', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300', 'hover:bg-gray-200', 'dark:hover:bg-gray-600');
+        btn.classList.remove('active-qr-type', 'ring-2', 'ring-current', 'ring-offset-1', 'scale-105');
+        if (btn.dataset.fun) {
+            btn.classList.add('opacity-60');
+        } else {
+            btn.classList.remove('bg-blue-100', 'dark:bg-blue-900/40', 'text-blue-700', 'dark:text-blue-300');
+            btn.classList.add('bg-gray-100', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300', 'hover:bg-gray-200', 'dark:hover:bg-gray-600');
+        }
     });
     const activeBtn = document.getElementById(`qrType${type.charAt(0).toUpperCase() + type.slice(1)}`);
     if (activeBtn) {
-        activeBtn.classList.remove('bg-gray-100', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300', 'hover:bg-gray-200', 'dark:hover:bg-gray-600');
-        activeBtn.classList.add('active-qr-type', 'bg-blue-100', 'dark:bg-blue-900/40', 'text-blue-700', 'dark:text-blue-300');
+        activeBtn.classList.add('active-qr-type');
+        if (activeBtn.dataset.fun) {
+            activeBtn.classList.remove('opacity-60');
+            activeBtn.classList.add('ring-2', 'ring-current', 'ring-offset-1', 'scale-105');
+        } else {
+            activeBtn.classList.remove('bg-gray-100', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300', 'hover:bg-gray-200', 'dark:hover:bg-gray-600');
+            activeBtn.classList.add('bg-blue-100', 'dark:bg-blue-900/40', 'text-blue-700', 'dark:text-blue-300');
+        }
     }
 
     const container = document.getElementById('qrContentFields');
@@ -14369,10 +14393,124 @@ function setQRType(type) {
                    oninput="if(document.getElementById('qrLive').checked) generateQRCode()">
             <label class="${labelClass}">${currentLanguage === 'da' ? 'Email (valgfri)' : 'Email (optional)'}</label>
             <input type="email" id="qrInput_vcardEmail" class="${inputClass}" placeholder="lars@acme.dk"
-                   oninput="if(document.getElementById('qrLive').checked) generateQRCode()">`
+                   oninput="if(document.getElementById('qrLive').checked) generateQRCode()">`,
+        image: `
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Billed-URL (direkte link til .jpg / .png)' : 'Image URL (direct link to .jpg / .png)'}</label>
+            <input type="url" id="qrInput_imageUrl" class="${inputClass}" placeholder="https://example.com/photo.jpg"
+                   oninput="if(document.getElementById('qrLive').checked) generateQRCode()">
+            <p class="text-xs text-gray-400 dark:text-gray-500 -mt-1 mb-2">${currentLanguage === 'da' ? 'Scanningen åbner billedet direkte i browseren.' : 'Scanning opens the image directly in the browser.'}</p>`,
+        location: `
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Breddegrad (latitude)' : 'Latitude'}</label>
+            <input type="number" step="any" id="qrInput_lat" class="${inputClass}" placeholder="55.6761" oninput="if(document.getElementById('qrLive').checked) generateQRCode()">
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Længdegrad (longitude)' : 'Longitude'}</label>
+            <input type="number" step="any" id="qrInput_lng" class="${inputClass}" placeholder="12.5683" oninput="if(document.getElementById('qrLive').checked) generateQRCode()">
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Stednavn (valgfri)' : 'Place name (optional)'}</label>
+            <input type="text" id="qrInput_placeName" class="${inputClass}" placeholder="${currentLanguage === 'da' ? 'København' : 'Copenhagen'}" oninput="if(document.getElementById('qrLive').checked) generateQRCode()">
+            <p class="text-xs text-gray-400 dark:text-gray-500 -mt-1 mb-2">${currentLanguage === 'da' ? 'Scanningen åbner Google Maps / Apple Maps med koordinaterne.' : 'Scanning opens Google Maps / Apple Maps at the coordinates.'}</p>`,
+        calendar: `
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Begivenhed' : 'Event title'}</label>
+            <input type="text" id="qrInput_calTitle" class="${inputClass}" placeholder="${currentLanguage === 'da' ? 'Status-møde' : 'Status meeting'}" oninput="if(document.getElementById('qrLive').checked) generateQRCode()">
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Sted (valgfri)' : 'Location (optional)'}</label>
+            <input type="text" id="qrInput_calLocation" class="${inputClass}" placeholder="${currentLanguage === 'da' ? 'Mødelokale 3' : 'Meeting room 3'}" oninput="if(document.getElementById('qrLive').checked) generateQRCode()">
+            <div class="grid grid-cols-2 gap-2">
+                <div>
+                    <label class="${labelClass}">${currentLanguage === 'da' ? 'Start' : 'Start'}</label>
+                    <input type="datetime-local" id="qrInput_calStart" class="${inputClass}" oninput="if(document.getElementById('qrLive').checked) generateQRCode()">
+                </div>
+                <div>
+                    <label class="${labelClass}">${currentLanguage === 'da' ? 'Slut' : 'End'}</label>
+                    <input type="datetime-local" id="qrInput_calEnd" class="${inputClass}" oninput="if(document.getElementById('qrLive').checked) generateQRCode()">
+                </div>
+            </div>
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Beskrivelse (valgfri)' : 'Description (optional)'}</label>
+            <textarea id="qrInput_calDesc" rows="2" class="${inputClass}" placeholder="${currentLanguage === 'da' ? 'Dagsorden...' : 'Agenda...'}" oninput="if(document.getElementById('qrLive').checked) generateQRCode()"></textarea>
+            <p class="text-xs text-gray-400 dark:text-gray-500 -mt-1 mb-2">${currentLanguage === 'da' ? 'Scanningen opretter en kalenderbegivenhed på telefonen.' : 'Scanning creates a calendar event on the phone.'}</p>`,
+        sms: `
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Telefonnummer' : 'Phone number'}</label>
+            <input type="tel" id="qrInput_smsPhone" class="${inputClass}" placeholder="+4512345678" oninput="if(document.getElementById('qrLive').checked) generateQRCode()">
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Besked (valgfri)' : 'Message (optional)'}</label>
+            <textarea id="qrInput_smsBody" rows="2" class="${inputClass}" placeholder="${currentLanguage === 'da' ? 'Hej, jeg er fremme kl...' : 'Hi, I arrive at...'}" oninput="if(document.getElementById('qrLive').checked) generateQRCode()"></textarea>
+            <p class="text-xs text-gray-400 dark:text-gray-500 -mt-1 mb-2">${currentLanguage === 'da' ? 'Scanningen åbner SMS-appen med nummeret og beskeden udfyldt.' : 'Scanning opens the SMS app with the number and message pre-filled.'}</p>`,
+        bitcoin: `
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Bitcoin-adresse' : 'Bitcoin address'}</label>
+            <input type="text" id="qrInput_btcAddr" class="${inputClass}" placeholder="1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2" oninput="if(document.getElementById('qrLive').checked) generateQRCode()">
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Beløb (Bitcoin, valgfri)' : 'Amount (Bitcoin, optional)'}</label>
+            <input type="number" step="0.00000001" id="qrInput_btcAmount" class="${inputClass}" placeholder="0.001" oninput="if(document.getElementById('qrLive').checked) generateQRCode()">
+            <p class="text-xs text-gray-400 dark:text-gray-500 -mt-1 mb-2">${currentLanguage === 'da' ? 'Genererer en BIP-21 bitcoin: URI som Bitcoin-tegnbøger kan scanne.' : 'Generates a BIP-21 bitcoin: URI that Bitcoin wallets can scan.'}</p>`,
+        spotify: `
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Spotify-link (sang, album eller playlist)' : 'Spotify link (song, album or playlist)'}</label>
+            <input type="url" id="qrInput_spotifyUrl" class="${inputClass}" placeholder="https://open.spotify.com/track/..." oninput="if(document.getElementById('qrLive').checked) generateQRCode()">
+            <p class="text-xs text-gray-400 dark:text-gray-500 -mt-1 mb-2">${currentLanguage === 'da' ? 'Kopiér link fra Spotify og indsæt her. Scanningen åbner sangen direkte.' : 'Copy a link from Spotify and paste here. Scanning opens the track directly.'}</p>`,
+        meeting: `
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Mødelink (Teams, Zoom, Google Meet...)' : 'Meeting link (Teams, Zoom, Google Meet...)'}</label>
+            <input type="url" id="qrInput_meetingUrl" class="${inputClass}" placeholder="https://teams.microsoft.com/l/meetup-join/..." oninput="if(document.getElementById('qrLive').checked) generateQRCode()">
+            <label class="${labelClass}">${currentLanguage === 'da' ? 'Møde-ID / kode (valgfri)' : 'Meeting ID / code (optional)'}</label>
+            <input type="text" id="qrInput_meetingId" class="${inputClass}" placeholder="${currentLanguage === 'da' ? 'Møde-ID: 123 456 789' : 'Meeting ID: 123 456 789'}" oninput="if(document.getElementById('qrLive').checked) generateQRCode()">
+            <p class="text-xs text-gray-400 dark:text-gray-500 -mt-1 mb-2">${currentLanguage === 'da' ? 'Del mødelinket som en QR-kode — f.eks. på en plakat i mødelokalet.' : 'Share your meeting link as a QR code — e.g. on a poster in the meeting room.'}</p>`,
+        rickroll: `
+            <div class="p-5 bg-gradient-to-br from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 rounded-xl border-2 border-red-300 dark:border-red-700 text-center">
+                <p class="text-5xl mb-3">🎵</p>
+                <h4 class="text-lg font-bold text-red-700 dark:text-red-400 mb-1">Never Gonna Give You Up</h4>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">${currentLanguage === 'da' ? 'QR-koden linker til den legendariske Rick Astley-sang. Print den ud, sæt den på kaffemaskinen og vent på reaktionerne. 😈' : 'The QR code links to the legendary Rick Astley song. Print it out, stick it on the coffee machine, and wait for the reactions. 😈'}</p>
+                <p class="text-xs font-mono bg-white dark:bg-gray-800 rounded px-3 py-1 inline-block text-gray-500 dark:text-gray-400">https://youtu.be/dQw4w9WgXcQ</p>
+            </div>`,
+        fortune: `
+            <div class="p-4 bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 rounded-xl border-2 border-yellow-300 dark:border-yellow-700 mb-3 text-center">
+                <p class="text-3xl mb-1">🥠</p>
+                <p class="text-sm font-bold text-yellow-700 dark:text-yellow-400">${currentLanguage === 'da' ? 'Din daglige spåkage-visdom' : 'Your daily fortune cookie wisdom'}</p>
+            </div>
+            <div class="flex items-center gap-2 mb-1">
+                <label class="flex-1 text-sm font-medium text-gray-700 dark:text-gray-300">${currentLanguage === 'da' ? 'Vælg din forudsigelse' : 'Choose your fortune'}</label>
+                <button onclick="qrShuffleFortune()" class="flex-shrink-0 px-2.5 py-1 rounded-md text-xs font-semibold bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-300 hover:bg-yellow-200 dark:hover:bg-yellow-800/60 transition-colors" title="${currentLanguage === 'da' ? 'Tilfældig forudsigelse!' : 'Surprise me!'}">🎲 ${currentLanguage === 'da' ? 'Tilfældig' : 'Random'}</button>
+            </div>
+            <select id="qrInput_fortune" class="${inputClass}" onchange="qrUpdateFortunePrev()">
+                <option value="0">🍀 ${currentLanguage === 'da' ? 'Du vil snart finde lykken... og en parkeringsplads' : 'Happiness is near... and so is a parking spot'}</option>
+                <option value="1">⭐ ${currentLanguage === 'da' ? 'En stor overraskelse venter dig. (Det er kaffe.)' : 'A great surprise awaits. (It\'s coffee.)'}</option>
+                <option value="2">🦆 ${currentLanguage === 'da' ? 'Konfucius siger: En gummitand er ikke bedre end ingen tand' : 'A rubber tooth is no better than no tooth at all'}</option>
+                <option value="3">🎯 ${currentLanguage === 'da' ? 'Du er unik — ligesom alle andre' : 'You are unique — just like everyone else'}</option>
+                <option value="4">🍕 ${currentLanguage === 'da' ? 'Penge kan ikke købe lykke. Men det kan pizza.' : 'Money can\'t buy happiness. But pizza can.'}</option>
+                <option value="5">🌈 ${currentLanguage === 'da' ? 'Bag hver regnbue gemmer sig et møde, du ikke kendte til' : 'Behind every rainbow hides a meeting you forgot about'}</option>
+                <option value="6">🤖 ${currentLanguage === 'da' ? 'Robotter vil tage dit job. Men ikke i dag. Måske i morgen.' : 'Robots will take your job. Not today though. Maybe tomorrow.'}</option>
+                <option value="7">💻 ${currentLanguage === 'da' ? 'It works on my machine. Det er nok.' : 'It works on my machine. Good enough.'}</option>
+                <option value="8">💤 ${currentLanguage === 'da' ? 'Mødet kunne have været en email' : 'That meeting could have been an email'}</option>
+                <option value="9">🐚 ${currentLanguage === 'da' ? 'En skildpadde starter sin rejse ved at stikke halsen frem... og stå i kø' : 'A turtle starts its journey by sticking its neck out... then queuing'}</option>
+            </select>
+            <div id="qrFortunePrev" class="mt-1.5 min-h-[2.5rem] p-3 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 text-sm italic text-yellow-800 dark:text-yellow-300"></div>`,
+        chucknorris: `
+            <div class="p-4 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 rounded-xl border-2 border-orange-300 dark:border-orange-700 mb-3 text-center">
+                <p class="text-3xl mb-1">💪</p>
+                <p class="text-sm font-bold text-orange-700 dark:text-orange-400">${currentLanguage === 'da' ? 'Chuck Norris-fakta — til QR' : 'Chuck Norris facts — as QR'}</p>
+            </div>
+            <div class="flex items-center gap-2 mb-1">
+                <label class="flex-1 text-sm font-medium text-gray-700 dark:text-gray-300">${currentLanguage === 'da' ? 'Vælg et faktum' : 'Choose a fact'}</label>
+                <button onclick="qrShuffleChuck()" class="flex-shrink-0 px-2.5 py-1 rounded-md text-xs font-semibold bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-800/60 transition-colors" title="${currentLanguage === 'da' ? 'Tilfældig Chuck-fakta!' : 'Random Chuck fact!'}">🎲 ${currentLanguage === 'da' ? 'Tilfældig' : 'Random'}</button>
+            </div>
+            <select id="qrInput_chuck" class="${inputClass}" onchange="qrUpdateChuckPrev()">
+                <option value="0">Chuck Norris kan delete the Recycle Bin.</option>
+                <option value="1">Chuck Norris kan kompilere fejlkode.</option>
+                <option value="2">Chuck Norris behøver ingen mus — han intimiderer computeren til at adlyde.</option>
+                <option value="3">Chuck Norris' Git-commits er aldrig "rejected".</option>
+                <option value="4">Chuck Norris kan tælle til uendelig — to gange.</option>
+                <option value="5">Når Chuck Norris sover, tæller fårene ham.</option>
+                <option value="6">Chuck Norris har vundet en stirre-konkurrence mod sin webcam.</option>
+                <option value="7">Chuck Norris' adgangskode er altid korrekt — første gang.</option>
+                <option value="8">Chuck Norris behøver ikke unit tests. Koden er for bange til at fejle.</option>
+                <option value="9">Chuck Norris leverer hele supply chain til sig selv — inden han bestiller.</option>
+            </select>
+            <div id="qrChuckPrev" class="mt-1.5 min-h-[2.5rem] p-3 rounded-lg bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 text-sm italic text-orange-800 dark:text-orange-300"></div>`
     };
 
     container.innerHTML = templates[type] || templates.url;
+
+    // Post-render hooks for types that need no input (auto-generate) or have live previews
+    if (type === 'rickroll') {
+        // No inputs — generate the QR immediately
+        requestAnimationFrame(() => { if (typeof generateQRCode === 'function') generateQRCode(); });
+    } else if (type === 'fortune') {
+        qrUpdateFortunePrev();
+    } else if (type === 'chucknorris') {
+        qrUpdateChuckPrev();
+    }
 }
 
 function buildQRContent() {
@@ -14408,8 +14546,112 @@ function buildQRContent() {
             const email = val('vcardEmail') || '';
             return `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\n${org ? 'ORG:' + org + '\n' : ''}${phone ? 'TEL:' + phone + '\n' : ''}${email ? 'EMAIL:' + email + '\n' : ''}END:VCARD`;
         }
+        case 'image': return val('imageUrl') || 'https://example.com/photo.jpg';
+        case 'location': {
+            const lat = val('lat') || '55.6761';
+            const lng = val('lng') || '12.5683';
+            const place = val('placeName');
+            return place ? `geo:${lat},${lng}?q=${encodeURIComponent(place)}` : `geo:${lat},${lng}`;
+        }
+        case 'calendar': {
+            const title = val('calTitle') || (currentLanguage === 'da' ? 'Begivenhed' : 'Event');
+            const loc   = val('calLocation') || '';
+            const desc  = val('calDesc') || '';
+            const startRaw = val('calStart');
+            const endRaw   = val('calEnd');
+            const fmt = d => d ? d.replace(/[-:]/g, '').replace('T', 'T') + '00' : '';
+            const dtStart = startRaw ? fmt(startRaw) : '20260301T090000';
+            const dtEnd   = endRaw   ? fmt(endRaw)   : '20260301T100000';
+            return `BEGIN:VCALENDAR\nBEGIN:VEVENT\nSUMMARY:${title}\n${loc ? 'LOCATION:' + loc + '\n' : ''}${desc ? 'DESCRIPTION:' + desc + '\n' : ''}DTSTART:${dtStart}\nDTEND:${dtEnd}\nEND:VEVENT\nEND:VCALENDAR`;
+        }
+        case 'sms': {
+            const phone = val('smsPhone') || '+45';
+            const body  = val('smsBody') || '';
+            return body ? `smsto:${phone}:${body}` : `smsto:${phone}`;
+        }
+        case 'bitcoin': {
+            const addr   = val('btcAddr') || '';
+            const amount = val('btcAmount') || '';
+            if (!addr) return 'bitcoin:';
+            return amount ? `bitcoin:${addr}?amount=${amount}` : `bitcoin:${addr}`;
+        }
+        case 'spotify':
+            return val('spotifyUrl') || 'https://open.spotify.com';
+        case 'meeting': {
+            const url = val('meetingUrl') || '';
+            const mid = val('meetingId') || '';
+            return url || (mid ? `Meeting ID: ${mid}` : 'https://teams.microsoft.com');
+        }
+        case 'rickroll':
+            return 'https://youtu.be/dQw4w9WgXcQ';
+        case 'fortune': {
+            const idx = parseInt(val('fortune') || '0');
+            const fortunes = [
+                'Du vil snart finde lykken... og en parkeringsplads 🍀',
+                'En stor overraskelse venter dig. Det er kaffe. ⭐',
+                'Konfucius siger: En gummitand er ikke bedre end ingen tand 🦆',
+                'Du er unik — ligesom alle andre 🎯',
+                'Penge kan ikke købe lykke. Men det kan pizza. 🍕',
+                'Bag hver regnbue gemmer sig et møde, du ikke kendte til 🌈',
+                'Robotter vil tage dit job. Ikke i dag. Måske i morgen. 🤖',
+                'It works on my machine. Det er nok. 💻',
+                'Mødet kunne have været en email 💤',
+                'En skildpadde starter sin rejse ved at stikke halsen frem... og stå i kø 🐚'
+            ];
+            return fortunes[idx % fortunes.length];
+        }
+        case 'chucknorris': {
+            const idx = parseInt(val('chuck') || '0');
+            const facts = [
+                'Chuck Norris kan delete the Recycle Bin.',
+                'Chuck Norris kan kompilere fejlkode.',
+                'Chuck Norris behøver ingen mus — han intimiderer computeren til at adlyde.',
+                "Chuck Norris' Git-commits er aldrig 'rejected'.",
+                'Chuck Norris kan tælle til uendelig — to gange.',
+                'Når Chuck Norris sover, tæller fårene ham.',
+                'Chuck Norris har vundet en stirre-konkurrence mod sin webcam.',
+                'Chuck Norris\u2019 adgangskode er altid korrekt.',
+                'Chuck Norris behøver ikke unit tests. Koden er for bænge til at fejle.',
+                'Chuck Norris\u2019 Excel-ark kan dividere med nul.'
+            ];
+            return facts[idx % facts.length];
+        }
         default: return '';
     }
+}
+
+// ── QR Fun-type helpers ─────────────────────────────────────────────────────────
+
+/** Update the fortune cookie live-preview box and fire generateQRCode in live mode. */
+function qrUpdateFortunePrev() {
+    const prev = document.getElementById('qrFortunePrev');
+    if (!prev) return;
+    prev.textContent = buildQRContent();
+    if (document.getElementById('qrLive')?.checked) generateQRCode();
+}
+
+/** Update the Chuck Norris live-preview box and fire generateQRCode in live mode. */
+function qrUpdateChuckPrev() {
+    const prev = document.getElementById('qrChuckPrev');
+    if (!prev) return;
+    prev.textContent = buildQRContent();
+    if (document.getElementById('qrLive')?.checked) generateQRCode();
+}
+
+/** Pick a random fortune and refresh the preview + QR. */
+function qrShuffleFortune() {
+    const sel = document.getElementById('qrInput_fortune');
+    if (!sel) return;
+    sel.value = String(Math.floor(Math.random() * sel.options.length));
+    qrUpdateFortunePrev();
+}
+
+/** Pick a random Chuck Norris fact and refresh the preview + QR. */
+function qrShuffleChuck() {
+    const sel = document.getElementById('qrInput_chuck');
+    if (!sel) return;
+    sel.value = String(Math.floor(Math.random() * sel.options.length));
+    qrUpdateChuckPrev();
 }
 
 // --- QR Generation ---
@@ -14522,6 +14764,23 @@ function generateQRCode() {
     // Clean container
     preview.innerHTML = '';
 
+    // --- Read gradient settings ---
+    const gradientEnabled = document.getElementById('qrGradientEnabled')?.checked || false;
+    const gradColor1      = document.getElementById('qrGradColor1')?.value || '#000000';
+    const gradColor2      = document.getElementById('qrGradColor2')?.value || '#0066ff';
+    const gradDirection   = document.getElementById('qrGradDirection')?.value || 'top-bottom';
+
+    // --- Read frame settings ---
+    const frameEnabled  = document.getElementById('qrFrameEnabled')?.checked || false;
+    const frameText     = document.getElementById('qrFrameText')?.value || 'SCAN MIG';
+    const frameTextColor = document.getElementById('qrFrameTextColor')?.value || '#ffffff';
+    const frameBgColor  = document.getElementById('qrFrameBgColor')?.value || '#000000';
+    const framePosition = document.getElementById('qrFramePosition')?.value || 'bottom';
+
+    // --- Read logo border settings ---
+    const logoBorderColor = document.getElementById('qrLogoBorderColor')?.value || '#000000';
+    const logoBorderWidth = parseInt(document.getElementById('qrLogoBorderWidth')?.value || 0);
+
     try {
         // Step 1: Generate QR into a hidden container to extract module data
         const tempDiv = document.createElement('div');
@@ -14538,10 +14797,8 @@ function generateQRCode() {
         });
 
         // Step 2: Access the internal module grid directly from qrcodejs
-        // qrcodejs2 stores the model in _oQRCode with .modules (boolean[][]) and .moduleCount
         const qrModel = currentQRInstance._oQRCode;
         if (!qrModel || !qrModel.modules) {
-            // Fallback: just show the default canvas
             const fallback = tempDiv.querySelector('canvas');
             if (fallback) {
                 const clone = document.createElement('canvas');
@@ -14560,34 +14817,67 @@ function generateQRCode() {
         }
 
         const moduleCount = qrModel.moduleCount;
-        const modules = qrModel.modules; // boolean[][]
+        const modules = qrModel.modules;
 
         document.body.removeChild(tempDiv);
 
-        // Step 3: Draw styled QR on a new canvas
+        // Step 3: Calculate canvas dimensions (extra height for frame)
+        const frameH = frameEnabled ? Math.round(size * 0.14) : 0;
+        const totalW = size;
+        const totalH = size + frameH;
+
         const outCanvas = document.createElement('canvas');
-        outCanvas.width = size;
-        outCanvas.height = size;
+        outCanvas.width = totalW;
+        outCanvas.height = totalH;
         const ctx = outCanvas.getContext('2d');
 
-        // Background
+        // Draw background for the QR area
         ctx.fillStyle = bgColor;
-        ctx.fillRect(0, 0, size, size);
+        if (framePosition === 'top') {
+            ctx.fillRect(0, frameH, size, size);
+        } else {
+            ctx.fillRect(0, 0, size, size);
+        }
 
         // Quiet zone + drawing area
         const margin = Math.round(size * 0.04);
         const drawArea = size - margin * 2;
         const cellW = drawArea / moduleCount;
 
-        ctx.fillStyle = fgColor;
+        // Determine fill style (solid or gradient)
+        const qrOffsetY = framePosition === 'top' ? frameH : 0;
+        let moduleFill;
+        if (gradientEnabled) {
+            let x0 = 0, y0 = qrOffsetY, x1 = 0, y1 = qrOffsetY;
+            switch (gradDirection) {
+                case 'top-bottom': y1 = qrOffsetY + size; break;
+                case 'left-right': x1 = size; break;
+                case 'diagonal':   x1 = size; y1 = qrOffsetY + size; break;
+                case 'radial': break; // handled below
+            }
+            if (gradDirection === 'radial') {
+                const grad = ctx.createRadialGradient(size / 2, qrOffsetY + size / 2, 0, size / 2, qrOffsetY + size / 2, size * 0.7);
+                grad.addColorStop(0, gradColor1);
+                grad.addColorStop(1, gradColor2);
+                moduleFill = grad;
+            } else {
+                const grad = ctx.createLinearGradient(x0, y0, x1, y1);
+                grad.addColorStop(0, gradColor1);
+                grad.addColorStop(1, gradColor2);
+                moduleFill = grad;
+            }
+        } else {
+            moduleFill = fgColor;
+        }
+
+        ctx.fillStyle = moduleFill;
 
         for (let row = 0; row < moduleCount; row++) {
             for (let col = 0; col < moduleCount; col++) {
                 if (!modules[row][col]) continue;
                 const cx = margin + col * cellW;
-                const cy = margin + row * cellW;
+                const cy = qrOffsetY + margin + row * cellW;
 
-                // Finder patterns always drawn as squares for scan reliability
                 if (_isFinderModule(row, col, moduleCount)) {
                     ctx.fillRect(cx, cy, Math.ceil(cellW), Math.ceil(cellW));
                 } else {
@@ -14596,31 +14886,62 @@ function generateQRCode() {
             }
         }
 
-        // Step 4: Logo overlay
+        // Step 4: Logo overlay with shape / border
         if (qrLogoImage) {
             const logoSizePct = parseInt(document.getElementById('qrLogoSize')?.value || 20);
             const logoW = Math.round(size * logoSizePct / 100);
             const logoH = Math.round(size * logoSizePct / 100);
             const lx = Math.round((size - logoW) / 2);
-            const ly = Math.round((size - logoH) / 2);
+            const ly = qrOffsetY + Math.round((size - logoH) / 2);
             const pad = Math.round(logoW * 0.1);
-            const r = Math.round(pad * 0.8);
-            // Background behind logo for readability
-            ctx.fillStyle = bgColor;
-            ctx.beginPath();
-            if (ctx.roundRect) {
-                ctx.roundRect(lx - pad, ly - pad, logoW + pad * 2, logoH + pad * 2, r);
-            } else {
-                ctx.rect(lx - pad, ly - pad, logoW + pad * 2, logoH + pad * 2);
+            const bw = logoBorderWidth;
+
+            ctx.save();
+
+            // Draw background + border behind logo depending on shape
+            const totalLogoW = logoW + pad * 2 + bw * 2;
+            const totalLogoH = logoH + pad * 2 + bw * 2;
+            const tlx = lx - pad - bw;
+            const tly = ly - pad - bw;
+
+            // Border fill
+            if (bw > 0) {
+                ctx.fillStyle = logoBorderColor;
+                _drawShapePath(ctx, currentQRLogoShape, tlx, tly, totalLogoW, totalLogoH);
+                ctx.fill();
             }
+
+            // White background behind logo
+            ctx.fillStyle = bgColor;
+            _drawShapePath(ctx, currentQRLogoShape, lx - pad, ly - pad, logoW + pad * 2, logoH + pad * 2);
             ctx.fill();
+
+            // Clip to shape for logo image
+            ctx.beginPath();
+            _drawShapePath(ctx, currentQRLogoShape, lx, ly, logoW, logoH);
+            ctx.clip();
             ctx.drawImage(qrLogoImage, lx, ly, logoW, logoH);
+
+            ctx.restore();
+        }
+
+        // Step 5: Frame / label band
+        if (frameEnabled && frameText.trim()) {
+            const fy = framePosition === 'top' ? 0 : size;
+            ctx.fillStyle = frameBgColor;
+            ctx.fillRect(0, fy, totalW, frameH);
+
+            ctx.fillStyle = frameTextColor;
+            const fontSize = Math.round(frameH * 0.5);
+            ctx.font = `bold ${fontSize}px Arial, sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(frameText, totalW / 2, fy + frameH / 2);
         }
 
         preview.appendChild(outCanvas);
         if (errorEl) errorEl.classList.add('hidden');
 
-        // Show content preview
         if (infoBox && infoDisplay) {
             infoDisplay.textContent = content.length > 150 ? content.substring(0, 150) + '…' : content;
             infoBox.classList.remove('hidden');
@@ -14633,6 +14954,40 @@ function generateQRCode() {
         }
         if (infoBox) infoBox.classList.add('hidden');
     }
+}
+
+/**
+ * Draw a shape path (square / rounded / circle) for logo clipping & border
+ */
+function _drawShapePath(ctx, shape, x, y, w, h) {
+    ctx.beginPath();
+    switch (shape) {
+        case 'circle': {
+            const rx = w / 2, ry = h / 2;
+            ctx.ellipse(x + rx, y + ry, rx, ry, 0, 0, Math.PI * 2);
+            break;
+        }
+        case 'rounded': {
+            const r = Math.min(w, h) * 0.2;
+            if (ctx.roundRect) {
+                ctx.roundRect(x, y, w, h, r);
+            } else {
+                ctx.moveTo(x + r, y);
+                ctx.lineTo(x + w - r, y);
+                ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+                ctx.lineTo(x + w, y + h - r);
+                ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+                ctx.lineTo(x + r, y + h);
+                ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+                ctx.lineTo(x, y + r);
+                ctx.quadraticCurveTo(x, y, x + r, y);
+            }
+            break;
+        }
+        default: // square
+            ctx.rect(x, y, w, h);
+    }
+    ctx.closePath();
 }
 
 function downloadQRCode(format) {
@@ -14698,6 +15053,121 @@ function canvasToSVG(canvas, size, fgColor, bgColor) {
         }
     }
     return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}"><rect width="${size}" height="${size}" fill="${bgColor}"/>${rects}</svg>`;
+}
+
+// --- Batch QR Generation ---
+
+function _generateSingleQRCanvas(text, size, fgColor, bgColor, ecLevel) {
+    const tempDiv = document.createElement('div');
+    tempDiv.style.cssText = 'position:absolute;left:-9999px;top:-9999px;';
+    document.body.appendChild(tempDiv);
+
+    const errorLevels = { L: QRCode.CorrectLevel.L, M: QRCode.CorrectLevel.M, Q: QRCode.CorrectLevel.Q, H: QRCode.CorrectLevel.H };
+    const qr = new QRCode(tempDiv, {
+        text: text,
+        width: size,
+        height: size,
+        colorDark: fgColor,
+        colorLight: bgColor,
+        correctLevel: errorLevels[ecLevel] || QRCode.CorrectLevel.M
+    });
+
+    const qrModel = qr._oQRCode;
+    document.body.removeChild(tempDiv);
+
+    if (!qrModel || !qrModel.modules) return null;
+
+    const moduleCount = qrModel.moduleCount;
+    const modules = qrModel.modules;
+    const canvas = document.createElement('canvas');
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(0, 0, size, size);
+
+    const margin = Math.round(size * 0.04);
+    const drawArea = size - margin * 2;
+    const cellW = drawArea / moduleCount;
+    ctx.fillStyle = fgColor;
+
+    for (let row = 0; row < moduleCount; row++) {
+        for (let col = 0; col < moduleCount; col++) {
+            if (!modules[row][col]) continue;
+            const cx = margin + col * cellW;
+            const cy = margin + row * cellW;
+            if (_isFinderModule(row, col, moduleCount)) {
+                ctx.fillRect(cx, cy, Math.ceil(cellW), Math.ceil(cellW));
+            } else {
+                _drawQRModule(ctx, cx, cy, Math.ceil(cellW), Math.ceil(cellW), currentQRStyle);
+            }
+        }
+    }
+    return canvas;
+}
+
+function generateBatchQRCodes() {
+    const textarea = document.getElementById('qrBatchInput');
+    const grid = document.getElementById('batchQRResults');
+    const dlBtn = document.getElementById('downloadBatchQRBtn');
+    if (!textarea || !grid) return;
+
+    const lines = textarea.value.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    if (lines.length === 0) {
+        showToast(currentLanguage === 'da' ? 'Indtast mindst ét indhold' : 'Enter at least one content line', 'warning');
+        return;
+    }
+
+    const size    = parseInt(document.getElementById('qrSize')?.value  || 200);
+    const fgColor = document.getElementById('qrFgColor')?.value || '#000000';
+    const bgColor = document.getElementById('qrBgColor')?.value || '#ffffff';
+    const ecLevel = document.getElementById('qrErrorLevel')?.value || 'M';
+
+    grid.innerHTML = '';
+    let count = 0;
+
+    lines.forEach((line, idx) => {
+        const card = document.createElement('div');
+        card.className = 'bg-white dark:bg-gray-800 rounded-lg shadow p-3 flex flex-col items-center gap-2';
+
+        const canvas = _generateSingleQRCanvas(line, Math.min(size, 200), fgColor, bgColor, ecLevel);
+        if (canvas) {
+            canvas.style.maxWidth = '100%';
+            card.appendChild(canvas);
+            count++;
+        }
+
+        const label = document.createElement('p');
+        label.className = 'text-xs text-gray-500 dark:text-gray-400 text-center break-all';
+        label.textContent = line.length > 60 ? line.substring(0, 60) + '…' : line;
+        card.appendChild(label);
+
+        grid.appendChild(card);
+    });
+
+    if (dlBtn) dlBtn.classList.toggle('hidden', count === 0);
+    showToast(currentLanguage === 'da' ? `${count} QR-koder genereret` : `${count} QR codes generated`, 'success');
+}
+
+function downloadBatchQRCodes() {
+    const grid = document.getElementById('batchQRResults');
+    if (!grid) return;
+
+    const canvases = grid.querySelectorAll('canvas');
+    if (canvases.length === 0) {
+        showToast(currentLanguage === 'da' ? 'Generer batch QR-koder først' : 'Generate batch QR codes first', 'warning');
+        return;
+    }
+
+    canvases.forEach((canvas, idx) => {
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png');
+        link.download = `qr_batch_${idx + 1}_${Date.now()}.png`;
+        link.click();
+    });
+
+    showToast(currentLanguage === 'da' ? `${canvases.length} QR-koder downloadet` : `${canvases.length} QR codes downloaded`, 'success');
 }
 
 // --- Barcode Generation ---
@@ -15641,7 +16111,7 @@ function copyTimeResults() {
 
 function refreshLEANDashboard() {
     // Gather all LEAN metrics from localStorage
-    const dashboardPanel = document.getElementById('leanDashboardOverview');
+    const dashboardPanel = document.getElementById('leanDash');
     if (!dashboardPanel) return;
     
     // Clear any previous color classes
@@ -16177,6 +16647,18 @@ function initVSMCanvas() {
         }
     }
     
+    // Load dual-state data
+    try {
+        const savedStates = localStorage.getItem('lean_vsm_states');
+        if (savedStates) vsmStates = JSON.parse(savedStates);
+        const savedCurrentState = localStorage.getItem('lean_vsm_current_state');
+        if (savedCurrentState) vsmCurrentState = savedCurrentState;
+        // Sync current state visually
+        if (vsmCurrentState === 'future') {
+            switchVSMState('future');
+        }
+    } catch(e) {}
+    
     // Canvas click handler - now opens edit modal
     vsmCanvas.addEventListener('click', handleVSMClick);
     
@@ -16674,6 +17156,26 @@ function calculateVSMMetrics() {
     } else {
         bottleneckAlert.classList.add('hidden');
     }
+    
+    // Populate new extended metrics
+    const twEl = document.getElementById('vsmTotalWait');
+    if (twEl) twEl.textContent = totalWaitTime.toFixed(0) + ' min';
+    
+    const pcEl = document.getElementById('vsmProcessCount');
+    if (pcEl) pcEl.textContent = vsmProcesses.length;
+    
+    const opEl = document.getElementById('vsmTotalOperators');
+    if (opEl) opEl.textContent = vsmProcesses.reduce((s, p) => s + (p.operators || 1), 0);
+    
+    // Takt vs Cycle check
+    const taktDemand = parseFloat(document.getElementById('vsmTaktDemand')?.value) || 0;
+    const taktAvailable = parseFloat(document.getElementById('vsmTaktAvailable')?.value) || 480;
+    if (taktDemand > 0) {
+        updateTaktVsCycle(taktAvailable / taktDemand);
+    }
+    
+    // Generate recommendations
+    generateVSMRecommendations();
 }
 
 function clearVSM() {
@@ -16727,6 +17229,10 @@ function exportVSM() {
 
 function saveVSM() {
     localStorage.setItem('lean_vsm_processes', JSON.stringify(vsmProcesses));
+    // Save dual-state data
+    vsmStates[vsmCurrentState] = JSON.parse(JSON.stringify(vsmProcesses));
+    localStorage.setItem('lean_vsm_states', JSON.stringify(vsmStates));
+    localStorage.setItem('lean_vsm_current_state', vsmCurrentState);
 }
 
 // ========================================
@@ -16907,6 +17413,616 @@ function exportKaizen() {
     alert(currentLanguage === 'da' ? '✅ Kaizen plan eksporteret!' : '✅ Kaizen plan exported!');
 }
 
+// ========================================
+// VSM Enhancements: Takt Time, State Toggle, Example Data, Recommendations
+// ========================================
+
+let vsmCurrentState = 'current'; // 'current' or 'future'
+let vsmStates = { current: [], future: [] };
+
+function switchVSMState(state) {
+    // Save current processes into their state
+    vsmStates[vsmCurrentState] = JSON.parse(JSON.stringify(vsmProcesses));
+    
+    vsmCurrentState = state;
+    
+    // Load the target state
+    vsmProcesses = vsmStates[state] ? JSON.parse(JSON.stringify(vsmStates[state])) : [];
+    
+    // Update UI
+    const curBtn = document.getElementById('vsmStateCurrentBtn');
+    const futBtn = document.getElementById('vsmStateFutureBtn');
+    const label = document.getElementById('vsmStateLabel');
+    
+    if (state === 'current') {
+        curBtn.className = 'px-3 py-1.5 text-xs font-bold rounded-lg transition-all bg-teal-600 text-white';
+        futBtn.className = 'px-3 py-1.5 text-xs font-bold rounded-lg transition-all bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300';
+        label.textContent = 'Current State';
+    } else {
+        futBtn.className = 'px-3 py-1.5 text-xs font-bold rounded-lg transition-all bg-blue-600 text-white';
+        curBtn.className = 'px-3 py-1.5 text-xs font-bold rounded-lg transition-all bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300';
+        label.textContent = 'Future State (Target)';
+    }
+    
+    renderVSM();
+    updateVSMList();
+    calculateVSMMetrics();
+    saveVSM();
+}
+
+function loadVSMExample() {
+    if (vsmProcesses.length > 0 && !confirm('Indlæs eksempeldata? (nuværende data erstattes)')) return;
+    
+    vsmProcesses = [
+        { id: 1001, name: 'Ordremodtagelse', cycleTime: 5, waitTime: 30, isValueAdd: true, type: 'value-add', operators: 1, x: 50, y: 120 },
+        { id: 1002, name: 'Pluk fra lager', cycleTime: 15, waitTime: 10, isValueAdd: true, type: 'value-add', operators: 2, x: 220, y: 120 },
+        { id: 1003, name: 'Transport til QC', cycleTime: 8, waitTime: 20, isValueAdd: false, type: 'transport', operators: 1, x: 390, y: 120 },
+        { id: 1004, name: 'Kvalitetskontrol', cycleTime: 12, waitTime: 5, isValueAdd: false, type: 'inspection', operators: 1, x: 560, y: 120 },
+        { id: 1005, name: 'Pakning', cycleTime: 10, waitTime: 15, isValueAdd: true, type: 'value-add', operators: 2, x: 730, y: 120 },
+        { id: 1006, name: 'Etikettering', cycleTime: 3, waitTime: 0, isValueAdd: false, type: 'non-value-add', operators: 1, x: 900, y: 120 },
+        { id: 1007, name: 'Afsendelse', cycleTime: 7, waitTime: 0, isValueAdd: true, type: 'value-add', operators: 1, x: 1070, y: 120 }
+    ];
+    
+    saveVSM();
+    renderVSM();
+    updateVSMList();
+    calculateVSMMetrics();
+    if (typeof showToast === 'function') showToast('Eksempeldata indlæst i VSM', 'info');
+}
+
+function calculateVSMTakt() {
+    const demand = parseFloat(document.getElementById('vsmTaktDemand')?.value) || 0;
+    const available = parseFloat(document.getElementById('vsmTaktAvailable')?.value) || 480;
+    const resultEl = document.getElementById('vsmTaktResult');
+    
+    if (demand > 0) {
+        const takt = available / demand;
+        resultEl.textContent = takt.toFixed(2) + ' min';
+        resultEl.className = 'text-lg font-bold text-indigo-600 dark:text-indigo-400';
+        
+        // Update takt vs cycle comparison
+        updateTaktVsCycle(takt);
+    } else {
+        resultEl.textContent = '- min';
+        const tvc = document.getElementById('vsmTaktVsCycle');
+        if (tvc) tvc.textContent = '-';
+    }
+}
+
+function updateTaktVsCycle(taktTime) {
+    const tvc = document.getElementById('vsmTaktVsCycle');
+    if (!tvc || vsmProcesses.length === 0) { if (tvc) tvc.textContent = '-'; return; }
+    
+    const maxCycle = Math.max(...vsmProcesses.map(p => p.cycleTime));
+    if (maxCycle <= taktTime) {
+        tvc.textContent = '✓ OK';
+        tvc.className = 'text-lg font-bold text-green-600 dark:text-green-400';
+    } else {
+        tvc.textContent = '⚠ Over';
+        tvc.className = 'text-lg font-bold text-red-600 dark:text-red-400';
+    }
+}
+
+function generateVSMRecommendations() {
+    const recPanel = document.getElementById('vsmRecommendations');
+    const recList = document.getElementById('vsmRecommendationsList');
+    if (!recPanel || !recList) return;
+    
+    if (vsmProcesses.length < 2) {
+        recPanel.classList.add('hidden');
+        return;
+    }
+    
+    const totalCycleTime = vsmProcesses.reduce((s, p) => s + p.cycleTime, 0);
+    const totalWaitTime = vsmProcesses.reduce((s, p) => s + p.waitTime, 0);
+    const totalLeadTime = totalCycleTime + totalWaitTime;
+    const valueAddTime = vsmProcesses.filter(p => p.isValueAdd || p.type === 'value-add').reduce((s, p) => s + p.cycleTime, 0);
+    const pce = totalLeadTime > 0 ? (valueAddTime / totalLeadTime * 100) : 0;
+    const bottleneck = vsmProcesses.reduce((max, p) => p.cycleTime > max.cycleTime ? p : max, vsmProcesses[0]);
+    const transportSteps = vsmProcesses.filter(p => p.type === 'transport');
+    const nvaSteps = vsmProcesses.filter(p => p.type === 'non-value-add');
+    const highWaitSteps = vsmProcesses.filter(p => p.waitTime > 15);
+    
+    const recs = [];
+    
+    if (pce < 10) recs.push('⚠️ PCE er under 10% — der er stor potentiale for forbedring. Reducér ventetider og eliminér ikke-værditilførende trin.');
+    if (pce >= 10 && pce < 25) recs.push('📈 PCE er mellem 10-25% — god start, men stil mod world-class (>25%).');
+    if (pce >= 25) recs.push('🏆 PCE er over 25% — world-class niveau! Fortsat vedligeholdelse og fintuning.');
+    
+    if (totalWaitTime > totalCycleTime) recs.push(`⏳ Ventetid (${totalWaitTime.toFixed(0)}m) er højere end cyklustid (${totalCycleTime.toFixed(0)}m). Fokusér på at reducere ventetider.`);
+    
+    if (transportSteps.length > 0) {
+        const transportTime = transportSteps.reduce((s, p) => s + p.cycleTime, 0);
+        recs.push(`🚚 ${transportSteps.length} transport-trin bruger ${transportTime.toFixed(0)} min. Overvej bedre layout for at reducere intern transport.`);
+    }
+    
+    if (nvaSteps.length > 0) recs.push(`✗ ${nvaSteps.length} ikke-værditilførende trin identificeret. Overvej om de kan elimineres eller automatiseres.`);
+    
+    if (highWaitSteps.length > 0) recs.push(`⏱️ ${highWaitSteps.length} processer har ventetid over 15 min. Overvej FIFO køer eller bedre planlægning.`);
+    
+    recs.push(`🚧 Flaskehals: "${bottleneck.name}" (${bottleneck.cycleTime.toFixed(1)} min). Overvej parallelisering, ekstra kapacitet eller SMED.`);
+    
+    recList.innerHTML = recs.map(r => `<li class="py-1">${r}</li>`).join('');
+    recPanel.classList.remove('hidden');
+}
+
+// ========================================
+// Brainstorm Manager — Timer, Ideas, Random Selector
+// ========================================
+
+const BrainstormManager = (() => {
+    const STORAGE_KEY = 'lean_brainstorm_data';
+    let ideas = [];
+    let timerInterval = null;
+    let timerSeconds = 0;
+    let timerTotal = 0;
+    let isLocked = false;
+    let isRunning = false;
+
+    function save() {
+        const data = {
+            problem: document.getElementById('bsProblem')?.value || '',
+            ideas: ideas,
+            isLocked: isLocked
+        };
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+    }
+
+    function load() {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const data = JSON.parse(saved);
+                if (document.getElementById('bsProblem')) document.getElementById('bsProblem').value = data.problem || '';
+                ideas = data.ideas || [];
+                isLocked = data.isLocked || false;
+                renderIdeas();
+                if (isLocked) lockUI();
+            }
+        } catch(e) {}
+    }
+
+    function addIdea() {
+        if (isLocked) return;
+        const input = document.getElementById('bsNewIdea');
+        const text = input?.value?.trim();
+        if (!text) return;
+        
+        ideas.push({ id: Date.now(), text: text, votes: 0 });
+        input.value = '';
+        input.focus();
+        save();
+        renderIdeas();
+        if (typeof showToast === 'function') showToast('Idé tilføjet!', 'success');
+    }
+
+    function removeIdea(id) {
+        if (isLocked) return;
+        ideas = ideas.filter(i => i.id !== id);
+        save();
+        renderIdeas();
+    }
+
+    function voteIdea(id) {
+        const idea = ideas.find(i => i.id === id);
+        if (idea) {
+            idea.votes++;
+            save();
+            renderIdeas();
+        }
+    }
+
+    function renderIdeas() {
+        const list = document.getElementById('bsIdeasList');
+        const count = document.getElementById('bsIdeaCount');
+        if (!list) return;
+        
+        if (count) count.textContent = `${ideas.length} idé${ideas.length !== 1 ? 'er' : ''}`;
+        
+        if (ideas.length === 0) {
+            list.innerHTML = '<p class="text-xs text-gray-500 dark:text-gray-400 text-center py-4">Ingen idéer endnu. Begynd at skrive!</p>';
+            return;
+        }
+        
+        list.innerHTML = ideas.map((idea, i) => `
+            <div class="flex items-center gap-2 p-2.5 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 group transition-all hover:border-fuchsia-300 dark:hover:border-fuchsia-600">
+                <span class="text-xs font-bold text-fuchsia-600 dark:text-fuchsia-400 w-6 text-center">${i + 1}</span>
+                <span class="flex-1 text-sm text-gray-800 dark:text-gray-200">${escapeHtml(idea.text)}</span>
+                <button onclick="BrainstormManager.voteIdea(${idea.id})" class="text-xs px-2 py-0.5 bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 rounded hover:bg-purple-200 transition-colors" title="Stem">
+                    👍 ${idea.votes > 0 ? idea.votes : ''}
+                </button>
+                ${!isLocked ? `<button onclick="BrainstormManager.removeIdea(${idea.id})" class="text-xs text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity" title="Fjern">✕</button>` : ''}
+            </div>
+        `).join('');
+    }
+
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    function startTimer() {
+        if (isRunning) return;
+        const minutes = parseInt(document.getElementById('bsTimerMinutes')?.value) || 5;
+        if (timerSeconds === 0) {
+            timerSeconds = minutes * 60;
+            timerTotal = timerSeconds;
+        }
+        
+        isRunning = true;
+        document.getElementById('bsStartTimerBtn').classList.add('hidden');
+        document.getElementById('bsPauseTimerBtn').classList.remove('hidden');
+        document.getElementById('bsTimerStatus').textContent = 'Kører...';
+        document.getElementById('bsTimerStatus').className = 'text-xs font-normal px-2 py-0.5 rounded-full bg-green-200 dark:bg-green-900 text-green-700 dark:text-green-400';
+        
+        timerInterval = setInterval(() => {
+            timerSeconds--;
+            updateTimerDisplay();
+            
+            if (timerSeconds <= 0) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                isRunning = false;
+                lockIdeas();
+            }
+        }, 1000);
+    }
+
+    function pauseTimer() {
+        if (!isRunning) return;
+        clearInterval(timerInterval);
+        timerInterval = null;
+        isRunning = false;
+        document.getElementById('bsStartTimerBtn').classList.remove('hidden');
+        document.getElementById('bsPauseTimerBtn').classList.add('hidden');
+        document.getElementById('bsTimerStatus').textContent = 'Pauset';
+        document.getElementById('bsTimerStatus').className = 'text-xs font-normal px-2 py-0.5 rounded-full bg-amber-200 dark:bg-amber-900 text-amber-700 dark:text-amber-400';
+    }
+
+    function resetTimer() {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        isRunning = false;
+        timerSeconds = 0;
+        timerTotal = 0;
+        const minutes = parseInt(document.getElementById('bsTimerMinutes')?.value) || 5;
+        document.getElementById('bsTimerDisplay').textContent = `${minutes}:00`;
+        document.getElementById('bsTimerProgress').style.width = '100%';
+        document.getElementById('bsStartTimerBtn').classList.remove('hidden');
+        document.getElementById('bsPauseTimerBtn').classList.add('hidden');
+        document.getElementById('bsTimerStatus').textContent = 'Ikke startet';
+        document.getElementById('bsTimerStatus').className = 'text-xs font-normal px-2 py-0.5 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400';
+    }
+
+    function updateTimerDisplay() {
+        const m = Math.floor(timerSeconds / 60);
+        const s = timerSeconds % 60;
+        document.getElementById('bsTimerDisplay').textContent = `${m}:${s.toString().padStart(2, '0')}`;
+        
+        const pct = timerTotal > 0 ? (timerSeconds / timerTotal * 100) : 0;
+        document.getElementById('bsTimerProgress').style.width = pct + '%';
+        
+        // Color changes as time runs out
+        if (timerSeconds <= 10) {
+            document.getElementById('bsTimerDisplay').classList.add('text-red-600');
+            document.getElementById('bsTimerDisplay').classList.remove('text-fuchsia-700', 'dark:text-fuchsia-400');
+        }
+    }
+
+    function lockIdeas() {
+        isLocked = true;
+        lockUI();
+        save();
+        if (typeof showToast === 'function') showToast('⏰ Tiden er ude! Idéerne er nu låst.', 'warning');
+    }
+
+    function lockUI() {
+        document.getElementById('bsLockedBanner')?.classList.remove('hidden');
+        const inputArea = document.getElementById('bsInputArea');
+        if (inputArea) {
+            inputArea.style.opacity = '0.5';
+            inputArea.style.pointerEvents = 'none';
+        }
+        document.getElementById('bsTimerStatus').textContent = '🔒 Låst';
+        document.getElementById('bsTimerStatus').className = 'text-xs font-normal px-2 py-0.5 rounded-full bg-red-200 dark:bg-red-900 text-red-700 dark:text-red-400';
+        renderIdeas(); // Re-render without remove buttons
+    }
+
+    function unlock() {
+        isLocked = false;
+        document.getElementById('bsLockedBanner')?.classList.add('hidden');
+        const inputArea = document.getElementById('bsInputArea');
+        if (inputArea) {
+            inputArea.style.opacity = '';
+            inputArea.style.pointerEvents = '';
+        }
+        resetTimer();
+        save();
+        renderIdeas();
+        if (typeof showToast === 'function') showToast('Idéer er låst op igen', 'info');
+    }
+
+    function randomSelect() {
+        if (ideas.length === 0) {
+            if (typeof showToast === 'function') showToast('Tilføj mindst én idé først!', 'warning');
+            return;
+        }
+        
+        const resultDiv = document.getElementById('bsRandomResult');
+        const btn = document.getElementById('bsRandomBtn');
+        if (!resultDiv || !btn) return;
+        
+        btn.disabled = true;
+        btn.textContent = '🎲 Vælger...';
+        
+        // Animate through ideas rapidly for suspense
+        let counter = 0;
+        const totalFlashes = 20 + Math.floor(Math.random() * 10);
+        const flashInterval = setInterval(() => {
+            const randomIdea = ideas[Math.floor(Math.random() * ideas.length)];
+            resultDiv.innerHTML = `<p class="text-lg font-bold text-purple-600 dark:text-purple-400 animate-pulse">${escapeHtml(randomIdea.text)}</p>`;
+            counter++;
+            
+            if (counter >= totalFlashes) {
+                clearInterval(flashInterval);
+                // Final selection
+                const winner = ideas[Math.floor(Math.random() * ideas.length)];
+                resultDiv.innerHTML = `
+                    <div class="text-center">
+                        <p class="text-3xl mb-2">🎉</p>
+                        <p class="text-xl font-bold text-purple-700 dark:text-purple-300">${escapeHtml(winner.text)}</p>
+                        <p class="text-xs text-gray-500 mt-2">Tilfældigt valgt fra ${ideas.length} idéer</p>
+                    </div>
+                `;
+                resultDiv.classList.add('ring-2', 'ring-purple-500', 'bg-purple-50', 'dark:bg-purple-900/20');
+                setTimeout(() => resultDiv.classList.remove('ring-2', 'ring-purple-500', 'bg-purple-50', 'dark:bg-purple-900/20'), 3000);
+                
+                btn.disabled = false;
+                btn.textContent = '🎲 Vælg Tilfældig Idé!';
+                
+                if (typeof showToast === 'function') showToast('Tilfældig idé valgt!', 'success');
+            }
+        }, 80);
+    }
+
+    return {
+        addIdea, removeIdea, voteIdea, save, load,
+        startTimer, pauseTimer, resetTimer,
+        unlock, randomSelect
+    };
+})();
+
+// ========================================
+// Kaffe-Kaizen Manager
+// ========================================
+
+const KaffeKaizen = (() => {
+    const STORAGE_KEY = 'lean_kaffe_kaizen';
+    const SESSIONS_KEY = 'lean_kaffe_kaizen_sessions';
+    let timerInterval = null;
+    let timerSeconds = 15 * 60;
+    let timerTotal = 15 * 60;
+    let isRunning = false;
+    let sessions = [];
+
+    function save() {
+        const data = {
+            problem: document.getElementById('kkProblem')?.value || '',
+            rootCause: document.getElementById('kkRootCause')?.value || '',
+            solution: document.getElementById('kkSolution')?.value || '',
+            who: document.getElementById('kkWho')?.value || '',
+            when: document.getElementById('kkWhen')?.value || '',
+            expected: document.getElementById('kkExpected')?.value || ''
+        };
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+    }
+
+    function load() {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const data = JSON.parse(saved);
+                if (document.getElementById('kkProblem')) document.getElementById('kkProblem').value = data.problem || '';
+                if (document.getElementById('kkRootCause')) document.getElementById('kkRootCause').value = data.rootCause || '';
+                if (document.getElementById('kkSolution')) document.getElementById('kkSolution').value = data.solution || '';
+                if (document.getElementById('kkWho')) document.getElementById('kkWho').value = data.who || '';
+                if (document.getElementById('kkWhen')) document.getElementById('kkWhen').value = data.when || '';
+                if (document.getElementById('kkExpected')) document.getElementById('kkExpected').value = data.expected || '';
+            }
+            const savedSessions = localStorage.getItem(SESSIONS_KEY);
+            if (savedSessions) sessions = JSON.parse(savedSessions);
+            renderSessions();
+        } catch(e) {}
+    }
+
+    function startTimer() {
+        if (isRunning) return;
+        isRunning = true;
+        document.getElementById('kkStartBtn')?.classList.add('hidden');
+        document.getElementById('kkPauseBtn')?.classList.remove('hidden');
+        
+        // Highlight current step based on time
+        highlightStep();
+        
+        timerInterval = setInterval(() => {
+            timerSeconds--;
+            updateDisplay();
+            highlightStep();
+            
+            if (timerSeconds <= 0) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                isRunning = false;
+                document.getElementById('kkStartBtn')?.classList.remove('hidden');
+                document.getElementById('kkPauseBtn')?.classList.add('hidden');
+                if (typeof showToast === 'function') showToast('☕ Kaffe-Kaizen session færdig! Tid til at opsummere.', 'success');
+            }
+        }, 1000);
+    }
+
+    function pauseTimer() {
+        if (!isRunning) return;
+        clearInterval(timerInterval);
+        timerInterval = null;
+        isRunning = false;
+        document.getElementById('kkStartBtn')?.classList.remove('hidden');
+        document.getElementById('kkPauseBtn')?.classList.add('hidden');
+    }
+
+    function resetTimer() {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        isRunning = false;
+        timerSeconds = 15 * 60;
+        timerTotal = 15 * 60;
+        document.getElementById('kkTimerDisplay').textContent = '15:00';
+        document.getElementById('kkProgressBar').style.width = '100%';
+        document.getElementById('kkStartBtn')?.classList.remove('hidden');
+        document.getElementById('kkPauseBtn')?.classList.add('hidden');
+        // Reset step highlights
+        for (let i = 1; i <= 5; i++) {
+            const step = document.getElementById('kkStep' + i);
+            if (step) step.classList.remove('ring-2', 'ring-amber-400', 'shadow-lg');
+        }
+    }
+
+    function updateDisplay() {
+        const m = Math.floor(timerSeconds / 60);
+        const s = timerSeconds % 60;
+        const display = document.getElementById('kkTimerDisplay');
+        if (display) {
+            display.textContent = `${m}:${s.toString().padStart(2, '0')}`;
+            if (timerSeconds <= 60) display.classList.add('text-red-600');
+            else display.classList.remove('text-red-600');
+        }
+        const bar = document.getElementById('kkProgressBar');
+        if (bar) bar.style.width = (timerSeconds / timerTotal * 100) + '%';
+    }
+
+    function highlightStep() {
+        const elapsed = timerTotal - timerSeconds;
+        const stepMinutes = elapsed / 60;
+        let activeStep = 1;
+        if (stepMinutes >= 2 && stepMinutes < 5) activeStep = 2;
+        else if (stepMinutes >= 5 && stepMinutes < 10) activeStep = 3;
+        else if (stepMinutes >= 10 && stepMinutes < 13) activeStep = 4;
+        else if (stepMinutes >= 13) activeStep = 5;
+        
+        for (let i = 1; i <= 5; i++) {
+            const step = document.getElementById('kkStep' + i);
+            if (!step) continue;
+            if (i === activeStep) {
+                step.classList.add('ring-2', 'ring-amber-400', 'shadow-lg');
+            } else {
+                step.classList.remove('ring-2', 'ring-amber-400', 'shadow-lg');
+            }
+        }
+    }
+
+    function completeSession() {
+        const problem = document.getElementById('kkProblem')?.value?.trim();
+        if (!problem) {
+            if (typeof showToast === 'function') showToast('Udfyld mindst problemfeltet først', 'warning');
+            return;
+        }
+        
+        const session = {
+            id: Date.now(),
+            date: new Date().toLocaleDateString('da-DK'),
+            problem: problem,
+            rootCause: document.getElementById('kkRootCause')?.value || '',
+            solution: document.getElementById('kkSolution')?.value || '',
+            who: document.getElementById('kkWho')?.value || '',
+            when: document.getElementById('kkWhen')?.value || '',
+            expected: document.getElementById('kkExpected')?.value || ''
+        };
+        
+        sessions.unshift(session);
+        try { localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions)); } catch(e) {}
+        renderSessions();
+        
+        // Clear current form
+        ['kkProblem', 'kkRootCause', 'kkSolution', 'kkWho', 'kkWhen', 'kkExpected'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.value = '';
+        });
+        localStorage.removeItem(STORAGE_KEY);
+        resetTimer();
+        
+        if (typeof showToast === 'function') showToast('☕ Session gemt! Start en ny Kaffe-Kaizen.', 'success');
+    }
+
+    function renderSessions() {
+        const container = document.getElementById('kkSessionHistory');
+        if (!container) return;
+        
+        if (sessions.length === 0) {
+            container.innerHTML = '<p class="text-xs text-gray-500 dark:text-gray-400 text-center py-3">Ingen sessioner endnu. Start din første Kaffe-Kaizen!</p>';
+            return;
+        }
+        
+        container.innerHTML = sessions.map(s => `
+            <div class="p-3 bg-white dark:bg-gray-800 rounded-lg border border-amber-200 dark:border-amber-800 text-sm">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="font-bold text-amber-700 dark:text-amber-400">☕ ${s.date}</span>
+                    <button onclick="KaffeKaizen.deleteSession(${s.id})" class="text-xs text-red-400 hover:text-red-600">🗑️</button>
+                </div>
+                <p class="font-medium text-gray-800 dark:text-gray-200">${escapeHtml(s.problem)}</p>
+                ${s.solution ? `<p class="text-xs text-green-600 dark:text-green-400 mt-1">💡 ${escapeHtml(s.solution)}</p>` : ''}
+                ${s.who ? `<p class="text-xs text-gray-500 mt-1">👤 ${escapeHtml(s.who)}${s.when ? ` — 📅 ${s.when}` : ''}</p>` : ''}
+            </div>
+        `).join('');
+    }
+
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    function deleteSession(id) {
+        sessions = sessions.filter(s => s.id !== id);
+        try { localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions)); } catch(e) {}
+        renderSessions();
+    }
+
+    function exportSessions() {
+        if (sessions.length === 0) {
+            if (typeof showToast === 'function') showToast('Ingen sessioner at eksportere', 'warning');
+            return;
+        }
+        
+        let md = '# Kaffe-Kaizen Sessioner\n\n';
+        sessions.forEach((s, i) => {
+            md += `## Session ${i + 1} — ${s.date}\n`;
+            md += `**Problem:** ${s.problem}\n`;
+            if (s.rootCause) md += `**Årsag:** ${s.rootCause}\n`;
+            if (s.solution) md += `**Løsning:** ${s.solution}\n`;
+            if (s.who) md += `**Ansvarlig:** ${s.who}\n`;
+            if (s.when) md += `**Deadline:** ${s.when}\n`;
+            if (s.expected) md += `**Forventet resultat:** ${s.expected}\n`;
+            md += '\n---\n\n';
+        });
+        
+        const blob = new Blob([md], { type: 'text/markdown' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Kaffe_Kaizen_${new Date().toISOString().split('T')[0]}.md`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        if (typeof showToast === 'function') showToast('☕ Sessioner eksporteret!', 'success');
+    }
+
+    return {
+        save, load, startTimer, pauseTimer, resetTimer,
+        completeSession, deleteSession, exportSessions
+    };
+})();
+
 // Initialize LEAN calculators on page load
 function initializeLEANTools() {
     // Load saved data from localStorage
@@ -16914,6 +18030,10 @@ function initializeLEANTools() {
     loadLEANData();
     initVSMCanvas();
     loadKaizen();
+    
+    // Initialize new tools
+    BrainstormManager.load();
+    KaffeKaizen.load();
     
     // Calculate initial values for new calculators
     if (document.getElementById('taktTimeResult')) {
@@ -17056,406 +18176,360 @@ function toggleLEANSection(sectionId) {
 }
 
 // ============================================
-// LEAN BOX CLICK-TO-ISOLATE
+// LEAN HOME — COMPLETE NAVIGATION OVERHAUL
+// Zero async. Zero panels. Zero race conditions.
+// Two states: Home (card grid) ↔ Tool (one tool open).
 // ============================================
 
-/**
- * When a section-box header is clicked, hide all sibling boxes in the
- * same panel and show only the clicked one (full-width). A "← Back"
- * button appears at the top to restore the grid view.
- */
-function initLeanBoxIsolation() {
-    document.querySelectorAll('.lean-section-box').forEach(box => {
-        // The first child div (the colored header) is the click target
-        const header = box.querySelector(':scope > div:first-child');
-        if (!header) return;
+/** Tool catalog — single source of truth for all 28 tools. */
+const leanCatalog = [
+    // ── Calculators ──────────────────────────────────────────────────────
+    { id: 'leanDash',           cat: 'calculators', icon: '📈', label: 'LEAN Dashboard',        desc: 'KPI, OEE & waste overview' },
+    { id: 'leanTracker',        cat: 'calculators', icon: '📊', label: 'Improvement Tracker',   desc: 'Track kaizen progress & history' },
+    { id: 'oee',                cat: 'calculators', icon: '⚙️',  label: 'OEE Calculator',        desc: 'Overall Equipment Effectiveness' },
+    { id: 'timeAnalysis',       cat: 'calculators', icon: '⏱️',  label: 'Time Analysis',         desc: 'Takt, cycle & lead time' },
+    { id: 'smed',               cat: 'calculators', icon: '🔧', label: 'SMED Calculator',        desc: 'Setup & changeover reduction' },
+    { id: 'wastes',             cat: 'calculators', icon: '🗑️',  label: '7 Wastes',              desc: 'Identify & cost Lean wastes' },
+    { id: 'kaizen',             cat: 'calculators', icon: '🌟', label: 'Kaizen Planner',         desc: 'Plan & ROI improvements' },
+    { id: 'kaffeKaizen',        cat: 'calculators', icon: '☕', label: 'Kaffe Kaizen',           desc: 'Quick 15-min workshop' },
+    // ── Planning ─────────────────────────────────────────────────────────
+    { id: 'swot',               cat: 'planning',    icon: '🎯', label: 'SWOT Analysis',          desc: 'Strengths, Weaknesses, Opportunities, Threats' },
+    { id: 'vsm',                cat: 'planning',    icon: '🗺️',  label: 'Value Stream Map',      desc: 'Visualise process flow & waste' },
+    { id: 'priorityMatrix',     cat: 'planning',    icon: '🧭', label: 'Priority Matrix',        desc: 'Impact vs effort grid' },
+    { id: 'kompetencetrappen',  cat: 'planning',    icon: '🪜', label: 'Skills Matrix',          desc: 'Team competence levels' },
+    { id: 'brainstorm',         cat: 'planning',    icon: '💡', label: 'Brainstorm',             desc: 'Timed idea generation' },
+    { id: 'negativeBrainstorm', cat: 'planning',    icon: '🧨', label: 'Negative Brainstorm',    desc: 'Risk-first failure analysis' },
+    // ── Reference ────────────────────────────────────────────────────────
+    { id: 'ref5s',              cat: 'reference',   icon: '🧹', label: '5S System',              desc: 'Workplace organisation' },
+    { id: 'ref7r',              cat: 'reference',   icon: '7️⃣',  label: '7R Framework',          desc: 'Right product, right time' },
+    { id: 'ref3m',              cat: 'reference',   icon: '⚖️',  label: '3M',                    desc: 'Muda, Mura, Muri' },
+    { id: 'refPdca',            cat: 'reference',   icon: '🔄', label: 'PDCA Cycle',             desc: 'Plan, Do, Check, Act' },
+    { id: 'refJitKanban',       cat: 'reference',   icon: '📋', label: 'JIT & Kanban',           desc: 'Pull system & visual WIP' },
+    { id: 'refFifoKaizen',      cat: 'reference',   icon: '🔃', label: 'FIFO & Kaizen',          desc: 'First-in, first-out basics' },
+    { id: 'refGemba',           cat: 'reference',   icon: '🚶', label: 'Gemba Walk',             desc: 'Go see, go observe' },
+    { id: 'refPokaYoke',        cat: 'reference',   icon: '🛡️',  label: 'Poka-Yoke',             desc: 'Error proofing' },
+    { id: 'refAndon',           cat: 'reference',   icon: '🚦', label: 'Andon',                  desc: 'Visual alert system' },
+    { id: 'ref5whys',           cat: 'reference',   icon: '❓', label: '5 Whys',                 desc: 'Root cause analysis' },
+    { id: 'supplychain',        cat: 'reference',   icon: '🔗', label: 'Supply Chain Flow',       desc: 'End-to-end flow builder' },
+    { id: 'smartgoals',         cat: 'reference',   icon: '🎯', label: 'SMART Goals',            desc: 'Specific, measurable targets' },
+    { id: 'kotter',             cat: 'reference',   icon: '🔥', label: "Kotter's 8-Step",        desc: 'Change management model' },
+    { id: 'integration',        cat: 'reference',   icon: '💡', label: 'Integration Tips',       desc: 'Link all tools together' },
+];
 
-        header.style.cursor = 'pointer';
-        header.setAttribute('role', 'button');
-        header.setAttribute('tabindex', '0');
-        header.setAttribute('aria-expanded', 'false');
-        header.addEventListener('click', (e) => {
-            // Don't trigger if user clicked a button/link/input inside the header
-            if (e.target.closest('button, a, input, select, textarea')) return;
-            openLeanBox(box);
-        });
-        header.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                openLeanBox(box);
-            }
-        });
-    });
-}
+/** Category display metadata. */
+const leanCatMeta = {
+    calculators: {
+        label: 'Calculators',
+        icon:  '🧮',
+        chip:  'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-200 dark:hover:bg-emerald-800/60',
+        card:  'hover:border-emerald-400 dark:hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/10',
+        sec:   'from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border-emerald-200 dark:border-emerald-800',
+        title: 'text-emerald-700 dark:text-emerald-400',
+    },
+    planning: {
+        label: 'Planning',
+        icon:  '🎯',
+        chip:  'bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300 hover:bg-violet-200 dark:hover:bg-violet-800/60',
+        card:  'hover:border-violet-400 dark:hover:border-violet-500 hover:bg-violet-50 dark:hover:bg-violet-900/10',
+        sec:   'from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20 border-violet-200 dark:border-violet-800',
+        title: 'text-violet-700 dark:text-violet-400',
+    },
+    reference: {
+        label: 'Reference',
+        icon:  '📚',
+        chip:  'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 hover:bg-amber-200 dark:hover:bg-amber-800/60',
+        card:  'hover:border-amber-400 dark:hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/10',
+        sec:   'from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border-amber-200 dark:border-amber-800',
+        title: 'text-amber-700 dark:text-amber-400',
+    },
+};
 
-function openLeanBox(box) {
-    const panel = box.closest('.lean-panel');
-    if (!panel) return;
+// State
+let leanActiveTool    = null;
+let leanActiveCategory = 'all';
+let leanSearchQuery   = '';
 
-    // Already isolated? Do nothing
-    if (panel.querySelector('.lean-back-btn')) return;
-
-    // Insert back button before the first section box
-    const backBtn = document.createElement('button');
-    backBtn.className = 'lean-back-btn flex items-center gap-2 mb-4 px-4 py-2.5 bg-white dark:bg-gray-800 ' +
-        'border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-200 ' +
-        'hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors font-semibold text-sm shadow-sm';
-    
-    if (leanNavigatedFromDashboard) {
-        backBtn.innerHTML = '← <span data-i18n="lean-back-dashboard">Back to Dashboard</span>';
-        backBtn.onclick = () => {
-            closeLeanBox(panel);
-            leanNavigatedFromDashboard = false;
-            switchLeanSubTab('dashboard');
-        };
-    } else {
-        backBtn.innerHTML = '← <span data-i18n="lean-back-all">Back to all tools</span>';
-        backBtn.onclick = () => closeLeanBox(panel);
+/** Migrate old recent-tools format [{id,tab,...}] → simple string[] of IDs. */
+function leanMigrateRecent() {
+    const raw = JSON.parse(localStorage.getItem('lean_recent_tools') || '[]');
+    if (raw.length > 0 && typeof raw[0] === 'object') {
+        return raw.map(item => item.id || item).filter(Boolean);
     }
-    panel.insertBefore(backBtn, panel.firstElementChild);
+    return raw;
+}
+let leanRecentIds = leanMigrateRecent();
 
-    // Hide all other boxes, show clicked one
-    panel.querySelectorAll('.lean-section-box').forEach(b => {
-        const header = b.querySelector(':scope > div:first-child');
-        if (b === box) {
-            b.style.display = '';
-            b.classList.add('lean-box-isolated');
-            if (header) header.setAttribute('aria-expanded', 'true');
-        } else {
-            b.style.display = 'none';
-            if (header) header.setAttribute('aria-expanded', 'false');
-        }
+/**
+ * Main init — called on DOMContentLoaded.
+ * Restructures the DOM: moves all tool boxes out of the old panel wrappers
+ * into a flat #lean-tool-view container, then builds the home card grid.
+ */
+function leanInitHome() {
+    const section = document.getElementById('lean-section');
+    if (!section) return;
+    const wrapper = section.querySelector(':scope > div');
+    if (!wrapper) return;
+
+    // Collect all tool boxes from existing panels
+    const toolBoxes = Array.from(wrapper.querySelectorAll('.lean-section-box'));
+
+    // Create the tool-view container
+    const toolView = document.createElement('div');
+    toolView.id = 'lean-tool-view';
+    toolView.style.display = 'none';
+    toolView.className = 'space-y-0';
+
+    // Move boxes into tool-view and mark them
+    toolBoxes.forEach(box => {
+        box.classList.add('lean-tool-item');
+        box.style.display = 'none';
+        toolView.appendChild(box);
     });
 
-    // Scroll to top of the panel
-    const nav = document.querySelector('#lean-section .sticky');
-    if (nav) nav.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Remove everything except our new lean-header
+    Array.from(wrapper.children).forEach(child => {
+        if (child.id !== 'lean-header') child.remove();
+    });
+
+    // Build and insert home div
+    const homeDiv = document.createElement('div');
+    homeDiv.id = 'lean-home';
+    homeDiv.className = 'space-y-4 pt-2';
+    homeDiv.innerHTML = _leanBuildHomeHTML();
+
+    wrapper.appendChild(homeDiv);
+    wrapper.appendChild(toolView);
+
+    leanRenderRecent();
 }
 
-function closeLeanBox(panel) {
-    // Remove back button
-    const backBtn = panel.querySelector('.lean-back-btn');
-    if (backBtn) backBtn.remove();
+/** Builds the home screen HTML string (recently used + category card grid). */
+function _leanBuildHomeHTML() {
+    const cats = ['calculators', 'planning', 'reference'];
+    const sections = cats.map(cat => {
+        const meta  = leanCatMeta[cat];
+        const tools = leanCatalog.filter(t => t.cat === cat);
+        const cards = tools.map(t =>
+            `<button onclick="leanOpenTool('${t.id}')"
+                     data-tool-id="${t.id}" data-tool-cat="${t.cat}"
+                     class="lean-card flex items-start gap-3 p-4 rounded-xl bg-white dark:bg-gray-800 border-2 border-transparent shadow-sm ${meta.card} transition-all text-left w-full">
+                <span class="text-2xl flex-shrink-0 mt-0.5">${t.icon}</span>
+                <div class="min-w-0">
+                    <p class="font-semibold text-sm text-gray-900 dark:text-white leading-tight">${t.label}</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-snug">${t.desc}</p>
+                </div>
+            </button>`
+        ).join('');
 
-    // Show all boxes again
-    panel.querySelectorAll('.lean-section-box').forEach(b => {
-        b.style.display = '';
-        b.classList.remove('lean-box-isolated');
-        const header = b.querySelector(':scope > div:first-child');
-        if (header) header.setAttribute('aria-expanded', 'false');
+        return `
+        <div class="lean-cat-section" data-cat="${cat}">
+            <div class="flex items-center gap-2 mb-3 px-4 py-2.5 bg-gradient-to-r ${meta.sec} rounded-xl border">
+                <span class="text-lg">${meta.icon}</span>
+                <h3 class="font-bold text-sm ${meta.title}">${meta.label}</h3>
+                <span class="ml-auto text-xs ${meta.chip} px-2 py-0.5 rounded-full font-semibold">${tools.length} tools</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-2">
+                ${cards}
+            </div>
+        </div>`;
+    }).join('');
+
+    return `
+        <div id="lean-recent" style="display:none" class="p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm"></div>
+        <div id="lean-card-grid" class="space-y-4">${sections}</div>`;
+}
+
+/** Open a specific tool: hide home, show tool view, show exactly one box. */
+function leanOpenTool(id) {
+    const home     = document.getElementById('lean-home');
+    const toolView = document.getElementById('lean-tool-view');
+    if (!home || !toolView) return;
+
+    leanTrackRecent(id);
+
+    home.style.display     = 'none';
+    toolView.style.display = 'block';
+
+    // Hide all, show target
+    document.querySelectorAll('.lean-tool-item').forEach(b => { b.style.display = 'none'; });
+    const target = document.getElementById(id);
+    if (target) target.style.display = 'block';
+
+    leanActiveTool = id;
+    leanUpdateToolBar(id);
+    document.getElementById('lean-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/** Close tool and return to the home card grid. */
+function leanCloseToMenu() {
+    const home     = document.getElementById('lean-home');
+    const toolView = document.getElementById('lean-tool-view');
+    if (!home || !toolView) return;
+
+    document.querySelectorAll('.lean-tool-item').forEach(b => { b.style.display = 'none'; });
+    toolView.style.display = 'none';
+    home.style.display     = 'block';
+
+    leanActiveTool = null;
+    leanUpdateHomeBar();
+    document.getElementById('lean-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/** Show the home-state bar, hide the tool-state bar. */
+function leanUpdateHomeBar() {
+    const homeBar = document.getElementById('lean-bar-home');
+    const toolBar = document.getElementById('lean-bar-tool');
+    if (homeBar) homeBar.style.display = '';
+    if (toolBar) toolBar.style.display = 'none';
+}
+
+/** Show the tool-state bar with breadcrumb, hide the home-state bar. */
+function leanUpdateToolBar(id) {
+    const homeBar = document.getElementById('lean-bar-home');
+    const toolBar = document.getElementById('lean-bar-tool');
+    if (homeBar) homeBar.style.display = 'none';
+    if (toolBar) toolBar.style.display = '';
+
+    const tool = leanCatalog.find(t => t.id === id);
+    const bc   = document.getElementById('lean-breadcrumb');
+    if (bc && tool) {
+        const catNames = {
+            calculators: '🧮 Calculators',
+            planning:    '🎯 Planning',
+            reference:   '📚 Reference',
+        };
+        bc.innerHTML = `
+            <span class="text-gray-400 dark:text-gray-500">LEAN</span>
+            <span class="mx-1.5 text-gray-400">›</span>
+            <span class="text-gray-600 dark:text-gray-400">${catNames[tool.cat] || 'Tools'}</span>
+            <span class="mx-1.5 text-gray-400">›</span>
+            <span class="font-semibold text-gray-900 dark:text-white">${tool.icon} ${tool.label}</span>`;
+    }
+}
+
+/** Filter the home card grid by category chip click. */
+function leanSetCategory(cat) {
+    leanActiveCategory = cat;
+
+    // Update chip active styling
+    document.querySelectorAll('.lean-cat-chip').forEach(chip => {
+        chip.classList.toggle('lean-cat-chip-active', chip.dataset.cat === cat);
     });
 
-    // Scroll to top
-    const nav = document.querySelector('#lean-section .sticky');
-    if (nav) nav.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Show / hide category sections
+    document.querySelectorAll('.lean-cat-section').forEach(sec => {
+        sec.style.display = (cat === 'all' || sec.dataset.cat === cat) ? '' : 'none';
+    });
+
+    // Re-apply active search
+    const q = document.getElementById('lean-search')?.value || '';
+    if (q) leanSearchCards(q);
+}
+
+/** Filter cards by search query. */
+function leanSearchCards(query) {
+    leanSearchQuery = (query || '').trim();
+    const clearBtn = document.getElementById('lean-search-clear');
+    if (clearBtn) clearBtn.style.display = leanSearchQuery ? '' : 'none';
+
+    const q = leanSearchQuery.toLowerCase();
+    document.querySelectorAll('.lean-card').forEach(card => {
+        if (!q) { card.style.display = ''; return; }
+        const id   = card.dataset.toolId || '';
+        const tool = leanCatalog.find(t => t.id === id);
+        if (!tool) { card.style.display = 'none'; return; }
+        const keywords = document.getElementById(id)?.getAttribute('data-lean-keywords') || '';
+        const match = tool.label.toLowerCase().includes(q)
+                   || tool.desc.toLowerCase().includes(q)
+                   || keywords.toLowerCase().includes(q);
+        card.style.display = match ? '' : 'none';
+    });
+
+    // Hide category sections that have no visible cards
+    document.querySelectorAll('.lean-cat-section').forEach(sec => {
+        if (leanActiveCategory !== 'all' && sec.dataset.cat !== leanActiveCategory) {
+            sec.style.display = 'none';
+            return;
+        }
+        const hasCards = [...sec.querySelectorAll('.lean-card')].some(c => c.style.display !== 'none');
+        sec.style.display = hasCards ? '' : 'none';
+    });
+}
+
+/** Clear search and restore the full card grid. */
+function leanClearSearch() {
+    const input = document.getElementById('lean-search');
+    if (input) input.value = '';
+    leanSearchQuery = '';
+    const clearBtn = document.getElementById('lean-search-clear');
+    if (clearBtn) clearBtn.style.display = 'none';
+    leanSetCategory(leanActiveCategory);
+}
+
+/** Render the recently used chips strip. */
+function leanRenderRecent() {
+    const container = document.getElementById('lean-recent');
+    if (!container) return;
+
+    const tools = leanRecentIds
+        .map(id => leanCatalog.find(t => t.id === id))
+        .filter(Boolean)
+        .slice(0, 8);
+
+    if (tools.length === 0) {
+        container.style.display = 'none';
+        return;
+    }
+
+    container.style.display = '';
+    container.innerHTML = `
+        <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2.5">🕐 Recently used</p>
+        <div class="flex flex-wrap gap-2">
+            ${tools.map(t => `
+                <button onclick="leanOpenTool('${t.id}')"
+                        class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:border-emerald-400 dark:hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/10 transition-all text-xs font-medium text-gray-700 dark:text-gray-300 shadow-sm">
+                    <span>${t.icon}</span> ${t.label}
+                </button>`).join('')}
+        </div>`;
+}
+
+/** Track a tool open in recently-used list. */
+function leanTrackRecent(id) {
+    leanRecentIds = leanRecentIds.filter(i => i !== id);
+    leanRecentIds.unshift(id);
+    leanRecentIds = leanRecentIds.slice(0, 8);
+    localStorage.setItem('lean_recent_tools', JSON.stringify(leanRecentIds));
+    leanRenderRecent();
 }
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
-    initLeanBoxIsolation();
+    leanInitHome();
     updateLeanToolSummary();
-    toggleLeanHelp(false);
-    renderLeanRecent();
 });
 
+
 // ============================================
-// LEAN SUB-TAB NAVIGATION, QUICK-JUMP & SEARCH
+// LEAN COMPATIBILITY SHIMS (old names → new system above)
 // ============================================
 
-// Sub-tab color config
-const leanSubTabColors = {
-    dashboard:   'bg-emerald-600 text-white shadow-md',
-    calculators: 'bg-cyan-600 text-white shadow-md',
-    planning:    'bg-violet-600 text-white shadow-md',
-    reference:   'bg-amber-600 text-white shadow-md'
-};
-const leanSubTabInactive = 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600';
 
-// Quick-jump items per sub-tab
-const leanQuickJumps = {
-    dashboard: [],  // Dashboard is now a tool launcher grid — no quick-jumps needed
-    calculators: [
-        { id: 'leanDash',      icon: '📈', label: 'Dashboard KPIs',    selector: '#leanDashboardOverview' },
-        { id: 'leanTracker',   icon: '📊', label: 'Tracker',           selector: '.lean-searchable[data-lean-keywords*="tracker"]' },
-        { id: 'oee',           icon: '⚙️', label: 'OEE',              selector: '.lean-searchable[data-lean-keywords*="oee overall"]' },
-        { id: 'timeAnalysis',  icon: '⏱️', label: 'Time Analysis',    selector: '.lean-searchable[data-lean-keywords*="takt cycle lead"]' },
-        { id: 'smed',          icon: '⏱️', label: 'SMED',             selector: '.lean-searchable[data-lean-keywords*="smed setup"]' },
-        { id: 'wastes',        icon: '🗑️', label: '7 Wastes',         selector: '.lean-searchable[data-lean-keywords*="7 wastes"]' },
-        { id: 'kaizen',        icon: '📅', label: 'Kaizen',            selector: '.lean-searchable[data-lean-keywords*="kaizen event"]' }
-    ],
-    planning: [
-        { id: 'swot',          icon: '🎯', label: 'SWOT',             selector: '.lean-searchable[data-lean-keywords*="swot strengths"]' },
-        { id: 'vsm',           icon: '🗺️', label: 'VSM',             selector: '.lean-searchable[data-lean-keywords*="vsm value stream"]' },
-        { id: 'priorityMatrix', icon: '🧭', label: 'Prioriteringsmatrix', selector: '.lean-searchable[data-lean-keywords*="prioriteringsmatrix"]' },
-        { id: 'kompetencetrappen', icon: '🪜', label: 'Kompetencetrappen', selector: '.lean-searchable[data-lean-keywords*="kompetencetrappen"]' },
-        { id: 'brainstorm',    icon: '💡', label: 'Brainstorm',      selector: '.lean-searchable[data-lean-keywords*="brainstorm"]' },
-        { id: 'negativeBrainstorm', icon: '🧨', label: 'Negativ Brainstorm', selector: '.lean-searchable[data-lean-keywords*="negativ brainstorm"]' }
-    ],
-    reference: [
-        { id: 'ref5s',         icon: '🧹', label: '5S',               selector: '.lean-searchable[data-lean-keywords*="5s system"]' },
-        { id: 'ref7r',         icon: '📦', label: '7R',               selector: '.lean-searchable[data-lean-keywords*="7r rigtige"]' },
-        { id: 'ref3m',         icon: '⚠️', label: '3M',               selector: '.lean-searchable[data-lean-keywords*="3m muda"]' },
-        { id: 'refPdca',       icon: '🔄', label: 'PDCA',             selector: '.lean-searchable[data-lean-keywords*="pdca plan"]' },
-        { id: 'refJitKanban',  icon: '📋', label: 'JIT & Kanban',     selector: '.lean-searchable[data-lean-keywords*="jit just in time"]' },
-        { id: 'refFifoKaizen', icon: '🔄', label: 'FIFO & Kaizen',   selector: '.lean-searchable[data-lean-keywords*="fifo first in"]' },
-        { id: 'refGemba',      icon: '🚶', label: 'Gemba',            selector: '.lean-searchable[data-lean-keywords*="gemba walk"]' },
-        { id: 'refPokaYoke',   icon: '🛡️', label: 'Poka-Yoke',       selector: '.lean-searchable[data-lean-keywords*="poka yoke"]' },
-        { id: 'refAndon',      icon: '🚦', label: 'Andon',            selector: '.lean-searchable[data-lean-keywords*="andon visual"]' },
-        { id: 'ref5whys',      icon: '❓', label: '5 Whys',            selector: '.lean-searchable[data-lean-keywords*="5 whys root"]' },
-        { id: 'supplychain',   icon: '🔗', label: 'Supply Chain',     selector: '.lean-searchable[data-lean-keywords*="supply chain"]' },
-        { id: 'smartgoals',    icon: '🎯', label: 'SMART Goals',      selector: '.lean-searchable[data-lean-keywords*="smart goals"]' },
-        { id: 'kotter',        icon: '🔥', label: "Kotter's 8-Step",  selector: '.lean-searchable[data-lean-keywords*="kotter"]' },
-        { id: 'integration',   icon: '💡', label: 'Integration',      selector: '.lean-searchable[data-lean-keywords*="integration"]' }
-    ]
-};
+/** Legacy: dashboard tool-card clicks & keyboard shortcuts. */
+function navigateToLeanTool(tabName, sectionId) { leanOpenTool(sectionId); }
 
-// Track recently used lean tools
-let leanRecentTools = JSON.parse(localStorage.getItem('lean_recent_tools') || '[]');
-
-function trackLeanToolUsage(tabName, sectionId) {
-    // Build a record
-    const toolBtn = document.querySelector(`#leanToolGrid .lean-tool-card`);
-    const allBtns = document.querySelectorAll('#leanToolGrid .lean-tool-card');
-    let icon = '🔧', label = sectionId;
-    allBtns.forEach(btn => {
-        const onclick = btn.getAttribute('onclick') || '';
-        if (onclick.includes(`'${sectionId}'`)) {
-            const spans = btn.querySelectorAll('span');
-            if (spans[0]) icon = spans[0].textContent.trim();
-            const nameEl = btn.querySelector('.font-semibold');
-            if (nameEl) label = nameEl.textContent.trim();
-        }
-    });
-    // Remove duplicate
-    leanRecentTools = leanRecentTools.filter(t => !(t.tab === tabName && t.id === sectionId));
-    // Add to front
-    leanRecentTools.unshift({ tab: tabName, id: sectionId, icon, label, ts: Date.now() });
-    // Keep max 5
-    leanRecentTools = leanRecentTools.slice(0, 5);
-    localStorage.setItem('lean_recent_tools', JSON.stringify(leanRecentTools));
-    renderLeanRecent();
-}
-
-function renderLeanRecent() {
-    const container = document.getElementById('leanRecentlyUsed');
-    const list = document.getElementById('leanRecentList');
-    if (!container || !list) return;
-    if (leanRecentTools.length === 0) {
-        container.classList.add('hidden');
-        return;
-    }
-    container.classList.remove('hidden');
-    list.innerHTML = leanRecentTools.map(t =>
-        `<button onclick="navigateToLeanTool('${t.tab}','${t.id}')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-emerald-400 dark:hover:border-emerald-500 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10 transition-all text-left text-xs font-medium text-gray-700 dark:text-gray-300">
-            <span>${t.icon}</span> ${t.label}
-        </button>`
-    ).join('');
-}
-
-// Track whether we came from dashboard
-let leanNavigatedFromDashboard = false;
-
-// Navigate from dashboard tool card to specific tool
-function navigateToLeanTool(tabName, sectionId) {
-    // Remember if we came from dashboard
-    leanNavigatedFromDashboard = (currentLeanSubTab === 'dashboard');
-    
-    // Track usage
-    trackLeanToolUsage(tabName, sectionId);
-    
-    // Switch to the correct sub-tab
-    switchLeanSubTab(tabName);
-    
-    // Wait for panel to render, then isolate + scroll
-    setTimeout(() => {
-        // Find the target section box
-        let target = document.getElementById(sectionId);
-        if (!target) {
-            const panel = document.getElementById(`leanPanel-${tabName}`);
-            if (panel) {
-                const jumps = leanQuickJumps[tabName] || [];
-                const jumpItem = jumps.find(j => j.id === sectionId);
-                if (jumpItem && jumpItem.selector) {
-                    target = panel.querySelector(jumpItem.selector);
-                }
-            }
-        }
-        
-        if (target) {
-            // Find the closest section-box wrapper
-            const box = target.closest('.lean-section-box') || target;
-            if (box.classList.contains('lean-section-box')) {
-                openLeanBox(box);
-            }
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            target.classList.add('lean-highlight-flash');
-            setTimeout(() => target.classList.remove('lean-highlight-flash'), 1500);
-        }
-    }, 120);
-}
-
-let currentLeanSubTab = 'dashboard';
-let leanSearchActive = false;
-
+/** Called when the LEAN main-section tab is activated. */
 function switchLeanSubTab(tabName) {
-    // If in search mode, clear it first
-    if (leanSearchActive) {
-        clearLeanSearch();
-    }
-
-    // Reset any box isolation in all panels
-    document.querySelectorAll('.lean-panel').forEach(p => closeLeanBox(p));
-
-    currentLeanSubTab = tabName;
-    
-    // Hide all panels, but skip scroll if navigateToLeanTool will handle it
-    document.querySelectorAll('.lean-panel').forEach(p => p.style.display = 'none');
-    
-    // Show selected panel
-    const panel = document.getElementById(`leanPanel-${tabName}`);
-    if (panel) {
-        panel.style.display = '';
-    }
-
-    // Keep help panel tied to dashboard context
-    if (tabName !== 'dashboard') {
-        toggleLeanHelp(false);
-    }
-    
-    // Update button styles
-    document.querySelectorAll('.lean-sub-btn').forEach(btn => {
-        const btnTab = btn.id.replace('leanSubBtn-', '');
-        btn.className = 'lean-sub-btn px-4 py-2 rounded-lg text-sm font-bold transition-all ' +
-            (btnTab === tabName ? (leanSubTabColors[tabName] || leanSubTabColors.dashboard) : leanSubTabInactive);
-    });
-    
-    // Update quick-jump toolbar
-    updateLeanQuickJumps(tabName);
-    
-    // Scroll to top of section
-    const navBar = document.querySelector('#lean-section .sticky');
-    if (navBar) {
-        navBar.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    if (leanActiveTool !== null) leanCloseToMenu();
 }
 
-function updateLeanQuickJumps(tabName) {
-    const container = document.getElementById('leanQuickJump');
-    if (!container) return;
-    
-    const items = leanQuickJumps[tabName] || [];
-    if (items.length === 0) {
-        container.innerHTML = '';
-        return;
-    }
-    
-    container.innerHTML = '<span class="text-gray-400 dark:text-gray-500 mr-1 self-center">Jump to:</span>' +
-        items.map(item => 
-            `<button onclick="leanQuickJumpTo('${item.id}')" class="px-2.5 py-1 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
-                <span>${item.icon}</span> ${item.label}
-            </button>`
-        ).join('');
-}
+/** Legacy: direct tool jump (keyboard shortcut etc.). */
+function leanQuickJumpTo(sectionId) { leanOpenTool(sectionId); }
 
-function leanQuickJumpTo(sectionId) {
-    // Scroll to the section
-    let target = document.getElementById(sectionId);
-    if (!target) {
-        // Try finding by the searchable wrapper
-        const jumps = leanQuickJumps[currentLeanSubTab] || [];
-        const jumpItem = jumps.find(j => j.id === sectionId);
-        if (jumpItem && jumpItem.selector) {
-            const panel = document.getElementById(`leanPanel-${currentLeanSubTab}`);
-            if (panel) target = panel.querySelector(jumpItem.selector);
-        }
-    }
-    
-    if (target) {
-        // Isolate the target box
-        const box = target.closest('.lean-section-box') || target;
-        if (box.classList.contains('lean-section-box')) {
-            openLeanBox(box);
-        }
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        // Briefly highlight
-        target.classList.add('ring-2', 'ring-emerald-400', 'ring-offset-2');
-        setTimeout(() => {
-            target.classList.remove('ring-2', 'ring-emerald-400', 'ring-offset-2');
-        }, 1500);
-    }
-}
+/** Legacy: oninput handler name on old search input. */
+function filterLeanTools(query) { leanSearchCards(query); }
 
-// ============================================
-// LEAN SEARCH / FILTER
-// ============================================
-
-function filterLeanTools(query) {
-    const clearBtn = document.getElementById('leanSearchClear');
-    
-    if (!query || query.trim() === '') {
-        clearLeanSearch();
-        return;
-    }
-    
-    leanSearchActive = true;
-    if (clearBtn) clearBtn.classList.remove('hidden');
-    
-    const q = query.toLowerCase().trim();
-    
-    // Show ALL panels so we can search across them
-    document.querySelectorAll('.lean-panel').forEach(p => p.style.display = '');
-    
-    // Dim all sub-tab buttons
-    document.querySelectorAll('.lean-sub-btn').forEach(btn => {
-        btn.className = 'lean-sub-btn px-4 py-2 rounded-lg text-sm font-bold transition-all ' + leanSubTabInactive;
-    });
-    
-    // Update quick-jump to show search hint
-    const qj = document.getElementById('leanQuickJump');
-    if (qj) qj.innerHTML = '<span class="text-gray-400 dark:text-gray-500 text-xs">🔍 Searching all LEAN tools for: <em>"' + query + '"</em></span>';
-    
-    // Filter each searchable block
-    let foundCount = 0;
-    document.querySelectorAll('#lean-section .lean-searchable').forEach(block => {
-        const keywords = (block.getAttribute('data-lean-keywords') || '').toLowerCase();
-        const textContent = block.textContent.toLowerCase();
-        const matches = keywords.includes(q) || textContent.includes(q);
-        
-        block.style.display = matches ? '' : 'none';
-        if (matches) {
-            foundCount++;
-        }
-    });
-    
-    // Show count
-    if (qj && foundCount > 0) {
-        qj.innerHTML = '<span class="text-emerald-600 dark:text-emerald-400 text-xs">✅ ' + foundCount + ' tool' + (foundCount === 1 ? '' : 's') + ' found for <em>"' + query + '"</em></span>';
-    }
-    if (qj && foundCount === 0) {
-        qj.innerHTML = '<span class="text-red-500 dark:text-red-400 text-xs">No tools match "' + query + '". Try a different search term.</span>';
-    }
-}
-
-function clearLeanSearch() {
-    leanSearchActive = false;
-    
-    const input = document.getElementById('leanToolSearch');
-    const clearBtn = document.getElementById('leanSearchClear');
-    
-    if (input) input.value = '';
-    if (clearBtn) clearBtn.classList.add('hidden');
-    
-    // Restore all searchable blocks to visible
-    document.querySelectorAll('#lean-section .lean-searchable').forEach(block => {
-        block.style.display = '';
-    });
-    
-    // Re-activate the current sub-tab
-    switchLeanSubTab(currentLeanSubTab);
-
-    // Refresh summary counts after search reset
-    updateLeanToolSummary();
-}
+/** Legacy: clear search. */
+function clearLeanSearch() { leanClearSearch(); }
 
 // ============================================
 // REAL-TIME VALIDATION & FEEDBACK
