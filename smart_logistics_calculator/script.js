@@ -844,6 +844,7 @@ const translations = {
         'abc-tab': 'ABC-analyse',
         'wilson-tab': 'Wilson-beregning',
         'inventory-tab': 'Lagerstyring',
+        'inventory-quick-desc': 'ROP, Periodisk & Min/Max — hvornår og hvor meget bestiller du?',
         'settings-tab': 'Indstillinger',
         'abc-title': 'ABC-analyse',
         'upload-label': 'Upload datafil (CSV eller Excel)',
@@ -1622,7 +1623,7 @@ const translations = {
         'rop-explanation': 'Hvor Z-score repræsenterer ønsket serviceniveau (højere = mere sikkerhedslager)',
         // Inventory Management
         'inventory-title': 'Lagerstyring',
-        'inventory-desc': 'Tre kraftfulde værktøjer til optimal lagerstyring: Beregn genbestillingspunkt, planlæg periodisk indkøb, og administrer min/max-lagerniveauer med visuelle dashboards',
+        'inventory-desc': 'Tre enkle værktøjer: <strong>hvornår</strong> skal du bestille (ROP), <strong>hvor meget</strong> ved fast interval (Periodisk), og <strong>er lageret OK?</strong> (Min/Max). Klik på "Lagertyper & Metoder" for at forstå sikkerhedslager, cykluslager og bufferlager.',
         'reorder-point-title': 'Genbestillingspunkt (ROP)',
         'reorder-point-desc': 'Beregn det præcise lagerniveau hvor du skal genbestille for at undgå lagermangel. Tager højde for dagligt forbrug, leveringstid, efterspørgselsudsving og ønsket serviceniveau.',
         'periodic-review-title': 'Periodisk Gennemgang',
@@ -2510,6 +2511,7 @@ const translations = {
         'abc-tab': 'ABC Analysis',
         'wilson-tab': 'Wilson Calculation',
         'inventory-tab': 'Inventory Management',
+        'inventory-quick-desc': 'ROP, Periodic Review & Min/Max — when and how much to order?',
         'settings-tab': 'Settings',
         'abc-title': 'ABC Analysis',
         'upload-label': 'Upload data file (CSV or Excel)',
@@ -3047,7 +3049,7 @@ const translations = {
         'rop-explanation': 'Where Z-score represents desired service level (higher = more safety stock)',
         // Inventory Management
         'inventory-title': 'Inventory Management',
-        'inventory-desc': 'Three powerful tools for optimal inventory management: Calculate reorder points, plan periodic purchasing, and manage min/max inventory levels with visual dashboards',
+        'inventory-desc': 'Three simple tools: <strong>when</strong> to reorder (ROP), <strong>how much</strong> on a fixed cycle (Periodic Review), and <strong>is stock OK?</strong> (Min/Max). Open “Stock Types & Methods” tab to understand safety stock, cycle stock and buffer stock.',
         'reorder-point-title': 'Reorder Point (ROP)',
         'reorder-point-desc': 'Calculate the precise inventory level where you should reorder to avoid stockouts. Accounts for daily consumption, lead time, demand variability, and desired service level.',
         'periodic-review-title': 'Periodic Review',
@@ -4201,6 +4203,9 @@ document.addEventListener('DOMContentLoaded', () => {
         window.budgetEditor = new BudgetEditor();
         console.log('Budget Editor initialized');
     }
+
+    // Initialize Lagerstyring coverage indicator
+    updateCoverageDays();
 });
 
 function initializeApp() {
@@ -4535,7 +4540,7 @@ function loadPageTutorial(pageName) {
             {
                 element: '#inventory-section',
                 title: { da: '📦 Lagerstyring', en: '📦 Inventory Management' },
-                message: { da: 'Tre kraftfulde værktøjer til optimal lagerstyring: Genbestillingspunkt (ROP), Periodisk Gennemgang, og Min/Max-system. Lad os gennemgå hver funktion.', en: 'Three powerful tools for optimal inventory management: Reorder Point (ROP), Periodic Review, and Min/Max System. Let\'s go through each function.' },
+                message: { da: 'Tre enkle værktøjer til lagerstyring. Spørgsmål 1: <strong>Hvornår bestiller jeg?</strong> → brug ROP. Spørgsmål 2: <strong>Hvor meget ved fast interval?</strong> → brug Periodisk. Spørgsmål 3: <strong>Er lageret OK?</strong> → brug Min/Max. Ny: fanen “Lagertyper & Metoder” forklarer cykluslager, sikkerhedslager og bufferlager.', en: 'Three simple inventory tools. Question 1: <strong>When do I reorder?</strong> → use ROP. Question 2: <strong>How much at a fixed interval?</strong> → use Periodic Review. Question 3: <strong>Is my stock OK?</strong> → use Min/Max. New: the “Stock Types & Methods” tab explains cycle stock, safety stock and buffer stock.' },
                 action: () => {}
             },
             {
@@ -5368,6 +5373,11 @@ function switchTab(tabName, clickedButton) {
         const targetBtn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
         if (targetBtn && targetBtn.classList) targetBtn.classList.add('active');
     }
+
+    // Sync mobile bottom nav active state
+    document.querySelectorAll('.mob-nav-btn[data-tab]').forEach(btn => {
+        btn.classList.toggle('mob-active', btn.dataset.tab === tabName);
+    });
     
     // Update tab content - remove both active and hidden, then add back appropriately
     document.querySelectorAll('.tab-content').forEach(content => {
@@ -5402,6 +5412,35 @@ function switchTab(tabName, clickedButton) {
         setTimeout(() => {
             if (typeof KPIDashboard !== 'undefined') KPIDashboard.refresh();
         }, 100);
+    }
+}
+
+// ── Mobile navigation helpers ────────────────────────────────
+/**
+ * Switch tab from the mobile bottom nav bar.
+ * Delegates to switchTab and scrolls window to top.
+ */
+function mobileSwitchTab(tabName, btnEl) {
+    switchTab(tabName);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/**
+ * Toggle the mobile "More" slide-up sheet.
+ */
+function toggleMobileMenu() {
+    const overlay = document.getElementById('mobileMenuOverlay');
+    const sheet   = document.getElementById('mobileMenuSheet');
+    if (!overlay || !sheet) return;
+    const isOpen = !sheet.classList.contains('hidden');
+    if (isOpen) {
+        sheet.classList.add('hidden');
+        overlay.classList.add('hidden');
+        document.body.style.overflow = '';
+    } else {
+        sheet.classList.remove('hidden');
+        overlay.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
     }
 }
 
@@ -7871,19 +7910,40 @@ function calculateWilson() {
     const pris = parseFloat(document.getElementById('priceInput').value);
     const rentePercent = parseFloat(document.getElementById('interestInput').value);
     
+    // Inline validation helper
+    const showWilsonErr = (msg) => {
+        const el = document.getElementById('wilsonValidationError');
+        if (el) { el.textContent = '⚠️ ' + msg; el.style.display = 'block'; }
+        // Shake the bad inputs red
+        ['demandInput','orderCostInput','priceInput','interestInput'].forEach(id => {
+            const inp = document.getElementById(id);
+            if (inp && (isNaN(parseFloat(inp.value)) || parseFloat(inp.value) <= 0)) {
+                inp.classList.add('border-red-400');
+            }
+        });
+    };
+    const clearWilsonErr = () => {
+        const el = document.getElementById('wilsonValidationError');
+        if (el) el.style.display = 'none';
+        ['demandInput','orderCostInput','priceInput','interestInput'].forEach(id => {
+            document.getElementById(id)?.classList.remove('border-red-400');
+        });
+    };
+    clearWilsonErr();
+
     // Validering
     if (isNaN(aarsforbrug) || isNaN(ordreomkostninger) || isNaN(pris) || isNaN(rentePercent)) {
-        alert(translate('alert-invalid-numbers') || 'Indtast venligst gyldige tal i alle felter.');
+        showWilsonErr(translate('alert-invalid-numbers') || 'Indtast gyldige tal i alle felter.');
         return;
     }
     
     if (aarsforbrug <= 0 || ordreomkostninger <= 0 || pris <= 0 || rentePercent <= 0) {
-        alert(translate('alert-positive-values') || 'Alle værdier skal være positive tal større end nul.');
+        showWilsonErr(translate('alert-positive-values') || 'Alle værdier skal være positive tal større end nul.');
         return;
     }
     
     if (rentePercent > 100) {
-        alert(translate('alert-interest-limit') || 'Renten kan ikke være over 100%');
+        showWilsonErr(translate('alert-interest-limit') || 'Renten kan ikke være over 100%.');
         return;
     }
     
@@ -7941,6 +8001,21 @@ function calculateWilson() {
     document.getElementById('holdingTotal').textContent = holdingCostTotal.toFixed(2);
     document.getElementById('orderTotal').textContent = orderCostTotal.toFixed(2);
     document.getElementById('totalCost').textContent = totalCost.toFixed(2);
+
+    // Smart insight pills
+    const insightsEl   = document.getElementById('eoqInsights');
+    const freqEl       = document.getElementById('eoqInsightFreq');
+    const daysEl       = document.getElementById('eoqInsightDays');
+    const cycleEl      = document.getElementById('eoqInsightCycle');
+    if (insightsEl && freqEl && daysEl && cycleEl) {
+        const daysBetween   = Math.round(365 / ordersPerYear);
+        const ordersPerMth  = (ordersPerYear / 12).toFixed(1);
+        const daysOfCover   = Math.round(EOQ / (aarsforbrug / 365));
+        freqEl.textContent  = `~${ordersPerMth} ordre/måned`;
+        daysEl.textContent  = `Bestil ca. hver ${daysBetween}. dag`;
+        cycleEl.textContent = `Én ordre dækker ~${daysOfCover} dages forbrug`;
+        insightsEl.classList.remove('hidden');
+    }
     
     // Validering: Ved EOQ skal lageromkostning = ordreomkostning
     const costDifference = Math.abs(holdingCostTotal - orderCostTotal);
@@ -7992,6 +8067,21 @@ function syncWilsonSlider(field, value) {
     // Clamp value to slider range
     const clampedValue = Math.max(min, Math.min(max, numValue));
     slider.value = clampedValue;
+
+    // Update slider bubble position
+    const bubble = document.getElementById(`${field}Bubble`);
+    if (bubble) {
+        const pct = Math.max(0, Math.min(1, (clampedValue - min) / (max - min)));
+        bubble.style.left = `calc(${pct * 100}% + ${(0.5 - pct) * 14}px)`;
+        bubble.textContent = numValue.toLocaleString('da-DK');
+    }
+
+    // Mark if changed from default
+    const input = document.getElementById(`${field}Input`);
+    if (input) {
+        const def = parseFloat(input.dataset.default);
+        input.classList.toggle('input-modified', !isNaN(def) && numValue !== def);
+    }
 }
 
 function syncWilsonInput(field, value) {
@@ -8000,6 +8090,20 @@ function syncWilsonInput(field, value) {
     
     const numValue = parseFloat(value) || 0;
     input.value = numValue;
+
+    // Update slider bubble position
+    const slider   = document.getElementById(`${field}Slider`);
+    const bubble   = document.getElementById(`${field}Bubble`);
+    if (slider && bubble) {
+        const min = parseFloat(slider.min), max = parseFloat(slider.max);
+        const pct = Math.max(0, Math.min(1, (numValue - min) / (max - min)));
+        bubble.style.left = `calc(${pct * 100}% + ${(0.5 - pct) * 14}px)`;
+        bubble.textContent = numValue.toLocaleString('da-DK');
+    }
+
+    // Mark if changed from default
+    const def = parseFloat(input.dataset.default);
+    input.classList.toggle('input-modified', !isNaN(def) && numValue !== def);
     
     // === ENHANCEMENT: Real-time calculation if enabled ===
     if (window.EOQEnhancements && EOQEnhancements.realtimeSliders.enabled) {
@@ -11880,6 +11984,70 @@ function switchInventoryTool(tool) {
     }
 }
 
+// ─── Live Coverage Days indicator ───────────────────────────────────────────
+function updateCoverageDays() {
+    const demand = parseFloat(document.getElementById('invSharedDemand')?.value) || 0;
+    const stock  = parseFloat(document.getElementById('invSharedStock')?.value)  || 0;
+    const leadTime = parseFloat(document.getElementById('invSharedLeadTime')?.value) || 0;
+    const coverageEl = document.getElementById('invCoverageDays');
+    const statusEl   = document.getElementById('invCoverageStatus');
+    const iconEl     = document.getElementById('invCoverageIcon');
+    const barEl      = document.getElementById('invCoverageBar');
+    const leadLabel  = document.getElementById('invCoverageLeadLabel');
+    if (!coverageEl) return;
+    if (demand <= 0) {
+        if (coverageEl) coverageEl.textContent = 'N/A';
+        return;
+    }
+    const days = stock / demand;
+    coverageEl.textContent = days.toFixed(1) + ' dage';
+    if (leadLabel) leadLabel.textContent = `LT: ${leadTime}d`;
+    // Progress bar: 0-30 days scale, marker at leadTime
+    if (barEl) {
+        const pct = Math.min((days / 30) * 100, 100);
+        barEl.style.width = pct + '%';
+    }
+    if (days < leadTime) {
+        if (iconEl) iconEl.textContent = '🔴';
+        if (statusEl) { statusEl.textContent = 'Under leveringstid!'; statusEl.className = 'text-xs px-2 py-0.5 rounded-full font-medium bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400'; }
+        if (barEl) barEl.className = 'absolute top-0 left-0 h-full rounded-full transition-all duration-500 bg-red-500';
+    } else if (days < leadTime * 1.5) {
+        if (iconEl) iconEl.textContent = '🟡';
+        if (statusEl) { statusEl.textContent = 'Bestil snart'; statusEl.className = 'text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 dark:bg-yellow-900/40 text-yellow-600 dark:text-yellow-400'; }
+        if (barEl) barEl.className = 'absolute top-0 left-0 h-full rounded-full transition-all duration-500 bg-yellow-500';
+    } else {
+        if (iconEl) iconEl.textContent = '🟢';
+        if (statusEl) { statusEl.textContent = 'OK'; statusEl.className = 'text-xs px-2 py-0.5 rounded-full font-medium bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400'; }
+        if (barEl) barEl.className = 'absolute top-0 left-0 h-full rounded-full transition-all duration-500 bg-green-500';
+    }
+}
+
+// ─── Service Level Comparison Table ────────────────────────────────────────
+function updateServiceLevelTable(dailyDemand, leadTime, stdDev) {
+    const tbody = document.getElementById('ropServiceTableBody');
+    if (!tbody) return;
+    const levels = [
+        { label: '90%',   z: 1.28 },
+        { label: '95%',   z: 1.645 },
+        { label: '98%',   z: 2.054 },
+        { label: '99%',   z: 2.326, highlight: true },
+        { label: '99.5%', z: 2.576 },
+        { label: '99.9%', z: 3.090 }
+    ];
+    const baseROP = dailyDemand * leadTime;
+    tbody.innerHTML = levels.map(lvl => {
+        const ss  = Math.round(lvl.z * stdDev * Math.sqrt(leadTime));
+        const rop = Math.round(baseROP + ss);
+        const rowClass = lvl.highlight ? 'bg-purple-50 dark:bg-purple-900/20 font-semibold' : 'bg-white dark:bg-gray-800';
+        return `<tr class="${rowClass}">
+            <td class="px-3 py-1.5 text-gray-700 dark:text-gray-300">${lvl.highlight ? '⭐ ' : ''}${lvl.label}</td>
+            <td class="px-3 py-1.5 text-right text-gray-500 dark:text-gray-400">${lvl.z}</td>
+            <td class="px-3 py-1.5 text-right text-blue-700 dark:text-blue-300">${ss.toLocaleString()}</td>
+            <td class="px-3 py-1.5 text-right text-purple-700 dark:text-purple-300">${rop.toLocaleString()}</td>
+        </tr>`;
+    }).join('');
+}
+
 function syncSharedParams() {
     const demand = document.getElementById('invSharedDemand')?.value || '';
     const leadTime = document.getElementById('invSharedLeadTime')?.value || '';
@@ -12068,6 +12236,32 @@ function calculateReorderPoint() {
         reorderPoint: Math.round(reorderPoint),
         currentStock
     };
+
+    // Update service level comparison table
+    updateServiceLevelTable(dailyDemand, leadTime, stdDev);
+
+    // Update action card
+    const actionCard = document.getElementById('ropActionCard');
+    const actionText = document.getElementById('ropActionText');
+    const suggestedOrder = document.getElementById('ropSuggestedOrder');
+    if (actionCard && actionText) {
+        const stockAboveROP = currentStock - reorderPoint;
+        const daysUntilROP = dailyDemand > 0 ? Math.floor(stockAboveROP / dailyDemand) : 0;
+        actionCard.classList.remove('hidden');
+        if (currentStock <= safetyStock) {
+            actionCard.className = 'mb-4 p-3 rounded-lg border-2 border-red-400 bg-red-50 dark:bg-red-900/20';
+            actionText.textContent = `🚨 Du er under sikkerhedslageret (${Math.round(safetyStock)} enh.). Bestil straks!`;
+            if (suggestedOrder) suggestedOrder.textContent = `Foreslået ordre: ${Math.round(reorderPoint * 1.5 - currentStock).toLocaleString()} enheder (op til 1,5× ROP)`;
+        } else if (currentStock <= reorderPoint) {
+            actionCard.className = 'mb-4 p-3 rounded-lg border-2 border-orange-400 bg-orange-50 dark:bg-orange-900/20';
+            actionText.textContent = `⚠️ Lager (${currentStock}) er under ROP (${Math.round(reorderPoint)} enh.). Afgiv bestilling NU.`;
+            if (suggestedOrder) suggestedOrder.textContent = `Bestil mindst: ${Math.round(reorderPoint - currentStock + safetyStock).toLocaleString()} enheder`;
+        } else {
+            actionCard.className = 'mb-4 p-3 rounded-lg border-2 border-purple-200 dark:border-purple-700 bg-purple-50 dark:bg-purple-900/20';
+            actionText.textContent = `✅ Lager OK. Bestil når beholdningen når ${Math.round(reorderPoint).toLocaleString()} enheder.`;
+            if (suggestedOrder) suggestedOrder.textContent = daysUntilROP > 0 ? `Ca. ${daysUntilROP} dage til genbestillingspunkt` : 'Tjek lageret nu';
+        }
+    }
 }
 
 // Smart Feature #2: Update ROP urgency status
@@ -12305,8 +12499,28 @@ function updatePeriodicReviewTimingWarning(dailyDemand, currentStock, safetyStoc
     if (nextReviewStatus && nextReviewDate) {
         const reviewDate = new Date(nextReviewDate);
         nextReviewStatus.textContent = currentLanguage === 'da'
-            ? `Næste gennemgang: ${reviewDate.toLocaleDateString('da-DK')} (om ${daysToNextReview} dage)`
-            : `Next review: ${reviewDate.toLocaleDateString('en-GB')} (in ${daysToNextReview} days)`;
+            ? `${reviewDate.toLocaleDateString('da-DK')} — om ${daysToNextReview} dage`
+            : `${reviewDate.toLocaleDateString('en-GB')} — in ${daysToNextReview} days`;
+    }
+    // Countdown pill
+    const countdownPill = document.getElementById('prCountdownPill');
+    if (countdownPill && nextReviewDate) {
+        countdownPill.classList.remove('hidden');
+        if (daysToNextReview <= 0) {
+            countdownPill.textContent = 'I dag!';
+            countdownPill.className = 'text-xs px-2 py-0.5 rounded-full font-medium bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400';
+        } else if (daysToNextReview <= 2) {
+            countdownPill.textContent = `Om ${daysToNextReview} dag${daysToNextReview === 1 ? '' : 'e'}`;
+            countdownPill.className = 'text-xs px-2 py-0.5 rounded-full font-medium bg-orange-100 dark:bg-orange-900/40 text-orange-600 dark:text-orange-400';
+        } else if (daysToNextReview <= 7) {
+            countdownPill.textContent = `Om ${daysToNextReview} dage`;
+            countdownPill.className = 'text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 dark:bg-yellow-900/40 text-yellow-600 dark:text-yellow-400';
+        } else {
+            countdownPill.textContent = `Om ${daysToNextReview} dage`;
+            countdownPill.className = 'text-xs px-2 py-0.5 rounded-full font-medium bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400';
+        }
+    } else if (countdownPill) {
+        countdownPill.classList.add('hidden');
     }
     
     let show = false;
@@ -12547,6 +12761,31 @@ function calculateMinMax() {
     // Smart Feature #6: Contextual warnings for Min/Max
     updateMinMaxSmartWarning(dailyDemand, minLevel, maxLevel, currentLevel, safetyStock, daysToMin, orderNeeded);
     
+    // Update Min/Max action card
+    const mmActionCard = document.getElementById('mmActionCard');
+    const mmActionText = document.getElementById('mmActionText');
+    const mmActionSub  = document.getElementById('mmActionSub');
+    if (mmActionCard && mmActionText) {
+        mmActionCard.classList.remove('hidden');
+        if (currentLevel < minLevel) {
+            mmActionCard.className = 'p-3 rounded-lg border-2 border-red-400 bg-red-50 dark:bg-red-900/20';
+            mmActionText.textContent = `🚨 Bestil ${Math.round(maxLevel - currentLevel).toLocaleString()} enheder for at nå max-niveau.`;
+            if (mmActionSub) mmActionSub.textContent = `Du er ${Math.round(minLevel - currentLevel)} enheder under minimum.`;
+        } else if (currentLevel > maxLevel) {
+            mmActionCard.className = 'p-3 rounded-lg border bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700';
+            mmActionText.textContent = `📦 Ingen bestilling nødvendig — lageret overstiger max-niveau.`;
+            if (mmActionSub) mmActionSub.textContent = `Overskud: ${Math.round(currentLevel - maxLevel)} enheder over max.`;
+        } else if (typeof daysToMin === 'number' && daysToMin <= 5 && dailyDemand > 0) {
+            mmActionCard.className = 'p-3 rounded-lg border-2 border-orange-300 bg-orange-50 dark:bg-orange-900/20';
+            mmActionText.textContent = `⏰ Bestil ${Math.round(orderNeeded > 0 ? orderNeeded : maxLevel - currentLevel).toLocaleString()} enheder — minimum nås om ${daysToMin} dage.`;
+            if (mmActionSub) mmActionSub.textContent = `Leveringstid: tjek at bestillingen kan nå at komme frem.`;
+        } else {
+            mmActionCard.className = 'p-3 rounded-lg border bg-gray-50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600';
+            mmActionText.textContent = `✅ Lager OK — ingen handling påkrævet nu.`;
+            if (mmActionSub) mmActionSub.textContent = dailyDemand > 0 && typeof daysToMin === 'number' ? `Minimum nås om ca. ${daysToMin} dage.` : '';
+        }
+    }
+
     // Draw warehouse dashboard chart
     drawMinMaxChart(minLevel, maxLevel, safetyStock, currentLevel);
     
@@ -13285,9 +13524,9 @@ function switchWilsonMode(mode) {
     const wilsonResults = document.getElementById('wilsonResults');
     
     if (mode === 'single') {
-        // Style cards
-        singleCard.className = 'cursor-pointer border-2 border-blue-500 bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 transition-all hover:shadow-lg';
-        batchCard.className = 'cursor-pointer border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-lg p-4 transition-all hover:shadow-lg';
+        // Style tabs
+        singleCard.className = 'wilson-mode-tab px-5 py-2.5 text-sm font-medium border-b-2 -mb-0.5 border-blue-500 text-blue-600 dark:text-blue-400 transition-colors flex items-center gap-2';
+        batchCard.className  = 'wilson-mode-tab px-5 py-2.5 text-sm font-medium border-b-2 -mb-0.5 border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors flex items-center gap-2';
         singleCheck.classList.remove('hidden');
         batchCheck.classList.add('hidden');
         
@@ -13302,9 +13541,9 @@ function switchWilsonMode(mode) {
             wilsonResults.classList.add('hidden');
         }
     } else {
-        // Style cards
-        batchCard.className = 'cursor-pointer border-2 border-blue-500 bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 transition-all hover:shadow-lg';
-        singleCard.className = 'cursor-pointer border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-lg p-4 transition-all hover:shadow-lg';
+        // Style tabs
+        batchCard.className  = 'wilson-mode-tab px-5 py-2.5 text-sm font-medium border-b-2 -mb-0.5 border-blue-500 text-blue-600 dark:text-blue-400 transition-colors flex items-center gap-2';
+        singleCard.className = 'wilson-mode-tab px-5 py-2.5 text-sm font-medium border-b-2 -mb-0.5 border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors flex items-center gap-2';
         batchCheck.classList.remove('hidden');
         singleCheck.classList.add('hidden');
         
@@ -15775,7 +16014,7 @@ function clearSWOT() {
         document.getElementById('swotOpportunities').value = '';
         document.getElementById('swotThreats').value = '';
         localStorage.removeItem('lean_swot_analysis');
-        alert(currentLanguage === 'da' ? '✅ SWOT analyse ryddet!' : '✅ SWOT analysis cleared!');
+        showToast(currentLanguage === 'da' ? '✅ SWOT analyse ryddet!' : '✅ SWOT analysis cleared!', 'success');
     }
 }
 
@@ -15840,7 +16079,7 @@ function exportSWOT(format = 'markdown') {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     
-    alert(translate('alert-swot-exported-md') || '✅ SWOT Analysis exported as Markdown!');
+    showToast(translate('alert-swot-exported-md') || '✅ SWOT Analysis exported as Markdown!', 'success');
 }
 
 function exportSWOTAsImage(swotData) {
@@ -15941,7 +16180,7 @@ function exportSWOTAsImage(swotData) {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        alert(translate('alert-swot-exported-png') || '✅ SWOT Analysis exported as PNG image!');
+        showToast(translate('alert-swot-exported-png') || '✅ SWOT Analysis exported as PNG image!', 'success');
     });
 }
 
@@ -16101,7 +16340,7 @@ function copyTimeResults() {
           `\nGenerated: ${new Date().toLocaleString()}`;
     
     navigator.clipboard.writeText(text).then(() => {
-        alert(currentLanguage === 'da' ? '✅ Resultater kopieret!' : '✅ Results copied!');
+        showToast(currentLanguage === 'da' ? '✅ Resultater kopieret!' : '✅ Results copied!', 'success');
     });
 }
 
@@ -17410,7 +17649,7 @@ function exportKaizen() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     
-    alert(currentLanguage === 'da' ? '✅ Kaizen plan eksporteret!' : '✅ Kaizen plan exported!');
+    showToast(currentLanguage === 'da' ? '✅ Kaizen plan eksporteret!' : '✅ Kaizen plan exported!', 'success');
 }
 
 // ========================================

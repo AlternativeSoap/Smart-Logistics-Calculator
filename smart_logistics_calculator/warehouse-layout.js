@@ -109,6 +109,9 @@ const WarehouseLayout = (function () {
     // Layers visibility
     let hiddenTypes = new Set();
 
+    // Layers UI state
+    let layersUsedOnly = false;
+
     // Selection rectangle
     let selectRect = null;
 
@@ -1427,18 +1430,28 @@ const WarehouseLayout = (function () {
         var typeCounts = {};
         elements.forEach(function(el) { typeCounts[el.type] = (typeCounts[el.type] || 0) + 1; });
 
+        // Update ★ button highlight
+        var btnUsed = document.getElementById('whBtnUsedOnly');
+        if (btnUsed) {
+            btnUsed.className = layersUsedOnly
+                ? 'text-[10px] px-1.5 py-0.5 bg-blue-200 dark:bg-blue-700 text-blue-700 dark:text-blue-200 rounded font-bold'
+                : 'text-[10px] px-1.5 py-0.5 bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-300 rounded hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors font-bold';
+        }
+
         var html = '';
         Object.keys(ELEMENT_TYPES).forEach(function(key) {
             var def = ELEMENT_TYPES[key];
             var count = typeCounts[key] || 0;
+            if (layersUsedOnly && count === 0) return;
             var hidden = hiddenTypes.has(key);
             html += '<label class="flex items-center gap-2 px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer ' + (hidden ? 'opacity-40' : '') + '">' +
                 '<input type="checkbox" ' + (!hidden ? 'checked' : '') + ' onchange="WarehouseLayout.toggleLayer(\'' + key + '\')" class="rounded text-indigo-500 w-3 h-3">' +
                 '<span class="text-xs">' + def.icon + '</span>' +
                 '<span class="text-[10px] text-gray-700 dark:text-gray-300 flex-1 truncate">' + def.label.replace(/^[^\s]+\s/, '') + '</span>' +
-                '<span class="text-[10px] text-gray-400 font-mono">' + count + '</span>' +
+                (count > 0 ? '<span class="text-[10px] text-gray-400 font-mono">' + count + '</span>' : '') +
             '</label>';
         });
+        if (!html) html = '<p class="text-[10px] text-gray-400 text-center py-2">Ingen elementer placeret</p>';
         panel.innerHTML = html;
     }
 
@@ -1447,6 +1460,91 @@ const WarehouseLayout = (function () {
         else hiddenTypes.add(type);
         render();
         updateLayersPanel();
+    }
+
+    function showAllLayers() {
+        hiddenTypes.clear();
+        render();
+        updateLayersPanel();
+        if (typeof showToast === 'function') showToast(isDa() ? 'Alle lag synlige' : 'All layers visible', 'success');
+    }
+
+    function hideAllLayers() {
+        Object.keys(ELEMENT_TYPES).forEach(function(key) { hiddenTypes.add(key); });
+        render();
+        updateLayersPanel();
+        if (typeof showToast === 'function') showToast(isDa() ? 'Alle lag skjulte' : 'All layers hidden', 'info');
+    }
+
+    function toggleUsedOnly() {
+        layersUsedOnly = !layersUsedOnly;
+        updateLayersPanel();
+    }
+
+    // ─── Palette Filter ──────────────────────────────────────────────
+    function filterPalette(query) {
+        var q = (query || '').toLowerCase().trim();
+        document.querySelectorAll('#whPalette .wh-palette-btn').forEach(function(btn) {
+            var type = btn.getAttribute('data-wh-type');
+            var def = type ? ELEMENT_TYPES[type] : null;
+            var label = def ? def.label.toLowerCase() : '';
+            var title = (btn.getAttribute('title') || '').toLowerCase();
+            btn.style.display = (!q || label.includes(q) || title.includes(q)) ? '' : 'none';
+        });
+    }
+
+    // ─── JSON Export / Import ─────────────────────────────────────────
+    function exportJSON() {
+        var data = {
+            version: 1,
+            warehouseWidth: warehouseWidth,
+            warehouseDepth: warehouseDepth,
+            gridSizeM: gridSizeM,
+            elements: elements,
+            exportedAt: new Date().toISOString(),
+        };
+        var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        var link = document.createElement('a');
+        link.download = 'warehouse-layout-' + new Date().toISOString().slice(0, 10) + '.json';
+        link.href = URL.createObjectURL(blob);
+        link.click();
+        URL.revokeObjectURL(link.href);
+        if (typeof showToast === 'function') showToast(isDa() ? 'Layout gemt som JSON' : 'Layout saved as JSON', 'success');
+    }
+
+    function importJSON(event) {
+        var file = event.target.files && event.target.files[0];
+        if (!file) return;
+        var da = isDa();
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                var data = JSON.parse(e.target.result);
+                if (!data.elements || !Array.isArray(data.elements)) throw new Error('Invalid format');
+                if (!confirm(da ? 'Indlæs JSON? Eksisterende layout erstattes.' : 'Load JSON? Current layout will be replaced.')) return;
+                elements = data.elements;
+                warehouseWidth = data.warehouseWidth || warehouseWidth;
+                warehouseDepth = data.warehouseDepth || warehouseDepth;
+                gridSizeM = data.gridSizeM || gridSizeM;
+                nextId = elements.reduce(function(m, el) { return Math.max(m, el.id || 0); }, 0) + 1;
+                var dimW = document.getElementById('whDimWidth');
+                var dimD = document.getElementById('whDimDepth');
+                var gridSel = document.getElementById('whGridSize');
+                if (dimW) dimW.value = warehouseWidth;
+                if (dimD) dimD.value = warehouseDepth;
+                if (gridSel) gridSel.value = gridSizeM;
+                recalcGrid();
+                canvas.width = W; canvas.height = H;
+                overlay.width = W; overlay.height = H;
+                pushHistory(); save(); zoomToFit(); render();
+                updateLayersPanel(); updateDimensionsDisplay(); updatePropertiesPanel();
+                if (typeof showToast === 'function') showToast(da ? 'Layout indlæst fra JSON' : 'Layout loaded from JSON', 'success');
+            } catch (err) {
+                if (typeof showToast === 'function') showToast(da ? 'Ugyldig JSON-fil' : 'Invalid JSON file', 'error');
+            }
+        };
+        reader.readAsText(file);
+        event.target.value = '';
     }
 
     // ─── Palette ────────────────────────────
@@ -1863,6 +1961,12 @@ const WarehouseLayout = (function () {
         zoomReset: zoomReset,
         exportPNG: exportPNG,
         exportSVG: exportSVG,
+        exportJSON: exportJSON,
+        importJSON: importJSON,
+        showAllLayers: showAllLayers,
+        hideAllLayers: hideAllLayers,
+        toggleUsedOnly: toggleUsedOnly,
+        filterPalette: filterPalette,
         ctxCopy: ctxCopy,
         ctxPaste: ctxPaste,
         ctxCut: ctxCut,

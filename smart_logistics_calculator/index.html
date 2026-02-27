@@ -49,20 +49,29 @@
         <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
                         <span class="text-white font-bold text-xl">📊</span>
                     </div>
-                    <h1 class="text-2xl font-bold text-gray-800 dark:text-white" data-i18n="site-title">Smart Logistics Calculator</h1>
+                    <h1 id="headerTitle" class="text-2xl font-bold text-gray-800 dark:text-white" data-i18n="site-title">
+                        <span class="header-title-full">Smart Logistics Calculator</span>
+                        <span class="header-title-short hidden">SLC</span>
+                    </h1>
                 </div>
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-2 sm:space-x-4">
                     <button id="themeToggle" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
                         <span id="themeIcon" class="text-2xl">🌞</span>
                     </button>
-                    <button onclick="openExportCenter()" class="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-lg transition-all text-sm font-medium shadow-sm hover:shadow-md" title="Export Center">
-                        <i class="fas fa-file-export mr-1"></i><span data-i18n="export-center-btn">Eksportcenter</span>
+                    <button id="headerExportBtn" onclick="openExportCenter()" class="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-lg transition-all text-sm font-medium shadow-sm hover:shadow-md" title="Export Center">
+                        <i class="fas fa-file-export mr-1"></i><span class="hidden sm:inline" data-i18n="export-center-btn">Eksportcenter</span><span class="sm:hidden">📤</span>
                     </button>
-                    <button onclick="startTutorial()" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm font-medium">
-                        <i class="fas fa-question-circle mr-1"></i><span data-i18n="help-btn">Help</span>
+                    <button id="headerHelpBtn" onclick="startTutorial()" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm font-medium">
+                        <i class="fas fa-question-circle mr-1"></i><span class="hidden sm:inline" data-i18n="help-btn">Help</span><span class="sm:hidden">❓</span>
+                    </button>
+                    <!-- Mobile: More menu button shown only on small screens -->
+                    <button id="mobileMenuToggle" onclick="toggleMobileMenu()" class="hidden mobile-only p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors" aria-label="Menu">
+                        <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
                     </button>
                 </div>
             </div>
@@ -70,7 +79,7 @@
     </header>
 
     <!-- Navigation Tabs -->
-    <nav class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 transition-colors duration-300">
+    <nav id="topNavBar" class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 transition-colors duration-300">
         <div class="container mx-auto px-6">
             <div class="flex space-x-1 overflow-x-auto scrollbar-hide whitespace-nowrap">
                 <button class="tab-btn active px-6 py-3 font-medium" data-tab="dashboard">
@@ -111,6 +120,64 @@
             <div id="customPagesTabs" class="flex space-x-1 ml-4 border-l-2 border-gray-300 dark:border-gray-600 pl-4" style="display: none;"></div>
         </div>
     </nav>
+
+    <!-- ═══════════════════════════════════════════════════
+         MOBILE BOTTOM NAVIGATION BAR
+         Shown only on screens ≤640px via CSS
+    ═══════════════════════════════════════════════════ -->
+    <nav id="mobileBottomNav" aria-label="Mobile navigation" class="mobile-bottom-nav">
+        <button class="mob-nav-btn" data-tab="dashboard" onclick="mobileSwitchTab('dashboard',this)">
+            <span class="mob-nav-icon">🏠</span>
+            <span class="mob-nav-label">Home</span>
+        </button>
+        <button class="mob-nav-btn" data-tab="abc" onclick="mobileSwitchTab('abc',this)">
+            <span class="mob-nav-icon">📊</span>
+            <span class="mob-nav-label">ABC</span>
+        </button>
+        <button class="mob-nav-btn" data-tab="wilson" onclick="mobileSwitchTab('wilson',this)">
+            <span class="mob-nav-icon">🟣</span>
+            <span class="mob-nav-label">Wilson</span>
+        </button>
+        <button class="mob-nav-btn" data-tab="inventory" onclick="mobileSwitchTab('inventory',this)">
+            <span class="mob-nav-icon">📦</span>
+            <span class="mob-nav-label">Lager</span>
+        </button>
+        <button class="mob-nav-btn mob-nav-more" onclick="toggleMobileMenu()">
+            <span class="mob-nav-icon">☰</span>
+            <span class="mob-nav-label">Mere</span>
+        </button>
+    </nav>
+
+    <!-- ═══════════════════════════════════════════════════
+         MOBILE "MORE" SLIDE-UP MENU OVERLAY
+         Toggled by toggleMobileMenu()
+    ═══════════════════════════════════════════════════ -->
+    <div id="mobileMenuOverlay" class="mobile-menu-overlay hidden" onclick="toggleMobileMenu()"></div>
+    <div id="mobileMenuSheet" class="mobile-menu-sheet hidden">
+        <div class="mobile-menu-sheet-handle"></div>
+        <h3 class="mobile-menu-title">Alle sektioner</h3>
+        <div class="mobile-menu-grid">
+            <button class="mobile-menu-item" onclick="mobileSwitchTab('lean',this);toggleMobileMenu()">
+                <span class="text-2xl">⚙️</span><span>LEAN</span>
+            </button>
+            <button class="mobile-menu-item" onclick="mobileSwitchTab('budget',this);toggleMobileMenu()">
+                <span class="text-2xl">💰</span><span>Budget</span>
+            </button>
+            <button class="mobile-menu-item" onclick="mobileSwitchTab('barcode',this);toggleMobileMenu()">
+                <span class="text-2xl">📷</span><span>Stregkoder</span>
+            </button>
+            <button class="mobile-menu-item" onclick="mobileSwitchTab('warehouse',this);toggleMobileMenu()">
+                <span class="text-2xl">🏭</span><span>Lagerplan</span>
+            </button>
+            <button class="mobile-menu-item" onclick="mobileSwitchTab('settings',this);toggleMobileMenu()">
+                <span class="text-2xl">🔧</span><span>Indstillinger</span>
+            </button>
+            <button class="mobile-menu-item" onclick="openExportCenter();toggleMobileMenu()">
+                <span class="text-2xl">📤</span><span>Eksport</span>
+            </button>
+        </div>
+        <button class="mobile-menu-close" onclick="toggleMobileMenu()">Luk ✕</button>
+    </div>
 
     <!-- Custom Page Creation Modal -->
     <div id="customPageModal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4" onclick="event.target === this && closeCustomPageModal()">
@@ -844,11 +911,11 @@
     </div>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-6 py-8">
+    <main id="mainContent" class="container mx-auto px-4 sm:px-6 py-4 sm:py-8">
         
         <!-- Dashboard Section -->
         <section id="dashboard-section" class="tab-content active">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                 <!-- Total Items Card -->
                 <div class="result-card">
                     <h4 class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1" data-i18n="total-items">
@@ -898,10 +965,10 @@
             
             <!-- Quick Actions -->
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6 transition-colors duration-300">
-                <div class="mb-6 flex items-center justify-between">
+                <div class="mb-4 flex items-center justify-between">
                     <div>
-                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1" data-i18n="dashboard-title">Dashboard</h2>
-                        <p class="text-sm text-gray-600 dark:text-gray-400" data-i18n="quick-actions">Quick Actions</p>
+                        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-0.5" data-i18n="dashboard-title">Dashboard</h2>
+                        <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400" data-i18n="quick-actions">Quick Actions</p>
                     </div>
                 </div>
                 
@@ -1121,7 +1188,7 @@
                     <div id="quickActionsCheckboxes" class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-4">
                         <!-- Checkboxes will be dynamically rendered here -->
                     </div>
-                    <div class="flex justify-between items-center gap-2">
+                    <div class="flex flex-wrap justify-between items-center gap-2">
                         <button onclick="toggleCustomShortcutForm()" id="addShortcutBtn" class="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-lg transition-all flex items-center gap-2 font-semibold">
                             <span>➕</span>
                             <span data-i18n="add-custom-shortcut">Opret Genvej</span>
@@ -1140,7 +1207,7 @@
                     </div>
                 </div>
                 
-                <div id="quickActionsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div id="quickActionsGrid" class="grid grid-cols-2 lg:grid-cols-3 gap-3">
                     <!-- Quick Actions will be dynamically rendered here -->
                 </div>
                 
@@ -1161,7 +1228,7 @@
             </div>
             
             <!-- Top 5 Items -->
-            <div id="dashTopItems" class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 transition-colors duration-300">
+            <div id="dashTopItems" class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 mt-4 transition-colors duration-300">
                 <h2 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white" data-i18n="top-5-items">🏆 Top 5 varer efter værdi</h2>
                 <div class="overflow-x-auto">
                     <table class="w-full data-table">
@@ -1968,29 +2035,8 @@
                 </div>
                 <div class="print-timestamp hidden"></div>
                 
-                <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-2" data-i18n="wilson-title">
-                    Wilson-formel (EOQ) Beregning
-                </h2>
-                <p class="text-gray-600 dark:text-gray-400 mb-4" data-i18n="wilson-subtitle">
-                    Beregn den optimale indkøbsmængde for enkelt varer eller hele varelister
-                </p>
-
-                <!-- Plain-language explainer card -->
-                <div class="bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-400 dark:border-amber-600 rounded-lg p-4 mb-6">
-                    <div class="flex gap-3">
-                        <span class="text-2xl">💡</span>
-                        <div>
-                            <p class="font-semibold text-amber-900 dark:text-amber-200 mb-1" data-i18n="eoq-theory-title">Hvad gør EOQ?</p>
-                            <p class="text-sm text-amber-800 dark:text-amber-300" data-i18n-html="eoq-theory-intro">
-                                Bestiller du for lidt ad gangen, betaler du for mange ordreomkostninger. Bestiller du for meget, binder du kapital i lager og betaler høje lageromkostninger. 
-                                <strong>EOQ finder det punkt, hvor de to omkostninger er lige store</strong> — dét er den billigste indkøbsmængde.
-                            </p>
-                            <p class="text-xs text-amber-700 dark:text-amber-400 mt-2" data-i18n-html="eoq-theory-formula">
-                                Formel: <code class="bg-amber-100 dark:bg-amber-800 px-1 rounded">Q* = √(2 × Forbrug × Ordreomkostning / (Pris × Rente))</code>
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-1" data-i18n="wilson-title">Wilson EOQ</h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-5">Find den billigste indkøbsmængde — <strong>EOQ</strong> balancerer ordreomkostninger og lageromkostninger så den samlede pris minimeres.</p>
                 
                 <!-- ABC Items Loaded Banner (shows when items sent from ABC) -->
                 <div id="abcItemsLoadedBanner" class="hidden mb-6 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg p-4 text-white shadow-lg">
@@ -2106,141 +2152,114 @@
                     </div>
                 </div>
                 
-                <!-- Mode Selection Cards -->
-                <div class="grid md:grid-cols-2 gap-4 mb-6">
-                    <div id="singleModeCard" class="cursor-pointer border-2 border-blue-500 bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 transition-all hover:shadow-lg" onclick="switchWilsonMode('single')">
-                        <div class="flex items-start gap-3">
-                            <div class="text-3xl">📝</div>
-                            <div class="flex-1">
-                                <h3 class="font-bold text-lg text-gray-800 dark:text-white mb-1" data-i18n="wilson-single-title">Enkelt Vare</h3>
-                                <p class="text-sm text-gray-600 dark:text-gray-400" data-i18n="wilson-single-desc">Beregn EOQ for én vare med sliders og få detaljeret omkostningsanalyse</p>
-                            </div>
-                            <div id="singleCheckmark" class="text-2xl text-blue-500">✓</div>
-                        </div>
-                    </div>
-                    <div id="batchModeCard" class="cursor-pointer border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-lg p-4 transition-all hover:shadow-lg" onclick="switchWilsonMode('batch')">
-                        <div class="flex items-start gap-3">
-                            <div class="text-3xl">📦</div>
-                            <div class="flex-1">
-                                <h3 class="font-bold text-lg text-gray-800 dark:text-white mb-1" data-i18n="wilson-batch-title">Batch Mode</h3>
-                                <p class="text-sm text-gray-600 dark:text-gray-400" data-i18n="wilson-batch-desc">Upload CSV/Excel og beregn EOQ for alle varer på én gang</p>
-                            </div>
-                            <div id="batchCheckmark" class="text-2xl text-blue-500 hidden">✓</div>
-                        </div>
-                    </div>
+                <!-- Mode Toggle -->
+                <div class="flex border-b-2 border-gray-200 dark:border-gray-700 mb-6">
+                    <button id="singleModeCard" onclick="switchWilsonMode('single')"
+                        class="wilson-mode-tab px-5 py-2.5 text-sm font-medium border-b-2 -mb-0.5 border-blue-500 text-blue-600 dark:text-blue-400 transition-colors flex items-center gap-2">
+                        📝 <span data-i18n="wilson-single-title">Enkelt Vare</span>
+                        <span id="singleCheckmark" class="text-blue-500 text-xs">✓</span>
+                    </button>
+                    <button id="batchModeCard" onclick="switchWilsonMode('batch')"
+                        class="wilson-mode-tab px-5 py-2.5 text-sm font-medium border-b-2 -mb-0.5 border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors flex items-center gap-2">
+                        📦 <span data-i18n="wilson-batch-title">Batch (CSV/Excel)</span>
+                        <span id="batchCheckmark" class="hidden text-blue-500 text-xs">✓</span>
+                    </button>
                 </div>
                 
                 <!-- Batch Upload Section (hidden by default) -->
-                <div id="batchUploadSection" class="hidden mb-6">
-                    <div class="bg-white dark:bg-gray-800 border-2 border-dashed border-blue-300 dark:border-blue-600 rounded-lg p-8 hover:border-blue-500 dark:hover:border-blue-400 transition-colors">
-                        <div id="batchDropZone" class="text-center">
-                            <div class="mb-4">
-                                <svg class="mx-auto h-16 w-16 text-blue-500 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
-                                </svg>
-                            </div>
-                            <p class="text-lg font-medium text-gray-700 dark:text-gray-300" data-i18n="drag-drop-text">
-                                Træk og slip fil her
-                            </p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 my-2" data-i18n="drag-drop-or">
-                                eller
-                            </p>
-                            <div class="flex gap-2 justify-center">
-                                <label for="batchWilsonFileInput" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg cursor-pointer transition-colors">
-                                    <span data-i18n="browse-file">Vælg fil</span>
-                                </label>
-                            </div>
-                            <input type="file" id="batchWilsonFileInput" accept=".csv,.xlsx,.xls" class="hidden">
-                        </div>
+                <div id="wilsonValidationError" role="alert"></div>
+                <div id="batchUploadSection" class="hidden mb-5">
+                    <!-- Compact toggle row -->
+                    <div id="batchDropToggle" class="flex items-center gap-3">
+                        <label for="batchWilsonFileInput" class="flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-gray-800 border border-dashed border-blue-400 dark:border-blue-600 rounded-lg cursor-pointer hover:border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-sm text-blue-600 dark:text-blue-400 font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                            <span data-i18n="browse-file">Vælg fil (CSV / Excel)</span>
+                        </label>
+                        <span class="text-xs text-gray-400">Kolonner: Varenavn, Årsforbrug, Pris — andre er valgfri</span>
+                        <input type="file" id="batchWilsonFileInput" accept=".csv,.xlsx,.xls" class="hidden">
                     </div>
-                    
                     <!-- File Info & Actions -->
-                    <div id="batchFileInfo" class="hidden mt-4 p-4 bg-green-50 dark:bg-green-900/20 border-2 border-green-200 dark:border-green-700 rounded-lg">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-3">
-                                <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                                <div class="flex-1">
-                                    <p class="font-medium text-gray-800 dark:text-gray-200" id="batchFileName"></p>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400"><span id="batchFileRows"></span> <span data-i18n="rows">rækker</span> • <span data-i18n="ready-to-calculate">Klar til beregning</span></p>
-                                </div>
+                    <div id="batchFileInfo" class="hidden mt-3 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <div>
+                                <p class="text-sm font-medium text-gray-800 dark:text-gray-200" id="batchFileName"></p>
+                                <p class="text-xs text-gray-500"><span id="batchFileRows"></span> rækker • Klar til beregning</p>
                             </div>
                         </div>
                     </div>
-                    
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-3" data-i18n="batch-upload-desc">
-                        Filen skal indeholde minimum: Varenavn og Årligt Forbrug/Pris. Andre kolonner (Ordreomkostning, Rentesats) er valgfri og bruger standardværdier hvis de mangler.
-                    </p>
                 </div>
                 
-                <!-- Single Item Input Fields -->
                 <div id="singleItemInputs">
-                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <div class="grid sm:grid-cols-2 gap-4 mb-5">
                     <div>
-                        <label class="block text-gray-700 dark:text-gray-300 font-medium mb-2">
+                        <label class="block text-gray-700 dark:text-gray-300 font-medium mb-1.5">
                             <span data-i18n="demand-label">Årsforbrug</span>
                         </label>
-                        <input type="number" id="demandInput" class="input-field" placeholder="10000" value="10000" min="0" step="1" oninput="syncWilsonSlider('demand', this.value)">
-                        <input type="range" id="demandSlider" min="100" max="50000" step="100" value="10000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer dark:bg-blue-700 mt-2" oninput="syncWilsonInput('demand', this.value)">
-                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1" data-i18n="demand-hint">Antal enheder pr. år</p>
+                        <input type="number" id="demandInput" class="input-field" placeholder="10000" value="10000" data-default="10000" min="0" step="1" oninput="syncWilsonSlider('demand', this.value)">
+                        <div class="slider-bubble-wrap">
+                            <span class="slider-bubble" id="demandBubble">10.000</span>
+                            <input type="range" id="demandSlider" min="100" max="50000" step="100" value="10000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer dark:bg-blue-700" oninput="syncWilsonInput('demand', this.value)">
+                        </div>
                     </div>
                     <div>
-                        <label class="block text-gray-700 dark:text-gray-300 font-medium mb-2">
+                        <label class="block text-gray-700 dark:text-gray-300 font-medium mb-1.5">
                             <span data-i18n="order-cost-label">Ordreomkostninger</span>
                         </label>
-                        <input type="number" id="orderCostInput" class="input-field" placeholder="200" value="200" min="0" step="1" oninput="syncWilsonSlider('orderCost', this.value)">
-                        <input type="range" id="orderCostSlider" min="10" max="2000" step="10" value="200" class="w-full h-2 bg-green-200 rounded-lg appearance-none cursor-pointer dark:bg-green-700 mt-2" oninput="syncWilsonInput('orderCost', this.value)">
-                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1" data-i18n="order-cost-hint">Pris pr. ordre</p>
+                        <input type="number" id="orderCostInput" class="input-field" placeholder="200" value="200" data-default="200" min="0" step="1" oninput="syncWilsonSlider('orderCost', this.value)">
+                        <div class="slider-bubble-wrap">
+                            <span class="slider-bubble" id="orderCostBubble">200</span>
+                            <input type="range" id="orderCostSlider" min="10" max="2000" step="10" value="200" class="w-full h-2 bg-green-200 rounded-lg appearance-none cursor-pointer dark:bg-green-700" oninput="syncWilsonInput('orderCost', this.value)">
+                        </div>
                     </div>
                     <div>
-                        <label class="block text-gray-700 dark:text-gray-300 font-medium mb-2">
+                        <label class="block text-gray-700 dark:text-gray-300 font-medium mb-1.5">
                             <span data-i18n="price-label">Pris pr. enhed</span>
                         </label>
-                        <input type="number" id="priceInput" class="input-field" placeholder="100" value="100" min="0" step="0.1" oninput="syncWilsonSlider('price', this.value)">
-                        <input type="range" id="priceSlider" min="1" max="1000" step="1" value="100" class="w-full h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer dark:bg-purple-700 mt-2" oninput="syncWilsonInput('price', this.value)">
-                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1" data-i18n="price-hint">Stykpris</p>
+                        <input type="number" id="priceInput" class="input-field" placeholder="100" value="100" data-default="100" min="0" step="0.1" oninput="syncWilsonSlider('price', this.value)">
+                        <div class="slider-bubble-wrap">
+                            <span class="slider-bubble" id="priceBubble">100</span>
+                            <input type="range" id="priceSlider" min="1" max="1000" step="1" value="100" class="w-full h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer dark:bg-purple-700" oninput="syncWilsonInput('price', this.value)">
+                        </div>
                     </div>
                     <div>
-                        <label class="block text-gray-700 dark:text-gray-300 font-medium mb-2">
+                        <label class="block text-gray-700 dark:text-gray-300 font-medium mb-1.5">
                             <span data-i18n="interest-label">Rente (%)</span>
                         </label>
-                        <input type="number" id="interestInput" class="input-field" placeholder="5" value="5" min="0" max="100" step="0.1" oninput="syncWilsonSlider('interest', this.value)">
-                        <input type="range" id="interestSlider" min="0.5" max="50" step="0.5" value="5" class="w-full h-2 bg-orange-200 rounded-lg appearance-none cursor-pointer dark:bg-orange-700 mt-2" oninput="syncWilsonInput('interest', this.value)">
-                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1" data-i18n="interest-hint">Lagerrentesats i procent</p>
+                        <input type="number" id="interestInput" class="input-field" placeholder="5" value="5" data-default="5" min="0" max="100" step="0.1" oninput="syncWilsonSlider('interest', this.value)">
+                        <div class="slider-bubble-wrap">
+                            <span class="slider-bubble" id="interestBubble">5</span>
+                            <input type="range" id="interestSlider" min="0.5" max="50" step="0.5" value="5" class="w-full h-2 bg-orange-200 rounded-lg appearance-none cursor-pointer dark:bg-orange-700" oninput="syncWilsonInput('interest', this.value)">
+                        </div>
                     </div>
                 </div>
                 
-                <!-- Formula Display -->
-                <div class="bg-blue-50 dark:bg-gray-800 border border-blue-200 dark:border-blue-900 rounded-lg p-4 mb-6">
-                    <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">📐 <span data-i18n="wilson-formula-title">Wilson Formel:</span></h3>
-                    <div class="text-center text-gray-800 dark:text-gray-200">
-                        <p class="mb-2" data-i18n="wilson-formula-text">Q* = √[(2 × Årsforbrug × Ordreomkostninger) / (Pris × Rente)]</p>
+                <!-- Formula Display (collapsible) -->
+                <details class="mb-6 rounded-lg border border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-gray-800">
+                    <summary class="px-4 py-2.5 cursor-pointer text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-blue-100/60 dark:hover:bg-gray-700/50 rounded-lg flex items-center gap-2 select-none">
+                        📐 <span data-i18n="wilson-formula-title">Formel &amp; beregningsskridt</span>
+                    </summary>
+                    <div class="px-4 pb-4 pt-1 text-center text-gray-800 dark:text-gray-200">
+                        <p class="mb-2 text-sm" data-i18n="wilson-formula-text">Q* = √[(2 × Årsforbrug × Ordreomkostninger) / (Pris × Rente)]</p>
                         <p id="formulaCalculation" class="text-sm text-gray-600 dark:text-gray-400"></p>
                     </div>
-                </div>
+                </details>
 
-                <!-- Real-time Slider Toggle (Enhancement) -->
-                <div class="flex items-center justify-between mb-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                    <div class="flex items-center gap-3">
-                        <span class="text-sm text-gray-700 dark:text-gray-300" data-i18n="realtime-mode">⚡ Realtidsberegning</span>
-                        <label class="realtime-toggle">
-                            <input type="checkbox" id="realtimeSliderToggle" onchange="toggleRealtimeSliders(this.checked)">
-                        </label>
-                    </div>
-                    <p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="realtime-mode-hint">Beregn automatisk når sliders trækkes</p>
-                </div>
-
-                <div class="flex gap-4 mb-6">
-                    <button id="calculateBtn" class="flex-1 md:flex-none px-8 py-3 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium transition-colors">
+                <div class="flex flex-wrap items-center gap-3 mb-6">
+                    <button id="calculateBtn" class="px-6 py-2.5 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium transition-colors text-sm">
                         <span data-i18n="calculate-btn">🧮 Beregn EOQ</span>
                     </button>
-                    <button id="addScenarioBtn" class="flex-1 md:flex-none px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors" disabled>
+                    <button id="addScenarioBtn" class="px-6 py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors text-sm" disabled>
                         <span data-i18n="add-scenario-btn">➕ Tilføj Scenarie</span>
                     </button>
-                    <button id="clearScenariosBtn" class="px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-medium transition-colors hidden">
+                    <button id="clearScenariosBtn" class="px-4 py-2.5 bg-gray-400 hover:bg-gray-500 text-white rounded-lg font-medium transition-colors text-sm hidden">
                         <span data-i18n="clear-scenarios-btn">🗑️ Ryd</span>
                     </button>
+                    <label class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 cursor-pointer ml-auto" title="Sliders beregner automatisk mens du trækker — ingen grund til at trykke Beregn">
+                        <input type="checkbox" id="realtimeSliderToggle" class="w-3.5 h-3.5 rounded text-blue-600" onchange="toggleRealtimeSliders(this.checked)">
+                        <span data-i18n="realtime-mode">⚡ Realtid</span>
+                        <span class="text-gray-400 dark:text-gray-500">(sliders beregner live)</span>
+                    </label>
                 </div>
 
                 <!-- Scenario Comparison -->
@@ -2270,32 +2289,37 @@
                     <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-900 rounded-lg p-4 mb-6">
                         <h3 class="text-lg font-semibold text-green-800 dark:text-green-300 mb-2">✅ <span data-i18n="wilson-result-title">Resultat</span></h3>
                         <div class="text-center">
-                            <p class="text-sm text-gray-700 dark:text-gray-300 mb-2" data-i18n="wilson-optimal-order">Optimal indkøbsmængde (mest jævn)</p>
-                            <p id="eoqValue" class="text-5xl font-bold text-green-600 dark:text-green-400 mb-1"></p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400" data-i18n="wilson-units-per-order">enheder pr. ordre</p>
+                            <p class="text-sm text-gray-700 dark:text-gray-300 mb-2" data-i18n="wilson-optimal-order">Optimal indkøbsmængde</p>
+                            <p id="eoqValue" class="text-5xl font-bold text-green-600 dark:text-green-400 mb-0.5"></p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3" data-i18n="wilson-units-per-order">enheder pr. ordre</p>
+                            <div id="eoqInsights" class="hidden flex flex-wrap justify-center gap-2 text-xs">
+                                <span id="eoqInsightFreq" class="px-2.5 py-1 rounded-full bg-cyan-100 dark:bg-cyan-900/40 text-cyan-700 dark:text-cyan-300 font-medium"></span>
+                                <span id="eoqInsightDays" class="px-2.5 py-1 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 font-medium"></span>
+                                <span id="eoqInsightCycle" class="px-2.5 py-1 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 font-medium"></span>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="grid md:grid-cols-4 gap-4 mb-6">
-                        <div class="result-card">
+                    <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                        <div class="result-card secondary">
                             <h4 class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1" data-i18n="wilson-orders-per-year">
                                 Ordrer pr. år
                             </h4>
                             <p id="ordersPerYear" class="text-2xl font-bold text-cyan-600 dark:text-cyan-400"></p>
                         </div>
-                        <div class="result-card">
+                        <div class="result-card secondary">
                             <h4 class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1" data-i18n="wilson-holding-cost">
                                 Lageromkostning
                             </h4>
                             <p id="holdingTotal" class="text-2xl font-bold text-blue-600 dark:text-blue-400"></p>
                         </div>
-                        <div class="result-card">
+                        <div class="result-card secondary">
                             <h4 class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1" data-i18n="wilson-order-cost">
                                 Ordreomkostning
                             </h4>
                             <p id="orderTotal" class="text-2xl font-bold text-orange-600 dark:text-orange-400"></p>
                         </div>
-                        <div class="result-card">
+                        <div class="result-card secondary">
                             <h4 class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1" data-i18n="wilson-total-cost">
                                 Total årlig omkostning
                             </h4>
@@ -2304,7 +2328,7 @@
                     </div>
                     
                     <!-- Sensitivity Analysis Container -->
-                    <div id="sensitivityAnalysis" class="mb-6"></div>
+                    <div id="sensitivityAnalysis" class="mb-4"></div>
                 </div>
                 </div>
 
@@ -2368,372 +2392,367 @@
 
         <!-- Batch Wilson Section removed - functionality integrated in Wilson tab -->
 
-        <!-- Inventory Management Section (NEW) -->
+        <!-- Inventory Management Section -->
         <section id="inventory-section" class="tab-content hidden">
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 transition-colors duration-300">
                 <!-- Header -->
-                <div class="mb-6">
-                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
-                        <span data-i18n="inventory-title">Lagerstyring</span>
-                    </h2>
-                    <p class="text-gray-600 dark:text-gray-400 mt-2" data-i18n="inventory-desc">
-                        Tre kraftfulde værktøjer til optimal lagerstyring: Beregn genbestillingspunkt, planlæg periodisk indkøb, og administrer min/max-lagerniveauer med visuelle dashboards
-                    </p>
+                <div class="mb-5">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white" data-i18n="inventory-title">Lagerstyring</h2>
+                    <!-- Step flow -->
+                    <div class="flex items-center gap-1.5 mt-2 text-xs">
+                        <span class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 font-semibold">① Parametre</span>
+                        <span class="text-gray-300 dark:text-gray-600">→</span>
+                        <span class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 font-medium">② Vælg metode</span>
+                        <span class="text-gray-300 dark:text-gray-600">→</span>
+                        <span class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 font-medium">③ Resultat</span>
+                    </div>
                 </div>
 
-                <!-- Shared Parameters Bar -->
-                <div class="bg-gradient-to-r from-gray-50 to-slate-50 dark:from-gray-700/50 dark:to-slate-700/50 rounded-xl p-4 mb-6 border border-gray-200 dark:border-gray-600">
+                <!-- ── Shared Parameters ── -->
+                <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 mb-5 border border-gray-200 dark:border-gray-600">
                     <div class="flex items-center justify-between mb-3">
-                        <h4 class="font-semibold text-gray-800 dark:text-white flex items-center gap-2">
-                            <span>⚙️</span> <span data-i18n="inv-shared-params">Fælles Parametre</span>
-                        </h4>
-                        <label class="flex items-center gap-2 text-sm cursor-pointer">
-                            <input type="checkbox" id="invAutoSync" checked class="w-4 h-4 rounded text-blue-600" onchange="toggleInventoryAutoSync()">
-                            <span class="text-gray-600 dark:text-gray-400" data-i18n="inv-auto-sync">Auto-synkroniser alle værktøjer</span>
+                        <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300">⚙️ <span data-i18n="inv-shared-params">Fælles Parametre</span></h4>
+                        <label class="flex items-center gap-2 text-xs cursor-pointer text-gray-500 dark:text-gray-400">
+                            <input type="checkbox" id="invAutoSync" checked class="w-3.5 h-3.5 rounded text-blue-600" onchange="toggleInventoryAutoSync()">
+                            <span data-i18n="inv-auto-sync">Auto-synk</span>
                         </label>
                     </div>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                         <div>
-                            <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1" data-i18n="inv-shared-demand">Dagligt forbrug</label>
-                            <input type="number" id="invSharedDemand" class="input-field" placeholder="100" value="100" min="1" oninput="syncSharedParams()">
+                            <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1" title="Gennemsnitligt antal enheder du sælger eller bruger per dag" data-i18n="inv-shared-demand">Dagligt forbrug</label>
+                            <input type="number" id="invSharedDemand" class="input-field" placeholder="100" value="100" min="1" oninput="syncSharedParams(); updateCoverageDays()">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1" data-i18n="inv-shared-leadtime">Leveringstid (dage)</label>
-                            <input type="number" id="invSharedLeadTime" class="input-field" placeholder="7" value="7" min="1" oninput="syncSharedParams()">
+                            <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1" title="Antallet af dage fra du afgiver en bestilling, til varerne er modtaget på lageret" data-i18n="inv-shared-leadtime">Leveringstid (dage)</label>
+                            <input type="number" id="invSharedLeadTime" class="input-field" placeholder="7" value="7" min="1" oninput="syncSharedParams(); updateCoverageDays()">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1" data-i18n="inv-shared-stock">Nuværende lager</label>
-                            <input type="number" id="invSharedStock" class="input-field" placeholder="500" value="500" min="0" oninput="syncSharedParams()">
+                            <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1" title="Antal enheder du har fysisk på lager lige nu" data-i18n="inv-shared-stock">Lager nu</label>
+                            <input type="number" id="invSharedStock" class="input-field" placeholder="500" value="500" min="0" oninput="syncSharedParams(); updateCoverageDays()">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1" data-i18n="inv-shared-safety">Sikkerhedslager</label>
+                            <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1" title="Fast minimumslager som buffer mod forsinkelser. ROP beregner sit eget." data-i18n="inv-shared-safety">Sikkerhedslager</label>
                             <input type="number" id="invSharedSafety" class="input-field" placeholder="150" value="150" min="0" oninput="syncSharedParams()">
                         </div>
                     </div>
+                    <!-- Coverage bar -->
+                    <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
+                        <div class="flex items-center justify-between mb-1">
+                            <div class="flex items-center gap-2">
+                                <span id="invCoverageIcon" class="text-sm">⏳</span>
+                                <span class="text-xs text-gray-500 dark:text-gray-400">Lager dækker</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span id="invCoverageDays" class="text-sm font-bold text-gray-800 dark:text-white">—</span>
+                                <span id="invCoverageStatus" class="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-400">—</span>
+                            </div>
+                        </div>
+                        <div class="relative h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+                            <div id="invCoverageBar" class="absolute top-0 left-0 h-full rounded-full transition-all duration-500 bg-gray-400" style="width:0%"></div>
+                        </div>
+                        <div class="flex justify-between text-[9px] text-gray-400 mt-0.5">
+                            <span>0</span>
+                            <span id="invCoverageLeadLabel">Leveringstid</span>
+                            <span>30+ dage</span>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Sub-Tab Navigation -->
-                <div class="flex border-b-2 border-gray-200 dark:border-gray-700 mb-6">
-                    <button onclick="switchInventoryTool('rop')" id="invTabROP" class="inv-tool-tab px-5 py-3 text-sm font-medium border-b-2 -mb-0.5 border-purple-500 text-purple-600 dark:text-purple-400 transition-colors flex items-center gap-2">
-                        <span>🎯</span> <span data-i18n="reorder-point-title">Genbestillingspunkt (ROP)</span>
+                <!-- ── Tab Navigation ── -->
+                <div class="flex border-b-2 border-gray-200 dark:border-gray-700 mb-5">
+                    <button onclick="switchInventoryTool('rop')" id="invTabROP"
+                        class="inv-tool-tab px-5 py-2.5 text-sm font-medium border-b-2 -mb-0.5 border-purple-500 text-purple-600 dark:text-purple-400 transition-colors">
+                        🎯 <span data-i18n="reorder-point-title">Genbestillingspunkt (ROP)</span>
                     </button>
-                    <button onclick="switchInventoryTool('periodic')" id="invTabPeriodic" class="inv-tool-tab px-5 py-3 text-sm font-medium border-b-2 -mb-0.5 border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors flex items-center gap-2">
-                        <span>📅</span> <span data-i18n="periodic-review-title">Periodisk Gennemgang</span>
+                    <button onclick="switchInventoryTool('periodic')" id="invTabPeriodic"
+                        class="inv-tool-tab px-5 py-2.5 text-sm font-medium border-b-2 -mb-0.5 border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors">
+                        📅 <span data-i18n="periodic-review-title">Periodisk Gennemgang</span>
                     </button>
-                    <button onclick="switchInventoryTool('minmax')" id="invTabMinMax" class="inv-tool-tab px-5 py-3 text-sm font-medium border-b-2 -mb-0.5 border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors flex items-center gap-2">
-                        <span>📊</span> <span data-i18n="minmax-title">Min/Max Model</span>
+                    <button onclick="switchInventoryTool('minmax')" id="invTabMinMax"
+                        class="inv-tool-tab px-5 py-2.5 text-sm font-medium border-b-2 -mb-0.5 border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors">
+                        📊 <span data-i18n="minmax-title">Min/Max Model</span>
                     </button>
                 </div>
 
-                <!-- ═══════════════ ROP TOOL ═══════════════ -->
+                <!-- ═══ ROP ═══ -->
                 <div id="invToolROP" class="inv-tool-content">
-                    <div class="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-xl p-6 border border-purple-200 dark:border-purple-700">
-                        <!-- Hidden fields synced from shared params -->
-                        <input type="hidden" id="ropDailyDemand" value="100">
-                        <input type="hidden" id="ropLeadTime" value="7">
-                        <input type="hidden" id="ropCurrentStock" value="500">
-
-                        <!-- ROP-specific inputs -->
-                        <div class="grid md:grid-cols-2 gap-4 mb-6">
-                            <div>
-                                <label class="block text-gray-700 dark:text-gray-300 font-medium mb-2" data-i18n="rop-service-level">Serviceniveau (%)</label>
-                                <select id="ropServiceLevel" class="input-field" onchange="handleServiceLevelChange()">
-                                    <option value="1.28">90%</option>
-                                    <option value="1.65">95%</option>
-                                    <option value="2.05">98%</option>
-                                    <option value="2.33" selected>99%</option>
-                                    <option value="2.58">99.5%</option>
-                                    <option value="custom" data-i18n="inv-custom-service">Brugerdefineret...</option>
+                    <input type="hidden" id="ropDailyDemand" value="100">
+                    <input type="hidden" id="ropLeadTime" value="7">
+                    <input type="hidden" id="ropCurrentStock" value="500">
+                    <div class="grid md:grid-cols-2 gap-4 mb-5">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5" title="Sandsynlighed for at du aldrig løber tør — fx 99% = kun 1% chance for tomgang" data-i18n="rop-service-level">Serviceniveau</label>
+                            <select id="ropServiceLevel" class="input-field" onchange="handleServiceLevelChange()">
+                                <option value="1.28">90%</option>
+                                <option value="1.65">95%</option>
+                                <option value="2.05">98%</option>
+                                <option value="2.33" selected>99%</option>
+                                <option value="2.58">99.5%</option>
+                                <option value="custom" data-i18n="inv-custom-service">Brugerdefineret...</option>
+                            </select>
+                            <div id="customServiceLevelInput" class="hidden mt-2">
+                                <input type="number" id="customServiceLevel" class="input-field" placeholder="Serviceniveau i %" min="50" max="99.99" step="0.1" oninput="calculateReorderPoint()">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5" title="Hvor meget svinger den daglige efterspørgsel? Brug en forudindstilling hvis du er usikker." data-i18n="rop-demand-std">Svingning i efterspørgsel (σ)</label>
+                            <div class="flex gap-2">
+                                <input type="number" id="ropStdDev" class="input-field flex-1" placeholder="20" value="20" min="0" oninput="calculateReorderPoint()">
+                                <select id="ropStdDevPreset" class="input-field w-28" onchange="applyStdDevPreset()" title="Vælg et niveau">
+                                    <option value="">Vælg niveau</option>
+                                    <option value="10" data-i18n="inv-stddev-stable">Stabil</option>
+                                    <option value="25" data-i18n="inv-stddev-variable">Variabel</option>
+                                    <option value="40" data-i18n="inv-stddev-very-variable">Meget variabel</option>
                                 </select>
-                                <div id="customServiceLevelInput" class="hidden mt-2">
-                                    <input type="number" id="customServiceLevel" class="input-field" placeholder="Serviceniveau i %" min="50" max="99.99" step="0.1" oninput="calculateReorderPoint()">
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 dark:text-gray-300 font-medium mb-2" data-i18n="rop-demand-std">Standardafvigelse</label>
-                                <div class="flex gap-2">
-                                    <input type="number" id="ropStdDev" class="input-field flex-1" placeholder="20" value="20" min="0" oninput="calculateReorderPoint()">
-                                    <select id="ropStdDevPreset" class="input-field w-28" onchange="applyStdDevPreset()" title="Hurtig valg">
-                                        <option value="">σ...</option>
-                                        <option value="10" data-i18n="inv-stddev-stable">Stabil (10%)</option>
-                                        <option value="25" data-i18n="inv-stddev-variable">Variabel (25%)</option>
-                                        <option value="40" data-i18n="inv-stddev-very-variable">Meget variabel (40%)</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Urgency Status -->
-                        <div id="ropUrgencyStatus" class="mb-6">
-                            <div class="p-4 rounded-lg border-2 bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600">
-                                <div class="flex items-center gap-3">
-                                    <span id="ropUrgencyIcon" class="text-3xl">⏳</span>
-                                    <div>
-                                        <p id="ropUrgencyText" class="font-bold text-gray-800 dark:text-white" data-i18n="safety-enter-stock">Indtast lager for at se status</p>
-                                        <p id="ropUrgencySubtext" class="text-sm text-gray-600 dark:text-gray-400">-</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Results -->
-                        <div id="ropResults">
-                            <div class="grid md:grid-cols-3 gap-4 mb-4">
-                                <div class="p-5 bg-white dark:bg-gray-800 rounded-lg border-2 border-purple-300 dark:border-purple-700 shadow-sm">
-                                    <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="rop-result-title">Genbestillingspunkt</h3>
-                                    <div class="flex items-baseline gap-2">
-                                        <span id="ropResult" class="text-4xl font-bold text-purple-600 dark:text-purple-400">—</span>
-                                        <span class="text-gray-600 dark:text-gray-400" data-i18n="units">enheder</span>
-                                    </div>
-                                </div>
-                                <div class="p-5 bg-white dark:bg-gray-800 rounded-lg border-2 border-blue-300 dark:border-blue-700 shadow-sm">
-                                    <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="rop-safety-stock">Sikkerhedslager</h3>
-                                    <div class="flex items-baseline gap-2">
-                                        <span id="ropSafetyStock" class="text-4xl font-bold text-blue-600 dark:text-blue-400">—</span>
-                                        <span class="text-gray-600 dark:text-gray-400" data-i18n="units">enheder</span>
-                                    </div>
-                                </div>
-                                <div class="p-5 bg-white dark:bg-gray-800 rounded-lg border-2 border-green-300 dark:border-green-700 shadow-sm">
-                                    <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="rop-avg-demand">Gns. forbrug (leveringstid)</h3>
-                                    <div class="flex items-baseline gap-2">
-                                        <span id="ropAvgDemand" class="text-4xl font-bold text-green-600 dark:text-green-400">—</span>
-                                        <span class="text-gray-600 dark:text-gray-400" data-i18n="units">enheder</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Simplified Safety Coverage -->
-                            <div id="safety-stock-gauge" class="p-4 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-lg border border-indigo-200 dark:border-indigo-700 mb-4">
-                                <div class="flex items-center justify-between mb-2">
-                                    <h4 class="font-semibold text-gray-800 dark:text-white flex items-center gap-2">
-                                        <span>🛡️</span>
-                                        <span data-i18n="safety-coverage-title">Safety Coverage Level</span>
-                                    </h4>
-                                    <span id="safety-coverage-percent" class="text-lg font-bold text-indigo-600 dark:text-indigo-400">—</span>
-                                </div>
-                                <div class="relative h-6 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                                    <div id="safety-gauge-fill" class="absolute top-0 left-0 h-full bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 transition-all duration-500 rounded-full" style="width: 0%"></div>
-                                </div>
-                                <div class="mt-2 flex justify-between text-xs text-gray-600 dark:text-gray-400">
-                                    <span class="text-red-600" data-i18n="safety-critical">⚠️ Kritisk</span>
-                                    <span class="text-yellow-600" data-i18n="safety-low">⚡ Lav</span>
-                                    <span class="text-green-600" data-i18n="safety-optimal">✓ Optimal</span>
-                                    <span class="text-blue-600" data-i18n="safety-excess">📦 Overskud</span>
-                                </div>
-                            </div>
-
-                            <!-- Formula (collapsible) -->
-                            <details class="mb-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-                                <summary class="p-3 cursor-pointer font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg flex items-center gap-2">
-                                    📐 <span data-i18n="rop-formula">Formler</span>
-                                </summary>
-                                <div class="px-4 pb-4">
-                                    <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">
-                                        <strong data-i18n="rop-formula-text-1">ROP = (Dagligt Forbrug × Leveringstid) + Sikkerhedslager</strong>
-                                    </p>
-                                    <p class="text-gray-700 dark:text-gray-300 text-sm">
-                                        <strong data-i18n="rop-formula-text-2">Sikkerhedslager = Z-score × σ × √Leveringstid</strong>
-                                    </p>
-                                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-2" data-i18n="rop-explanation">
-                                        Z-score repræsenterer det ønskede serviceniveau (højere = mere sikkerhedslager)
-                                    </p>
-                                </div>
-                            </details>
-
-                            <!-- Smart Warning -->
-                            <div id="ropSmartWarning" class="hidden mb-4 p-4 rounded-lg border-2">
-                                <div class="flex items-start gap-3">
-                                    <span id="ropWarningIcon" class="text-2xl">💡</span>
-                                    <div>
-                                        <p id="ropWarningTitle" class="font-bold"></p>
-                                        <p id="ropWarningText" class="text-sm mt-1"></p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Urgency status + smart warning -->
+                    <div id="ropUrgencyStatus" class="mb-3">
+                        <div class="p-3 rounded-lg border bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 flex items-center gap-3">
+                            <span id="ropUrgencyIcon" class="text-2xl">⏳</span>
+                            <div class="flex-1">
+                                <p id="ropUrgencyText" class="font-semibold text-gray-800 dark:text-white text-sm">Udfyld parametrene ovenfor for at se status</p>
+                                <p id="ropUrgencySubtext" class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">—</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="ropSmartWarning" class="hidden mb-5 p-3 rounded-lg border-2">
+                        <div class="flex items-start gap-3">
+                            <span id="ropWarningIcon" class="text-xl flex-shrink-0">💡</span>
+                            <div>
+                                <p id="ropWarningTitle" class="font-semibold text-sm"></p>
+                                <p id="ropWarningText" class="text-xs mt-0.5 text-gray-600 dark:text-gray-400"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results -->
+                    <div id="ropResults">
+                        <div class="grid md:grid-cols-3 gap-4 mb-4">
+                            <div class="p-4 bg-white dark:bg-gray-800 rounded-lg border-2 border-purple-200 dark:border-purple-700 shadow-sm text-center">
+                                <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1" data-i18n="rop-result-title">Genbestillingspunkt</p>
+                                <p class="text-3xl font-bold text-purple-600 dark:text-purple-400"><span id="ropResult">—</span></p>
+                                <p class="text-xs text-gray-400 mt-1" data-i18n="units">enheder</p>
+                            </div>
+                            <div class="p-4 bg-white dark:bg-gray-800 rounded-lg border-2 border-blue-200 dark:border-blue-700 shadow-sm text-center">
+                                <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1" data-i18n="rop-safety-stock">Sikkerhedslager</p>
+                                <p class="text-3xl font-bold text-blue-600 dark:text-blue-400"><span id="ropSafetyStock">—</span></p>
+                                <p class="text-xs text-gray-400 mt-1" data-i18n="units">enheder</p>
+                            </div>
+                            <div class="p-4 bg-white dark:bg-gray-800 rounded-lg border-2 border-green-200 dark:border-green-700 shadow-sm text-center">
+                                <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1" data-i18n="rop-avg-demand">Gns. forbrug (leveringstid)</p>
+                                <p class="text-3xl font-bold text-green-600 dark:text-green-400"><span id="ropAvgDemand">—</span></p>
+                                <p class="text-xs text-gray-400 mt-1" data-i18n="units">enheder</p>
+                            </div>
+                        </div>
+
+                        <!-- Action recommendation -->
+                        <div id="ropActionCard" class="hidden mb-4 p-3 rounded-lg border-2 border-purple-200 dark:border-purple-700 bg-purple-50 dark:bg-purple-900/20">
+                            <p class="text-xs font-semibold text-purple-700 dark:text-purple-300 mb-1">📋 Anbefaling</p>
+                            <p id="ropActionText" class="text-sm text-gray-700 dark:text-gray-300"></p>
+                            <p id="ropSuggestedOrder" class="text-xs text-gray-500 dark:text-gray-400 mt-1"></p>
+                        </div>
+
+                        <!-- Safety coverage gauge -->
+                        <div id="safety-stock-gauge" class="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600 mb-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">🛡️ <span data-i18n="safety-coverage-title">Dækningsgrad</span></span>
+                                <span id="safety-coverage-percent" class="text-sm font-bold text-indigo-600 dark:text-indigo-400">—</span>
+                            </div>
+                            <div class="relative h-4 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+                                <div id="safety-gauge-fill" class="absolute top-0 left-0 h-full bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 transition-all duration-500 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <div class="mt-1.5 flex justify-between text-[10px] text-gray-400">
+                                <span class="text-red-500" data-i18n="safety-critical">⚠️ Kritisk</span>
+                                <span class="text-yellow-500" data-i18n="safety-low">⚡ Lav</span>
+                                <span class="text-green-500" data-i18n="safety-optimal">✓ Optimal</span>
+                                <span class="text-blue-500" data-i18n="safety-excess">📦 Overskud</span>
+                            </div>
+                        </div>
+
+                        <!-- Formula -->
+                        <details class="mb-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                            <summary class="px-4 py-2.5 cursor-pointer text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg flex items-center gap-2">
+                                📐 <span data-i18n="rop-formula">Formler</span>
+                            </summary>
+                            <div class="px-4 pb-4 pt-1 space-y-1.5 text-sm text-gray-600 dark:text-gray-400">
+                                <p><strong>ROP</strong> = Dagligt Forbrug × Leveringstid + Sikkerhedslager</p>
+                                <p><strong>Sikkerhedslager</strong> = Z-score × σ × √Leveringstid</p>
+                                <p class="text-xs text-gray-400 mt-1">Z-score svarer til serviceniveauet — fx 99% → Z = 2,33</p>
+                            </div>
+                        </details>
+
+                        <!-- Service level comparison -->
+                        <details class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                            <summary class="px-4 py-2.5 cursor-pointer text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg flex items-center gap-2">
+                                📊 Serviceniveau-sammenligning
+                            </summary>
+                            <div class="px-4 pb-4 pt-2">
+                                <p class="text-xs text-gray-400 mb-3">Hvad koster ekstra sikkerhed? Baseret på dine aktuelle indstillinger:</p>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm border-collapse">
+                                        <thead>
+                                            <tr class="bg-gray-50 dark:bg-gray-700 text-xs text-gray-500 dark:text-gray-400">
+                                                <th class="px-3 py-2 text-left font-semibold">Serviceniveau</th>
+                                                <th class="px-3 py-2 text-right font-semibold">Z-score</th>
+                                                <th class="px-3 py-2 text-right font-semibold">Sikkerhedslager</th>
+                                                <th class="px-3 py-2 text-right font-semibold">ROP</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="ropServiceTableBody">
+                                            <tr><td colspan="4" class="px-3 py-3 text-center text-gray-400 text-xs">Beregn ROP for at se sammenligning</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
                 </div>
 
-                <!-- ═══════════════ PERIODIC REVIEW TOOL ═══════════════ -->
+                <!-- ═══ PERIODISK GENNEMGANG ═══ -->
                 <div id="invToolPeriodic" class="inv-tool-content hidden">
-                    <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-6 border border-green-200 dark:border-green-700">
-                        <!-- Periodic-specific inputs -->
-                        <div class="grid md:grid-cols-2 gap-4 mb-6">
-                            <div>
-                                <label class="block text-gray-700 dark:text-gray-300 font-medium mb-2" data-i18n="pr-review-period">Gennemgangsperiode (dage)</label>
-                                <input type="number" id="prReviewPeriod" class="input-field" placeholder="14" value="14" min="1" oninput="calculatePeriodicReview()">
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1" data-i18n="inv-eg-14-days">Fx hver 14. dag</p>
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 dark:text-gray-300 font-medium mb-2">📅 <span data-i18n="inv-next-review-label">Næste gennemgangsdato (valgfri)</span></label>
-                                <input type="date" id="prNextReviewDate" class="input-field" onchange="calculatePeriodicReview()">
-                                <p id="prNextReviewStatus" class="text-sm mt-1 text-gray-600 dark:text-gray-400"></p>
-                            </div>
+                    <input type="hidden" id="prDailyDemand" value="50">
+                    <input type="hidden" id="prLeadTime" value="5">
+                    <input type="hidden" id="prSafetyStock" value="100">
+                    <input type="hidden" id="prCurrentStock" value="300">
+                    <div class="grid md:grid-cols-2 gap-4 mb-5">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5" title="Hvor mange dage der går mellem hver lagergennemgang" data-i18n="pr-review-period">Gennemgangsperiode (dage)</label>
+                            <input type="number" id="prReviewPeriod" class="input-field" placeholder="14" value="14" min="1" oninput="calculatePeriodicReview()">
                         </div>
-
-                        <!-- Hidden fields synced from shared params -->
-                        <input type="hidden" id="prDailyDemand" value="50">
-                        <input type="hidden" id="prLeadTime" value="5">
-                        <input type="hidden" id="prSafetyStock" value="100">
-                        <input type="hidden" id="prCurrentStock" value="300">
-
-                        <!-- Results -->
-                        <div id="prResults">
-                            <div class="grid md:grid-cols-3 gap-4 mb-4">
-                                <div class="p-5 bg-white dark:bg-gray-800 rounded-lg border-2 border-green-300 dark:border-green-700 shadow-sm">
-                                    <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="pr-target-level">Målniveau (Target Level)</h3>
-                                    <div class="flex items-baseline gap-2">
-                                        <span id="prTargetLevel" class="text-4xl font-bold text-green-600 dark:text-green-400">—</span>
-                                        <span class="text-gray-600 dark:text-gray-400" data-i18n="units">enheder</span>
-                                    </div>
-                                </div>
-                                <div class="p-5 bg-white dark:bg-gray-800 rounded-lg border-2 border-orange-300 dark:border-orange-700 shadow-sm">
-                                    <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="pr-order-quantity">Bestil nu</h3>
-                                    <div class="flex items-baseline gap-2">
-                                        <span id="prOrderQuantity" class="text-4xl font-bold text-orange-600 dark:text-orange-400">—</span>
-                                        <span class="text-gray-600 dark:text-gray-400" data-i18n="units">enheder</span>
-                                    </div>
-                                </div>
-                                <div class="p-5 bg-white dark:bg-gray-800 rounded-lg border-2 border-blue-300 dark:border-blue-700 shadow-sm">
-                                    <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="pr-coverage">Dækningsperiode</h3>
-                                    <div class="flex items-baseline gap-2">
-                                        <span id="prCoverage" class="text-4xl font-bold text-blue-600 dark:text-blue-400">—</span>
-                                        <span class="text-gray-600 dark:text-gray-400" data-i18n="days-abbr">dage</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Chart -->
-                            <div class="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 mb-4">
-                                <canvas id="periodicReviewChart" height="80"></canvas>
-                            </div>
-
-                            <!-- Formula (collapsible) -->
-                            <details class="mb-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-                                <summary class="p-3 cursor-pointer font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg flex items-center gap-2">
-                                    📐 <span data-i18n="pr-formula">Formel</span>
-                                </summary>
-                                <div class="px-4 pb-4">
-                                    <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">
-                                        <strong data-i18n="pr-formula-text-1">Målniveau = Dagligt Forbrug × (Gennemgangsperiode + Leveringstid) + Sikkerhedslager</strong>
-                                    </p>
-                                    <p class="text-gray-700 dark:text-gray-300 text-sm">
-                                        <strong data-i18n="pr-formula-text-2">Bestillingsmængde = Målniveau - Nuværende Beholdning</strong>
-                                    </p>
-                                </div>
-                            </details>
-
-                            <!-- Smart Timing Warning -->
-                            <div id="prTimingWarning" class="hidden mb-4 p-4 rounded-lg border-2">
-                                <div class="flex items-start gap-3">
-                                    <span id="prWarningIcon" class="text-2xl">⏰</span>
-                                    <div>
-                                        <p id="prWarningTitle" class="font-bold"></p>
-                                        <p id="prWarningText" class="text-sm mt-1"></p>
-                                        <p id="prWarningAction" class="text-sm mt-2 font-medium"></p>
-                                    </div>
-                                </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">📅 <span data-i18n="inv-next-review-label">Næste gennemgangsdato (valgfri)</span></label>
+                            <input type="date" id="prNextReviewDate" class="input-field" onchange="calculatePeriodicReview()">
+                            <div class="flex items-center gap-2 mt-1">
+                                <p id="prNextReviewStatus" class="text-xs text-gray-500 dark:text-gray-400"></p>
+                                <span id="prCountdownPill" class="hidden text-xs px-2 py-0.5 rounded-full font-medium"></span>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- ═══════════════ MIN/MAX TOOL ═══════════════ -->
-                <div id="invToolMinMax" class="inv-tool-content hidden">
-                    <div class="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl p-6 border border-blue-200 dark:border-blue-700">
-                        <!-- Min/Max specific inputs (3x2 grid instead of 6-col) -->
-                        <div class="grid md:grid-cols-3 gap-4 mb-6">
-                            <div>
-                                <label class="block text-gray-700 dark:text-gray-300 font-medium mb-2" data-i18n="mm-min-level">Min-niveau</label>
-                                <input type="number" id="mmMinLevel" class="input-field" placeholder="200" value="200" min="0" oninput="calculateMinMax()">
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1" data-i18n="mm-min-hint">Laveste acceptabelt</p>
+                    <div id="prResults">
+                        <div class="grid md:grid-cols-3 gap-4 mb-4">
+                            <div class="p-4 bg-white dark:bg-gray-800 rounded-lg border-2 border-green-200 dark:border-green-700 shadow-sm text-center">
+                                <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1" data-i18n="pr-target-level">Målniveau</p>
+                                <p class="text-3xl font-bold text-green-600 dark:text-green-400"><span id="prTargetLevel">—</span></p>
+                                <p class="text-xs text-gray-400 mt-1" data-i18n="units">enheder</p>
                             </div>
-                            <div>
-                                <label class="block text-gray-700 dark:text-gray-300 font-medium mb-2" data-i18n="mm-max-level">Max-niveau</label>
-                                <input type="number" id="mmMaxLevel" class="input-field" placeholder="1000" value="1000" min="0" oninput="calculateMinMax()">
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1" data-i18n="mm-max-hint">Højeste ønsket</p>
+                            <div class="p-4 bg-white dark:bg-gray-800 rounded-lg border-2 border-orange-200 dark:border-orange-700 shadow-sm text-center">
+                                <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1" data-i18n="pr-order-quantity">Bestil nu</p>
+                                <p class="text-3xl font-bold text-orange-600 dark:text-orange-400"><span id="prOrderQuantity">—</span></p>
+                                <p class="text-xs text-gray-400 mt-1" data-i18n="units">enheder</p>
                             </div>
-                            <div>
-                                <label class="block text-gray-700 dark:text-gray-300 font-medium mb-2" data-i18n="mm-eoq-label">EOQ</label>
-                                <div class="flex gap-2">
-                                    <input type="number" id="mmEOQ" class="input-field flex-1" placeholder="500" value="500" min="1" oninput="calculateMinMax()">
-                                    <button onclick="syncFromWilson()" class="px-3 py-2 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 rounded-lg hover:bg-orange-200 text-xs font-medium whitespace-nowrap" title="Hent fra Wilson">
-                                        🔗 Wilson
-                                    </button>
-                                </div>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1" data-i18n="mm-eoq-hint">Optimal bestilling</p>
+                            <div class="p-4 bg-white dark:bg-gray-800 rounded-lg border-2 border-blue-200 dark:border-blue-700 shadow-sm text-center">
+                                <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1" data-i18n="pr-coverage">Dækningsperiode</p>
+                                <p class="text-3xl font-bold text-blue-600 dark:text-blue-400"><span id="prCoverage">—</span></p>
+                                <p class="text-xs text-gray-400 mt-1" data-i18n="days-abbr">dage</p>
                             </div>
                         </div>
 
-                        <!-- Hidden fields synced from shared params -->
-                        <input type="hidden" id="mmDailyDemand" value="50">
-                        <input type="hidden" id="mmSafetyStock" value="150">
-                        <input type="hidden" id="mmCurrentLevel" value="300">
+                        <div class="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 mb-4">
+                            <canvas id="periodicReviewChart" height="80"></canvas>
+                        </div>
 
-                        <!-- Results -->
-                        <div id="mmResults">
-                            <div class="grid md:grid-cols-4 gap-4 mb-6">
-                                <div class="p-5 bg-white dark:bg-gray-800 rounded-lg border-2 border-blue-300 dark:border-blue-700 shadow-sm">
-                                    <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="inventory-status">Lagerstatus</h3>
-                                    <div class="flex items-center gap-3">
-                                        <p id="mmStatusIcon" class="text-4xl">—</p>
-                                        <span id="mmStatus" class="text-2xl font-bold text-blue-600 dark:text-blue-400" data-i18n="mm-status-normal">—</span>
-                                    </div>
-                                </div>
-                                <div class="p-5 bg-white dark:bg-gray-800 rounded-lg border-2 border-orange-300 dark:border-orange-700 shadow-sm">
-                                    <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="mm-order-needed">Bestil nu</h3>
-                                    <div class="flex items-baseline gap-2">
-                                        <span id="mmOrderNeeded" class="text-4xl font-bold text-orange-600 dark:text-orange-400">—</span>
-                                        <span class="text-gray-600 dark:text-gray-400" data-i18n="units">enheder</span>
-                                    </div>
-                                </div>
-                                <div class="p-5 bg-white dark:bg-gray-800 rounded-lg border-2 border-green-300 dark:border-green-700 shadow-sm">
-                                    <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="mm-capacity">Kapacitet brugt</h3>
-                                    <div class="flex items-baseline gap-2">
-                                        <span id="mmCapacity" class="text-4xl font-bold text-green-600 dark:text-green-400">—</span>
-                                        <span class="text-gray-600 dark:text-gray-400">%</span>
-                                    </div>
-                                </div>
-                                <div class="p-5 bg-white dark:bg-gray-800 rounded-lg border-2 border-purple-300 dark:border-purple-700 shadow-sm">
-                                    <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="mm-days-to-min">Dage til min</h3>
-                                    <div class="flex items-baseline gap-2">
-                                        <span id="mmDaysToMin" class="text-4xl font-bold text-purple-600 dark:text-purple-400">—</span>
-                                        <span class="text-gray-600 dark:text-gray-400" data-i18n="days-abbr">dage</span>
-                                    </div>
+                        <div id="prTimingWarning" class="hidden mb-4 p-3 rounded-lg border-2">
+                            <div class="flex items-start gap-3">
+                                <span id="prWarningIcon" class="text-2xl">⏰</span>
+                                <div>
+                                    <p id="prWarningTitle" class="font-semibold text-sm"></p>
+                                    <p id="prWarningText" class="text-xs mt-0.5 text-gray-600 dark:text-gray-400"></p>
+                                    <p id="prWarningAction" class="text-xs mt-1.5 font-medium"></p>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Chart -->
-                            <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 mb-4">
-                                <h4 class="font-bold text-gray-900 dark:text-white mb-4 text-center" data-i18n="mm-chart-title">Lagerniveau Visualisering</h4>
-                                <canvas id="minMaxChart" height="100"></canvas>
-                                <!-- Inline Legend -->
-                                <div class="mt-4 flex flex-wrap justify-center gap-6 text-sm">
-                                    <div class="flex items-center gap-2">
-                                        <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-                                        <span class="text-gray-600 dark:text-gray-400" data-i18n="mm-legend-max-label">Max</span>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                                        <span class="text-gray-600 dark:text-gray-400" data-i18n="mm-legend-min-label">Min</span>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
-                                        <span class="text-gray-600 dark:text-gray-400" data-i18n="mm-legend-safety-label">Sikkerhedslager</span>
-                                    </div>
+                        <details class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                            <summary class="px-4 py-2.5 cursor-pointer text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg flex items-center gap-2">
+                                📐 <span data-i18n="pr-formula">Formel</span>
+                            </summary>
+                            <div class="px-4 pb-4 pt-1 space-y-1.5 text-sm text-gray-600 dark:text-gray-400">
+                                <p><strong>Målniveau</strong> = Dagligt Forbrug × (Periode + Leveringstid) + Sikkerhedslager</p>
+                                <p><strong>Bestillingsmængde</strong> = Målniveau − Nuværende Beholdning</p>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+
+                <!-- ═══ MIN/MAX ═══ -->
+                <div id="invToolMinMax" class="inv-tool-content hidden">
+                    <input type="hidden" id="mmDailyDemand" value="50">
+                    <input type="hidden" id="mmSafetyStock" value="150">
+                    <input type="hidden" id="mmCurrentLevel" value="300">
+                    <div class="grid md:grid-cols-3 gap-4 mb-5">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5" title="Laveste acceptabelt lagerniveau — bestil når du rammer dette" data-i18n="mm-min-level">Min-niveau</label>
+                            <input type="number" id="mmMinLevel" class="input-field" placeholder="200" value="200" min="0" oninput="calculateMinMax()">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5" title="Højeste ønskede lagerniveau — fyld op til dette niveau" data-i18n="mm-max-level">Max-niveau</label>
+                            <input type="number" id="mmMaxLevel" class="input-field" placeholder="1000" value="1000" min="0" oninput="calculateMinMax()">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5" title="Optimal ordremængde — hentes automatisk fra Wilson-beregning" data-i18n="mm-eoq-label">EOQ (bestillingsmængde)</label>
+                            <div class="flex gap-2">
+                                <input type="number" id="mmEOQ" class="input-field flex-1" placeholder="500" value="500" min="1" oninput="calculateMinMax()">
+                                <button onclick="syncFromWilson()" class="px-3 py-2 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 rounded-lg hover:bg-orange-200 text-xs font-medium whitespace-nowrap" title="Hent fra Wilson">
+                                    🔗 Wilson
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="mmResults">
+                        <div class="grid md:grid-cols-4 gap-4 mb-4">
+                            <div class="p-4 bg-white dark:bg-gray-800 rounded-lg border-2 border-blue-200 dark:border-blue-700 shadow-sm text-center">
+                                <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1" data-i18n="inventory-status">Status</p>
+                                <div class="flex items-center justify-center gap-2">
+                                    <span id="mmStatusIcon" class="text-2xl">—</span>
+                                    <span id="mmStatus" class="text-xl font-bold text-blue-600 dark:text-blue-400" data-i18n="mm-status-normal">—</span>
                                 </div>
                             </div>
+                            <div class="p-4 bg-white dark:bg-gray-800 rounded-lg border-2 border-orange-200 dark:border-orange-700 shadow-sm text-center">
+                                <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1" data-i18n="mm-order-needed">Bestil nu</p>
+                                <p class="text-3xl font-bold text-orange-600 dark:text-orange-400"><span id="mmOrderNeeded">—</span></p>
+                                <p class="text-xs text-gray-400 mt-1" data-i18n="units">enheder</p>
+                            </div>
+                            <div class="p-4 bg-white dark:bg-gray-800 rounded-lg border-2 border-green-200 dark:border-green-700 shadow-sm text-center">
+                                <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1" data-i18n="mm-capacity">Kapacitet brugt</p>
+                                <p class="text-3xl font-bold text-green-600 dark:text-green-400"><span id="mmCapacity">—</span></p>
+                                <p class="text-xs text-gray-400 mt-1">%</p>
+                            </div>
+                            <div class="p-4 bg-white dark:bg-gray-800 rounded-lg border-2 border-purple-200 dark:border-purple-700 shadow-sm text-center">
+                                <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1" data-i18n="mm-days-to-min">Dage til min</p>
+                                <p class="text-3xl font-bold text-purple-600 dark:text-purple-400"><span id="mmDaysToMin">—</span></p>
+                                <p class="text-xs text-gray-400 mt-1" data-i18n="days-abbr">dage</p>
+                            </div>
+                        </div>
 
-                            <!-- Smart Warning -->
-                            <div id="mmSmartWarning" class="hidden mb-4 p-4 rounded-lg border-2">
-                                <div class="flex items-start gap-3">
-                                    <span id="mmWarningIcon" class="text-2xl">💡</span>
-                                    <div>
-                                        <p id="mmWarningTitle" class="font-bold"></p>
-                                        <p id="mmWarningText" class="text-sm mt-1"></p>
-                                    </div>
+                        <div class="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 mb-4">
+                            <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 text-center" data-i18n="mm-chart-title">Lagerniveau Visualisering</h4>
+                            <canvas id="minMaxChart" height="100"></canvas>
+                            <div class="mt-3 flex flex-wrap justify-center gap-5 text-xs text-gray-500 dark:text-gray-400">
+                                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-500 inline-block"></span> <span data-i18n="mm-legend-max-label">Max</span></span>
+                                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500 inline-block"></span> <span data-i18n="mm-legend-min-label">Min</span></span>
+                                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span> <span data-i18n="mm-legend-safety-label">Sikkerhedslager</span></span>
+                            </div>
+                        </div>
+
+                        <div id="mmSmartWarning" class="hidden mb-4 p-3 rounded-lg border-2">
+                            <div class="flex items-start gap-3">
+                                <span id="mmWarningIcon" class="text-2xl">💡</span>
+                                <div>
+                                    <p id="mmWarningTitle" class="font-semibold text-sm"></p>
+                                    <p id="mmWarningText" class="text-xs mt-0.5 text-gray-600 dark:text-gray-400"></p>
                                 </div>
                             </div>
+                        </div>
+                        <!-- Min/Max action recommendation -->
+                        <div id="mmActionCard" class="hidden p-3 rounded-lg border bg-gray-50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600">
+                            <p class="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">📋 Næste handling</p>
+                            <p id="mmActionText" class="text-sm text-gray-700 dark:text-gray-300"></p>
+                            <p id="mmActionSub" class="text-xs text-gray-400 mt-0.5"></p>
                         </div>
                     </div>
                 </div>
@@ -6062,6 +6081,12 @@
                             <p class="text-xs text-blue-800 dark:text-blue-300 font-medium" data-i18n="qr-encoded-data">Indkodede data:</p>
                             <p id="qrContentDisplay" class="text-xs text-blue-700 dark:text-blue-400 mt-1 break-all font-mono"></p>
                         </div>
+
+                        <!-- Disclaimer -->
+                        <div class="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-700 flex gap-2">
+                            <span class="text-amber-500 flex-shrink-0">⚠️</span>
+                            <p class="text-xs text-amber-800 dark:text-amber-300" data-i18n-html="qr-disclaimer-text"><strong>Gyldighed:</strong> QR-koder med tekst, kontaktoplysninger, WiFi eller telefonnummer virker permanent — dataene er lagret direkte i koden. QR-koder der peger på en <strong>URL</strong> ophører med at virke, hvis siden tages offline, domænet udløber eller URL'en ændres. Dette værktøj genererer <em>statiske</em> QR-koder — generatoren sætter ikke selv en udløbsdato.</p>
+                        </div>
                     </div>
                 </div>
 
@@ -7180,6 +7205,7 @@
                         <!-- Element Palette -->
                         <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-3 border border-gray-200 dark:border-gray-600">
                             <h4 class="font-semibold text-xs text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide" data-i18n="wh-palette">Elementer</h4>
+                            <input type="text" id="whPaletteSearch" class="w-full mb-2 px-2 py-1 text-[11px] border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-indigo-400" placeholder="🔍 Filter..." oninput="WarehouseLayout.filterPalette(this.value)">
                             <div class="grid grid-cols-3 gap-1.5 wh-palette-scroll" id="whPalette">
                                 <button data-wh-type="rack" onclick="WarehouseLayout.selectPaletteType('rack')" class="wh-palette-btn p-1.5 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-indigo-400 text-center text-xs font-medium transition-all cursor-pointer ring-indigo-400" title="Rack (2×1)">
                                     <span class="text-base block">📦</span>
@@ -7286,8 +7312,15 @@
 
                         <!-- Layers Panel -->
                         <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-3 border border-gray-200 dark:border-gray-600">
-                            <h4 class="font-semibold text-xs text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide" data-i18n="wh-layers">Lag</h4>
-                            <div id="whLayersPanel" class="space-y-1 text-xs">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-wide" data-i18n="wh-layers">Lag</h4>
+                                <div class="flex items-center gap-1">
+                                    <button onclick="WarehouseLayout.showAllLayers()" class="text-[10px] px-1.5 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded hover:bg-green-200 dark:hover:bg-green-900/50 transition-colors" title="Vis alle">✓</button>
+                                    <button onclick="WarehouseLayout.hideAllLayers()" class="text-[10px] px-1.5 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors" title="Skjul alle">✕</button>
+                                    <button onclick="WarehouseLayout.toggleUsedOnly()" id="whBtnUsedOnly" class="text-[10px] px-1.5 py-0.5 bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-300 rounded hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors font-bold" title="Vis kun brugte">★</button>
+                                </div>
+                            </div>
+                            <div id="whLayersPanel" class="text-xs max-h-52 overflow-y-auto pr-0.5">
                                 <!-- Populated by JS -->
                             </div>
                         </div>
@@ -7359,6 +7392,13 @@
                                 <button onclick="WarehouseLayout.exportSVG()" class="px-2.5 py-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-lg text-xs font-medium hover:bg-blue-200 transition-colors" title="Export SVG">
                                     <i class="fas fa-vector-square mr-1"></i>SVG
                                 </button>
+                                <button onclick="WarehouseLayout.exportJSON()" class="px-2.5 py-1.5 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded-lg text-xs font-medium hover:bg-yellow-200 transition-colors" title="Save layout as JSON">
+                                    <i class="fas fa-save mr-1"></i>JSON
+                                </button>
+                                <label class="px-2.5 py-1.5 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded-lg text-xs font-medium hover:bg-yellow-200 transition-colors cursor-pointer flex items-center" title="Load layout from JSON">
+                                    <i class="fas fa-folder-open mr-1"></i><span data-i18n="wh-import-json">Indlæs</span>
+                                    <input type="file" accept=".json" class="hidden" onchange="WarehouseLayout.importJSON(event)">
+                                </label>
                                 <button onclick="WarehouseLayout.autoSuggest()" class="px-2.5 py-1.5 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-lg text-xs font-medium hover:bg-indigo-200 transition-colors" title="Auto-place from ABC">
                                     <i class="fas fa-magic mr-1"></i><span data-i18n="wh-auto-suggest">Auto ABC</span>
                                 </button>
@@ -7416,6 +7456,29 @@
                         <div id="whStats" class="mt-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600 text-sm text-gray-600 dark:text-gray-400">
                             <span data-i18n="wh-click-to-place">Klik på et element i paletten, derefter klik på kortet for at placere det.</span>
                         </div>
+
+                        <!-- Keyboard Shortcuts Hint -->
+                        <details class="mt-2">
+                            <summary class="cursor-pointer select-none text-[11px] text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 flex items-center gap-1.5 list-none">
+                                <i class="fas fa-keyboard text-gray-400"></i>
+                                <span data-i18n="wh-shortcuts-hint">Tastaturgenveje</span>
+                                <i class="fas fa-chevron-down text-gray-400 text-[8px]"></i>
+                            </summary>
+                            <div class="mt-1.5 p-2.5 bg-gray-50 dark:bg-gray-700/50 rounded-lg text-[10px] text-gray-600 dark:text-gray-400 grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-1 border border-gray-200 dark:border-gray-600">
+                                <span><kbd class="bg-gray-200 dark:bg-gray-600 px-1 py-0.5 rounded text-[9px] font-mono">G</kbd> <span data-i18n="wh-grid">Gitter</span></span>
+                                <span><kbd class="bg-gray-200 dark:bg-gray-600 px-1 py-0.5 rounded text-[9px] font-mono">S</kbd> <span data-i18n="wh-snap">Snap</span></span>
+                                <span><kbd class="bg-gray-200 dark:bg-gray-600 px-1 py-0.5 rounded text-[9px] font-mono">R</kbd> <span data-i18n="wh-ctx-rotate">Roter 90°</span></span>
+                                <span><kbd class="bg-gray-200 dark:bg-gray-600 px-1 py-0.5 rounded text-[9px] font-mono">M</kbd> <span data-i18n="wh-measure">Mål</span></span>
+                                <span><kbd class="bg-gray-200 dark:bg-gray-600 px-1 py-0.5 rounded text-[9px] font-mono">Del</kbd> <span data-i18n="wh-ctx-delete">Slet</span></span>
+                                <span><kbd class="bg-gray-200 dark:bg-gray-600 px-1 py-0.5 rounded text-[9px] font-mono">Ctrl+Z</kbd> Undo</span>
+                                <span><kbd class="bg-gray-200 dark:bg-gray-600 px-1 py-0.5 rounded text-[9px] font-mono">Ctrl+D</kbd> <span data-i18n="wh-ctx-duplicate">Duplikér</span></span>
+                                <span><kbd class="bg-gray-200 dark:bg-gray-600 px-1 py-0.5 rounded text-[9px] font-mono">0</kbd> Zoom fit</span>
+                                <span><kbd class="bg-gray-200 dark:bg-gray-600 px-1 py-0.5 rounded text-[9px] font-mono">Ctrl+C/V</kbd> Kopiér/Sæt ind</span>
+                                <span><kbd class="bg-gray-200 dark:bg-gray-600 px-1 py-0.5 rounded text-[9px] font-mono">Scroll</kbd> Zoom</span>
+                                <span><kbd class="bg-gray-200 dark:bg-gray-600 px-1 py-0.5 rounded text-[9px] font-mono">Mid-drag</kbd> Pan</span>
+                                <span><kbd class="bg-gray-200 dark:bg-gray-600 px-1 py-0.5 rounded text-[9px] font-mono">Shift+drag</kbd> Multi-valg</span>
+                            </div>
+                        </details>
                     </div>
                 </div>
             </div>

@@ -162,8 +162,8 @@
             },
             {
                 id: 'step5', icon: '📦', color: 'teal',
-                title: 'Tjek Lagerstatus (ROP, Min/Max)',
-                desc: 'Gå til <strong>Lagerstyring</strong> for at beregne <em>Genbestillingspunkt (ROP)</em>, <em>Sikkerhedslager</em>, <em>Periodisk gennemgang</em> og <em>Min/Max-niveauer</em>. Vælg den model der passer til dine varer.',
+                title: 'Tjek Lagerstatus (ROP, Periodisk, Min/Max)',
+                desc: 'Gå til <strong>Lagerstyring</strong> for at beregne <em>Genbestillingspunkt (ROP)</em>, <em>Periodisk Gennemgang</em> og <em>Min/Max-niveauer</em>. Ny fane “Lagertyper & Metoder” forklarer forskellen på <strong>cykluslager</strong>, <strong>sikkerhedslager</strong> og <strong>bufferlager</strong> samt tre beregningsmetoder (statisk / dynamisk / probabilistisk).',
                 action: '<button onclick="switchTab(\'inventory\')" class="learn-action-btn bg-teal-600 hover:bg-teal-700">📦 Lagerstyring</button>'
             },
             {

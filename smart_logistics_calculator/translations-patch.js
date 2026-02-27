@@ -65,6 +65,7 @@
         'qr-generate-btn':              '🔄 Generer QR',
         'qr-empty':                     'Ingen QR-kode endnu — klik Generer',
         'qr-encoded-data':              'Indkodede data:',
+        'qr-disclaimer-text':           '<strong>Gyldighed:</strong> QR-koder med tekst, kontaktoplysninger, WiFi eller telefonnummer virker permanent — dataene er lagret direkte i koden. QR-koder der peger på en <strong>URL</strong> ophører med at virke, hvis siden tages offline, domænet udløber eller URL\'en ændres. Dette værktøj genererer <em>statiske</em> QR-koder — generatoren sætter ikke selv en udløbsdato.',
         'barcode-tips-title':           '📖 Hvornår bruger man hvilken kode?',
         'barcode-tip-ean13-title':      'EAN-13',
         'barcode-tip-ean13-desc':       'Standard på stort set alle butiksvarer i Europa. Bruges ved supermarkeder og grossister.',
@@ -245,6 +246,10 @@
         'custom-export-all':            '📥 Eksporter alle sider',
         'custom-import-label':          '📤 Importer sider',
         'custom-template-lib':          '📚 Skabelonbibliotek',
+
+        // ──── Warehouse Layout ────
+        'wh-import-json':               'Indlæs',
+        'wh-shortcuts-hint':            'Tastaturgenveje',
 
         // ──── ABC Explainer ────
         'abc-explainer-title':          'Hvad er ABC-analyse?',
@@ -609,7 +614,7 @@
         'smart-export-text':            'Eksporter som Tekst',
 
         // ──── Inventory — Shared Parameters & Sub-tabs ────
-        'inventory-desc':               'Tre kraftfulde værktøjer til optimal lagerstyring: Beregn genbestillingspunkt, planlæg periodisk indkøb, og administrer min/max-lagerniveauer med visuelle dashboards',
+        'inventory-desc':               'Tre enkle værktøjer: <strong>hvornår</strong> bestiller du (ROP), <strong>hvor meget</strong> ved fast interval (Periodisk), og <strong>er lageret OK?</strong> (Min/Max). Klik på “Lagertyper & Metoder” for at forstå sikkerhedslager, cykluslager og bufferlager.',
         'inv-shared-params':            'Fælles Parametre',
         'inv-auto-sync':                'Auto-synkroniser alle værktøjer',
         'inv-shared-demand':            'Dagligt forbrug',
@@ -802,6 +807,7 @@
         'qr-generate-btn':              '🔄 Generate QR',
         'qr-empty':                     'No QR code yet — click Generate',
         'qr-encoded-data':              'Encoded data:',
+        'qr-disclaimer-text':           '<strong>Validity notice:</strong> QR codes encoding plain text, contact info, Wi-Fi credentials, or phone numbers work permanently — the data is stored directly in the code. QR codes that point to a <strong>URL</strong> will stop working if the linked page is taken offline, the domain expires, or the URL changes. This tool generates <em>static</em> QR codes; no expiry date is set by the generator itself.',
         'barcode-tips-title':           '📖 When to use which code?',
         'barcode-tip-ean13-title':      'EAN-13',
         'barcode-tip-ean13-desc':       'Standard on virtually all retail products in Europe. Used at supermarkets and wholesalers.',
@@ -982,6 +988,10 @@
         'custom-export-all':            '📥 Export All Pages',
         'custom-import-label':          '📤 Import Pages',
         'custom-template-lib':          '📚 Template Library',
+
+        // ──── Warehouse Layout ────
+        'wh-import-json':               'Load',
+        'wh-shortcuts-hint':            'Keyboard Shortcuts',
 
         // ──── ABC Explainer ────
         'abc-explainer-title':          'What is ABC Analysis?',
@@ -1340,7 +1350,7 @@
         'smart-export-text':            'Export as Text',
 
         // ──── Inventory — Shared Parameters & Sub-tabs ────
-        'inventory-desc':               'Three powerful tools for optimal inventory management: Calculate reorder point, plan periodic purchasing, and manage min/max stock levels with visual dashboards',
+        'inventory-desc':               'Three simple tools: <strong>when</strong> to reorder (ROP), <strong>how much</strong> on a fixed cycle (Periodic), and <strong>is stock OK?</strong> (Min/Max). Open “Stock Types & Methods” to understand safety stock, cycle stock and buffer stock.',
         'inv-shared-params':            'Shared Parameters',
         'inv-auto-sync':                'Auto-sync all tools',
         'inv-shared-demand':            'Daily Demand',
