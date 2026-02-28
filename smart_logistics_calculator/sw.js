@@ -27,6 +27,8 @@ const LOCAL_ASSETS = [
   './libs/plotly.min.js',
   './manifest.json',
   './icon.svg',
+  './icon-192.png',
+  './icon-512.png',
 ];
 
 // CDN assets — fetched and cached at runtime (network-first, fallback to cache)
