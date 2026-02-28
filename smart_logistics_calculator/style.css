@@ -4661,3 +4661,219 @@ body.budget-focus-active #budget-table-wrapper {
     pointer-events: none;
     opacity: 0.6;
 }
+
+/* ════════════════════════════════════════════════════════════════
+   POLISH  — mobile & dark-mode refinements
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── Text rendering ──────────────────────────────────────────── */
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Smooth theme transitions on all key elements ───────────── */
+body,
+header,
+nav,
+main,
+.mobile-bottom-nav,
+.mobile-menu-sheet,
+.result-card,
+.setting-item,
+.data-table th,
+.data-table td,
+.input-field,
+.file-input,
+.tab-btn,
+.mobile-menu-item,
+.mob-nav-btn {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 200ms;
+    transition-timing-function: ease;
+}
+
+/* ── Only animate lift/hover on devices that actually have hover ── */
+@media (hover: none) {
+    /* Touch devices: disable translateY lift to prevent stuck hover */
+    button:hover:not(:disabled),
+    .result-card:hover,
+    .metric-card:hover,
+    .matrix-cell:hover,
+    .theme-option:hover,
+    .language-option:hover {
+        transform: none !important;
+        box-shadow: none !important;
+    }
+    /* Keep active press feedback */
+    button:active:not(:disabled) {
+        transform: scale(0.97) !important;
+        opacity: 0.85;
+    }
+    /* Kill all tap highlight colours */
+    * {
+        -webkit-tap-highlight-color: transparent;
+    }
+}
+
+/* ── iOS safe-area insets (notch / home-bar) ─────────────────── */
+@supports (padding: env(safe-area-inset-bottom)) {
+    .mobile-bottom-nav {
+        padding-bottom: env(safe-area-inset-bottom);
+        height: calc(60px + env(safe-area-inset-bottom));
+    }
+    @media (max-width: 640px) {
+        body { padding-bottom: calc(60px + env(safe-area-inset-bottom)); }
+    }
+    header {
+        padding-top: env(safe-area-inset-top);
+    }
+}
+
+/* ── Toast: sit above the 60px mobile bottom nav ────────────── */
+@media (max-width: 640px) {
+    .toast {
+        bottom: calc(60px + env(safe-area-inset-bottom, 0px) + 0.75rem) !important;
+        left: 0.75rem !important;
+        right: 0.75rem !important;
+    }
+}
+
+/* ── Mobile bottom-nav: active pill indicator ───────────────── */
+.mob-nav-btn.mob-active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 32px;
+    height: 3px;
+    border-radius: 0 0 3px 3px;
+    background: #6366f1;
+}
+.dark .mob-nav-btn.mob-active::before {
+    background: #818cf8;
+}
+.mob-nav-btn {
+    position: relative; /* needed for ::before */
+}
+
+/* ── Focus ring — visible & consistent ──────────────────────── */
+:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+.dark :focus-visible {
+    outline-color: #60a5fa;
+}
+
+/* ── Dark mode: card depth with shadow rather than just flat bg ─ */
+.dark .result-card,
+.dark .setting-item {
+    background-color: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3);
+}
+.dark .result-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+/* Dark bg-white cards inside tab content */
+.dark .bg-white {
+    background-color: #1e293b !important;
+    border-color: #334155;
+}
+.dark .bg-gray-50,
+.dark .bg-gray-100 {
+    background-color: #0f172a !important;
+}
+
+/* ── Dark mode: richer body background ──────────────────────── */
+.dark body,
+body.dark {
+    background-color: #0f172a !important;
+}
+
+/* ── Dark mode: softer text on secondary elements ───────────── */
+.dark p,
+.dark li {
+    color: #cbd5e1;
+}
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+    color: #f1f5f9;
+}
+.dark label {
+    color: #94a3b8;
+}
+
+/* ── Dark mode: input placeholder ───────────────────────────── */
+.dark input::placeholder,
+.dark textarea::placeholder {
+    color: #64748b;
+}
+
+/* ── Dark mode: better scrollbar ────────────────────────────── */
+.dark ::-webkit-scrollbar-track { background: #0f172a; }
+.dark ::-webkit-scrollbar-thumb { background: #334155; border-radius: 6px; border: 2px solid #0f172a; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+/* ── Dark mode: text selection ──────────────────────────────── */
+.dark ::selection {
+    background: rgba(99, 102, 241, 0.4);
+    color: #f1f5f9;
+}
+::selection {
+    background: rgba(59, 130, 246, 0.25);
+}
+
+/* ── Dark mode: table row hover ─────────────────────────────── */
+.dark .data-table tbody tr:hover {
+    background-color: rgba(51, 65, 85, 0.6);
+}
+
+/* ── Dark mode: modal / sheet backgrounds ───────────────────── */
+.dark .mobile-menu-sheet {
+    background: #1e293b;
+    border-top: 1px solid #334155;
+}
+.dark .mobile-menu-item {
+    background: #0f172a;
+    border: 1px solid #334155;
+    color: #e2e8f0;
+}
+.dark .mobile-menu-item:active {
+    background: #1e3a5f;
+}
+
+/* ── Touch: larger tap targets on mobile ────────────────────── */
+@media (max-width: 640px) {
+    .mob-nav-btn {
+        min-height: 52px;
+    }
+    /* Ensure all icon-only buttons are at least 44×44 */
+    #themeToggle,
+    #mobileMenuToggle {
+        min-width: 44px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* ── Overscroll behavior ─────────────────────────────────────── */
+html {
+    overscroll-behavior-y: contain;
+}
+.mobile-menu-sheet,
+.overflow-y-auto {
+    overscroll-behavior: contain;
+}
+
+/* ── Prevent layout shift when scrollbar appears/disappears ─── */
+html {
+    scrollbar-gutter: stable;
+}
