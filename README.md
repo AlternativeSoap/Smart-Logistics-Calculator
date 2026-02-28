@@ -11,18 +11,25 @@ Bookmark that link and use it on any device — phone, tablet or desktop.
 ## What does it do?
 
 ### Inventory & Stock
+- **Dashboard** — open the app and see your total items, total value and top 5 items straight away.
 - **ABC analysis** — see which items drive most of your value, automatically ranked.
-- **Wilson EOQ** — calculate the most cost-efficient order quantity.
+- **Wilson EOQ** — calculate the most cost-efficient order quantity, with an interactive cost curve you can zoom and export.
 - **Reorder point** — know exactly when to reorder before you run out.
 - **Periodic review** — plan orders at fixed intervals.
 - **Min/Max levels** — set safety stock thresholds and track them visually.
+- **Compare two periods** — upload data from two different dates and see exactly which items changed class and by how much.
+- **Adjustable ABC thresholds** — the default is 80/15/5 (classic Pareto), but you can move the boundaries to match your business.
+- **Data quality check** — before running an analysis, the app scans for duplicates, missing values and outliers and gives you a score.
+- **Drag and drop uploads** — drag a CSV or Excel file straight onto the page instead of clicking through a file picker.
 
 ### LEAN & Process Tools
 - **OEE calculator** — measure how well your equipment is performing.
 - **SMED analysis** — find out what faster changeovers are worth in money.
 - **7 wastes** — identify and put a cost on waste in your processes.
 - **SWOT matrix** — map out strengths, weaknesses, opportunities and threats.
-- **Reference cards** — plain-language explanations of 5S, Kaizen, Kanban, PDCA, JIT and more.
+- **Warehouse layout** — visualise and plan your warehouse floor plan.
+- **KPI dashboard** — track your key logistics metrics in one place.
+- **Reference & learning** — plain-language explanations of 5S, Kaizen, Kanban, PDCA, JIT and more, with quizzes to test yourself.
 
 ### Budget & Personal Finance
 - **Two-account budget** — track a "Bills" account and a "Daily use" account separately.
@@ -30,6 +37,10 @@ Bookmark that link and use it on any device — phone, tablet or desktop.
 - **Monthly planner** — plan all 12 months, with 14-day period breakdowns.
 - **Excel export** — export your full budget as a formatted spreadsheet.
 - **Number formats** — choose Danish (1.000,00), US (1,000.00), space, or Indian style with your currency.
+
+### Export & Share
+- **Export center** — export results as CSV, Excel, PNG or Markdown depending on the tool.
+- **Keyboard shortcuts** — navigate and export without touching the mouse (`Ctrl+U` upload, `Alt+A` ABC, `Alt+W` Wilson, `Ctrl+E` export, and more).
 
 ### Build Your Own
 - **Custom pages** — create your own calculators with custom formulas, no coding needed.
