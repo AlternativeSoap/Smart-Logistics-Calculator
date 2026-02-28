@@ -1,116 +1,79 @@
-# 📊 Smart Logistics Calculator
+# Smart Logistics Calculator
 
-Smart Logistics Calculator is a complete, browser‑based toolkit for managing inventory, budgets and LEAN improvements. It runs entirely in your browser – no installation, no login, and no data leaving your device.
+A free, private, browser-based toolkit for logistics, inventory and budgeting. No account needed, no data ever leaves your device.
 
-## 🌐 Use It Online
+👉 **Open the app:** https://alternativesoap.github.io/Smart-Logistics-Calculator/smart_logistics_calculator/
 
-👉 **Launch the full application:**  
-https://alternativesoap.github.io/Smart-Logistics-Calculator/smart_logistics_calculator/
-
-You can bookmark that link and use it on any device.
+Bookmark that link and use it on any device — phone, tablet or desktop.
 
 ---
 
-## ✨ What You Can Do
+## What does it do?
 
-### 📦 Inventory & Stock Management
-- **ABC analysis** – Find your most important items based on value.
-- **Wilson EOQ** – Calculate optimal order quantities.
-- **Reorder point** – See exactly when you should reorder.
-- **Periodic review** – Plan fixed interval ordering.
-- **Min/Max levels** – Set and track safety stock.
+### Inventory & Stock
+- **ABC analysis** — see which items drive most of your value, automatically ranked.
+- **Wilson EOQ** — calculate the most cost-efficient order quantity.
+- **Reorder point** — know exactly when to reorder before you run out.
+- **Periodic review** — plan orders at fixed intervals.
+- **Min/Max levels** — set safety stock thresholds and track them visually.
 
-### 🏭 LEAN & Improvement Tools
-- **OEE calculator** – Measure equipment effectiveness (with small celebrations when you hit world class).
-- **SMED savings** – See the value of faster changeovers.
-- **7 wastes analysis** – Identify and cost waste in your processes.
-- **SWOT matrix** – Plan improvements and strategy.
-- **Reference cards** – Quick explanations of 5S, 7R, 3M, PDCA, JIT, Kanban, FIFO, Kaizen and more.
+### LEAN & Process Tools
+- **OEE calculator** — measure how well your equipment is performing.
+- **SMED analysis** — find out what faster changeovers are worth in money.
+- **7 wastes** — identify and put a cost on waste in your processes.
+- **SWOT matrix** — map out strengths, weaknesses, opportunities and threats.
+- **Reference cards** — plain-language explanations of 5S, Kaizen, Kanban, PDCA, JIT and more.
 
-### 💰 Budget & Personal Finance
-- **Two‑account budget** – Separate “Budget” account and “Daily use” account.
-- **Smart transfer suggestions** – Recommended transfers based on your real spending.
-- **Learning system** – Uses your history (90th percentile) to suggest safer buffers.
-- **Excel export** – Full budget export with account indicators and transfer overview.
-- **Number formats** – Choose Danish, US, space or Indian style with your currency.
-- **Monthly view** – Plan 12 months + 14‑day periods with progress indicators.
+### Budget & Personal Finance
+- **Two-account budget** — track a "Bills" account and a "Daily use" account separately.
+- **Smart transfer suggestions** — the app learns your spending history and recommends how much to move between accounts.
+- **Monthly planner** — plan all 12 months, with 14-day period breakdowns.
+- **Excel export** — export your full budget as a formatted spreadsheet.
+- **Number formats** — choose Danish (1.000,00), US (1,000.00), space, or Indian style with your currency.
 
-### 🎨 Custom Pages
-Build your own calculators with custom formulas – no coding required.
-
----
-
-## 🌟 Why It’s Nice To Use
-
-- 🔒 **Private** – Data never leaves your browser.
-- 🌐 **Works offline** after first load.
-- 🌍 **Danish & English** – switch any time.
-- 🌙 **Light / dark mode**.
-- 💾 **Auto‑save** – your work is stored locally.
-- 📊 **Exports** – CSV, Excel, PNG, Markdown (depending on tool).
-- 📱 **Any device** – phone, tablet, laptop, desktop.
+### Build Your Own
+- **Custom pages** — create your own calculators with custom formulas, no coding needed.
 
 ---
 
-## 👤 Who It’s For
+## Why people like it
 
-- Supply chain / logistics managers  
-- Warehouse and inventory planners  
-- Production / operations staff  
-- LEAN & continuous improvement roles  
-- Students learning logistics and operations  
-- Anyone who wants a simple, powerful stock and budget helper
-
----
-
-## 🧰 Included Tools (Overview)
-
-**Calculators**
-- ABC analysis with charts
-- EOQ with cost curves
-- Reorder point and safety stock
-- Periodic review planning
-- Min/Max inventory dashboard
-- OEE calculator
-- SMED savings
-- 7 wastes costing
-- SWOT matrix builder
-
-**Reference**
-- 5S, 7R, 3M (Muda, Mura, Muri)
-- PDCA
-- JIT & Kanban
-- FIFO, Kaizen and more
-
-**Customization**
-- Create your own calculator pages
-- Save and reuse
-- Export results in various formats
+- **Private** — your data never leaves your browser. Nothing is stored on any server.
+- **Works offline** — once loaded, it works without an internet connection.
+- **Danish & English** — switch languages any time.
+- **Light & dark mode** — pick what's easier on your eyes.
+- **Auto-saves** — your work is saved automatically in your browser.
+- **Installable** — add it to your phone or desktop like a real app (no app store needed).
 
 ---
 
-## 📦 Sample Data
+## Who is it for?
 
-The app includes sample CSV files so you can try it quickly:
-- `sample_data_basic.csv`
-- `sample_data_medium.csv`
-- `sample_data_large_10k.csv`
-- `sample_data_warehouse.csv`
+Anyone who works with stock, warehouses, logistics or wants a clean personal budget tool. That includes:
 
-You can upload your own data at any time.
-
----
-
-## 🔐 Privacy
-
-- No accounts  
-- No tracking  
-- No servers  
-- Everything is calculated locally in your browser
+- Supply chain and inventory planners
+- Warehouse and operations staff
+- LEAN and continuous improvement teams
+- Students learning logistics
+- Anyone who wants a powerful but private budgeting tool
 
 ---
 
-*Version 2.1 · November 2025 · Free to use*
+## Trying it out
 
+The app comes with sample data files you can load straight away:
 
+| File | What it contains |
+|---|---|
+| `sample_data_basic.csv` | Small, simple dataset to get started |
+| `sample_data_medium.csv` | Mid-size real-world style data |
+| `sample_data_large_10k.csv` | 10,000 item stress test |
+| `sample_data_warehouse.csv` | Warehouse-specific example |
 
+You can also upload your own CSV or Excel files at any time.
+
+---
+
+## Installing as an app
+
+When you open the site on your phone or desktop browser, you'll see a prompt asking if you want to install it. Tap **Install** and it'll appear on your home screen or taskbar — no app store required. It works fully offline after the first load.
