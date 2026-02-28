@@ -1,0 +1,21 @@
+{
+  "name": "Smart Logistics Calculator",
+  "short_name": "SLC",
+  "description": "Advanced logistics cost calculator with KPI dashboard, warehouse layout, budget tools, and more.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1e293b",
+  "theme_color": "#3B82F6",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity", "utilities"],
+  "lang": "da",
+  "screenshots": []
+}

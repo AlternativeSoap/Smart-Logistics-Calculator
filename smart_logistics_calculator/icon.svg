@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background -->
+  <rect width="512" height="512" rx="80" fill="url(#grad)"/>
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Bar chart bars -->
+  <rect x="80"  y="300" width="70" height="140" rx="10" fill="white" opacity="0.9"/>
+  <rect x="180" y="220" width="70" height="220" rx="10" fill="white" opacity="0.9"/>
+  <rect x="280" y="160" width="70" height="280" rx="10" fill="white" opacity="0.9"/>
+  <rect x="380" y="100" width="70" height="340" rx="10" fill="white" opacity="0.9"/>
+  <!-- Trend line -->
+  <polyline points="115,290 215,210 315,150 415,90"
+    fill="none" stroke="white" stroke-width="14"
+    stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+  <!-- Dots on trend line -->
+  <circle cx="115" cy="290" r="14" fill="white" opacity="0.95"/>
+  <circle cx="215" cy="210" r="14" fill="white" opacity="0.95"/>
+  <circle cx="315" cy="150" r="14" fill="white" opacity="0.95"/>
+  <circle cx="415" cy="90"  r="14" fill="white" opacity="0.95"/>
+</svg>
