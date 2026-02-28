@@ -4719,17 +4719,19 @@ main,
 }
 
 /* ── iOS safe-area insets (notch / home-bar) ─────────────────── */
-@supports (padding: env(safe-area-inset-bottom)) {
-    .mobile-bottom-nav {
-        padding-bottom: env(safe-area-inset-bottom);
-        height: calc(60px + env(safe-area-inset-bottom));
+/* env() falls back to 0px so this is safe on all devices.       */
+.mobile-bottom-nav {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    min-height: 60px;            /* expands naturally instead of clipping */
+}
+@media (max-width: 640px) {
+    body {
+        padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
     }
-    @media (max-width: 640px) {
-        body { padding-bottom: calc(60px + env(safe-area-inset-bottom)); }
-    }
-    header {
-        padding-top: env(safe-area-inset-top);
-    }
+}
+/* Header background fills the status-bar area (iOS standalone)  */
+header {
+    padding-top: env(safe-area-inset-top, 0px);
 }
 
 /* ── Toast: sit above the 60px mobile bottom nav ────────────── */
@@ -4850,8 +4852,10 @@ body.dark {
 
 /* ── Touch: larger tap targets on mobile ────────────────────── */
 @media (max-width: 640px) {
+    /* nav buttons always tall enough, home-bar safe area sits below them */
     .mob-nav-btn {
         min-height: 52px;
+        padding-bottom: 4px;     /* push label up, space for home-bar gap */
     }
     /* Ensure all icon-only buttons are at least 44×44 */
     #themeToggle,
@@ -4878,49 +4882,45 @@ html {
     scrollbar-gutter: stable;
 }
 
-/* ── Installed PWA (standalone) experience ──────────────────────────────────── */
-/* When running as an installed app (added to home screen), apply extra polish   */
+/* ── Page-enter animation (available globally) ───────────────── */
+@keyframes appPageIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to   { opacity: 1; transform: translateY(0);   }
+}
+
+/* ── Installed PWA (display-mode: standalone) — app-shell polish */
 @media (display-mode: standalone) {
-  /* Solid status-bar area — prevent content bleeding under notch */
+
+  /* Landscape notch: push body away from side cutouts            */
   body {
-    padding-top: env(safe-area-inset-top, 0px);
-    padding-left: env(safe-area-inset-left, 0px);
+    padding-left:  env(safe-area-inset-left,  0px);
     padding-right: env(safe-area-inset-right, 0px);
   }
 
-  /* Hide the in-page "install as app" info if already installed */
+  /* Hide any lingering "add to home screen" hints                 */
   .pwa-install-hint { display: none !important; }
 
-  /* App header: slightly taller to feel native */
-  header, nav[aria-label="Main navigation"] {
-    padding-top: max(12px, env(safe-area-inset-top, 12px));
+  /* Mobile header: slightly taller to feel more native           */
+  @media (max-width: 640px) {
+    header .container {
+      padding-top:    0.625rem;
+      padding-bottom: 0.625rem;
+    }
   }
 
-  /* Bottom navigation: push above home-bar indicator */
-  .mobile-bottom-nav,
-  nav[aria-label="Bottom navigation"] {
-    padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px));
+  /* Tab panels: subtle fade-in when switching sections           */
+  .tab-content, .section-panel {
+    animation: appPageIn .2s cubic-bezier(.22,.61,.36,1);
   }
 
-  /* Smooth fast page transitions — feels native */
-  main, .tab-content, .section-panel {
-    animation: appPageIn .18s cubic-bezier(.22,.61,.36,1);
-  }
-  @keyframes appPageIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to   { opacity: 1; transform: translateY(0);   }
-  }
-
-  /* No text selection glitch on long-press in app chrome */
-  header, nav, footer {
+  /* No accidental text selection on nav chrome long-press        */
+  header, #mobileBottomNav, #mobileMenuSheet {
     -webkit-user-select: none;
     user-select: none;
   }
 
-  /* Thicker, more native-feeling active tab indicator */
-  .mobile-bottom-nav .active::before,
-  nav .active-tab-indicator {
+  /* Active tab pill: slightly thicker in app mode                */
+  .mob-nav-btn.mob-active::before {
     height: 3px;
-    border-radius: 3px;
   }
 }
