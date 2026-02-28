@@ -11,9 +11,11 @@
     <meta name="color-scheme" content="light dark">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <!-- black-translucent: status bar overlays the app header (extends edge-to-edge) -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="SLC">
-    <link rel="apple-touch-icon" href="icon.svg">
+    <!-- Must be PNG — iOS Safari ignores SVG for the home-screen icon -->
+    <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="icon" href="icon.svg" type="image/svg+xml">
     
     <!-- Tailwind CSS - Using CDN for development simplicity -->
@@ -27,14 +29,14 @@
         }
     </script>
     
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css?v=2.2">
+    <!-- Custom CSS — no version query; the service worker handles cache-busting -->
+    <link rel="stylesheet" href="style.css">
     
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
     
     <!-- Custom Pages Script -->
-    <script src="custom-pages.js?v=2.2" defer></script>
+    <script src="custom-pages.js" defer></script>
     
     <!-- JavaScript Libraries -->
     <script src="libs/papaparse.min.js"></script>

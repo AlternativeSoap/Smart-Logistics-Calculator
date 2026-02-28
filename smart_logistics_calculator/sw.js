@@ -1,6 +1,6 @@
 // Smart Logistics Calculator — Service Worker
 // Cache version: bump this string whenever you deploy new files
-const CACHE_NAME = 'slc-v2.2';
+const CACHE_NAME = 'slc-v2.3';
 
 // All local assets to pre-cache on install
 const LOCAL_ASSETS = [
@@ -29,6 +29,7 @@ const LOCAL_ASSETS = [
   './icon.svg',
   './icon-192.png',
   './icon-512.png',
+  './pwa-install.js',
 ];
 
 // CDN assets — fetched and cached at runtime (network-first, fallback to cache)

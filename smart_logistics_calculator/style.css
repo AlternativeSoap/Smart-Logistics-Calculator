@@ -656,7 +656,9 @@ button:disabled {
 }
 .mobile-menu-sheet {
     position: fixed;
-    bottom: 60px; left: 0; right: 0;
+    /* Sits just above the bottom nav, which is 60px + safe-area-inset-bottom */
+    bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+    left: 0; right: 0;
     z-index: 199;
     background: #ffffff;
     border-radius: 20px 20px 0 0;
@@ -673,6 +675,13 @@ button:disabled {
 @keyframes slideUp {
     from { transform: translateY(100%); opacity: 0; }
     to   { transform: translateY(0);    opacity: 1; }
+}
+@keyframes slideDown {
+    from { transform: translateY(0);    opacity: 1; }
+    to   { transform: translateY(100%); opacity: 0; }
+}
+.mobile-menu-sheet.closing {
+    animation: slideDown 0.2s ease forwards;
 }
 .mobile-menu-sheet-handle {
     width: 40px; height: 4px;

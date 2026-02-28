@@ -5434,12 +5434,22 @@ function toggleMobileMenu() {
     if (!overlay || !sheet) return;
     const isOpen = !sheet.classList.contains('hidden');
     if (isOpen) {
-        sheet.classList.add('hidden');
-        overlay.classList.add('hidden');
-        document.body.style.overflow = '';
+        // Animate out, then hide
+        sheet.classList.add('closing');
+        overlay.style.transition = 'opacity 0.2s ease';
+        overlay.style.opacity = '0';
+        setTimeout(() => {
+            sheet.classList.add('hidden');
+            sheet.classList.remove('closing');
+            overlay.classList.add('hidden');
+            overlay.style.opacity = '';
+            overlay.style.transition = '';
+            document.body.style.overflow = '';
+        }, 210);
     } else {
-        sheet.classList.remove('hidden');
+        sheet.classList.remove('hidden', 'closing');
         overlay.classList.remove('hidden');
+        overlay.style.opacity = '';
         document.body.style.overflow = 'hidden';
     }
 }
