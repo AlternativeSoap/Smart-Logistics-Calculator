@@ -1,0 +1,878 @@
+// ============================================================
+// QUIZ ENGINE
+// ============================================================
+
+const LearnQuiz = {
+    currentQuestions: [],
+    currentIndex: 0,
+    answers: [],       // user's picked option index per question
+    locked: [],        // whether each question is locked (answered)
+    mode: null,        // 10, 25, or 35
+    finished: false,
+
+    // Fisher-Yates shuffle
+    shuffle(arr) {
+        const a = [...arr];
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    },
+
+    // Start a quiz with n questions
+    start(n) {
+        this.mode = n;
+        this.finished = false;
+        this.currentIndex = 0;
+        this.answers = new Array(n).fill(-1);
+        this.locked = new Array(n).fill(false);
+
+        // Pick n random questions and randomize option order per question
+        const shuffled = this.shuffle(learnQuizBank);
+        this.currentQuestions = shuffled.slice(0, n).map(q => {
+            // Shuffle options but track where the correct one moved
+            const indices = q.options.map((_, i) => i);
+            const shuffledIndices = this.shuffle(indices);
+            return {
+                ...q,
+                options: shuffledIndices.map(i => q.options[i]),
+                correct: shuffledIndices.indexOf(q.correct),
+                originalCorrectText: q.options[q.correct]
+            };
+        });
+
+        // Show quiz UI
+        document.getElementById('quizModeSelect').classList.add('hidden');
+        document.getElementById('quizArea').classList.remove('hidden');
+        document.getElementById('quizResults').classList.add('hidden');
+        this.renderQuestion();
+        this.renderProgress();
+    },
+
+    renderQuestion() {
+        const qData = this.currentQuestions[this.currentIndex];
+        const container = document.getElementById('quizQuestionCard');
+        const isLocked = this.locked[this.currentIndex];
+        const userAnswer = this.answers[this.currentIndex];
+
+        let optionsHtml = '';
+        qData.options.forEach((opt, i) => {
+            let cls = 'quiz-option';
+            if (isLocked) {
+                if (i === qData.correct) cls += ' quiz-option-correct';
+                else if (i === userAnswer && i !== qData.correct) cls += ' quiz-option-wrong';
+                else cls += ' quiz-option-disabled';
+            } else if (userAnswer === i) {
+                cls += ' quiz-option-selected';
+            }
+            const disabled = isLocked ? 'pointer-events: none;' : 'cursor: pointer;';
+            optionsHtml += `<button class="${cls}" style="${disabled}" onclick="LearnQuiz.selectAnswer(${i})">
+                <span class="quiz-option-letter">${String.fromCharCode(65 + i)}</span>
+                <span>${opt}</span>
+            </button>`;
+        });
+
+        let feedbackHtml = '';
+        if (isLocked) {
+            const isCorrect = userAnswer === qData.correct;
+            if (isCorrect) {
+                feedbackHtml = `<div class="quiz-feedback quiz-feedback-correct">
+                    <span class="text-lg">✅</span>
+                    <div><strong>Korrekt!</strong></div>
+                </div>`;
+            } else {
+                feedbackHtml = `<div class="quiz-feedback quiz-feedback-wrong">
+                    <span class="text-lg">❌</span>
+                    <div>
+                        <strong>Forkert.</strong> Det rigtige svar er: <strong>${qData.originalCorrectText}</strong>
+                        <p class="mt-1 text-sm opacity-90">${qData.explanation}</p>
+                    </div>
+                </div>`;
+            }
+        }
+
+        container.innerHTML = `
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300">${qData.category}</span>
+                <span class="text-sm text-gray-500 dark:text-gray-400">Spørgsmål ${this.currentIndex + 1} / ${this.mode}</span>
+            </div>
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-5">${qData.q}</h3>
+            <div class="space-y-2.5">${optionsHtml}</div>
+            ${feedbackHtml}
+            <div class="flex items-center justify-between mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <button onclick="LearnQuiz.prev()" class="px-4 py-2 text-sm rounded-lg font-medium transition-colors ${this.currentIndex === 0 ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 cursor-not-allowed' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600'}" ${this.currentIndex === 0 ? 'disabled' : ''}>
+                    ← Forrige
+                </button>
+                <div class="flex gap-2">
+                    ${!isLocked && userAnswer >= 0 ? `<button onclick="LearnQuiz.confirmAnswer()" class="px-5 py-2 text-sm rounded-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white transition-colors">Bekræft svar</button>` : ''}
+                    ${isLocked && this.currentIndex < this.mode - 1 ? `<button onclick="LearnQuiz.next()" class="px-5 py-2 text-sm rounded-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white transition-colors">Næste →</button>` : ''}
+                    ${isLocked && this.currentIndex === this.mode - 1 ? `<button onclick="LearnQuiz.showResults()" class="px-5 py-2 text-sm rounded-lg font-semibold bg-green-600 hover:bg-green-700 text-white transition-colors">Se resultater 🏆</button>` : ''}
+                </div>
+            </div>
+        `;
+    },
+
+    renderProgress() {
+        const bar = document.getElementById('quizProgressBar');
+        const text = document.getElementById('quizProgressText');
+        const answered = this.locked.filter(Boolean).length;
+        const pct = Math.round((answered / this.mode) * 100);
+        bar.style.width = pct + '%';
+        text.textContent = `${answered} / ${this.mode} besvaret`;
+
+        // Render dot navigator
+        const nav = document.getElementById('quizDotNav');
+        let dots = '';
+        for (let i = 0; i < this.mode; i++) {
+            let dotCls = 'quiz-dot';
+            if (i === this.currentIndex) dotCls += ' quiz-dot-active';
+            if (this.locked[i]) {
+                dotCls += this.answers[i] === this.currentQuestions[i].correct ? ' quiz-dot-correct' : ' quiz-dot-wrong';
+            }
+            dots += `<button class="${dotCls}" onclick="LearnQuiz.goTo(${i})" title="Spørgsmål ${i+1}">${i+1}</button>`;
+        }
+        nav.innerHTML = dots;
+    },
+
+    selectAnswer(idx) {
+        if (this.locked[this.currentIndex]) return;
+        this.answers[this.currentIndex] = idx;
+        this.renderQuestion();
+    },
+
+    confirmAnswer() {
+        if (this.answers[this.currentIndex] < 0) return;
+        this.locked[this.currentIndex] = true;
+        this.renderQuestion();
+        this.renderProgress();
+    },
+
+    next() {
+        if (this.currentIndex < this.mode - 1) {
+            this.currentIndex++;
+            this.renderQuestion();
+            this.renderProgress();
+        }
+    },
+
+    prev() {
+        if (this.currentIndex > 0) {
+            this.currentIndex--;
+            this.renderQuestion();
+            this.renderProgress();
+        }
+    },
+
+    goTo(idx) {
+        this.currentIndex = idx;
+        this.renderQuestion();
+        this.renderProgress();
+    },
+
+    showResults() {
+        // Auto-lock any unanswered
+        for (let i = 0; i < this.mode; i++) {
+            if (!this.locked[i]) this.locked[i] = true;
+        }
+        this.finished = true;
+
+        const correct = this.currentQuestions.reduce((sum, q, i) => sum + (this.answers[i] === q.correct ? 1 : 0), 0);
+        const pct = Math.round((correct / this.mode) * 100);
+
+        let grade = '';
+        let gradeColor = '';
+        let gradeEmoji = '';
+        if (pct >= 92) { grade = '12 (A)'; gradeColor = 'text-green-600 dark:text-green-400'; gradeEmoji = '🏆'; }
+        else if (pct >= 82) { grade = '10 (B)'; gradeColor = 'text-green-600 dark:text-green-400'; gradeEmoji = '🌟'; }
+        else if (pct >= 70) { grade = '7 (C)'; gradeColor = 'text-blue-600 dark:text-blue-400'; gradeEmoji = '👍'; }
+        else if (pct >= 55) { grade = '4 (D)'; gradeColor = 'text-yellow-600 dark:text-yellow-400'; gradeEmoji = '📖'; }
+        else if (pct >= 40) { grade = '02 (E)'; gradeColor = 'text-orange-600 dark:text-orange-400'; gradeEmoji = '⚠️'; }
+        else if (pct >= 20) { grade = '00 (Fx)'; gradeColor = 'text-red-600 dark:text-red-400'; gradeEmoji = '❌'; }
+        else { grade = '-3 (F)'; gradeColor = 'text-red-700 dark:text-red-500'; gradeEmoji = '💀'; }
+
+        document.getElementById('quizArea').classList.add('hidden');
+        const results = document.getElementById('quizResults');
+        results.classList.remove('hidden');
+
+        // Summary card
+        let summaryHtml = `
+            <div class="text-center mb-8">
+                <div class="text-6xl mb-3">${gradeEmoji}</div>
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Quiz Afsluttet!</h2>
+                <p class="text-lg text-gray-600 dark:text-gray-400 mb-4">${this.mode === 35 ? 'EUC Lillebælt — Lager & Logistikoperatør Afslutningstest' : this.mode + ' spørgsmåls quiz'}</p>
+                <div class="inline-flex items-center gap-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg px-8 py-5 border border-gray-200 dark:border-gray-700">
+                    <div class="text-center">
+                        <p class="text-4xl font-black ${correct === this.mode ? 'text-green-600' : pct >= 55 ? 'text-blue-600' : 'text-red-600'}">${correct}/${this.mode}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Rigtige svar</p>
+                    </div>
+                    <div class="h-12 w-px bg-gray-300 dark:bg-gray-600"></div>
+                    <div class="text-center">
+                        <p class="text-4xl font-black ${gradeColor}">${pct}%</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Score</p>
+                    </div>
+                    <div class="h-12 w-px bg-gray-300 dark:bg-gray-600"></div>
+                    <div class="text-center">
+                        <p class="text-4xl font-black ${gradeColor}">${grade}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Karakter (7-trins)</p>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Category breakdown
+        const catStats = {};
+        this.currentQuestions.forEach((q, i) => {
+            if (!catStats[q.category]) catStats[q.category] = { total: 0, correct: 0 };
+            catStats[q.category].total++;
+            if (this.answers[i] === q.correct) catStats[q.category].correct++;
+        });
+        summaryHtml += `<div class="mb-6">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3">📊 Resultater per kategori</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">`;
+        for (const [cat, stats] of Object.entries(catStats)) {
+            const catPct = Math.round((stats.correct / stats.total) * 100);
+            const catColor = catPct >= 70 ? 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700' : catPct >= 50 ? 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700' : 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700';
+            summaryHtml += `<div class="px-3 py-2 rounded-lg border ${catColor}">
+                <p class="text-xs font-semibold text-gray-700 dark:text-gray-300">${cat}</p>
+                <p class="text-lg font-bold">${stats.correct}/${stats.total} <span class="text-sm font-normal">(${catPct}%)</span></p>
+            </div>`;
+        }
+        summaryHtml += `</div></div>`;
+
+        // Detailed answers
+        summaryHtml += `<div class="mb-4"><h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3">📋 Detaljeret gennemgang</h3></div>`;
+        summaryHtml += `<div class="space-y-3">`;
+        this.currentQuestions.forEach((q, i) => {
+            const isCorrect = this.answers[i] === q.correct;
+            const borderCls = isCorrect
+                ? 'border-green-400 dark:border-green-600 bg-green-50 dark:bg-green-900/10'
+                : 'border-red-400 dark:border-red-600 bg-red-50 dark:bg-red-900/10';
+            const icon = isCorrect ? '✅' : '❌';
+            const userPick = this.answers[i] >= 0 ? q.options[this.answers[i]] : '(ingen svar)';
+            const correctPick = q.options[q.correct];
+
+            summaryHtml += `<div class="p-4 rounded-xl border-2 ${borderCls}">
+                <div class="flex items-start gap-2 mb-2">
+                    <span class="text-lg">${icon}</span>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300">${q.category}</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400">#${i + 1}</span>
+                        </div>
+                        <p class="font-semibold text-gray-900 dark:text-white mt-1">${q.q}</p>
+                    </div>
+                </div>`;
+
+            if (!isCorrect) {
+                summaryHtml += `
+                    <div class="ml-7 space-y-1 text-sm">
+                        <p class="text-red-700 dark:text-red-400"><strong>Dit svar:</strong> ${userPick}</p>
+                        <p class="text-green-700 dark:text-green-400"><strong>Rigtigt svar:</strong> ${correctPick}</p>
+                        <p class="text-gray-700 dark:text-gray-300 mt-2 bg-white dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-700"><strong>💡 Forklaring:</strong> ${q.explanation}</p>
+                    </div>`;
+            } else {
+                summaryHtml += `<div class="ml-7 text-sm text-green-700 dark:text-green-400"><strong>Korrekt:</strong> ${correctPick}</div>`;
+            }
+            summaryHtml += `</div>`;
+        });
+        summaryHtml += `</div>`;
+
+        // Action buttons
+        summaryHtml += `
+            <div class="flex flex-wrap gap-3 justify-center mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+                <button onclick="LearnQuiz.start(${this.mode})" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-colors">🔄 Prøv igen (${this.mode} spørgsmål)</button>
+                <button onclick="LearnQuiz.backToMenu()" class="px-6 py-2.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-xl font-semibold transition-colors">← Vælg anden quiz</button>
+            </div>
+        `;
+
+        results.innerHTML = summaryHtml;
+        results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    },
+
+    backToMenu() {
+        document.getElementById('quizModeSelect').classList.remove('hidden');
+        document.getElementById('quizArea').classList.add('hidden');
+        document.getElementById('quizResults').classList.add('hidden');
+    }
+};
+
+
+// ============================================================
+// TRUE / FALSE QUESTION BANK
+// 60 statements — half true, half false — covering all 10 cats
+// ============================================================
+
+const learnTrueFalseBank = [
+// --- ABC Analyse ---
+{ statement: 'I en ABC-analyse udgør A-varer typisk ca. 20% af varerne og ca. 80% af værdien.', answer: true, explanation: 'Korrekt — dette er Pareto-princippet (80/20-reglen) som ABC-analyse er baseret på.' },
+{ statement: 'C-varer bør altid kasseres fra lageret, da de har lav værdi.', answer: false, explanation: 'Forkert — C-varer har lav værdi men kan stadig være nødvendige. De styres blot med enklere metoder og mindre overvågning.' },
+{ statement: 'ABC-analyse kan kun anvendes på fysiske lagervarer.', answer: false, explanation: 'Forkert — ABC-analyse kan bruges på alt med værdifordeling: kunder, leverandører, projekter, services, osv.' },
+{ statement: 'A-varer kræver tættere lagerstyring og hyppigere optælling end C-varer.', answer: true, explanation: 'Korrekt — A-varer er højværdi og bør overvåges tæt, fx med cyklisk optælling.' },
+{ statement: 'I en standard ABC-analyse kan en vare kun tilhøre én kategori ad gangen.', answer: true, explanation: 'Korrekt — hver vare klassificeres som enten A, B eller C baseret på dens kumulative andel af totalværdien.' },
+{ statement: 'Pareto-princippet siger at 50% af varerne står for 50% af værdien.', answer: false, explanation: 'Forkert — Pareto-princippet (80/20-reglen) siger at ca. 20% af varerne typisk udgør ca. 80% af værdien.' },
+
+// --- ABC Dobbelt ---
+{ statement: 'ABC Dobbelt Analyse kombinerer værdi og forbrugsmængde i en 3×3 matrix.', answer: true, explanation: 'Korrekt — man får 9 kategorier (AA, AB, AC, BA, BB, BC, CA, CB, CC) ved at krydse værdi-ABC med forbrugs-ABC.' },
+{ statement: 'En AA-vare i ABC Dobbelt har høj værdi OG højt forbrug og kræver mindst opmærksomhed.', answer: false, explanation: 'Forkert — AA-varer kræver MEST opmærksomhed, da de er kritiske på begge dimensioner.' },
+{ statement: 'En AC-vare og en CA-vare bør styres på præcis samme måde.', answer: false, explanation: 'Forkert — AC (høj værdi, lavt forbrug) styres anderledes end CA (lav værdi, højt forbrug). AC kræver sikring mod dyr kapitalbinding, CA kræver effektiv forsyning.' },
+{ statement: 'ABC Dobbelt giver en mere nuanceret klassificering end standard ABC-analyse.', answer: true, explanation: 'Korrekt — ved at tilføje en ekstra dimension (forbrug) opnår man mere præcis styring af varer.' },
+
+// --- Wilson EOQ ---
+{ statement: 'Wilson\'s EOQ-formel finder den ordrestørrelse der minimerer de samlede lageromkostninger.', answer: true, explanation: 'Korrekt — EOQ = √(2DS/H) minimerer summen af ordreomkostninger og lageromkostninger.' },
+{ statement: 'Hvis ordreomkostningen S stiger, vil den optimale ordrestørrelse (EOQ) falde.', answer: false, explanation: 'Forkert — S er i tælleren under kvadratroden. Højere S → større EOQ → man bestiller mere per gang for at reducere antallet af ordrer.' },
+{ statement: 'EOQ-formlen antager at efterspørgslen er konstant og kendt.', answer: true, explanation: 'Korrekt — det er en af grundforudsætningerne for Wilson\'s formel.' },
+{ statement: 'H i Wilson\'s formel er ordreomkostningen per ordre.', answer: false, explanation: 'Forkert — H er lageromkostningen per enhed per år (typisk pris × rente). S er ordreomkostningen.' },
+{ statement: 'Ved EOQ er de årlige ordreomkostninger lig med de årlige lageromkostninger.', answer: true, explanation: 'Korrekt — dette er en matematisk egenskab ved EOQ: de to omkostningskomponenter er præcis lige store ved den optimale ordrestørrelse.' },
+{ statement: 'EOQ tager højde for kapacitetsbegrænsninger på lageret.', answer: false, explanation: 'Forkert — basis-EOQ antager ubegrænset lagerkapacitet. Man bør justere resultatet manuelt for fysiske begrænsninger.' },
+
+// --- Lagerstyring ---
+{ statement: 'Genbestillingspunktet (ROP) beregnes som dagligt forbrug gange leveringstid plus sikkerhedslager.', answer: true, explanation: 'Korrekt — ROP = (d × L) + SS. Sikkerhedslager beskytter mod udsving i efterspørgsel og leveringstid.' },
+{ statement: 'Et højere serviceniveau fører til et lavere sikkerhedslager.', answer: false, explanation: 'Forkert — højere serviceniveau (fx 99% vs 95%) kræver MERE sikkerhedslager for at undgå stockouts.' },
+{ statement: 'I en periodisk gennemgangsmodel bestilles der ved faste tidsintervaller.', answer: true, explanation: 'Korrekt — fx hver 14. dag gennemgås lagersituationen og der bestilles op til et fastsat målniveau.' },
+{ statement: 'Min/Max modellen bestiller altid den samme mængde ved genbestilling.', answer: false, explanation: 'Forkert i den periodiske variant — ordremængden er Maks minus nuværende beholdning, så den varierer. I den faste variant er ordremængden dog konstant.' },
+{ statement: 'Lageromsætningshastighed beregnes som årligt forbrug divideret med gennemsnitligt lager.', answer: true, explanation: 'Korrekt — lageromsætning viser hvor mange gange lageret omsættes per år. Høj omsætning = effektiv lagerstyring.' },
+{ statement: 'Sikkerhedslager er kun nødvendigt for A-varer.', answer: false, explanation: 'Forkert — alle varekategorier kan have sikkerhedslager, men størrelsen og niveauet varierer. A-varer har typisk mest nøjagtigt beregnet sikkerhedslager.' },
+
+// --- LEAN ---
+{ statement: '5S står for: Sortér, Systematisér, Skinnende rent, Standardisér, Selvdisciplin.', answer: true, explanation: 'Korrekt — de 5 S\'er (Seiri, Seiton, Seiso, Seiketsu, Shitsuke) er fundamentet i LEAN arbejdsplads-organisering.' },
+{ statement: 'Muda betyder "værdi" på japansk.', answer: false, explanation: 'Forkert — Muda betyder spild. De 7 spildformer er: overproduktion, ventetid, transport, overbearbejdning, lager, bevægelse og fejl/defekter.' },
+{ statement: 'Kanban er et pull-baseret system der styrer produktionen baseret på reelt behov.', answer: true, explanation: 'Korrekt — Kanban er et pull-system: først når en vare forbruges, signaleres genopfyldning. Modsat push-systemer der producerer baseret på prognoser (forecasts).' },
+{ statement: 'OEE (Overall Equipment Effectiveness) beregnes som Tilgængelighed × Ydelse × Kvalitet.', answer: true, explanation: 'Korrekt — OEE = A × P × Q. Verdensklasse er typisk 85%+.' },
+{ statement: 'Kaizen handler om store, sjældne forandringsprocesser.', answer: false, explanation: 'Forkert — Kaizen betyder "kontinuerlig forbedring" med mange små, daglige forbedringer over tid. Det er det modsatte af store engangstransformationer.' },
+{ statement: 'Just-in-Time (JIT) betyder at man har store sikkerhedslagre for at undgå leveringsproblemer.', answer: false, explanation: 'Forkert — JIT handler om at modtage varer præcis når de skal bruges, med minimalt lager. Store sikkerhedslagre modarbejder JIT-princippet.' },
+{ statement: 'En Gemba-walk bruges af ledere til at observere arbejdsprocesser direkte på gulvet.', answer: true, explanation: 'Korrekt — Gemba = "det virkelige sted". Ledere går ud på gulvet for at se processer, tale med medarbejdere og identificere forbedringer.' },
+{ statement: 'Poka-Yoke er en japansk teknik til fejlsikring af processer.', answer: true, explanation: 'Korrekt — Poka-Yoke designer processer/produkter så fejl enten forhindres (prevention) eller opdages straks (detection).' },
+
+// --- Supply Chain ---
+{ statement: 'TCO (Total Cost of Ownership) inkluderer kun indkøbsprisen for en vare.', answer: false, explanation: 'Forkert — TCO inkluderer alle omkostninger over varens levetid: indkøb, transport, lager, vedligehold, kassation osv.' },
+{ statement: 'Bullwhip-effekten beskriver hvordan små udsving i efterspørgsel forstærkes op gennem forsyningskæden.', answer: true, explanation: 'Korrekt — en lille ændring hos slutkunden kan skabe store svingninger i ordrer længere oppe i kæden.' },
+{ statement: 'Cross-docking eliminerer lageropbevaring ved at omlade varer direkte fra indgående til udgående transport.', answer: true, explanation: 'Korrekt — varer ankommer og sorteres direkte til udgående forsendelser uden at blive lagt på lager.' },
+{ statement: 'I en forsyningskæde er det altid billigst at have ét centralt lager.', answer: false, explanation: 'Forkert — det optimale antal lagre afhænger af transportomkostninger, leveringstider, og kundeservice-krav. Flere lagre kan reducere leveringstider men øger lageromkostninger.' },
+{ statement: 'Sidste kilometer-levering (last mile) er typisk den billigste del af fragtprocessen.', answer: false, explanation: 'Forkert — Sidste kilometer-leveringen er typisk den dyreste del (op til 50% af total fragt) pga. mange små leveringer til individuelle adresser.' },
+{ statement: 'En 3PL-udbyder er en tredjepart som håndterer logistikoperationer for en virksomhed.', answer: true, explanation: 'Korrekt — Third Party Logistics (3PL) udbydere varetager fx lager, plukning, pakning og transport for andre virksomheder.' },
+
+// --- Warehouse ---
+{ statement: 'FIFO-princippet betyder at de ældste varer udleveres først.', answer: true, explanation: 'Korrekt — First In, First Out sikrer at ældre varer bruges/sendes først, hvilket er vigtigt for fødevarer og varer med udløbsdato.' },
+{ statement: 'I en stemmestyret plukløsning (voice picking) aflæser plukkeren stregkoder fra en liste.', answer: false, explanation: 'Forkert — Stemmestyret plukning (voice picking) bruger headset med stemmekommandoer. Plukkeren hører instruktioner og bekræfter mundtligt, hvilket giver frie hænder.' },
+{ statement: 'Lysstyret plukning (pick-to-light) guider plukkeren med lysdioder der viser hvilken lokation der skal plukkes fra.', answer: true, explanation: 'Korrekt — lysdioder tændes ved den relevante lokation og viser antal der skal plukkes.' },
+{ statement: 'Zone-plukning betyder at hele ordren plukkes af én person der går gennem alle zoner.', answer: false, explanation: 'Forkert — ved zone-plukning er lageret opdelt i zoner, og hver plukker arbejder kun i sin zone. Ordrerne samles derefter.' },
+{ statement: 'Et WMS (Warehouse Management System) styrer og optimerer lageroperationer digitalt.', answer: true, explanation: 'Korrekt — WMS håndterer modtagelse, læggepladser, plukning, pakning, forsendelse og lageroptælling.' },
+{ statement: 'Batch-plukning samler flere ordrer i én plukrunde for at spare gangtid.', answer: true, explanation: 'Korrekt — flere ordrer plukkes samtidig, sorteres bagefter. Effektivt ved mange små ordrer.' },
+
+// --- Sikkerhed & ADR ---
+{ statement: 'ADR omhandler international transport af farligt gods ad vej.', answer: true, explanation: 'Korrekt — ADR (Accord européen relatif au transport international des marchandises Dangereuses par Route) regulerer vejtransport af farligt gods i Europa.' },
+{ statement: 'Ergonomisk løfteteknik anbefaler at man løfter med bøjet ryg og strakte ben.', answer: false, explanation: 'Forkert — korrekt løfteteknik er: bøjede knæ, ret ryg, tæt ved kroppen. Aldrig løft med bøjet ryg!' },
+{ statement: 'Man skal altid bære sikkerhedssko i et lagerområde.', answer: true, explanation: 'Korrekt — sikkerhedssko med stålnæse er et minimumskrav i de fleste lageroperationer for at beskytte mod faldende genstande.' },
+{ statement: 'Orange ADR-faresedler med bombesymbol angiver brandfarlige væsker.', answer: false, explanation: 'Forkert — bombesymbolet angiver eksplosive stoffer (klasse 1). Brandfarlige væsker har flammesymbolet (klasse 3).' },
+{ statement: 'SDS (Safety Data Sheet) indeholder oplysninger om kemikaliers farlighed og håndtering.', answer: true, explanation: 'Korrekt — sikkerhedsdatablade er lovpligtige for farlige kemikalier og angiver bl.a. fareklasse, førstehjælp, opbevaringskrav og bortskaffelse.' },
+{ statement: 'En truck kan køres uden certifikat, hvis man har almindeligt kørekort.', answer: false, explanation: 'Forkert — gaffeltruckkørsel kræver et specielt truckcertifikat/kørekort og relevant oplæring.' },
+
+// --- Budget & Økonomi ---
+{ statement: 'Variable omkostninger ændrer sig med produktionsmængden.', answer: true, explanation: 'Korrekt — variable omkostninger (fx råmaterialer, fragt per enhed) stiger og falder med aktivitetsniveauet.' },
+{ statement: 'Dækningsbidrag beregnes som salgspris minus faste omkostninger.', answer: false, explanation: 'Forkert — dækningsbidrag = salgspris minus variable omkostninger. Det hedder dækningsbidrag fordi det skal "dække" de faste omkostninger.' },
+{ statement: 'Break-even er det punkt hvor omsætningen præcis dækker alle omkostninger.', answer: true, explanation: 'Korrekt — ved break-even er profit = 0. Virksomheden tjener hverken penge eller taber.' },
+{ statement: 'Lageromkostninger er typisk 15-30% af varens værdi per år.', answer: true, explanation: 'Korrekt — det inkluderer kapitalomkostning, forsikring, svind, forældelse, lagerplads og håndtering.' },
+
+// --- Stregkoder / QR / Generelt ---
+{ statement: 'EAN-13 er den standardstregkode der bruges på de fleste dagligvarer i Europa.', answer: true, explanation: 'Korrekt — EAN-13 (European Article Number) er den 13-cifrede stregkode man ser på stort set alle detailvarer.' },
+{ statement: 'En QR-kode kan kun indeholde tal.', answer: false, explanation: 'Forkert — QR-koder kan indeholde tekst, URL\'er, kontaktinfo, WiFi-indstillinger, binære data og meget mere.' },
+{ statement: 'RFID-tags kræver direkte synslinje for at kunne aflæses.', answer: false, explanation: 'Forkert — RFID kan aflæses uden synslinje, gennem emballage, kasser m.m. Det er en af de store fordele i forhold til stregkoder.' },
+{ statement: 'CODE-128 kan indeholde alle 128 ASCII-tegn inklusiv tal og bogstaver.', answer: true, explanation: 'Korrekt — CODE-128 er en alsidig stregkode der understøtter hele ASCII-tegnsættet.' },
+{ statement: 'KPI står for Key Performance Indicator og bruges til at måle virksomhedens præstation.', answer: true, explanation: 'Korrekt — KPIer er nøgletal der viser, hvor godt en proces eller virksomhed performer i forhold til fastsatte mål.' },
+{ statement: 'IoT i logistik bruges kun til temperaturstyring af kølevarer.', answer: false, explanation: 'Forkert — IoT bruges også til GPS-tracking, lagerniveauovervågning, maskinsensorer, predictive maintenance og meget mere.' },
+];
+
+
+// ============================================================
+// FLASHCARD ENGINE
+// ============================================================
+
+const LearnFlashcards = {
+    cards: [],
+    currentIndex: 0,
+    flipped: false,
+    known: [],
+    mode: 'all',
+
+    shuffle(arr) {
+        const a = [...arr];
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    },
+
+    start(category) {
+        this.mode = category || 'all';
+        let pool = learnQuizBank;
+        if (category && category !== 'all') {
+            pool = learnQuizBank.filter(q => q.category === category);
+        }
+        this.cards = this.shuffle(pool);
+        this.currentIndex = 0;
+        this.flipped = false;
+        this.known = new Array(this.cards.length).fill(null); // null=unseen, true=knew it, false=didn't
+
+        document.getElementById('flashcardModeSelect').classList.add('hidden');
+        document.getElementById('flashcardArea').classList.remove('hidden');
+        document.getElementById('flashcardResults').classList.add('hidden');
+        this.render();
+    },
+
+    render() {
+        const card = this.cards[this.currentIndex];
+        const total = this.cards.length;
+        const progress = Math.round(((this.currentIndex) / total) * 100);
+        const seen = this.known.filter(k => k !== null).length;
+        const knewCount = this.known.filter(k => k === true).length;
+
+        const container = document.getElementById('flashcardArea');
+        container.innerHTML = `
+            <div class="mb-4">
+                <div class="flex items-center justify-between mb-1.5">
+                    <span class="text-sm font-medium text-gray-600 dark:text-gray-400">${this.currentIndex + 1} / ${total} kort · <span class="text-green-600">${knewCount} vidste</span> · <span class="text-red-500">${seen - knewCount} lær</span></span>
+                    <button onclick="LearnFlashcards.backToMenu()" class="text-xs text-red-500 hover:text-red-700 dark:hover:text-red-400 font-medium">✕ Stop</button>
+                </div>
+                <div class="w-full h-2.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full transition-all duration-300" style="width: ${progress}%"></div>
+                </div>
+            </div>
+
+            <div class="flashcard-container mb-5" onclick="LearnFlashcards.flip()">
+                <div class="flashcard ${this.flipped ? 'flashcard-flipped' : ''}">
+                    <div class="flashcard-front">
+                        <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 mb-3 inline-block">${card.category}</span>
+                        <p class="text-lg font-semibold text-gray-900 dark:text-white leading-relaxed">${card.q}</p>
+                        <p class="text-xs text-gray-400 dark:text-gray-500 mt-4">Klik for at vende kortet</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <p class="text-sm font-bold text-green-700 dark:text-green-400 mb-2">Svar:</p>
+                        <p class="text-lg font-semibold text-gray-900 dark:text-white mb-3">${card.options[card.correct]}</p>
+                        <div class="text-sm text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded-lg p-3 border border-gray-200 dark:border-gray-700">
+                            <strong>💡</strong> ${card.explanation}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            ${this.flipped ? `
+                <div class="flex justify-center gap-4 mb-4">
+                    <button onclick="LearnFlashcards.markAndNext(false)" class="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 border-2 border-red-300 dark:border-red-700 hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors">❌ Vidste det ikke</button>
+                    <button onclick="LearnFlashcards.markAndNext(true)" class="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border-2 border-green-300 dark:border-green-700 hover:bg-green-200 dark:hover:bg-green-900/50 transition-colors">✅ Vidste det</button>
+                </div>
+            ` : `
+                <div class="flex justify-center gap-3">
+                    ${this.currentIndex > 0 ? `<button onclick="LearnFlashcards.prev()" class="px-4 py-2 text-sm rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">← Forrige</button>` : ''}
+                    <button onclick="LearnFlashcards.flip()" class="px-5 py-2 text-sm rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition-colors font-semibold">Vis svar</button>
+                </div>
+            `}
+        `;
+    },
+
+    flip() {
+        this.flipped = !this.flipped;
+        this.render();
+    },
+
+    markAndNext(knewIt) {
+        this.known[this.currentIndex] = knewIt;
+        if (this.currentIndex < this.cards.length - 1) {
+            this.currentIndex++;
+            this.flipped = false;
+            this.render();
+        } else {
+            this.showResults();
+        }
+    },
+
+    prev() {
+        if (this.currentIndex > 0) {
+            this.currentIndex--;
+            this.flipped = false;
+            this.render();
+        }
+    },
+
+    showResults() {
+        const total = this.cards.length;
+        const knewCount = this.known.filter(k => k === true).length;
+        const missedCount = this.known.filter(k => k === false).length;
+        const unseenCount = this.known.filter(k => k === null).length;
+        const pct = Math.round((knewCount / total) * 100);
+
+        document.getElementById('flashcardArea').classList.add('hidden');
+        const results = document.getElementById('flashcardResults');
+        results.classList.remove('hidden');
+
+        let emoji = pct >= 90 ? '🏆' : pct >= 70 ? '🌟' : pct >= 50 ? '👍' : '📖';
+
+        let html = `
+            <div class="text-center mb-6">
+                <div class="text-5xl mb-3">${emoji}</div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Flashcards færdig!</h2>
+                <div class="inline-flex items-center gap-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg px-8 py-5 border border-gray-200 dark:border-gray-700">
+                    <div class="text-center">
+                        <p class="text-3xl font-black text-green-600">${knewCount}</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Vidste det</p>
+                    </div>
+                    <div class="h-10 w-px bg-gray-300 dark:bg-gray-600"></div>
+                    <div class="text-center">
+                        <p class="text-3xl font-black text-red-500">${missedCount}</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Skal øves</p>
+                    </div>
+                    <div class="h-10 w-px bg-gray-300 dark:bg-gray-600"></div>
+                    <div class="text-center">
+                        <p class="text-3xl font-black text-blue-600">${pct}%</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Korrekt</p>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Missed cards list
+        const missed = this.cards.filter((_, i) => this.known[i] === false);
+        if (missed.length > 0) {
+            html += `<div class="mb-4"><h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3">📖 Kort du bør gennemgå:</h3><div class="space-y-2">`;
+            missed.forEach(card => {
+                html += `<div class="p-3 rounded-xl border-2 border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/10">
+                    <p class="text-sm font-semibold text-gray-900 dark:text-white">${card.q}</p>
+                    <p class="text-sm text-green-700 dark:text-green-400 mt-1"><strong>Svar:</strong> ${card.options[card.correct]}</p>
+                </div>`;
+            });
+            html += `</div></div>`;
+        }
+
+        html += `
+            <div class="flex flex-wrap gap-3 justify-center mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                ${missed.length > 0 ? `<button onclick="LearnFlashcards.retryMissed()" class="px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-semibold transition-colors">🔄 Øv forkerte igen (${missed.length})</button>` : ''}
+                <button onclick="LearnFlashcards.start('${this.mode}')" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-colors">🔄 Start forfra</button>
+                <button onclick="LearnFlashcards.backToMenu()" class="px-5 py-2.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-xl font-semibold transition-colors">← Tilbage</button>
+            </div>
+        `;
+        results.innerHTML = html;
+    },
+
+    retryMissed() {
+        const missed = this.cards.filter((_, i) => this.known[i] === false);
+        this.cards = this.shuffle(missed);
+        this.currentIndex = 0;
+        this.flipped = false;
+        this.known = new Array(this.cards.length).fill(null);
+        document.getElementById('flashcardResults').classList.add('hidden');
+        document.getElementById('flashcardArea').classList.remove('hidden');
+        this.render();
+    },
+
+    backToMenu() {
+        document.getElementById('flashcardModeSelect').classList.remove('hidden');
+        document.getElementById('flashcardArea').classList.add('hidden');
+        document.getElementById('flashcardResults').classList.add('hidden');
+    }
+};
+
+
+// ============================================================
+// TRUE / FALSE ENGINE
+// ============================================================
+
+const LearnTrueFalse = {
+    questions: [],
+    currentIndex: 0,
+    answers: [],
+    locked: [],
+    timerStart: null,
+    timerId: null,
+
+    shuffle(arr) {
+        const a = [...arr];
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    },
+
+    start(n) {
+        this.questions = this.shuffle(learnTrueFalseBank).slice(0, n || 20);
+        this.currentIndex = 0;
+        this.answers = new Array(this.questions.length).fill(null);
+        this.locked = new Array(this.questions.length).fill(false);
+        this.timerStart = Date.now();
+
+        document.getElementById('tfModeSelect').classList.add('hidden');
+        document.getElementById('tfArea').classList.remove('hidden');
+        document.getElementById('tfResults').classList.add('hidden');
+
+        if (this.timerId) clearInterval(this.timerId);
+        this.timerId = setInterval(() => this.updateTimer(), 1000);
+        this.render();
+    },
+
+    updateTimer() {
+        const el = document.getElementById('tfTimer');
+        if (!el) return;
+        const elapsed = Math.floor((Date.now() - this.timerStart) / 1000);
+        const min = Math.floor(elapsed / 60);
+        const sec = elapsed % 60;
+        el.textContent = `${min}:${sec.toString().padStart(2, '0')}`;
+    },
+
+    render() {
+        const q = this.questions[this.currentIndex];
+        const total = this.questions.length;
+        const answered = this.locked.filter(l => l).length;
+        const progress = Math.round((answered / total) * 100);
+        const isLocked = this.locked[this.currentIndex];
+        const userAnswer = this.answers[this.currentIndex];
+
+        const container = document.getElementById('tfArea');
+
+        let feedbackHtml = '';
+        if (isLocked) {
+            const isCorrect = userAnswer === q.answer;
+            feedbackHtml = `
+                <div class="quiz-feedback ${isCorrect ? 'quiz-feedback-correct' : 'quiz-feedback-wrong'}">
+                    <span class="text-lg">${isCorrect ? '✅' : '❌'}</span>
+                    <div>
+                        <p class="font-semibold mb-1">${isCorrect ? 'Korrekt!' : 'Forkert!'} Svaret er <strong>${q.answer ? 'SANDT' : 'FALSK'}</strong></p>
+                        <p class="text-sm">${q.explanation}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        container.innerHTML = `
+            <div class="mb-4">
+                <div class="flex items-center justify-between mb-1.5">
+                    <span class="text-sm font-medium text-gray-600 dark:text-gray-400">${this.currentIndex + 1} / ${total} · ${answered} besvaret</span>
+                    <div class="flex items-center gap-3">
+                        <span class="text-sm font-mono text-gray-500 dark:text-gray-400">⏱ <span id="tfTimer">0:00</span></span>
+                        <button onclick="LearnTrueFalse.backToMenu()" class="text-xs text-red-500 hover:text-red-700 dark:hover:text-red-400 font-medium">✕ Stop</button>
+                    </div>
+                </div>
+                <div class="w-full h-2.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full transition-all duration-300" style="width: ${progress}%"></div>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 dark:bg-gray-900/50 rounded-xl p-6 border border-gray-200 dark:border-gray-700 mb-4">
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Udsagn #${this.currentIndex + 1}</p>
+                <p class="text-lg font-semibold text-gray-900 dark:text-white leading-relaxed mb-5">${q.statement}</p>
+
+                <div class="flex gap-4 justify-center">
+                    <button onclick="LearnTrueFalse.answer(true)" ${isLocked ? 'disabled' : ''} class="tf-btn ${userAnswer === true ? (q.answer === true ? 'tf-btn-correct' : 'tf-btn-wrong') : (isLocked && q.answer === true ? 'tf-btn-correct' : '')} ${isLocked ? 'opacity-80 cursor-default' : 'hover:scale-105'}">
+                        <span class="text-2xl">✅</span>
+                        <span class="font-bold text-lg">SANDT</span>
+                    </button>
+                    <button onclick="LearnTrueFalse.answer(false)" ${isLocked ? 'disabled' : ''} class="tf-btn ${userAnswer === false ? (q.answer === false ? 'tf-btn-correct' : 'tf-btn-wrong') : (isLocked && q.answer === false ? 'tf-btn-correct' : '')} ${isLocked ? 'opacity-80 cursor-default' : 'hover:scale-105'}">
+                        <span class="text-2xl">❌</span>
+                        <span class="font-bold text-lg">FALSK</span>
+                    </button>
+                </div>
+
+                ${feedbackHtml}
+            </div>
+
+            <div class="flex justify-between">
+                <button onclick="LearnTrueFalse.nav(-1)" ${this.currentIndex === 0 ? 'disabled class="invisible"' : 'class="px-4 py-2 text-sm rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"'}>← Forrige</button>
+                ${isLocked && this.currentIndex < total - 1 ? '<button onclick="LearnTrueFalse.nav(1)" class="px-4 py-2 text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors font-semibold">Næste →</button>' : ''}
+                ${isLocked && this.currentIndex === total - 1 ? '<button onclick="LearnTrueFalse.showResults()" class="px-5 py-2 text-sm rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors font-semibold">Se resultater 🏆</button>' : ''}
+            </div>
+        `;
+    },
+
+    answer(val) {
+        if (this.locked[this.currentIndex]) return;
+        this.answers[this.currentIndex] = val;
+        this.locked[this.currentIndex] = true;
+        this.render();
+
+        // Auto-advance after 1.5s if correct
+        const q = this.questions[this.currentIndex];
+        if (val === q.answer && this.currentIndex < this.questions.length - 1) {
+            setTimeout(() => {
+                if (this.locked[this.currentIndex] && this.currentIndex < this.questions.length - 1) {
+                    this.nav(1);
+                }
+            }, 1500);
+        }
+    },
+
+    nav(dir) {
+        this.currentIndex = Math.max(0, Math.min(this.questions.length - 1, this.currentIndex + dir));
+        this.render();
+    },
+
+    showResults() {
+        if (this.timerId) { clearInterval(this.timerId); this.timerId = null; }
+        const elapsed = Math.floor((Date.now() - this.timerStart) / 1000);
+        const min = Math.floor(elapsed / 60);
+        const sec = elapsed % 60;
+        const total = this.questions.length;
+        const correct = this.questions.reduce((s, q, i) => s + (this.answers[i] === q.answer ? 1 : 0), 0);
+        const pct = Math.round((correct / total) * 100);
+
+        let grade, gradeColor, gradeEmoji;
+        if (pct >= 92) { grade = '12 (A)'; gradeColor = 'text-green-600 dark:text-green-400'; gradeEmoji = '🏆'; }
+        else if (pct >= 82) { grade = '10 (B)'; gradeColor = 'text-green-600 dark:text-green-400'; gradeEmoji = '🌟'; }
+        else if (pct >= 70) { grade = '7 (C)'; gradeColor = 'text-blue-600 dark:text-blue-400'; gradeEmoji = '👍'; }
+        else if (pct >= 55) { grade = '4 (D)'; gradeColor = 'text-yellow-600 dark:text-yellow-400'; gradeEmoji = '📖'; }
+        else if (pct >= 40) { grade = '02 (E)'; gradeColor = 'text-orange-600 dark:text-orange-400'; gradeEmoji = '⚠️'; }
+        else if (pct >= 20) { grade = '00 (Fx)'; gradeColor = 'text-red-600 dark:text-red-400'; gradeEmoji = '❌'; }
+        else { grade = '-3 (F)'; gradeColor = 'text-red-700 dark:text-red-500'; gradeEmoji = '💀'; }
+
+        document.getElementById('tfArea').classList.add('hidden');
+        const results = document.getElementById('tfResults');
+        results.classList.remove('hidden');
+
+        let html = `
+            <div class="text-center mb-6">
+                <div class="text-5xl mb-3">${gradeEmoji}</div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Sandt/Falsk Færdig!</h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Tid: ${min}:${sec.toString().padStart(2, '0')}</p>
+                <div class="inline-flex items-center gap-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg px-8 py-5 border border-gray-200 dark:border-gray-700">
+                    <div class="text-center">
+                        <p class="text-3xl font-black ${correct === total ? 'text-green-600' : pct >= 55 ? 'text-blue-600' : 'text-red-600'}">${correct}/${total}</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Rigtige</p>
+                    </div>
+                    <div class="h-10 w-px bg-gray-300 dark:bg-gray-600"></div>
+                    <div class="text-center">
+                        <p class="text-3xl font-black ${gradeColor}">${pct}%</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Score</p>
+                    </div>
+                    <div class="h-10 w-px bg-gray-300 dark:bg-gray-600"></div>
+                    <div class="text-center">
+                        <p class="text-3xl font-black ${gradeColor}">${grade}</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Karakter</p>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Detailed review
+        html += `<div class="mb-4"><h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3">📋 Gennemgang</h3></div><div class="space-y-2">`;
+        this.questions.forEach((q, i) => {
+            const isCorrect = this.answers[i] === q.answer;
+            const borderCls = isCorrect
+                ? 'border-green-400 dark:border-green-600 bg-green-50 dark:bg-green-900/10'
+                : 'border-red-400 dark:border-red-600 bg-red-50 dark:bg-red-900/10';
+            const icon = isCorrect ? '✅' : '❌';
+            html += `<div class="p-3 rounded-xl border-2 ${borderCls}">
+                <div class="flex items-start gap-2">
+                    <span>${icon}</span>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold text-gray-900 dark:text-white">${q.statement}</p>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Svar: <strong>${q.answer ? 'SANDT' : 'FALSK'}</strong></p>
+                        ${!isCorrect ? `<p class="text-xs text-gray-600 dark:text-gray-300 mt-1 bg-white dark:bg-gray-800 p-2 rounded-lg border border-gray-200 dark:border-gray-700"><strong>💡</strong> ${q.explanation}</p>` : ''}
+                    </div>
+                </div>
+            </div>`;
+        });
+        html += `</div>`;
+
+        html += `
+            <div class="flex flex-wrap gap-3 justify-center mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <button onclick="LearnTrueFalse.start(${total})" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-colors">🔄 Prøv igen (${total})</button>
+                <button onclick="LearnTrueFalse.backToMenu()" class="px-5 py-2.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-xl font-semibold transition-colors">← Tilbage</button>
+            </div>
+        `;
+        results.innerHTML = html;
+        results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    },
+
+    backToMenu() {
+        if (this.timerId) { clearInterval(this.timerId); this.timerId = null; }
+        document.getElementById('tfModeSelect').classList.remove('hidden');
+        document.getElementById('tfArea').classList.add('hidden');
+        document.getElementById('tfResults').classList.add('hidden');
+    }
+};
+
+
+// ============================================================
+// CATEGORY QUIZ ENGINE (uses existing quiz bank with category filter)
+// ============================================================
+
+const LearnCategoryQuiz = {
+    start(category) {
+        // Filter questions by category, then use the main quiz engine
+        const pool = learnQuizBank.filter(q => q.category === category);
+        if (pool.length === 0) return;
+
+        // Temporarily replace the quiz bank, run the quiz, then restore
+        const originalBank = [...learnQuizBank];
+        const n = Math.min(pool.length, pool.length); // use all from category
+
+        LearnQuiz.mode = n;
+        LearnQuiz.finished = false;
+        LearnQuiz.currentIndex = 0;
+        LearnQuiz.answers = new Array(n).fill(-1);
+        LearnQuiz.locked = new Array(n).fill(false);
+
+        const shuffled = LearnQuiz.shuffle(pool);
+        LearnQuiz.currentQuestions = shuffled.slice(0, n).map(q => {
+            const indices = q.options.map((_, i) => i);
+            const shuffledIndices = LearnQuiz.shuffle(indices);
+            return {
+                ...q,
+                options: shuffledIndices.map(i => q.options[i]),
+                correct: shuffledIndices.indexOf(q.correct),
+                originalCorrectText: q.options[q.correct]
+            };
+        });
+
+        // Switch to quiz sub-tab so quizArea is visible
+        switchLearnMode('quiz');
+        document.getElementById('catQuizSelect').classList.add('hidden');
+        document.getElementById('quizModeSelect').classList.add('hidden');
+        document.getElementById('quizArea').classList.remove('hidden');
+        document.getElementById('quizResults').classList.add('hidden');
+
+        // Override backToMenu to return to category selection
+        LearnQuiz._originalBackToMenu = LearnQuiz.backToMenu;
+        LearnQuiz.backToMenu = function() {
+            switchLearnMode('category');
+            document.getElementById('catQuizSelect').classList.remove('hidden');
+            document.getElementById('quizArea').classList.add('hidden');
+            document.getElementById('quizResults').classList.add('hidden');
+            document.getElementById('quizModeSelect').classList.remove('hidden');
+            LearnQuiz.backToMenu = LearnQuiz._originalBackToMenu;
+        };
+
+        LearnQuiz.renderQuestion();
+        LearnQuiz.renderProgress();
+    }
+};
+
+// Helper: get unique categories and their counts
+function getQuizCategories() {
+    const cats = {};
+    learnQuizBank.forEach(q => {
+        if (!cats[q.category]) cats[q.category] = 0;
+        cats[q.category]++;
+    });
+    return cats;
+}
+
+/* ============================================================
+   LEARN MODE TAB SWITCHING
+   ============================================================ */
+function switchLearnMode(mode) {
+    const modes = ['guided', 'quiz', 'tf', 'flashcards', 'category'];
+    modes.forEach(m => {
+        const panel = document.getElementById('learnMode-' + m);
+        const tab = document.getElementById('learnTab-' + m);
+        if (!panel || !tab) return;
+        if (m === mode) {
+            panel.classList.remove('hidden');
+            tab.classList.add('learn-mode-tab-active');
+            tab.classList.remove('border-transparent', 'text-gray-500', 'dark:text-gray-400');
+        } else {
+            panel.classList.add('hidden');
+            tab.classList.remove('learn-mode-tab-active');
+            tab.classList.add('border-transparent', 'text-gray-500', 'dark:text-gray-400');
+        }
+    });
+}

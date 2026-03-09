@@ -1,1547 +1,2966 @@
 // ============================================================
-// LEARN QUIZ SYSTEM — Smart Logistics Calculator
-// 110+ questions covering all site tools + general logistics
-// For EUC Lillebælt Lager & Logistikoperatør education
+// LAGER & LOGISTIK QUIZ — Smart Logistics Calculator
+// 220 multiple choice spørgsmål til TUR-eksamensforberedelse
+// Emner: lagerstyring, lean, supply chain, ERP, WMS,
+// leveringsbetingelser, transport, sikkerhed, virksomhed m.m.
 // ============================================================
 
 const learnQuizBank = [
 
 // ============================
-// CATEGORY 1: ABC ANALYSIS (1-12)
+// LAGERSTYRING & LAGERINDRETNING
 // ============================
 {
     id: 1,
-    category: 'ABC Analyse',
-    q: 'Hvad er grundprincippet bag ABC-analyse?',
+    category: 'Lagerstyring',
+    q: 'Hvad står FIFO for i lagersammenhæng?',
     options: [
-        'At alle varer behandles ens',
-        'Pareto-princippet (80/20-reglen)',
-        'At C-varer altid er vigtigst',
-        'At man kun fokuserer på dyre varer'
+        'First In, First Out — de ældste varer sendes ud først',
+        'Fast Inventory for Operations',
+        'Final Inspection and Forwarding Order',
+        'Freight In, Freight Out'
     ],
-    correct: 1,
-    explanation: 'ABC-analyse bygger på Pareto-princippet (80/20-reglen), som siger at ca. 20% af varerne typisk udgør ca. 80% af den samlede værdi. Dermed kan man prioritere sin indsats på de vigtigste varer.'
+    correct: 0,
+    explanation: 'FIFO betyder First In, First Out. De varer der kom ind på lageret først, sendes også ud først. Det er især vigtigt for fødevarer og varer med udløbsdato, så intet bliver for gammelt.'
 },
 {
     id: 2,
-    category: 'ABC Analyse',
-    q: 'Hvor stor en andel af den samlede værdi repræsenterer A-varer typisk?',
-    options: ['Ca. 5%', 'Ca. 50%', 'Ca. 80%', 'Ca. 95%'],
+    category: 'Lagerstyring',
+    q: 'Hvad er hovedformålet med et sikkerhedslager?',
+    options: [
+        'At opbevare faremærkede varer adskilt fra resten',
+        'At have et reservelager i en anden bygning',
+        'At beskytte mod uforudsete udsving i efterspørgsel eller leveringstid',
+        'At sikre lageret mod indbrud og tyveri'
+    ],
     correct: 2,
-    explanation: 'A-varer udgør typisk ca. 80% af den samlede lagerværdi, selvom de kun udgør ca. 20% af det totale antal varer. Derfor kræver de tættest kontrol og opmærksomhed.'
+    explanation: 'Sikkerhedslageret er en buffer. Hvis leverandøren pludselig er forsinket, eller der kommer en uventet stor ordre, har man stadig varer at levere fra. Uden sikkerhedslager risikerer man tomme hylder og utilfredse kunder.'
 },
 {
     id: 3,
-    category: 'ABC Analyse',
-    q: 'Hvor stor en andel af antallet af varer er typisk C-varer?',
-    options: ['Ca. 10%', 'Ca. 20%', 'Ca. 30%', 'Ca. 50%'],
-    correct: 3,
-    explanation: 'C-varer udgør typisk ca. 50% af det totale antal varer, men kun ca. 5% af den samlede værdi. De kræver mindst individuel opmærksomhed.'
+    category: 'Lagerstyring',
+    q: 'En virksomhed bruger varer for 1.500.000 kr. om året. Gennemsnitligt lager er 150.000 kr. Hvad er lageromsætningshastigheden?',
+    options: [
+        '100',
+        '10',
+        '15',
+        '1,5'
+    ],
+    correct: 1,
+    explanation: 'Lageromsætningshastighed = årligt vareforbrug / gennemsnitslager = 1.500.000 / 150.000 = 10. Det vil sige, lageret omsættes 10 gange om året. Jo højere tal, jo mere effektiv lagerstyring.'
 },
 {
     id: 4,
-    category: 'ABC Analyse',
-    q: 'Hvad er den anbefalede gennemgangsfrekvens for A-varer?',
-    options: ['Årligt', 'Månedligt', 'Ugentligt', 'Dagligt'],
+    category: 'Lagerstyring',
+    q: 'Hvad er genbestillingspunktet (ROP)?',
+    options: [
+        'Det tidspunkt hvor lageret lukker for dagen',
+        'Prisen hvor det kan betale sig at købe større mængder',
+        'Den hastighed man plukker varer med',
+        'Det lagerniveau hvor en ny bestilling skal afgives'
+    ],
     correct: 3,
-    explanation: 'A-varer bør overvåges dagligt eller ugentligt, da de udgør størstedelen af lagerværdien. Hyppig kontrol minimerer risikoen for lagermangler på kritiske varer.'
+    explanation: 'Genbestillingspunktet er det antal varer på lager, hvor man siger: nu skal vi bestille hjem. Det beregnes som dagsforbrug × leveringstid + sikkerhedslager. Bestiller man for sent risikerer man at løbe tør.'
 },
 {
     id: 5,
-    category: 'ABC Analyse',
-    q: 'Hvad er standardgrænseværdierne for ABC-klassificering (Standard 80/95)?',
+    category: 'Lagerstyring',
+    q: 'Hvad kendetegner et flydende lagerplads-system?',
     options: [
-        'A: 0-70%, B: 70-90%, C: 90-100%',
-        'A: 0-80%, B: 80-95%, C: 95-100%',
-        'A: 0-85%, B: 85-97%, C: 97-100%',
-        'A: 0-60%, B: 60-80%, C: 80-100%'
+        'Alle varer har en fast, reserveret plads de altid står på',
+        'Varer placeres på den første ledige plads i lageret',
+        'Varerne opbevares i vandtanke',
+        'Systemet bruges udelukkende til flydende væsker'
     ],
     correct: 1,
-    explanation: 'Standard ABC-grænser er 80/95: A-varer udgør 0-80% af kumulativ værdi, B-varer 80-95%, og C-varer 95-100%. Disse grænser kan justeres efter behov (Tight: 70/90, Loose: 85/97).'
+    explanation: 'I et flydende system er ingen plads reserveret til bestemte varer. En vare placeres på den første ledige plads. Det giver bedre udnyttelse af pladsen, men kræver et godt WMS-system, der holder styr på lokationerne.'
 },
 {
     id: 6,
-    category: 'ABC Analyse',
-    q: 'Hvilket diagram bruges oftest til at visualisere ABC-analyse?',
-    options: ['Gantt-diagram', 'Pareto-diagram', 'Fishbone-diagram', 'Scatter-plot'],
-    correct: 1,
-    explanation: 'Et Pareto-diagram (søjlediagram med kumulativ linje) er standardvisualiseringen for ABC-analyse. Det viser tydeligt den kumulative værdiandel og hvor ABC-grænserne falder.'
+    category: 'Lagerstyring',
+    q: 'Hvad er formålet med en ABC-analyse i lagerstyring?',
+    options: [
+        'At klassificere varer efter deres værdi, så de vigtigste får mest opmærksomhed',
+        'At sortere varer efter farve og størrelse',
+        'At vurdere om lagerbygningen er stor nok',
+        'At fordele medarbejderne i tre hold'
+    ],
+    correct: 0,
+    explanation: 'ABC-analyse bygger på Pareto-princippet (80/20-reglen). A-varer udgør typisk 20% af varerne men 80% af værdien, og de styres stramt. C-varer udgør 50% af varerne men kun 5% af værdien og styres enklere.'
 },
 {
     id: 7,
-    category: 'ABC Analyse',
-    q: 'Hvornår bør man anvende ABC-analyse?',
+    category: 'Lagerstyring',
+    q: 'Hvad er zone-plukning?',
     options: [
-        'Kun ved opstart af ny virksomhed',
-        'Ved styring af stort varelager (100+ varer) og begrænsede ressourcer',
-        'Kun for fødevarer',
-        'Kun i produktionsvirksomheder'
+        'Lageret opdeles i zoner, og plukkere arbejder i hver sin zone',
+        'Én plukker løber alle zoner igennem med hele ordren',
+        'Man plukker kun fra den zone der er tættest på udleveringen',
+        'En metode hvor robotter henter varerne for plukkeren'
     ],
-    correct: 1,
-    explanation: 'ABC-analyse er mest nyttig ved store varelagre (100+ varer), begrænsede ressourcer, årlige gennemgangscyklusser, og nye produktlanceringer. Den hjælper med at prioritere indsatsen.'
+    correct: 0,
+    explanation: 'I zone-plukning er lageret delt op, og hver plukker har ansvar for sin zone. Ordrerne deles op, plukkes i de enkelte zoner og samles igen bagefter. Det minimerer gangafstande.'
 },
 {
     id: 8,
-    category: 'ABC Analyse',
-    q: 'Hvad er en typisk fejl ved brug af ABC-analyse?',
+    category: 'Lagerstyring',
+    q: 'Hvad er batch-plukning?',
     options: [
-        'At overvåge A-varer for ofte',
-        'At ignorere C-varer fuldstændigt',
-        'At bruge for nye data',
-        'At inkludere for mange varegrupper'
+        'At plukke varer efter et fast tidsinterval fx hver time',
+        'At plukke én ordre ad gangen med stor præcision',
+        'At plukke hele paller ad gangen',
+        'At samle flere ordrer og plukke dem i én runde for at spare gangtid'
     ],
-    correct: 1,
-    explanation: 'En typisk fejl er at ignorere C-varer helt. Selvom de har lav værdi, kan mangel på C-varer stadig forårsage produktionsstop eller kundetab. De bør gennemgås periodisk.'
+    correct: 3,
+    explanation: 'I batch-plukning slår man flere ordrer sammen, så plukkeren kun skal gå forbi den samme lokation én gang. Bagefter sorteres varerne til de enkelte ordrer. Det er effektivt ved mange små ordrer.'
 },
 {
     id: 9,
-    category: 'ABC Analyse',
-    q: 'Hvordan beregnes en vares værdi i ABC-analyse?',
+    category: 'Lagerstyring',
+    q: 'Hvilket lagerstyringsprincip bruges typisk til fødevarer og medicin?',
     options: [
-        'Kun indkøbsprisen',
-        'Forbrug × Pris (årligt forbrug gange enhedspris)',
-        'Antal på lager × Vægt',
-        'Salgspris minus indkøbspris'
+        'LIFO — Last In, First Out',
+        'HIFO — Highest In, First Out',
+        'FIFO — First In, First Out',
+        'Random plukning efter bekvemmelighed'
     ],
-    correct: 1,
-    explanation: 'I ABC-analyse beregnes en vares værdi som Forbrug × Pris (årligt antal forbrugte enheder ganget med enhedsprisen). Dette giver den samlede årlige værdi pr. vare.'
+    correct: 2,
+    explanation: 'FIFO sikrer, at de ældste varer altid udleveres først. For fødevarer og medicin er det afgørende, at varer med kortest holdbarhed ikke bliver liggende bagerst og udløber.'
 },
 {
     id: 10,
-    category: 'ABC Analyse',
-    q: 'Hvad anbefales for sikkerhedslager på B-varer?',
-    options: ['0%', '5-15%', '25-50%', '10-25%'],
+    category: 'Lagerstyring',
+    q: 'Hvad er en "pick-by-light" løsning?',
+    options: [
+        'En energibesparende LED-belysning til lagerområdet',
+        'Et system hvor lysdioder ved lagerpladserne viser plukkeren hvor og hvor meget der skal plukkes',
+        'Lommelygter som plukkere bruger i mørke gange',
+        'Et alarmsystem der blinker når der plukkes forkert'
+    ],
     correct: 1,
-    explanation: 'For B-varer anbefales et sikkerhedslager på 5-15% af forbruget. A-varer bør have 10-25%, mens C-varer kan nøjes med minimalt sikkerhedslager.'
+    explanation: 'Pick-by-light bruger displays og lysdioder ved hver lokation. Når plukkeren skal hente varer, lyser den relevante plads op og viser antal. Det giver hurtig og præcis plukning, især i zoner med høj aktivitet.'
 },
 {
     id: 11,
-    category: 'ABC Analyse',
-    q: 'Hvor ofte bør ABC-analysen som minimum opdateres med friske data?',
-    options: ['Hvert 5. år', 'Årligt', 'Kvartalsvis', 'Dagligt'],
-    correct: 2,
-    explanation: 'ABC-analysen bør som minimum opdateres kvartalsvis. Brug af forældet data er en af de mest almindelige fejl — forbrugsmønstre ændrer sig over tid.'
+    category: 'Lagerstyring',
+    q: 'Hvad er voice picking?',
+    options: [
+        'Et system hvor lagerchefen dikterer ordrer over højttaleren',
+        'At diskutere plukkelister mundtligt med kollegaer',
+        'Et oversættelsesprogram til flersprogede lagre',
+        'Plukkeren får stemmeinstruktioner via headset og bekræfter mundtligt, så hænderne er frie'
+    ],
+    correct: 3,
+    explanation: 'Voice picking giver plukkeren instruktioner direkte i øret via headset. Plukkeren bekræfter plukket med sin stemme. Begge hænder er frie til at arbejde. Det reducerer fejl og øger hastigheden.'
 },
 {
     id: 12,
-    category: 'ABC Analyse',
-    q: 'Hvilken lagerstyringsstrategi passer bedst til C-varer?',
+    category: 'Lagerstyring',
+    q: 'Hvad er cyklisk optælling?',
     options: [
-        'Daglig optælling og just-in-time levering',
-        'To-beholder-system med store ordremængder',
-        'Individuel prognose for hver vare',
-        'Real-time tracking med RFID'
+        'At tælle hele lagerbeholdningen fra start til slut én gang om året',
+        'En metode hvor man løbende tæller udvalgte varegrupper, så hele lageret dækkes over tid',
+        'At cykle rundt i lageret og tælle samtidig',
+        'At tælle antallet af reoler i lageret'
     ],
     correct: 1,
-    explanation: 'C-varer styres bedst med simple systemer som to-beholder-systemet, hvor man bestiller en ny batch når den første beholder er tom. Store ordremængder reducerer ordreomkostningerne.'
+    explanation: 'I stedet for den store årlige optælling tæller man løbende: fx A-varer ugentligt, B-varer månedligt, C-varer kvartalsvis. Det holder lagersaldoen mere nøjagtig hele året og forstyrrer driften mindre.'
 },
 
 // ============================
-// CATEGORY 2: ABC DOBBELT (13-20)
+// LEAN
 // ============================
 {
     id: 13,
-    category: 'ABC Dobbelt',
-    q: 'Hvad kombinerer ABC Dobbelt Analyse?',
+    category: 'Lean',
+    q: 'Hvad betyder det japanske ord "Muda"?',
     options: [
-        'Pris og leveringstid',
-        'Værdi (forbrug × pris) og forbrug (antal enheder)',
-        'Vægt og volumen',
-        'Indkøbspris og salgspris'
+        'Værdi',
+        'Forbedring',
+        'Spild',
+        'Standard'
     ],
-    correct: 1,
-    explanation: 'ABC Dobbelt Analyse kombinerer to dimensioner: Værdi (forbrug × pris) og Forbrug (antal enheder). Dette giver en mere nuanceret klassificering end standard ABC.'
+    correct: 2,
+    explanation: 'Muda = spild. Lean handler om at fjerne alt, der ikke skaber værdi for kunden. De 7 spildtyper er: overproduktion, ventetid, transport, overforarbejdning, lagerbeholdning, unødvendig bevægelse og defekter.'
 },
 {
     id: 14,
-    category: 'ABC Dobbelt',
-    q: 'Hvor mange kategorier skaber ABC Dobbelt Analyse i matricen?',
-    options: ['3', '6', '9', '12'],
-    correct: 2,
-    explanation: 'ABC Dobbelt Analyse skaber en 3×3 matrix med 9 kategorier: AA, AB, AC, BA, BB, BC, CA, CB og CC. Hver kombination kræver en specifik lagerstyringsstrategi.'
+    category: 'Lean',
+    q: 'Hvilket af disse er IKKE en af de 7 spildtyper i Lean?',
+    options: [
+        'Markedsføring',
+        'Overproduktion',
+        'Ventetid',
+        'Unødvendig lagerbeholdning'
+    ],
+    correct: 0,
+    explanation: 'De 7 spildtyper er: overproduktion, ventetid, unødvendig transport, overforarbejdning, lagerbeholdning, unødvendig bevægelse og defekter/fejl. Markedsføring er en normal forretningsaktivitet og indgår ikke.'
 },
 {
     id: 15,
-    category: 'ABC Dobbelt',
-    q: 'Hvad kendetegner en AA-vare i ABC Dobbelt?',
+    category: 'Lean',
+    q: 'Hvad står de 5S for i Lean?',
     options: [
-        'Lav værdi og lavt forbrug',
-        'Høj værdi OG højt forbrug — kræver tæt overvågning',
-        'Middel værdi og middel forbrug',
-        'Høj værdi men lavt forbrug'
+        'Sælg, Sortér, Saml, Standard, Slut',
+        'Sikkerhed, Styring, Service, Salg, Status',
+        'Sortér, Systematisér, Skinnende rent, Standardisér, Selvdisciplin',
+        'Speed, System, Support, Structure, Strategy'
     ],
-    correct: 1,
-    explanation: 'AA-varer har både høj værdi OG højt forbrug. De er de mest kritiske varer og kræver tæt overvågning, præcis prognose og stramme sikkerhedslagre.'
+    correct: 2,
+    explanation: '5S er: 1) Sortér (fjern alt unødvendigt), 2) Systematisér (alt har sin plads), 3) Skinnende rent (gør rent og inspicer), 4) Standardisér (lav faste rutiner), 5) Selvdisciplin (hold standarden ved lige). Det er fundamentet for en velfungerende arbejdsplads.'
 },
 {
     id: 16,
-    category: 'ABC Dobbelt',
-    q: 'Hvordan styres en AC-vare (høj værdi, lavt forbrug) anderledes end en CA-vare (lav værdi, højt forbrug)?',
+    category: 'Lean',
+    q: 'Hvad er Kaizen?',
     options: [
-        'De styres på samme måde',
-        'AC kræver værdibaseret kontrol, CA kræver forsyningssikring',
-        'AC bestilles i bulk, CA overvåges dagligt',
-        'Begge ignoreres som C-varer'
+        'Et japansk kampsportssystem til teambuilding',
+        'Store revolutionerende omstruktureringer af hele virksomheden',
+        'Et kvalitetscertifikat udstedt i Japan',
+        'Filosofien om løbende forbedringer i mange små skridt'
     ],
-    correct: 1,
-    explanation: 'AC-varer (dyre men sjældent brugt) kræver tæt økonomisk kontrol men sjælden genbestilling. CA-varer (billige men ofte brugt) kræver stabil forsyning og automatisk genbestilling for at undgå mangel.'
+    correct: 3,
+    explanation: 'Kaizen betyder "forandring til det bedre". Ideen er, at alle medarbejdere hele tiden foreslår og gennemfører små forbedringer i hverdagen. Over tid giver tusind små skridt en kæmpe effekt.'
 },
 {
     id: 17,
-    category: 'ABC Dobbelt',
-    q: 'Hvad er CC-varer i ABC Dobbelt matricen?',
+    category: 'Lean',
+    q: 'Hvad kendetegner et Kanban-system?',
     options: [
-        'Kritiske varer der kræver daglig kontrol',
-        'Varer med lav værdi OG lavt forbrug — minimal kontrol',
-        'Varer med høj værdi og lavt forbrug',
-        'Mellemklasse varer'
+        'Det er push-baseret og bygger på prognoser',
+        'Produktion og genopfyldning styres af faktisk forbrug — et pull-system',
+        'Det bruges kun i bilindustrien i Japan',
+        'Det kræver altid store sikkerhedslagre for at fungere'
     ],
     correct: 1,
-    explanation: 'CC-varer har både lav værdi og lavt forbrug. De er laveste prioritet og styres med minimal kontrol, periodisk gennemgang og store ordremængder for at spare på administrative omkostninger.'
+    explanation: 'Kanban er et pull-system: først når en vare er forbrugt, sendes et signal om at genopfylde. Det modvirker overproduktion og overskydende lager. Kanban-kort eller digitale signaler styrer flowet.'
 },
 {
     id: 18,
-    category: 'ABC Dobbelt',
-    q: 'Hvornår er ABC Dobbelt Analyse mere nyttig end standard ABC?',
+    category: 'Lean',
+    q: 'Hvad er formålet med Poka-Yoke?',
     options: [
-        'Når du har under 10 varer',
-        'Når standard ABC ikke er tilstrækkelig til at skelne mellem varer med samme værdiklasse men forskelligt forbrug',
-        'Kun i fødevareindustrien',
-        'Når du ikke har prisdata'
+        'At fejlsikre processer, så fejl enten forebygges helt eller opdages med det samme',
+        'At belønne medarbejdere der aldrig laver fejl',
+        'At producere i store partier for at minimere risikoen',
+        'At lave japansk-inspirerede procesdiagrammer'
     ],
-    correct: 1,
-    explanation: 'ABC Dobbelt er nyttig når standard ABC giver for grov en klassificering — f.eks. kan to A-varer have meget forskelligt forbrug og dermed kræve forskellige styringsstrategier.'
+    correct: 0,
+    explanation: 'Poka-Yoke er fejlsikring. Et USB-stik der kun kan sættes i på én måde er et godt eksempel. I lageret kan det være en scanner der afviser en forkert vare, eller en skabelon der kun tillader korrekt emballering.'
 },
 {
     id: 19,
-    category: 'ABC Dobbelt',
-    q: 'Hvad kendetegner BB-varer (moderat) i ABC Dobbelt?',
+    category: 'Lean',
+    q: 'Hvad er JIT (Just-in-Time)?',
     options: [
-        'Kræver daglig overvågning',
-        'Standard lagerprocedurer er tilstrækkelige',
-        'Bør elimineres fra lageret',
-        'Kræver individuel prognose'
+        'At producere store mængder på forhånd, så man er klar til alt',
+        'At sende ordrer afsted hurtigere end aftalt',
+        'At have store sikkerhedslagre spredt flere steder',
+        'At levere og producere præcis det der skal bruges, lige når det skal bruges'
     ],
-    correct: 1,
-    explanation: 'BB-varer har middel værdi og middel forbrug. Standard lagerprocedurer er tilstrækkelige for disse varer — hverken for tæt eller for løs kontrol.'
+    correct: 3,
+    explanation: 'JIT eliminerer unødvendigt lager ved at sørge for, at materialer ankommer præcis når de skal bruges — ikke før, ikke efter. Det kræver pålidelige leverandører, korte leveringstider og god planlægning.'
 },
 {
     id: 20,
-    category: 'ABC Dobbelt',
-    q: 'Hvilke to akser bruges i ABC Dobbelt matricen?',
+    category: 'Lean',
+    q: 'Hvad er OEE (Overall Equipment Effectiveness)?',
     options: [
-        'Pris-aksen og Tid-aksen',
-        'Værdi-aksen (forbrug × pris) og Forbrugs-aksen (antal enheder)',
-        'Leverandør-aksen og Kvalitets-aksen',
-        'Risiko-aksen og Profit-aksen'
+        'Et mål for maskineffektivitet: Tilgængelighed × Ydelse × Kvalitet',
+        'Et regnskabsbegreb for årlig omsætning per afdeling',
+        'Et mål for lagerkapacitet i kubikmeter',
+        'En forkortelse for Operational Employee Evaluation'
     ],
-    correct: 1,
-    explanation: 'Matricen har to akser: Værdi (beregnet som forbrug × stykpris) og Forbrug (det rene antal enheder). Kombinationen af de to giver 9 mulige kategorier.'
+    correct: 0,
+    explanation: 'OEE viser hvor effektivt maskiner udnyttes. 100% OEE er perfekt: ingen nedbrud, fuld hastighed, nul fejl. Verdensklasse er ca. 85%. De tre faktorer ganges sammen: fx 90% tilgængelighed × 95% ydelse × 99% kvalitet = 84,6%.'
 },
-
-// ============================
-// CATEGORY 3: WILSON EOQ (21-30)
-// ============================
 {
     id: 21,
-    category: 'Wilson EOQ',
-    q: 'Hvad står EOQ for?',
+    category: 'Lean',
+    q: 'Hvad er en Gemba-walk?',
     options: [
-        'Efficient Order Quality',
-        'Economic Order Quantity',
-        'Expected Outcome Quantity',
-        'Enterprise Order Queue'
+        'En løbetur som del af virksomhedens sundhedsprogram',
+        'En brandøvelse med fuld evakuering af lageret',
+        'En leder går ud på gulvet for at observere processerne der, hvor arbejdet faktisk foregår',
+        'En rundvisning for nye kunder'
     ],
-    correct: 1,
-    explanation: 'EOQ står for Economic Order Quantity — den økonomisk optimale ordrestørrelse. Formlen finder den mængde, der minimerer de samlede lager- og ordreomkostninger.'
+    correct: 2,
+    explanation: 'Gemba er japansk for "det virkelige sted". En Gemba-walk er, når en leder selv går ud i lageret eller produktionen for at se, spørge og forstå — ikke for at kontrollere, men for at finde forbedringer sammen med medarbejderne.'
 },
 {
     id: 22,
-    category: 'Wilson EOQ',
-    q: 'Hvad er Wilsons EOQ-formel?',
+    category: 'Lean',
+    q: 'Hvad er "Value Stream Mapping" (VSM)?',
     options: [
-        'EOQ = D × S × H',
-        'EOQ = √(2 × D × S / H)',
-        'EOQ = (D + S) / H',
-        'EOQ = 2 × D / (S × H)'
+        'Et regnskabsværktøj til at beregne varelagerets samlede værdi',
+        'En visuel kortlægning af alle trin i en proces fra start til slut, der afslører spild',
+        'Et GPS-system til at spore varebiler på ruten',
+        'En metode til at måle medarbejdernes markedsværdi'
     ],
     correct: 1,
-    explanation: 'Wilsons formel er EOQ = √(2DS/H), hvor D = årligt forbrug, S = ordreomkostning pr. ordre, og H = lageromkostning pr. enhed pr. år (pris × rente).'
+    explanation: 'VSM tegner hele flowet fra kundeordre til levering. Hvert trin analyseres: skaber det værdi, eller er det spild? Typisk finder man ventetid, unødvendige godkendelser og overskydende lager.'
 },
+
+// ============================
+// SUPPLY CHAIN MANAGEMENT
+// ============================
 {
     id: 23,
-    category: 'Wilson EOQ',
-    q: 'Hvad repræsenterer "D" i Wilsons formel?',
+    category: 'Supply Chain',
+    q: 'Hvad er bullwhip-effekten?',
     options: [
-        'Dagligt forbrug',
-        'Årligt forbrug (enheder)',
-        'Leveringstid i dage',
-        'Rabatprocent'
+        'En metode til at øge produktionshastigheden markant',
+        'At leverandører altid leverer mere end bestilt',
+        'En teknik til at udglatte sæsonudsving i efterspørgslen',
+        'Små udsving i kundernes efterspørgsel forstørres kraftigt op gennem forsyningskæden'
     ],
-    correct: 1,
-    explanation: 'D repræsenterer det årlige forbrug målt i enheder (Annual Demand). Det er det totale antal enheder, der forbruges eller sælges pr. år.'
+    correct: 3,
+    explanation: 'Bullwhip-effekten: hvis kunderne efterspørger 5% mere, bestiller butikken måske 10% ekstra, grossisten 20% ekstra, og fabrikken 40% ekstra. Hvert led overreagerer. Løsningen er at dele realtidsdata på tværs af kæden.'
 },
 {
     id: 24,
-    category: 'Wilson EOQ',
-    q: 'Hvad repræsenterer "S" i Wilsons formel?',
+    category: 'Supply Chain',
+    q: 'Hvad er cross-docking?',
     options: [
-        'Sikkerhedslager',
-        'Ordreomkostning pr. ordre',
-        'Salgspris pr. enhed',
-        'Standardafvigelse'
+        'At stable paller i krydsformation for bedre stabilitet',
+        'At omlaste varer direkte fra indgående til udgående transport uden mellemlager',
+        'Et sikkerhedstjek ved lagerets ind- og udgang',
+        'At bytte varer mellem to forskellige lagre'
     ],
     correct: 1,
-    explanation: 'S repræsenterer ordreomkostningen pr. ordre (Setup/Ordering Cost). Det inkluderer administrative omkostninger, forsendelse, modtagelse og kvalitetskontrol.'
+    explanation: 'Cross-docking eliminerer traditionel lagring. Varer ankommer ved én rampe, sorteres med det samme og sendes videre via en anden rampe — typisk samme dag. Det sparer lagerplads, tid og håndteringsomkostninger.'
 },
 {
     id: 25,
-    category: 'Wilson EOQ',
-    q: 'Hvad repræsenterer "H" i Wilsons formel?',
+    category: 'Supply Chain',
+    q: 'Hvad er TCO (Total Cost of Ownership)?',
     options: [
-        'Holdbarhedsdato',
-        'Lageromkostning pr. enhed pr. år (Pris × Rente)',
-        'Hyldekapacitet',
-        'Historisk forbrug'
+        'Den pris man betaler i kasseapparatet',
+        'Kun transportomkostningen fra leverandøren',
+        'Alle omkostninger forbundet med en vare over dens levetid: indkøb, fragt, lager, vedligehold, bortskaffelse m.m.',
+        'Told og afgifter ved grænsepassage'
     ],
-    correct: 1,
-    explanation: 'H er lageromkostningen (Holding Cost) pr. enhed pr. år. Den beregnes som Pris × Rente (lagerprocent), og dækker opbevaring, forsikring, svind og kapitalbinding.'
+    correct: 2,
+    explanation: 'TCO kigger på det fulde billede. En billig vare kan ende dyrt, hvis fragten er høj, den ofte går i stykker eller kræver dyr opbevaring. TCO hjælper med at vælge det reelt billigste alternativ.'
 },
 {
     id: 26,
-    category: 'Wilson EOQ',
-    q: 'Hvad betyder det, hvis EOQ er MINDRE end din nuværende ordrestørrelse?',
+    category: 'Supply Chain',
+    q: 'Hvad er en 3PL-udbyder?',
     options: [
-        'Du bestiller for lidt',
-        'Du bestiller for meget — reducer for at spare lageromkostninger',
-        'Din ordrestørrelse er perfekt',
-        'Du bør stoppe med at bestille'
+        'En tredjepart der varetager logistikoperationer som lager, plukning og transport for andre virksomheder',
+        'En tredjepartsforsikring mod transportskader',
+        'Et tredjepartsprogram til bogføring og fakturering',
+        'Den tredje prioritetsleverandør i virksomhedens indkøbsaftaler'
     ],
-    correct: 1,
-    explanation: 'Hvis EOQ < nuværende ordrestørrelse, bestiller du for meget ad gangen. Reducer ordrestørrelsen for at spare på lageromkostninger (opbevaring, kapitalbinding, svind).'
+    correct: 0,
+    explanation: '3PL = Third Party Logistics. Virksomheder outsourcer dele af deres logistik til en specialist, der har lagre, chauffører og systemer klar. Det frigør virksomheden til at fokusere på sine egne produkter.'
 },
 {
     id: 27,
-    category: 'Wilson EOQ',
-    q: 'Hvad er formålet med EOQ-beregningen?',
+    category: 'Supply Chain',
+    q: 'Hvad er "lead time" i logistik?',
     options: [
-        'At maksimere lagerbeholdningen',
-        'At finde balancen mellem ordreomkostninger og lageromkostninger',
-        'At minimere antallet af varer på lager',
-        'At beregne fortjeneste pr. vare'
+        'Den tid en medarbejder bruger på at gå fra A til B i lageret',
+        'Tiden for at lukke computersystemet ned om aftenen',
+        'Lederen har tid til at tjekke lagerbeholdningen',
+        'Den samlede tid fra en bestilling afgives til varerne er modtaget og klar til brug'
     ],
-    correct: 1,
-    explanation: 'EOQ finder den optimale balance: Ordreomkostninger falder med større ordrer (færre bestillinger), mens lageromkostninger stiger (mere på lager). EOQ er det punkt, hvor summen er lavest.'
+    correct: 3,
+    explanation: 'Lead time er den totale gennemløbstid. Kort lead time giver hurtigere levering, lavere lager og mere tilfredse kunder. Det er en af de vigtigste KPIer i supply chain management.'
 },
 {
     id: 28,
-    category: 'Wilson EOQ',
-    q: 'Hvis årligt forbrug (D) er 10.000 enheder, ordreomkostning (S) er 100 kr, og lageromkostning (H) er 5 kr/enhed/år, hvad er EOQ?',
-    options: ['200 enheder', '400 enheder', '632 enheder', '1.000 enheder'],
-    correct: 2,
-    explanation: 'EOQ = √(2 × 10.000 × 100 / 5) = √(2.000.000 / 5) = √400.000 = 632 enheder. Husk formlen: EOQ = √(2DS/H).'
+    category: 'Supply Chain',
+    q: 'Hvad er formålet med VMI (Vendor Managed Inventory)?',
+    options: [
+        'At kunden selv henter varer direkte hos leverandøren',
+        'At leverandøren overtager ansvaret for at holde kundens lager fyldt op',
+        'At lageret styres af en ekstern frivillig organisation',
+        'At leverandøren besøger kundens lager én gang årligt for inspektion'
+    ],
+    correct: 1,
+    explanation: 'I VMI deler kunden salgs- og lagerdata med leverandøren, som selv sørger for genbestilling og levering. Det reducerer risikoen for tomme hylder og sparer administrativt arbejde for begge parter.'
 },
 {
     id: 29,
-    category: 'Wilson EOQ',
-    q: 'Hvad er en vigtig begrænsning ved Wilsons EOQ-model?',
+    category: 'Supply Chain',
+    q: 'Hvad er forskellen på "push" og "pull" i en forsyningskæde?',
     options: [
-        'Den kan kun bruges til A-varer',
-        'Den antager konstant efterspørgsel og ubegrænset lagerplads',
-        'Den virker kun med leveringstider under 7 dage',
-        'Den kræver minimum 1.000 varer'
+        'Push handler om at skubbe paller, pull om at trække dem',
+        'De to begreber dækker over præcis det samme',
+        'Push: man producerer ud fra prognoser. Pull: man producerer ud fra faktisk efterspørgsel',
+        'Push bruges kun i stor industri, pull kun i detailhandlen'
     ],
-    correct: 1,
-    explanation: 'EOQ-modellen antager konstant, jævn efterspørgsel, ingen mængderabatter, ubegrænset lagerkapacitet og øjeblikkelig levering. I virkeligheden bør man justere for disse faktorer.'
-},
-{
-    id: 30,
-    category: 'Wilson EOQ',
-    q: 'Hvad er "Batch Wilson" beregning?',
-    options: [
-        'En EOQ-beregning for kun én vare',
-        'Beregning af EOQ for alle varer på én gang',
-        'En Wilson-beregning med rabatter',
-        'Beregning af leveringstid'
-    ],
-    correct: 1,
-    explanation: 'Batch Wilson beregner EOQ for alle varer i datasættet på én gang, i stedet for at beregne én vare ad gangen. Det er effektivt når man har mange varer efter en ABC-analyse.'
+    correct: 2,
+    explanation: 'Push producerer på forhånd baseret på, hvad man forventer at sælge — risiko for overproduktion. Pull producerer først, når kunden bestiller — lavere lager, men kræver kort leveringstid og fleksible processer.'
 },
 
 // ============================
-// CATEGORY 4: LAGERSTYRING (31-42)
+// LEVERINGSBETINGELSER & INCOTERMS
 // ============================
 {
-    id: 31,
-    category: 'Lagerstyring',
-    q: 'Hvad er formlen for Genbestillingspunktet (ROP)?',
+    id: 30,
+    category: 'Leveringsbetingelser',
+    q: 'Hvad betyder det, at en levering er "franco"?',
     options: [
-        'ROP = Pris × Forbrug',
-        'ROP = (Dagligt Forbrug × Leveringstid) + Sikkerhedslager',
-        'ROP = EOQ - Sikkerhedslager',
-        'ROP = Årligt Forbrug / 365'
+        'Leverandøren betaler fragten til det aftalte leveringssted',
+        'Varerne er gratis for kunden',
+        'Kunden skal selv afhente varerne hos leverandøren',
+        'Leverancen kommer fra Frankrig'
     ],
-    correct: 1,
-    explanation: 'ROP = (Dagligt Forbrug × Leveringstid) + Sikkerhedslager. Når lagerbeholdningen rammer ROP, skal der bestilles nyt. Sikkerhedslageret beskytter mod uforudsete udsving.'
+    correct: 0,
+    explanation: 'Franco = frit leveret. Sælgeren betaler transporten. Mange leverandører har en franco-grænse: fx "Franco ved køb over 5.000 kr." — under det beløb betaler kunden selv fragten.'
+},
+{
+    id: 31,
+    category: 'Leveringsbetingelser',
+    q: 'Hvad betyder "ufranco" levering?',
+    options: [
+        'Levering med ekspresbudtjeneste',
+        'Levering er gratis for kunden',
+        'Varerne sendes retur til leverandøren',
+        'Kunden (køber) betaler fragten'
+    ],
+    correct: 3,
+    explanation: 'Ufranco = køber betaler fragten selv. Det modsatte af franco. I praksis er mange ordrer under en vis beløbsgrænse ufranco, mens store ordrer sendes franco.'
 },
 {
     id: 32,
-    category: 'Lagerstyring',
-    q: 'Hvad bruges Z-scoren 1,65 til i lagerstyring?',
+    category: 'Leveringsbetingelser',
+    q: 'Hvad er Incoterms?',
     options: [
-        'Den repræsenterer 85% serviceniveau',
-        'Den repræsenterer 95% serviceniveau',
-        'Den repræsenterer 99% serviceniveau',
-        'Den repræsenterer gennemsnitlig leveringstid'
+        'En national standard for emballering og pakning',
+        'Et IT-system til toldberegning',
+        'Internationale handelsregler der fastlægger ansvar, risiko og omkostninger mellem køber og sælger',
+        'Internationale regler for truckcertificering'
     ],
-    correct: 1,
-    explanation: 'Z = 1,65 svarer til 95% serviceniveau. Andre vigtige Z-scorer: 90% = 1,28, 98% = 2,05, 99% = 2,33, 99,5% = 2,58. Højere Z-score = højere sikkerhedslager.'
+    correct: 2,
+    explanation: 'Incoterms (International Commercial Terms) udgives af ICC og opdateres løbende. De standardiserer, hvem der betaler hvad, hvem der bærer risikoen, og hvornår ansvaret overgår fra sælger til køber.'
 },
 {
     id: 33,
-    category: 'Lagerstyring',
-    q: 'Hvornår er Periodisk Gennemgang-modellen mest velegnet?',
+    category: 'Leveringsbetingelser',
+    q: 'Hvad betyder Incoterm "EXW" (Ex Works)?',
     options: [
-        'Når efterspørgslen er meget ustabil',
-        'Når leverandøren kører faste ruter eller ved konsolidering af ordrer',
-        'Kun til A-varer',
-        'Når lageret er næsten tomt'
+        'Sælger leverer varen helt til købers adresse inkl. toldbehandling',
+        'Sælger stiller varen til rådighed ved sit eget sted — køber bærer al risiko og alle omkostninger derfra',
+        'Sælger betaler fragt og forsikring frem til destinationshavnen',
+        'Sælger sørger for transport til nærmeste grænseovergang'
     ],
     correct: 1,
-    explanation: 'Periodisk Gennemgang passer til faste indkøbsintervaller — f.eks. når leverandøren kommer hver 14. dag, eller når man konsoliderer ordrer fra samme leverandør.'
+    explanation: 'EXW giver mindst ansvar til sælgeren. Sælger gør blot varen klar til afhentning på fx sin fabrik. Alt derfra — transport, told, forsikring — er købers ansvar og risiko.'
 },
 {
     id: 34,
-    category: 'Lagerstyring',
-    q: 'Hvad er formlen for Målniveau i Periodisk Gennemgang?',
+    category: 'Leveringsbetingelser',
+    q: 'Hvad betyder Incoterm "DAP" (Delivered at Place)?',
     options: [
-        'Målniveau = EOQ × 2',
-        'Målniveau = Dagligt Forbrug × (Gennemgangsperiode + Leveringstid) + Sikkerhedslager',
-        'Målniveau = Sikkerhedslager × Gennemgangsperiode',
-        'Målniveau = Max - Min'
+        'Varen afleveres frit på kajen ved afgangshavnen',
+        'Køber afhenter selv varen på fabrikken',
+        'Sælger betaler kun fragt frem til nærmeste lufthavn',
+        'Sælger leverer varen til det aftalte sted — køber klarer importtold og aflæsning'
     ],
-    correct: 1,
-    explanation: 'Målniveau = Dagligt Forbrug × (Gennemgangsperiode + Leveringstid) + Sikkerhedslager. Det dækker forbruget i hele perioden indtil næste levering, plus en buffer.'
+    correct: 3,
+    explanation: 'DAP: sælger bærer alle omkostninger og risici, indtil varen ankommer til det aftalte leveringssted. Køber står kun for importtold/-afgifter og aflæsning. Det er en af de mest brugte Incoterms.'
 },
+
+// ============================
+// ERP, WMS & IT
+// ============================
 {
     id: 35,
-    category: 'Lagerstyring',
-    q: 'I Min/Max-modellen, hvad er formlen for Min?',
+    category: 'ERP & IT',
+    q: 'Hvad står ERP for?',
     options: [
-        'Min = EOQ / 2',
-        'Min = Sikkerhedslager + (Dagligt Forbrug × Leveringstid)',
-        'Min = Dagligt Forbrug × 30',
-        'Min = Max - EOQ'
+        'Electronic Retail Platform — et system til onlinesalg',
+        'Estimated Revenue Prediction — en metode til indtægtsprognoser',
+        'Emergency Recovery Protocol — en nødplan ved IT-nedbrud',
+        'Enterprise Resource Planning — et samlet IT-system til virksomhedens ressourcer'
     ],
-    correct: 1,
-    explanation: 'Min = Sikkerhedslager + (Dagligt Forbrug × Leveringstid). Det er det laveste acceptable lagerniveau, der dækker forbruget i leveringstiden plus en sikkerhedsmargin.'
+    correct: 3,
+    explanation: 'ERP = Enterprise Resource Planning. Det er ét samlet system, der binder virksomhedens funktioner sammen: økonomi, lager, indkøb, produktion, HR m.m. deler data i én database, så alle arbejder med de samme tal.'
 },
 {
     id: 36,
-    category: 'Lagerstyring',
-    q: 'Hvad er formlen for Max i Min/Max-modellen?',
+    category: 'ERP & IT',
+    q: 'Hvad er et WMS (Warehouse Management System)?',
     options: [
-        'Max = Min × 2',
-        'Max = Min + EOQ (optimal ordremængde)',
-        'Max = Årligt Forbrug / 12',
-        'Max = Sikkerhedslager × 3'
+        'Et system til at styre medarbejdernes vagtplaner',
+        'Et IT-system der styrer lageroperationer: modtagelse, placering, plukning, pakning og forsendelse',
+        'En type operativsystem til bærbare computere',
+        'Et system til at styre virksomhedens marketingkampagner'
     ],
     correct: 1,
-    explanation: 'Max = Min + EOQ. Når lageret rammer Min, bestilles EOQ enheder, hvilket bringer lageret op til Max. Det giver en simpel, forudsigelig genbestillingscyklus.'
+    explanation: 'WMS styrer lageret digitalt. Det bestemmer hvor varer skal placeres, optimerer plukruter, holder styr på lokationer og giver realtidsoverblik over hele lagerbeholdningen.'
 },
 {
     id: 37,
-    category: 'Lagerstyring',
-    q: 'Hvad betyder "Kritisk" status i Min/Max-modellen?',
+    category: 'ERP & IT',
+    q: 'Hvad er EDI (Electronic Data Interchange)?',
     options: [
-        'Lageret er over Max',
-        'Lageret er under sikkerhedslageret',
-        'Lageret er mellem Min og Max',
-        'Lageret er præcis på Min'
+        'En intern e-mailservice for lagermedarbejdere',
+        'Et system til elektronisk overvågning af gaffeltrucks',
+        'Elektronisk udveksling af forretningsdokumenter direkte mellem virksomheders IT-systemer',
+        'En type avanceret holografisk stregkode'
     ],
-    correct: 1,
-    explanation: 'Kritisk status (rød) betyder lageret er faldet under sikkerhedslageret. Der er akut risiko for lagermangel, og der bør handles øjeblikkeligt med hastebestilling.'
+    correct: 2,
+    explanation: 'EDI gør det muligt at udveksle ordrer, fakturaer, forsendelsesmeddelelser m.m. automatisk system-til-system. Det fjerner behovet for manuel dataindtastning og reducerer fejl drastisk.'
 },
 {
     id: 38,
-    category: 'Lagerstyring',
-    q: 'Hvilken lagerstyringsmodel er bedst til A-varer med variabel efterspørgsel?',
+    category: 'ERP & IT',
+    q: 'Hvad er den primære fordel ved RFID frem for stregkoder?',
     options: [
-        'Min/Max model',
-        'Genbestillingspunkt (ROP)',
-        'Periodisk Gennemgang',
-        'To-beholder-system'
+        'RFID kan kun bruges til dyre produkter',
+        'Stregkoder er altid hurtigere at aflæse end RFID',
+        'Der er ingen praktisk forskel mellem de to teknologier',
+        'RFID kan læses uden direkte synslinje og kan scanne mange tags på én gang'
     ],
-    correct: 1,
-    explanation: 'ROP-modellen (kontinuerlig overvågning) er ideel til A-varer med variabel efterspørgsel. Den bestiller automatisk når lageret rammer genbestillingspunktet, og sikkerhedslageret beskytter mod udsving.'
+    correct: 3,
+    explanation: 'RFID bruger radiobølger og kan læses igennem emballage, på afstand og mange tags samtidig. Stregkoder kræver direkte synslinje og kan kun scannes én ad gangen. RFID er dog dyrere per enhed.'
 },
 {
     id: 39,
-    category: 'Lagerstyring',
-    q: 'Hvad er et serviceniveau på 95%?',
+    category: 'ERP & IT',
+    q: 'Hvad er MRP (Material Requirements Planning)?',
     options: [
-        '95% af varerne er A-varer',
-        'Sandsynligheden for at kunne opfylde kundeefterspørgsel fra lager er 95%',
-        '95% af leverancerne ankommer til tiden',
-        '95% af lagerpladsen udnyttes'
+        'Et system der beregner materialebehov ud fra produktionsplaner og styklister',
+        'En metode til at evaluere medarbejdernes præstation',
+        'Et marketingsystem til at planlægge reklamekampagner',
+        'Et system til at måle rumtemperaturen i lageret'
     ],
-    correct: 1,
-    explanation: 'Et serviceniveau på 95% betyder at der er 95% sandsynlighed for at kunne opfylde kundens efterspørgsel direkte fra lager, uden lagermangel. De resterende 5% risikerer stock-out.'
+    correct: 0,
+    explanation: 'MRP tager udgangspunkt i produktionsplanen og bryder den ned: Hvad skal produceres? Hvad kræver det af materialer? Hvad har vi på lager? Hvad skal bestilles hjem — og hvornår? Det sikrer at alt er klar uden overbeholdning.'
 },
+
+// ============================
+// TRANSPORT & DISTRIBUTION
+// ============================
 {
     id: 40,
-    category: 'Lagerstyring',
-    q: 'Hvad er sikkerhedslagerets formål?',
+    category: 'Transport',
+    q: 'Hvad er intermodal transport?',
     options: [
-        'At maksimere lageromsætningen',
-        'At beskytte mod uforudsete udsving i efterspørgsel eller leveringstid',
-        'At reducere ordreomkostningerne',
-        'At fylde lageret op til max kapacitet'
+        'Transport der udelukkende bruger lastbiler på motorvejen',
+        'Transport der kombinerer flere transportformer, fx lastbil, tog og skib',
+        'Transport kun til søs mellem to europæiske havne',
+        'Transport med helikopter til svært tilgængelige steder'
     ],
     correct: 1,
-    explanation: 'Sikkerhedslageret (Safety Stock) er en buffer, der beskytter mod uventede stigninger i efterspørgsel eller forsinkelser i leverancer. Størrelsen afhænger af ønsket serviceniveau.'
+    explanation: 'Intermodal transport kombinerer flere transportformer. Fx kan en container køres med lastbil til jernbanen, fragtes med tog til en havn, og sejles med skib til modtagerlandet. Det udnytter styrkerne ved hver transportform.'
 },
 {
     id: 41,
-    category: 'Lagerstyring',
-    q: 'Hvad er "Overfyldt" status i Min/Max-modellen?',
+    category: 'Transport',
+    q: 'Hvad er et CMR-fragtbrev?',
     options: [
-        'Lageret er mellem Min og Max',
-        'Lageret er under Min',
-        'Lageret er over Max',
-        'Lageret er præcis på Max'
+        'Et certifikat man får efter at have bestået lastbilkøreprøven',
+        'En kvittering fra en tankstation til brug i regnskabet',
+        'Et standardiseret internationalt vejtransportdokument der dokumenterer fragtaftalen',
+        'En månedlig opgørelse over virksomhedens transportomkostninger'
     ],
     correct: 2,
-    explanation: 'Overfyldt (blå) status betyder lageret er over Max-niveauet. Det binder unødig kapital og lagerplads. Årsagen kan være for store bestillinger eller faldende efterspørgsel.'
+    explanation: 'CMR-fragtbrevet bruges ved international godstransport ad vej i Europa. Det dokumenterer hvem der sender, hvem der modtager, hvad der fragtes, og hvad der er aftalt. Det er lovpligtigt ved grænseoverskridende transport.'
 },
 {
     id: 42,
-    category: 'Lagerstyring',
-    q: 'Dagligt forbrug er 50 stk, leveringstid er 5 dage. Hvad er ROP uden sikkerhedslager?',
-    options: ['50 enheder', '100 enheder', '200 enheder', '250 enheder'],
+    category: 'Transport',
+    q: 'Hvad er "colli" i transportsammenhæng?',
+    options: [
+        'Et italiensk ord for lastbil',
+        'En type gaffeltruck til havnekraner',
+        'Et bestemt mærke transportemballage',
+        'En betegnelse for de enkelte stykker gods i en forsendelse (pakker/kasser)'
+    ],
     correct: 3,
-    explanation: 'ROP = Dagligt Forbrug × Leveringstid = 50 × 5 = 250 enheder (uden sikkerhedslager). Med 95% serviceniveau ville der komme sikkerhedslager oven i.'
+    explanation: 'Colli er flertal af kollo og betegner de enkelte stykker gods. "Forsendelsen består af 5 colli" betyder 5 separate pakker/kasser. Det bruges på fragtbreve og ved modtagekontrol.'
 },
-
-// ============================
-// CATEGORY 5: LEAN TOOLS (43-57)
-// ============================
 {
     id: 43,
-    category: 'LEAN',
-    q: 'Hvad står OEE for?',
+    category: 'Transport',
+    q: 'Hvad er "last mile delivery" (sidste kilometer-levering)?',
     options: [
-        'Optimal Equipment Evaluation',
-        'Overall Equipment Effectiveness',
-        'Operational Efficiency Estimate',
-        'Output Energy Efficiency'
+        'Den sidste del af leveringen fra distributionscenter til slutkunden — ofte den dyreste del',
+        'Den billigste og korteste del af hele fragtprocessen',
+        'Et begreb der kun bruges ved international transport',
+        'En forsikringstype der dækker skader på den sidste del af ruten'
     ],
-    correct: 1,
-    explanation: 'OEE = Overall Equipment Effectiveness (Samlet Udstyrseffektivitet). Det er produktionens vigtigste KPI og måler, hvor godt maskinerne udnyttes.'
+    correct: 0,
+    explanation: 'Sidste kilometer-leveringen er den dyreste del af transporten — op til 50% af den totale fragtomkostning — fordi den involverer mange individuelle stop med små mængder. Det er her, kundetilfredsheden afgøres.'
 },
 {
     id: 44,
-    category: 'LEAN',
-    q: 'Hvordan beregnes OEE?',
+    category: 'Transport',
+    q: 'Hvad er kabotage inden for godstransport?',
     options: [
-        'OEE = Tilgængelighed + Ydelse + Kvalitet',
-        'OEE = Tilgængelighed × Ydelse × Kvalitet',
-        'OEE = (Tilgængelighed + Ydelse) × Kvalitet',
-        'OEE = Tilgængelighed / (Ydelse × Kvalitet)'
+        'Transport af farligt gods over vandveje i Europa',
+        'Indenrigskørsel i et land, udført af et transportfirma fra et andet land',
+        'Transport med kabiner i bjergområder',
+        'En type søtransport mellem to havne inden for samme land'
     ],
     correct: 1,
-    explanation: 'OEE = Tilgængelighed × Ydelse × Kvalitet (alle i decimal). F.eks: 90% × 85% × 98% = 0,90 × 0,85 × 0,98 = 74,97%. De tre faktorer ganges sammen.'
+    explanation: 'Kabotage er fx når en polsk vognmand kører en indenrigstur i Danmark. EU har strenge regler: typisk maks 3 kabotage-ture inden for 7 dage efter en international levering til landet.'
 },
+
+// ============================
+// SIKKERHED & ARBEJDSMILJØ
+// ============================
 {
     id: 45,
-    category: 'LEAN',
-    q: 'Hvad er verdensklasse OEE?',
-    options: ['Over 50%', 'Over 65%', 'Over 75%', 'Over 85%'],
-    correct: 3,
-    explanation: 'Verdensklasse OEE er over 85% (Tilgængelighed ≥95%, Ydelse ≥95%, Kvalitet ≥99,9%). De fleste virksomheder ligger mellem 60-75%.'
+    category: 'Sikkerhed',
+    q: 'Hvad dækker ADR-reglerne?',
+    options: [
+        'Regler for parkering af lastbiler i byområder',
+        'Krav til hygiejne i fødevarelagre',
+        'Internationale regler for sikker vejtransport af farligt gods',
+        'Regler for automatisk dørlukning i lagerbygninger'
+    ],
+    correct: 2,
+    explanation: 'ADR regulerer transport af farligt gods ad vej i Europa. Det omfatter klassificering, emballering, mærkning, dokumentation og krav til chauffør og køretøj ved transport af kemikalier, brændstoffer, sprængstoffer m.m.'
 },
 {
     id: 46,
-    category: 'LEAN',
-    q: 'Hvad er Takt-tid?',
+    category: 'Sikkerhed',
+    q: 'Hvad kræves for at måtte køre gaffeltruck på et lager?',
     options: [
-        'Den tid det tager at producere ét styk',
-        'Tilgængelig tid divideret med kundeefterspørgsel',
-        'Total produktionstid divideret med antal maskiner',
-        'Leveringstid minus transporttid'
+        'Et almindeligt B-kørekort er tilstrækkeligt',
+        'Man skal bare have fyldt 16 år og fået en instruktion',
+        'En kollega kan godkende dig efter en times oplæring',
+        'Et gyldigt gaffeltruckcertifikat efter bestået teori og praksis'
     ],
-    correct: 1,
-    explanation: 'Takt-tid = Tilgængelig Tid / Kundeefterspørgsel. Den definerer det tempo, produktionen skal køre med for at matche efterspørgslen. Hvis kunden vil have 100 stk på 8 timer, er Takt = 4,8 min/stk.'
+    correct: 3,
+    explanation: 'Man skal have et truckcertifikat (gaffeltruckkørekort) for at betjene gaffeltrucks. Det fås efter et godkendt kursus med teori om sikkerhed, stabilitet og praksis med selve trucken.'
 },
 {
     id: 47,
-    category: 'LEAN',
-    q: 'Hvad står SMED for?',
+    category: 'Sikkerhed',
+    q: 'Hvad er korrekt løfteteknik ifølge ergonomiske retningslinjer?',
     options: [
-        'Single Minute Exchange of Die',
-        'Standard Method for Equipment Development',
-        'Simple Machine Efficiency Design',
-        'Systematic Material Evaluation & Dispatch'
+        'Bøj i knæene, hold ryggen ret og løft tæt ved kroppen',
+        'Bøj ryggen og hold armene så strakte som muligt',
+        'Løft med strakte ben og bøjet ryg for mere kraft',
+        'Det er ligegyldigt, bare man gør det hurtigt så musklerne ikke overbelastes'
     ],
     correct: 0,
-    explanation: 'SMED = Single Minute Exchange of Die (Enkelt-minut omstilling). Målet er at reducere omstillingstiden til under 10 minutter ved at konvertere interne aktiviteter til eksterne.'
+    explanation: 'Korrekt teknik: bøj i knæene, hold ryggen ret, byrden tæt på kroppen, spænd maven og undgå at vride. Forkert løfteteknik er en af de hyppigste årsager til rygskader i lagerjobs.'
 },
 {
     id: 48,
-    category: 'LEAN',
-    q: 'Hvad er de 5S i LEAN?',
+    category: 'Sikkerhed',
+    q: 'Hvad indeholder et sikkerhedsdatablad (SDS)?',
     options: [
-        'Sort, Set in Order, Shine, Standardize, Sustain',
-        'Speed, Strength, Safety, Service, Savings',
-        'Supply, Stock, Schedule, Ship, Sell',
-        'Solve, Simplify, Structure, Support, Scale'
+        'Medarbejdernes ferieplan og vagtoversigt',
+        'Oplysninger om et kemisk produkts farlighed, korrekt håndtering, førstehjælp og opbevaring',
+        'En oversigt over lagerets brandudgange og nødplaner',
+        'Virksomhedens årsregnskab og økonomiske nøgletal'
     ],
-    correct: 0,
-    explanation: '5S: Sortér (Seiri), Systematisér (Seiton), Skinnende rent (Seiso), Standardisér (Seiketsu), Selvdisciplin (Shitsuke). Det er fundamentet for et velorganiseret og effektivt arbejdsmiljø.'
+    correct: 1,
+    explanation: 'SDS (Safety Data Sheet) er lovpligtigt for alle farlige kemikalier. Det har 16 sektioner med info om fareidentifikation, førstehjælp, brandbekæmpelse, personlige værnemidler, opbevaring og bortskaffelse.'
 },
 {
     id: 49,
-    category: 'LEAN',
-    q: 'Hvor mange spildtyper (Muda) er der i LEAN?',
-    options: ['3', '5', '7', '9'],
+    category: 'Sikkerhed',
+    q: 'Hvilke personlige værnemidler (PV) er typisk påkrævet i et lager?',
+    options: [
+        'Jakkesæt, slips og pæne sko',
+        'Kun en synlig ID-badge er nok',
+        'Sikkerhedssko med stålnæse og evt. handsker og refleksvest',
+        'Hjelm er det eneste lovmæssige krav'
+    ],
     correct: 2,
-    explanation: 'Der er 7 spildtyper (Muda): Overproduktion, Ventetid, Transport, Overforarbejdning, Lagerspild, Unødvendig bevægelse og Defekter. Nogle tilføjer en 8.: Uudnyttet talent.'
+    explanation: 'Typiske værnemidler i lageret: sikkerhedssko med stålnæse (mod faldende genstande), handsker (mod skarpe kanter), refleksvest (synlighed). Fryselagre kræver desuden termotøj. Det afhænger af den konkrete arbejdsmiljøvurdering.'
 },
+
+// ============================
+// VIRKSOMHED, ORGANISATION & ØKONOMI
+// ============================
 {
     id: 50,
-    category: 'LEAN',
-    q: 'Hvad er den værste af de 7 spildtyper ifølge LEAN?',
-    options: ['Defekter', 'Overproduktion', 'Ventetid', 'Transport'],
-    correct: 1,
-    explanation: 'Overproduktion anses for den værste spildtype, fordi den forårsager alle andre: mere lager (lagerspild), mere transport, mere ventetid, og skjuler defekter.'
+    category: 'Virksomhed',
+    q: 'Hvad er dækningsbidrag?',
+    options: [
+        'Den samlede omsætning i virksomheden på et år',
+        'Den pris kunden betaler for varen i butikken',
+        'Salgspris minus faste omkostninger',
+        'Salgspris minus variable omkostninger'
+    ],
+    correct: 3,
+    explanation: 'Dækningsbidrag = salgspris minus variable omkostninger (fx materialer, fragt per enhed). Det beløb der er tilbage skal dække de faste omkostninger (husleje, løn) og derefter give overskud.'
 },
 {
     id: 51,
-    category: 'LEAN',
-    q: 'Hvad er Value Stream Mapping (VSM)?',
+    category: 'Virksomhed',
+    q: 'Hvad er break-even?',
     options: [
-        'En metode til at kortlægge alle trin i en proces fra start til slut',
-        'En teknik til at måle maskineffektivitet',
-        'Et system til at sortere varer i ABC-kategorier',
-        'En kvalitetskontrolmetode'
+        'Det punkt hvor omsætningen præcis dækker alle omkostninger — hverken overskud eller underskud',
+        'Når lageret er helt tomt og skal genopfyldes',
+        'Når virksomheden officielt lukker ned for drift',
+        'Når medarbejderne holder frokostpause'
     ],
     correct: 0,
-    explanation: 'VSM kortlægger alle trin i en værdistrøm fra råvare til kunde. Det identificerer værdi-tilførende (VA) og ikke-værdi-tilførende (NVA) aktiviteter, ventetider, og flaskehalse.'
+    explanation: 'Break-even er nulpunktet. Omsætningen er præcis lig med de samlede omkostninger (faste + variable). Sælger man mere end break-even, tjener man penge. Sælger man mindre, har man underskud.'
 },
 {
     id: 52,
-    category: 'LEAN',
-    q: 'Hvad er PCE (Process Cycle Efficiency)?',
+    category: 'Virksomhed',
+    q: 'Hvad er forskellen på faste og variable omkostninger?',
     options: [
-        'Total tid / Antal processer',
-        'Værdi-tilførende tid / Total gennemløbstid × 100%',
-        'Antal fejl / Total produktion × 100%',
-        'Maskinudnyttelse / Antal skift'
+        'Faste omkostninger stiger, når produktionen øges',
+        'Faste er konstante uanset aktivitetsniveau; variable ændres med produktions- og salgsvolumen',
+        'Variable omkostninger er altid højere end faste',
+        'Der er ingen forskel — begge stiger og falder med aktiviteten'
     ],
     correct: 1,
-    explanation: 'PCE = Værditilførende tid / Total gennemløbstid × 100%. En typisk PCE er kun 1-5%, hvilket betyder at 95-99% af tiden er spild (ventetid, transport, osv.). Verdensklasse PCE er over 25%.'
+    explanation: 'Faste omkostninger (husleje, forsikring, direktørens løn) er de samme, hvad enten man producerer 0 eller 10.000 stk. Variable omkostninger (råvarer, emballage, fragt per enhed) stiger proportionalt med aktiviteten.'
 },
 {
     id: 53,
-    category: 'LEAN',
-    q: 'Hvad er Kaizen?',
+    category: 'Virksomhed',
+    q: 'Hvad er en KPI i virksomhedssammenhæng?',
     options: [
-        'Et kvalitetsstyringssystem',
-        'Japansk for "kontinuerlig forbedring"',
-        'En type lagerstyringssoftware',
-        'En transportmetode'
+        'Key Profit Index — en indeks over virksomhedens aktiekurs',
+        'Kanban Process Integration — et Lean-værktøj',
+        'Key Performance Indicator — et nøgletal til at måle præstation',
+        'Knowledge Platform Interface — et videnssystem'
     ],
-    correct: 1,
-    explanation: 'Kaizen (改善) er japansk for "forandring til det bedre" — altså kontinuerlig forbedring. Det handler om mange små forbedringer over tid, hvor alle medarbejdere bidrager.'
+    correct: 2,
+    explanation: 'KPI = Key Performance Indicator. I logistik måler man fx leveringspræcision, lageromsætning, plukkefejlrate og ordrebehandlingstid. KPIer omsætter strategi til konkrete, målbare tal.'
 },
 {
     id: 54,
-    category: 'LEAN',
-    q: 'Hvad er PDCA-cyklussen?',
+    category: 'Virksomhed',
+    q: 'Hvad er en funktionsopdelt organisation?',
     options: [
-        'Price, Demand, Cost, Analysis',
-        'Plan, Do, Check, Act',
-        'Process, Design, Control, Adjust',
-        'Purchase, Deliver, Count, Archive'
+        'En virksomhed der kun har én afdeling til alt',
+        'En organisation hvor alle medarbejdere roterer roller dagligt',
+        'En organisation der kun fungerer i bestemte sæsoner',
+        'En virksomhed opdelt i faglige afdelinger som indkøb, lager, salg og økonomi'
     ],
-    correct: 1,
-    explanation: 'PDCA = Plan (planlæg), Do (udfør), Check (kontrollér), Act (korriger). Det er en iterativ problemløsningsmetode, også kaldet Demings cirkel, som bruges til kontinuerlig forbedring.'
+    correct: 3,
+    explanation: 'I en funktionsopdelt organisation er afdelingerne organiseret efter fagområder. Det giver specialisering, men kan skabe silotænkning, hvor afdelingerne ikke samarbejder godt nok.'
 },
 {
     id: 55,
-    category: 'LEAN',
-    q: 'Hvad er forskellen mellem Muda, Mura og Muri?',
+    category: 'Virksomhed',
+    q: 'Hvad er lageromkostninger typisk i procent af varens værdi per år?',
     options: [
-        'Det er tre japanske bilmærker',
-        'Muda = spild, Mura = ujævnhed, Muri = overbelastning',
-        'Muda = kvalitet, Mura = hastighed, Muri = pris',
-        'Det er tre typer af 5S-audit'
+        '15-30% af varens værdi per år',
+        '1-2% af varens værdi per år',
+        '50-80% af varens værdi per år',
+        '90-100% af varens værdi per år'
     ],
-    correct: 1,
-    explanation: '3M: Muda (spild — de 7 spildtyper), Mura (ujævnhed — uensartet arbejdsbyrde), Muri (overbelastning — for meget pres på mennesker eller maskiner). Alle tre skal elimineres.'
+    correct: 0,
+    explanation: 'Lageromkostninger inkluderer kapitalbinding, forsikring, svind, forældelse, lagerplads og håndtering. Samlet ender det typisk på 15-30% af varens værdi om året. Derfor er unødvendigt lager dyrt.'
 },
+
+// ============================
+// GENERELT LOGISTIK & EKSTRA
+// ============================
 {
     id: 56,
-    category: 'LEAN',
-    q: 'Hvad er JIT (Just-In-Time)?',
+    category: 'Generelt Logistik',
+    q: 'Hvad er "reverse logistics"?',
     options: [
-        'At producere store lagre på forhånd',
-        'At producere og levere præcis det der er brug for, præcis når der er brug for det',
-        'At bestille alle varer på én gang om året',
-        'At have minimum 3 måneders lagerbeholdning'
+        'At køre baglæns med gaffeltrucken i smalle gange',
+        'At håndtere returvarer, genanvendelse og bortskaffelse — logistikken "den anden vej"',
+        'At sende varer til forkerte adresser med vilje som test',
+        'En metode til at vende pallerne om, så de kan genbruges'
     ],
     correct: 1,
-    explanation: 'JIT = Producere/levere præcis den rigtige mængde, på det rigtige tidspunkt, i den rigtige kvalitet. Det minimerer lagerbeholdning og spild, men kræver pålidelige leverandører og processer.'
+    explanation: 'Reverse logistics dækker returhåndtering, reparation, genanvendelse og bortskaffelse. Med stigende e-handel og krav om bæredygtighed er det blevet en vigtig del af moderne logistik.'
 },
 {
     id: 57,
-    category: 'LEAN',
-    q: 'Hvad er Kanban?',
+    category: 'Generelt Logistik',
+    q: 'Hvad bruges Wilsons EOQ-formel til?',
     options: [
-        'En type stregkode',
-        'Et visuelt signal/pull-system der styrer produktion og lager',
-        'En japansk lagerbygning',
-        'Et kvalitetscertifikat'
+        'At beregne antallet af nødvendige medarbejdere i et lager',
+        'At finde lagerets optimale areal i kvadratmeter',
+        'At beregne den optimale ordrestørrelse der minimerer de samlede lageromkostninger',
+        'At beregne fragtpriser til udenlandske kunder'
     ],
-    correct: 1,
-    explanation: 'Kanban (看板, "signal-kort") er et pull-baseret system, hvor produktion og genbestilling kun sættes i gang, når der er et faktisk behov (signal). Det forhindrer overproduktion og reducerer WIP (Work In Progress).'
+    correct: 2,
+    explanation: 'EOQ = √(2DS/H). D er efterspørgsel, S er ordreomkostning, H er lageromkostning per enhed per år. Ved EOQ er ordreomkostningerne præcis lige store som lageromkostningerne — det billigste punkt.'
 },
-
-// ============================
-// CATEGORY 6: SUPPLY CHAIN & LOGISTICS GENERAL (58-69)
-// ============================
 {
     id: 58,
-    category: 'Forsyningskæde',
-    q: 'Hvad er 7R-principperne i logistik?',
+    category: 'Generelt Logistik',
+    q: 'Hvad er en forsyningskæde (supply chain)?',
     options: [
-        'Return, Recycle, Reduce, Reuse, Repair, Refurbish, Recover',
-        'Right Product, Right Quantity, Right Condition, Right Place, Right Time, Right Customer, Right Cost',
-        'Risk, Revenue, Resources, Routing, Regulations, Reporting, Returns',
-        'Receive, Register, Route, Release, Report, Return, Recycle'
+        'En kæde man sætter på lagerdøren for at sikre den',
+        'Udelukkende forholdet mellem en virksomhed og dens slutkunder',
+        'Et andet ord for produktionens samlebånd',
+        'Hele kæden fra råvare til slutkunde: leverandører, producenter, lagre, transport og salg'
     ],
-    correct: 1,
-    explanation: '7R = Den rigtige vare, i den rigtige mængde, i den rigtige tilstand, på det rigtige sted, på det rigtige tidspunkt, til den rigtige kunde, til den rigtige pris. Det er logistikkens grundformel.'
+    correct: 3,
+    explanation: 'Forsyningskæden er alle virksomheder og aktiviteter, der bringer et produkt fra råvare til slutkunden. God supply chain management handler om at få alle led til at arbejde sammen effektivt.'
 },
 {
     id: 59,
-    category: 'Forsyningskæde',
-    q: 'Hvad er en "flaskehals" (bottleneck) i en forsyningskæde?',
+    category: 'Generelt Logistik',
+    q: 'Hvad er ISO 9001?',
     options: [
-        'Den hurtigste proces i kæden',
-        'Det trin i processen der begrænser den samlede kapacitet',
-        'Slutkunden i kæden',
-        'Den dyreste leverandør'
+        'En international standard for kvalitetsledelsessystemer',
+        'En national standard for truckcertificering i Danmark',
+        'En miljølovgivning om sortering af affald på lagre',
+        'En standard for elektrisk sikkerhed i industribygninger'
     ],
-    correct: 1,
-    explanation: 'En flaskehals er det trin i processen, der har lavest kapacitet og dermed begrænser hele kædens output. Alt over flaskehalsens kapacitet skaber ventetid og lagerspild.'
+    correct: 0,
+    explanation: 'ISO 9001 er verdens mest udbredte kvalitetsstandard. Den stiller krav til dokumentation, kundefokus, løbende forbedring og ledelsens ansvar. Certificering viser kunder og partnere, at virksomheden har styr på kvaliteten.'
 },
 {
     id: 60,
-    category: 'Forsyningskæde',
-    q: 'Hvad er gennemløbstid (lead time)?',
+    category: 'Generelt Logistik',
+    q: 'Hvad er "lean warehousing"?',
     options: [
-        'Kun transporttiden',
-        'Procestid + Ventetid + Transporttid',
-        'Kun produktionstiden',
-        'Tiden fra salg til betaling'
+        'Et lager der kun opbevarer letvægtsprodukter',
+        'At reducere lagerbygningens fysiske størrelse til det mindst mulige',
+        'Brugen af lean-principper i lagerdrift for at fjerne spild og øge effektiviteten',
+        'At ansætte færre medarbejdere for at spare på lønbudgettet'
     ],
-    correct: 1,
-    explanation: 'Lead time = Procestid + Ventetid (Kø) + Transporttid. Det er den samlede tid fra en ordre afgives, til varen er klar hos kunden. I VSM opdeles den i VA-tid og NVA-tid.'
+    correct: 2,
+    explanation: 'Lean warehousing anvender 5S, Kaizen, standardiseret arbejde og systematisk spildjagt i lagerprocesser. Målet er at gøre mere med mindre — højere hastighed, færre fejl, lavere omkostninger — uden at kvaliteten falder.'
 },
+
+// ============================
+// EKSTRA: LAGERSTYRING & LAGER (61-75)
+// ============================
 {
     id: 61,
-    category: 'Forsyningskæde',
-    q: 'Hvad er FIFO?',
+    category: 'Lagerstyring',
+    q: 'Hvad er LIFO-princippet?',
     options: [
-        'First In, First Out — det der kom ind først, sendes ud først',
-        'Fast Inventory Flow Optimization',
-        'Final Invoice For Orders',
-        'Fixed Internal Freight Operations'
+        'De ældste varer sendes ud først',
+        'De nyeste varer sendes ud først — Last In, First Out',
+        'Letteste varer sendes ud først',
+        'De varer der fylder mindst sendes ud først'
     ],
-    correct: 0,
-    explanation: 'FIFO = First In, First Out. De ældste varer på lageret plukkes og sendes først. Det er kritisk for fødevarer og varer med udløbsdato for at minimere svind.'
+    correct: 1,
+    explanation: 'LIFO = Last In, First Out. De senest modtagne varer udleveres først. Det bruges fx ved bulkvarer som grus eller kul, hvor det nyeste fyld ligger ovenpå. LIFO er IKKE egnet til varer med udløbsdato.'
 },
 {
     id: 62,
-    category: 'Forsyningskæde',
-    q: 'Hvad er LIFO?',
+    category: 'Lagerstyring',
+    q: 'Hvad er et konsolideringslager?',
     options: [
-        'Last In, First Out — det der kom ind sidst, sendes ud først',
-        'Logistics Information For Operations',
-        'Low Inventory Fast Ordering',
-        'Linear Inventory Flow Optimization'
+        'Et lager med klimakontrol til skrøbelige varer',
+        'Et lager der samler flere mindre forsendelser til én stor',
+        'Et lager kun til returnerede varer',
+        'Et midlertidigt lager under bygningsrenovering'
     ],
-    correct: 0,
-    explanation: 'LIFO = Last In, First Out. De nyeste varer plukkes først. Bruges sjældent i fysisk lagerstyring (undtagen f.eks. tunge materialer i bunker), men er relevant i regnskab.'
+    correct: 1,
+    explanation: 'I et konsolideringslager samles mange mindre forsendelser fra forskellige leverandører til færre, større forsendelser. Det reducerer transportomkostninger, fordi lastbilerne kører med fuld last i stedet for halvtomme.'
 },
 {
     id: 63,
-    category: 'Forsyningskæde',
-    q: 'Hvad er FEFO?',
+    category: 'Lagerstyring',
+    q: 'Hvad er svind i lagersammenhæng?',
     options: [
-        'First Expired, First Out — det med korteste holdbarhed sendes først',
-        'Fast Evaluation For Ordering',
-        'Final Equipment Function Overview',
-        'Flexible Export & Freight Orders'
+        'Når luftfugtigheden er for høj i lagerbygningen',
+        'Forskellen mellem den registrerede og den faktiske lagerbeholdning pga. tyveri, fejl eller beskadigelse',
+        'Et andet ord for kapacitetsudnyttelse',
+        'Antal medarbejdere der har sagt op inden for et år'
     ],
-    correct: 0,
-    explanation: 'FEFO = First Expired, First Out. Varer med tidligste udløbsdato plukkes først, uanset hvornår de ankom. Bruges i fødevare- og medicinalindustrien for at minimere spild.'
+    correct: 1,
+    explanation: 'Svind dækker over varer, der "forsvinder" fra lageret: tyveri, skader, varer der er gået ud på dato, tællefejl eller forkert registrering. Svind koster virksomheder mange penge årligt, og det er derfor man tæller op.'
 },
 {
     id: 64,
-    category: 'Forsyningskæde',
-    q: 'Hvad er en EUR-palle?',
+    category: 'Lagerstyring',
+    q: 'Hvad er en pallereol?',
     options: [
-        'En palle på 100 × 100 cm',
-        'En standardpalle på 80 × 120 cm (EPAL)',
-        'En palle kun til europæisk eksport',
-        'En engangspalle i pap'
+        'En type lastbil designet kun til palletransport',
+        'Et system af vertikale reoler med bjælker, hvor paller placeres i flere niveauer',
+        'En maskine der automatisk pakker varer på paller',
+        'Et konsekvensdiagram over palleflow i lageret'
     ],
     correct: 1,
-    explanation: 'EUR-pallen (EPAL) måler 80 × 120 cm og er den mest udbredte standardpalle i Europa. Den er genbrugelig, mærket med EPAL-logo og registreret med serienummer.'
+    explanation: 'Pallereolen er det mest udbredte lagerreolsystem. Paller placeres på vandrette bjælker i flere niveauer. Det udnytter lagerets højde og giver nem adgang med gaffeltruck. Finnes i mange typer: standard, gennemløb, drive-in osv.'
 },
 {
     id: 65,
-    category: 'Forsyningskæde',
-    q: 'Hvad er en halvpalle?',
+    category: 'Lagerstyring',
+    q: 'Hvad er en drive-in reol?',
     options: [
-        '80 × 120 cm', 
-        '60 × 80 cm',
-        '40 × 60 cm',
-        '100 × 60 cm'
+        'En kørende reol der bevæger sig på skinner',
+        'Et reolsystem hvor gaffeltrucken kører ind i selve reolen for at placere/hente paller',
+        'En reol med indbygget motor som roterer varerne',
+        'En reol der kun bruges i drive-in restauranters lagre'
     ],
     correct: 1,
-    explanation: 'En halvpalle (display-palle) måler 60 × 80 cm — altså halvdelen af en EUR-palle. Den bruges ofte i butikker, hvor den kan trilles direkte ud på salgsgulvet.'
+    explanation: 'Drive-in reol: trucken kører ind i reolens gange for at sætte paller ind fra den ene side. Det giver meget høj pladsudnyttelse, men begrænset adgang — man kan kun nå den forreste/bagerste palle. Velegnet til store mængder af få varetyper.'
 },
 {
     id: 66,
-    category: 'Forsyningskæde',
-    q: 'Hvad er et CMR-fragtbrev?',
+    category: 'Lagerstyring',
+    q: 'Hvad er gennemløbsreol (flow rack)?',
     options: [
-        'Et certifikat for farligt gods',
-        'Et internationalt fragtdokument for vejtransport',
-        'En faktura fra speditøren',
-        'En tolddeklaration'
+        'En reol med rullende baner, hvor paller eller kasser glider fra bagsiden til forsiden ved hjælp af tyngdekraften',
+        'En type bogreol til kontordokumentation',
+        'En reol der automatisk roterer varer som et pariserhjul',
+        'En reol kun til små reservedele'
     ],
-    correct: 1,
-    explanation: 'CMR (Convention Marchandises Routières) er et internationalt fragtbrev for vejtransport. Det dokumenterer afsender, modtager, godsbeskrivelse og ansvar under transporten.'
+    correct: 0,
+    explanation: 'Gennemløbsreoler har skrå baner med ruller. Man fylder på fra bagsiden, og varerne glider ned til forsiden via tyngdekraften. Det sikrer automatisk FIFO, da de ældste varer altid plukkes først fra fronten.'
 },
 {
     id: 67,
-    category: 'Forsyningskæde',
-    q: 'Hvad er cross-docking?',
+    category: 'Lagerstyring',
+    q: 'Hvad er "golden zone" i lagerindretning?',
     options: [
-        'At lagre varer i mindst 30 dage',
-        'At modtage varer på én side af lageret og sende dem ud på den anden uden langtidslagring',
-        'At placere tunge varer øverst',
-        'At krydstjekke stregkoder mod ordrer'
+        'Det luksuriøse kontor til lagerchefen',
+        'Et aflåst område til særligt værdifulde varer',
+        'Højdeområdet mellem hofte og skulderhøjde, hvor plukning er lettest og hurtigst',
+        'Zone belagt med guldfarvet gulvmærkning'
     ],
-    correct: 1,
-    explanation: 'Cross-docking handler om at varer modtages og sorteres direkte til udgående forsendelser med minimal eller ingen lagertid. Det reducerer lageromkostninger og håndteringstid markant.'
+    correct: 2,
+    explanation: 'Golden zone (guldzonen) er det ergonomisk ideelle plukkeområde — ca. fra hofte- til skulderhøjde. Her placeres A-varer, fordi de plukkes mest. Man undgår at bøje sig eller strække sig, hvilket er hurtigere og skåner kroppen.'
 },
 {
     id: 68,
-    category: 'Forsyningskæde',
-    q: 'Hvad er Incoterms?',
+    category: 'Lagerstyring',
+    q: 'Hvad er en plukkefejlrate?',
     options: [
-        'Internationale transportforsikringer',
-        'Standardiserede handelsregler der definerer ansvar, risiko og omkostninger mellem køber og sælger',
-        'Europæiske toldkoder',
-        'Kvalitetsstandarder for emballage'
+        'Antal gange en plukker dropper en vare på gulvet',
+        'Den procentdel af pluk hvor den forkerte vare eller forkert antal er plukket',
+        'Hastigheden i meter per sekund som plukkeren går med',
+        'Antallet af ordrer der annulleres efter plukning'
     ],
     correct: 1,
-    explanation: 'Incoterms (International Commercial Terms) er standardiserede regler udgivet af ICC, der klart definerer hvem der betaler for transport, forsikring, told osv., og hvornår risikoen overgår fra sælger til køber.'
+    explanation: 'Plukkefejlraten måler kvaliteten af plukningen. Typisk mål er under 0,1% fejl. Fejl koster dyrt: returnering, ny forsendelse, irriterede kunder. Pick-to-light og voice picking hjælper med at reducere fejlraten.'
 },
 {
     id: 69,
-    category: 'Forsyningskæde',
-    q: 'Hvad betyder Incoterm "EXW" (Ex Works)?',
+    category: 'Lagerstyring',
+    q: 'Hvad er en stregkode af typen EAN-13 mest brugt til?',
     options: [
-        'Sælger leverer til kundens dør',
-        'Køber henter varen hos sælger — al transport og risiko påhviler køber',
-        'Sælger betaler fragten til nærmeste havn',
-        'Varen er forsikret under hele transporten'
+        'Identifikation af medarbejdere med adgangskort',
+        'Mærkning af dagligvarer og detailvarer i butikker',
+        'GPS-sporing af lastbiler',
+        'Kryptering af fortrolige regnskabsdata'
     ],
     correct: 1,
-    explanation: 'EXW (Ex Works / Ab Fabrik) er den mest simple Incoterm: Sælger stiller varen til rådighed, og køber står for ALT — afhentning, transport, forsikring, told. Mindst ansvar for sælger.'
+    explanation: 'EAN-13 (European Article Number) er den 13-cifrede stregkode du ser på næsten alle varer i dagligvarebutikker. Den identificerer producent og produkt entydigt og bruges på verdensplan.'
 },
-
-// ============================
-// CATEGORY 7: LAGER & WAREHOUSE (70-81)
-// ============================
 {
     id: 70,
-    category: 'Lager & Drift',
-    q: 'Hvad er de tre grundlæggende lagerprocesser?',
+    category: 'Lagerstyring',
+    q: 'Hvad er et lokationssystem i et lager?',
     options: [
-        'Sortér, Pak, Send',
-        'Modtagelse (Inbound), Opbevaring (Storage), Forsendelse (Outbound)',
-        'Tæl, Registrer, Rapporter',
-        'Bestil, Modtag, Betal'
+        'Et GPS-system til at spore gaffeltrucks udendørs',
+        'Et system der giver hver lagerplads en unik adresse, fx gang-reol-hylde-plads',
+        'Et alarm- og overvågningssystem med kameraer',
+        'Et system til at finde ledige parkeringspladser for lastbiler'
     ],
     correct: 1,
-    explanation: 'De tre hovedprocesser i et lager er: 1) Modtagelse (godskontrol, registrering), 2) Opbevaring (put-away, lagring), 3) Forsendelse (pluk, pak, afsendelse). Alt imellem er støtteprocesser.'
+    explanation: 'Lokationssystemet er lagerets "adressesystem". Hver plads har en unik kode, fx A-03-2-1 (gang A, reol 3, hylde 2, plads 1). Uden det ved ingen, hvor tingene står — og plukningen bliver kaos.'
 },
 {
     id: 71,
-    category: 'Lager & Drift',
-    q: 'Hvad er indlagring (put-away)?',
+    category: 'Lagerstyring',
+    q: 'Hvad er krydstjek ved varemodtagelse?',
     options: [
-        'At kassere beskadigede varer',
-        'At placere modtagne varer på deres korrekte lagerplads',
-        'At pakke ordrer',
-        'At returnere varer til leverandør'
+        'At kontrollere om der er kryds på emballagen',
+        'At sammenligne leverancen med følgeseddel og indkøbsordren for at bekræfte rigtig vare, mængde og kvalitet',
+        'At tjekke om krydsfiner er brugt i emballagen',
+        'At lade to medarbejdere konkurrere om at tælle hurtigst'
     ],
     correct: 1,
-    explanation: 'Indlagring (put-away) er processen hvor modtagne varer flyttes fra modtageområdet til deres tildelte lagerplads. Effektiv indlagring med ABC-zonering sparer meget plukketid.'
+    explanation: 'Et krydstjek sikrer, at det man har bestilt (indkøbsordren) stemmer med det leverandøren siger han sender (følgesedlen) og det man rent faktisk modtager (fysisk kontrol). Uoverensstemmelser kræver reklamation.'
 },
 {
     id: 72,
-    category: 'Lager & Drift',
-    q: 'Hvad er plukning (picking)?',
+    category: 'Lagerstyring',
+    q: 'Hvad er wave picking?',
     options: [
-        'At modtage varer fra leverandør',
-        'At udtage varer fra lagerpladser til at opfylde ordrer',
-        'At tælle lagerbeholdningen',
-        'At sortere varer efter ABC-klasse'
+        'En plukmetode hvor medarbejderen vinker til kollegaer, når en ordre er klar',
+        'At plukke ordrer i tidsbaserede bølger, hvor alle ordrer i en bestemt forsendelsesperiode samles og plukkes på én gang',
+        'En teknik til at plukke bølgepapemballage fra hylderne',
+        'En plukmetode der kun bruges i surfshops'
     ],
     correct: 1,
-    explanation: 'Plukning (picking) er den mest tidskrævende lagerproces (op til 50-60% af arbejdstiden). Effektiv AB-zoneinddeling og optimerede plukruter kan reducere pluktiden markant.'
+    explanation: 'Wave picking grupperer ordrer efter forsendelsestidspunkt. Alle ordrer der fx skal afsendes kl. 14: plukkes, pakkes og gøres klar i samme bølge. Det synkroniserer plukning med transport og giver jævnt arbejdsflow.'
 },
 {
     id: 73,
-    category: 'Lager & Drift',
-    q: 'Hvorfor placeres A-varer tættest på forsendelsesområdet (ABC-zonering)?',
+    category: 'Lagerstyring',
+    q: 'Hvad er formålet med ABC-zonering af lageret?',
     options: [
-        'For de er dyrere',
-        'For de plukkes oftest — kort afstand sparer tid',
-        'For de fylder mest',
-        'For de er farligst'
+        'At male gangene i tre forskellige farver',
+        'At placere A-varer tættest på forsendelsesområdet, så gangafstanden for de mest plukket varer minimeres',
+        'At opdele lageret efter varestørrelse: lille, mellem og stor',
+        'At sortere varer efter leverandørens navn i alfabetisk rækkefølge'
     ],
     correct: 1,
-    explanation: 'A-varer har højest omløbshastighed (plukkes oftest). Ved at placere dem tæt på forsendelsen minimerer man gangafstanden, som er den største tidstjuv i et lager.'
+    explanation: 'ABC-zonering placerer A-varer (de 20% der plukkes mest) tættest på pakke- og forsendelsesområdet. B-varer ligger i midten. C-varer længst væk. Det minimerer den daglige gangafstand og øger plukhastigheden.'
 },
 {
     id: 74,
-    category: 'Lager & Drift',
-    q: 'Hvad er koldlagring (Cold Storage) typisk brugt til?',
+    category: 'Lagerstyring',
+    q: 'Hvad er et automatiseret højlager (AS/RS)?',
     options: [
-        'Opbevaring af elektronik',
-        'Opbevaring af temperatur-følsomme varer (fødevarer, medicin)',
-        'Arkivering af dokumenter',
-        'Opladning af trucks'
+        'Et lager med ekstra høje reoler som medarbejdere klatrer op i',
+        'Et højteknologisk alarmsystem til lagersikkerhed',
+        'Et computerstyret lager med kraner eller shuttles der automatisk lagrer og henter paller eller kasser',
+        'Et lager der kun har én etage men med meget høje varer'
     ],
-    correct: 1,
-    explanation: 'Koldlagring bruges til varer der kræver temperaturkontrol: ferske fødevarer, frosne varer, medicin, kemikalier m.m. Det er del af cold chain management.'
+    correct: 2,
+    explanation: 'AS/RS (Automated Storage and Retrieval System) bruger computerstyrede kraner til at lagre og hente varer i meget høje reoler (op til 40 meter). Det sparer plads, eliminerer fejl og arbejder 24/7 uden gaffeltrucks.'
 },
 {
     id: 75,
-    category: 'Lager & Drift',
-    q: 'Hvad er en mezzanin i et lager?',
+    category: 'Lagerstyring',
+    q: 'Hvad er en "pick-and-pack" station?',
     options: [
-        'Et kølerum',
-        'Et mellemdæk/balkon der udnytter højden og skaber ekstra etageplads',
-        'En modtagerampe',
-        'Et kontor til lagerchefen'
+        'Et tilbud i en takeaway-restaurant',
+        'En arbejdsstation hvor ordrer plukkes og pakkes i forsendelsesklar emballage i ét sammenhængende flow',
+        'Et sted hvor medarbejderne vælger deres eget frokostmad',
+        'En særlig type gaffeltruck med indbygget pakkebord'
     ],
     correct: 1,
-    explanation: 'En mezzanin er et mellemdæk eller balkon inde i lagerhallen, der udnytter den vertikale plads. Det kan fordoble lagerarealet uden at udvide bygningen. Bruges ofte til småvarer og plukzoner.'
+    explanation: 'Pick-and-pack kombinerer plukning og pakning i ét flow. Plukkeren lægger varerne direkte i forsendelseskassen i stedet for først at samle dem i en bakke. Det er effektivt til e-handel med mange enkeltordrer.'
 },
+
+// ============================
+// EKSTRA: LEAN & KVALITET (76-88)
+// ============================
 {
     id: 76,
-    category: 'Lager & Drift',
-    q: 'Hvad er et klargøringsområde (staging area)?',
+    category: 'Lean',
+    q: 'Hvad er de 7 spildtyper (Muda) i Lean?',
     options: [
-        'Et pauseområde for medarbejdere',
-        'Et midlertidigt opbevaringsområde til varer der venter på at blive sendt eller sat på plads',
-        'Et område til defekte varer',
-        'En parkeringsplads til trucks'
+        'Overproduktion, ventetid, transport, overforarbejdning, lagerbeholdning, bevægelse, defekter',
+        'Planlægning, indkøb, produktion, lager, salg, levering, retur',
+        'Råvarer, halvfabrikata, færdigvarer, emballage, energi, vand, luft',
+        'Maskiner, bygninger, lastbiler, computere, ansatte, lagre, kontorer'
     ],
-    correct: 1,
-    explanation: 'Klargøringsområdet (staging area) er en bufferzone, hvor varer midlertidigt samles — enten indgående (venter på indlagring) eller udgående (pakket og venter på afhentning). Det holder processerne flydende.'
+    correct: 0,
+    explanation: 'De 7 Muda er: 1) Overproduktion (lave mere end der er brug for), 2) Ventetid, 3) Unødvendig transport, 4) Overforarbejdning, 5) Lagerbeholdning (for meget lager), 6) Unødvendig bevægelse, 7) Defekter/fejl. Nogle tilføjer en 8.: uudnyttet talent.'
 },
 {
     id: 77,
-    category: 'Lager & Drift',
-    q: 'Hvorfor er det vigtigt at have markerede gabeltruckstier i et lager?',
+    category: 'Lean',
+    q: 'Hvad er et "Andon"-system i Lean?',
     options: [
-        'For at det ser pænt ud',
-        'For sikkerhed — adskiller kørsel fra gangarealer, reducerer ulykker',
-        'Lovkrav kun i USA',
-        'For at spare på gulvbelægningen'
+        'Et GPS-sporingssystem til lastbiler',
+        'En type japansk medarbejderuniform',
+        'Et visuelt signal- eller alarmsystem der fortæller om en problems status, fx rødt/gult/grønt lys',
+        'Et regnskabsprogram til lean-budgettering'
     ],
-    correct: 1,
-    explanation: 'Markerede gabeltruckstier (floor markings) er afgørende for sikkerheden. De adskiller kørende trafik fra gående, reducerer kollisioner og ulykker, og er krav i de fleste arbejdsmiljøregler.'
+    correct: 2,
+    explanation: 'Andon er et visuelt styringssystem. I fabrikken trækker en medarbejder fx i en snor, og en lampe lyser op — rødt for stop, gult for hjælp, grønt for OK. Det giver alle overblik over status og problemer med det samme.'
 },
 {
     id: 78,
-    category: 'Lager & Drift',
-    q: 'Hvad er en karantænezone (quarantine zone) i et lager?',
+    category: 'Lean',
+    q: 'Hvad er "Takt Time"?',
     options: [
-        'Pauserum for syge medarbejdere',
-        'Et isoleret område til varer der afventer kvalitetskontrol eller er defekte',
-        'Et udendørs lagerområde',
-        'Et område kun til farligt gods'
+        'Den tid det tager at rengøre en maskine efter brug',
+        'Hvorlænge en medarbejder må holde pause',
+        'Den takt eller rytme som produktionen skal køre i for at matche kundeefterspørgslen',
+        'Varslet tid for en planlagt maskinreparation'
     ],
-    correct: 1,
-    explanation: 'Karantænezonen (quarantine zone) er et afspærret område, hvor varer holdes, mens de venter på kvalitetskontrol, undersøges for fejl, eller er returnerede varer. De må ikke plukkes fra, før de er godkendt.'
+    correct: 2,
+    explanation: 'Takt Time = tilgængelig produktionstid / kundeefterspørgsel. Hvis kunderne vil have 480 stk. på en 8-timers dag (480 min.), er Takt Time 1 min. per enhed. Det sætter rytmen for hele produktionen.'
 },
 {
     id: 79,
-    category: 'Lager & Drift',
-    q: 'Hvad er lageromsætningshastighed?',
+    category: 'Lean',
+    q: 'Hvad er "Heijunka" i Lean?',
     options: [
-        'Antal ansatte per kvadratmeter',
-        'Antal gange lageret sælges og genopfyldes i en periode',
-        'Hastigheden på transportbånd',
-        'Antallet af ordrer per time'
+        'En type japansk sushi serveret i kantinen',
+        'En udjævning af produktionen, så man producerer jævnt i stedet for i store svingninger',
+        'En japansk hilseform mellem kolleger',
+        'Det japanske ord for overtidsbetaling'
     ],
     correct: 1,
-    explanation: 'Lageromsætningshastighed = Vareforbrug (kostpris) / Gennemsnitlig lagerbeholdning. Høj omsætning = effektiv kapitalbinding. F.eks. betyder omsætning 12 = lageret udskiftes hver måned.'
+    explanation: 'Heijunka = produktionsudjævning. I stedet for at producere 1000 stk. af produkt A mandag og 1000 stk. af B tirsdag, producerer man lidt af begge hver dag. Det giver jævnere flow, mindre lager og mere forudsigelig drift.'
 },
 {
     id: 80,
-    category: 'Lager & Drift',
-    q: 'Hvad er et transportbånd (conveyor belt) brugt til i et lager?',
+    category: 'Lean',
+    q: 'Hvad er PDCA-cyklussen?',
     options: [
-        'At opvarme lagerrummet',
-        'At flytte varer automatisk mellem zoner uden manuelt løft',
-        'At vejer varer',
-        'At sortere affald'
+        'Price, Demand, Cost, Action — en prismodel',
+        'Product, Design, Control, Audit — en kvalitetsprocedure',
+        'Plan, Do, Check, Act — en forbedringscyklus der gentages kontinuerligt',
+        'Pack, Deliver, Confirm, Archive — en forsendelsesrutine'
     ],
-    correct: 1,
-    explanation: 'Transportbånd automatiserer intern flytning af varer mellem modtagelse, sortering, plukning og forsendelse. Det reducerer manuelt løftearbejde, forbedrer ergonomi og øger gennemstrømningen.'
+    correct: 2,
+    explanation: 'PDCA (Deming-cirklen): Plan (planlæg forbedringen), Do (gennemfør den), Check (mål resultaterne), Act (justér og standardisér). Cyklussen gentages — derfor er det en cirkel af løbende forbedring.'
 },
 {
     id: 81,
-    category: 'Lager & Drift',
-    q: 'Hvad er formålet med en ladestation i lageret?',
+    category: 'Lean',
+    q: 'Hvad er "standardiseret arbejde" i Lean?',
     options: [
-        'At oplade mobiltelefoner',
-        'At oplade elektriske gaffeltruck-batterier og lagerrobotter',
-        'At oplade sikkerhedsudstyr',
-        'At teste stregkodescannere'
+        'At alle medarbejdere får fuldstændig samme løn',
+        'At man dokumenterer den bedst kendte og sikreste måde at udføre en opgave og følger den konsekvent',
+        'At man kun bruger standardpaller til alt gods',
+        'At ledelsen bestemmer alting uden medarbejderinddragelse'
     ],
     correct: 1,
-    explanation: 'Ladestationer bruges til at oplade batterier i elektriske gaffeltrucks, reachtrucks, palleløftere og evt. lagerrobotter (AGV). Placering nær trafikruter minimerer spildtid.'
+    explanation: 'Standardiseret arbejde fastlægger den bedste kendte metode for en opgave: rækkefølge, tid, kvalitetskrav. Alle følger den — det giver ensartet kvalitet og er udgangspunktet for forbedringer. Man kan ikke forbedre noget, der ikke har en standard.'
 },
-
-// ============================
-// CATEGORY 8: SIKKERHED, ERGONOMI, ADR (82-89)
-// ============================
 {
     id: 82,
-    category: 'Sikkerhed & Ergonomi',
-    q: 'Hvad er den maksimale anbefalede vægt for manuelt løft ifølge Arbejdstilsynet?',
-    options: ['10 kg', '15 kg', '25 kg', '50 kg'],
-    correct: 2,
-    explanation: 'Arbejdstilsynet anbefaler max 25 kg for manuelt løft under optimale forhold (tæt på kroppen, mellem hofte og skuldre). Ved dårlige forhold nedsættes grænsen til 12-15 kg.'
+    category: 'Lean',
+    q: 'Hvad er et Spaghetti-diagram?',
+    options: [
+        'En opskrift brugt i kantinens madsystem',
+        'Et diagram der viser maskinernes serienumre',
+        'Et diagram der viser strømmen af elektriske kabler i lageret',
+        'En visuel tegning af de fysiske bevægelser en person eller vare laver — afslører unødvendig gangafstand'
+    ],
+    correct: 3,
+    explanation: 'Man tegner ruten en plukker eller vare tager på et lagerplankort. De mange krydsende linjer ligner kogt spaghetti. Det afslører spild i form af unødvendige bevægelser, omveje og krydsende flows — og viser præcist, hvad der kan forbedres.'
 },
 {
     id: 83,
-    category: 'Sikkerhed & Ergonomi',
-    q: 'Hvad kræves normalt for at køre gaffeltruck i Danmark?',
+    category: 'Lean',
+    q: 'Hvad er en "A3-rapport" i Lean?',
     options: [
-        'Kun et normalt kørekort',
-        'Gaffeltruckcertifikat (truckbevis)',
-        'Ingen certificering er nødvendig',
-        'Bachelor i logistik'
+        'En personlighedstest for lagermedarbejdere',
+        'En rapport der er præcis 3 sider lang med grafer',
+        'Et problemløsningsværktøj på ét A3-ark: problem, analyse, handlingsplan og opfølgning',
+        'En rapport om de 3 vigtigste A-varer i ABC-analysen'
     ],
-    correct: 1,
-    explanation: 'For at køre gaffeltruck i Danmark kræves et gyldigt gaffeltruckcertifikat (truckbevis) udstedt efter godkendt kursus. Der findes certificeringer til forskellige trucktyper (B, A osv.).'
+    correct: 2,
+    explanation: 'A3-rapporten tvinger dig til at strukturere hele problemløsningen på ét A3-ark: hvad er problemet, baggrund, nuværende situation, årsagsanalyse, foreslået løsning, plan og opfølgning. Begrænsningen i plads tvinger til klart og fokuseret tænkning.'
 },
 {
     id: 84,
-    category: 'Sikkerhed & Ergonomi',
-    q: 'Hvad betyder det orange faresymbol med en flamme over en cirkel?',
+    category: 'Lean',
+    q: 'Hvad er "5 Hvorfor" (5 Why)?',
     options: [
-        'Brandfarlig/letantændelig',
-        'Oxiderende stof — kan forstærke brand',
-        'Sundhedsfare',
-        'Miljøfare'
+        'Fem spørgsmål man stiller til nye medarbejdere under ansættelse',
+        'Fem grunde til at implementere Lean i virksomheden',
+        'En teknik hvor man spørger "hvorfor?" gentagne gange for at finde den egentlige grundårsag til et problem',
+        'En regel om at have mindst fem leverandører per varegruppe'
     ],
-    correct: 1,
-    explanation: 'Flamme over cirkel = oxiderende stof. Det kan forstærke brand ved at frigive ilt. Det skal opbevares adskilt fra brandbare materialer. Flamme ALENE = brandfarlig.'
+    correct: 2,
+    explanation: 'Man spørger "Hvorfor?" 5 gange (eller flere). Fx: Kunden fik forkert vare → Hvorfor? Plukkeren tog fra forkert hylde → Hvorfor? Skiltet var ulæseligt → Hvorfor? Det var ikke blevet udskiftet → Grundårsag fundet! Så fikser man DÉT.'
 },
 {
     id: 85,
-    category: 'Sikkerhed & Ergonomi',
-    q: 'Hvad er ADR i forbindelse med transport?',
+    category: 'Lean',
+    q: 'Hvad er "Mura" i Lean?',
     options: [
-        'Automatic Delivery Registration',
-        'Europæisk konvention om international vejtransport af farligt gods',
-        'Avanceret leveringsrapport',
-        'Average Delivery Rate'
+        'En type lagerrobot fra Japan',
+        'Ujævnhed og variation i processer — ulige fordeling af arbejdsbyrden',
+        'Det japanske ord for perfekt kvalitet',
+        'Navnet på grundlæggeren af Toyota Production System'
     ],
     correct: 1,
-    explanation: 'ADR (Accord européen relatif au transport international des marchandises Dangereuses par Route) regulerer vejtransport af farligt gods i Europa. Det kræver korrekt klassificering, mærkning og godkendt emballage.'
+    explanation: 'Mura = ujævnhed. Når arbejdsbyrden svinger — travlt den ene dag, tomt den næste — skaber det kaos og stress. Lean stræber efter jævne flows (Heijunka) for at eliminere Mura. Mura fører ofte til Muda (spild) og Muri (overbelastning).'
 },
 {
     id: 86,
-    category: 'Sikkerhed & Ergonomi',
-    q: 'Hvad skal du gøre ved en nødudgang i et lager?',
+    category: 'Lean',
+    q: 'Hvad er "Muri" i Lean?',
     options: [
-        'Opbevare varer der har brug for ventilation',
-        'Holde den fri for forhindringer til enhver tid',
-        'Bruge den som ekstra modtageport',
-        'Placere tunge varer foran den for sikkerhed'
+        'Overbelastning af maskiner eller medarbejdere ud over hvad der er rimeligt og sikkert',
+        'Det japanske ord for smartere arbejde',
+        'En forkortelse for Multiple Resource Integration',
+        'En metode til at beregne gennemsnitlig arbejdstid'
     ],
-    correct: 1,
-    explanation: 'Nødudgange skal ALTID holdes frie, synlige og uaflåste i arbejdstiden. Blokering af nødudgange er en alvorlig lovovertrædelse og kan koste liv ved brand eller uheld.'
+    correct: 0,
+    explanation: 'Muri = overbelastning. Når man kræver for meget af medarbejdere eller maskiner, stiger risikoen for nedbrud, sygdom og fejl. Lean bekæmper Muda (spild), Mura (ujævnhed) OG Muri (overbelastning) — alle tre hænger sammen.'
 },
 {
     id: 87,
-    category: 'Sikkerhed & Ergonomi',
-    q: 'Hvad er korrekt løfteteknik?',
+    category: 'Lean',
+    q: 'Hvad er en Ishikawa-diagram (fiskebensdiagram)?',
     options: [
-        'Løft med ryggen, hold benene strakte',
-        'Bøj i knæene, hold ryggen ret, løft tæt på kroppen',
-        'Ræk ud med strakte arme',
-        'Vrid kroppen mens du løfter'
+        'En graf over fiskesalg i japanske supermarkeder',
+        'Et diagram der viser alle mulige årsager til et problem, organiseret i kategorier som grener fra en fiskerygrad',
+        'Et arkitekttegning af et fiskeformet lagerbygning',
+        'Et flowdiagram over vandforsyningen i lageret'
     ],
     correct: 1,
-    explanation: 'Korrekt løfteteknik: Bøj i knæ og hofter, hold ryggen ret, grib varen tæt på kroppen, løft med benmusklerne. Undgå vridninger og pludselige bevægelser. Brug hjælpemidler ved tunge løft.'
+    explanation: 'Fiskebensdiagrammet (opfundet af Kaoru Ishikawa) bruges til årsagsanalyse. Problemet er "hovedet", og årsagerne fordeles som "ben" i kategorier: Mennesker, Maskiner, Materialer, Metoder, Miljø, Målinger. Det giver overblik over alle mulige årsager.'
 },
 {
     id: 88,
-    category: 'Sikkerhed & Ergonomi',
-    q: 'Hvilke personnlige værnemidler (PPE) er typisk påkrævet i et lager?',
+    category: 'Lean',
+    q: 'Hvad er forskellen på "push" og "pull" i Lean-produktion?',
     options: [
-        'Kun sikkerhedssko',
-        'Sikkerhedssko, refleksvest, evt. hjelm og handsker',
-        'Svømmebriller og ørepropper',
-        'Ingen, da lagre er sikre miljøer'
+        'Push bruger kun maskiner, pull bruger kun mennesker',
+        'Push er hurtigere end pull',
+        'Push producerer baseret på prognoser, pull producerer først når kunden bestiller',
+        'Der er ingen reel forskel, det er bare to ord for det samme'
     ],
-    correct: 1,
-    explanation: 'Standard lagerpersonale bærer: sikkerhedssko (stålnæse), refleksvest/synlighedstøj, og afhængigt af opgaven: hjelm, handsker, høreværn, og evt. åndedrætsværn ved farlige stoffer.'
-},
-{
-    id: 89,
-    category: 'Sikkerhed & Ergonomi',
-    q: 'Hvad er formålet med et sikkerhedsdatablad (SDS)?',
-    options: [
-        'At dokumentere medarbejdernes arbejdstid',
-        'At give detaljeret information om kemiske stoffers farer, håndtering og førstehjælp',
-        'At registrere lagerplaceringer',
-        'At beregne forsikringspræmier'
-    ],
-    correct: 1,
-    explanation: 'Et sikkerhedsdatablad (SDS/MSDS) indeholder 16 sektioner med info om et kemisk stofs farer, sammensætning, førstehjælp, brandslukning, håndtering, opbevaring, og bortskaffelse. Lovpligtigt for alle farlige stoffer.'
+    correct: 2,
+    explanation: 'Push: man fremstiller baseret på hvad man TROR der sælges (prognoser). Risiko for overproduktion og store lagre. Pull: man fremstiller først, når der er et reelt behov (ordre/signal). Lean foretrækker pull, da det reducerer spild.'
 },
 
 // ============================
-// CATEGORY 9: BUDGET & ØKONOMI (90-95)
+// EKSTRA: SUPPLY CHAIN & INDKØB (89-100)
 // ============================
 {
-    id: 90,
-    category: 'Budget & Økonomi',
-    q: 'Hvad er forskellen mellem faste og variable udgifter?',
+    id: 89,
+    category: 'Supply Chain',
+    q: 'Hvad er "Just-in-Sequence" (JIS)?',
     options: [
-        'Faste er dyrere end variable',
-        'Faste er det samme hver måned (husleje), variable svinger (dagligvarer)',
-        'Variable er altid større end faste',
-        'Der er ingen forskel'
+        'At levere varer præcis i den rækkefølge de skal bruges i produktionen — ikke bare til tiden, men i sekvens',
+        'At ordrer behandles i kronologisk rækkefølge',
+        'At ansatte arbejder i sekvensielle skift',
+        'At lageret tælles op i en bestemt rækkefølge'
+    ],
+    correct: 0,
+    explanation: 'JIS går et skridt videre end JIT. Ikke bare leveres varerne til rette tid — de leveres også i præcis den rækkefølge de skal monteres. Bruges især i bilindustrien, hvor sæder, instrumentpaneler osv. skal passe til den specifikke bil på båndet.'
+},
+{
+    id: 90,
+    category: 'Supply Chain',
+    q: 'Hvad er et distributionscenter?',
+    options: [
+        'Et kontor hvor marketingmateriale designes og distribueres til butikker',
+        'Et stort lager fokuseret på hurtig modtagelse, sortering og videreforsendelse af varer til butikker eller slutkunder',
+        'En afdeling i virksomheden der fordeler opgaver til medarbejderne',
+        'Et teknologicenter der distribuerer software til virksomhedens computere'
     ],
     correct: 1,
-    explanation: 'Faste udgifter er konstante (husleje, forsikring, abonnementer), mens variable udgifter svinger fra måned til måned (dagligvarer, transport, fritid). Budgettering kræver styring af begge.'
+    explanation: 'Et distributionscenter modtager varer fra producenter, sorterer dem og sender dem hurtigt videre til butikker eller kunder. Fokus er på flow og gennemløb — varer skal ikke ligge længe. Det adskiller sig fra et traditionelt opbevaringslager.'
 },
 {
     id: 91,
-    category: 'Budget & Økonomi',
-    q: 'Hvad er en sikkerhedsbuffer i et budget?',
+    category: 'Supply Chain',
+    q: 'Hvad er "safety stock" (sikkerhedslager) sat i forhold til?',
     options: [
-        'Et ekstra beløb man aldrig må røre',
-        'En procentvis reserve (typisk 5-20%) til uforudsete udgifter',
-        'Pengene der er til overs efter alle udgifter',
-        'En ekstra forsikring'
+        'Virksomhedens omsætning og antal ansatte',
+        'Bygningens brandsikkerhedskrav',
+        'Usikkerhed i efterspørgsel, leveringstid og det ønskede serviceniveau',
+        'Prisen på den billigste alternativleverandør'
     ],
-    correct: 1,
-    explanation: 'En sikkerhedsbuffer (typisk 5-20% af husstandens udgifter) er en reserve til uforudsete udgifter som reparationer, tandlæge, eller uventede regninger. Det forhindrer at man kommer i minus.'
+    correct: 2,
+    explanation: 'Sikkerhedslageret beregnes ud fra, hvor usikker efterspørgslen og leveringstiden er, og hvor højt serviceniveau man vil give (fx 95% eller 99% leveringsdygtighed). Højere usikkerhed eller højere servicekrav = mere sikkerhedslager.'
 },
 {
     id: 92,
-    category: 'Budget & Økonomi',
-    q: 'Hvad er ROI (Return on Investment)?',
+    category: 'Supply Chain',
+    q: 'Hvad er "postponement" i supply chain?',
     options: [
-        'Risiko Over Investering',
-        'Afkast af investering — (Gevinst - Investering) / Investering × 100%',
-        'Rente Over Inflation',
-        'Rate of Inventory'
+        'At aflyse alle ordrer i en travl periode',
+        'At udskyde den endelige tilpasning af et produkt til så sent som muligt i forsyningskæden',
+        'At udskyde leverandørbetaling så længe som muligt',
+        'At udsætte ansættelse af nye medarbejdere'
     ],
     correct: 1,
-    explanation: 'ROI = (Gevinst - Investering) / Investering × 100%. Eksempel: Investerer 100.000 kr og tjener 130.000 kr → ROI = (130.000 - 100.000) / 100.000 = 30%. Bruges til at vurdere om en investering er rentabel.'
+    explanation: 'Postponement: fx lager man en basis-t-shirt uden tryk. Først når ordren kommer ind, trykker man det rigtige design på. Ved at vente med den endelige tilpasning reducerer man risikoen for at producere noget, ingen vil købe.'
 },
 {
     id: 93,
-    category: 'Budget & Økonomi',
-    q: 'Hvordan beregnes en 14-dages overførsel fra et månedligt budget?',
+    category: 'Supply Chain',
+    q: 'Hvad er en "single source"-strategi i indkøb?',
     options: [
-        'Månedligt beløb / 2',
-        'Årligt beløb / 26 (26 to-ugers perioder pr. år)',
-        'Månedligt beløb × 14 / 30',
-        'Årligt beløb / 24'
+        'At man kun sælger ét produkt',
+        'At man frivilligt vælger kun at købe en bestemt vare fra én leverandør',
+        'At man aldrig forhandler priser med leverandører',
+        'At man har en enkelt lagerplads for alle varer'
     ],
     correct: 1,
-    explanation: 'Et år har 26 to-ugers perioder (52 uger / 2). Så 14-dages overførsel = Årligt beløb / 26. Det er lidt mindre end "halvt om månedligt", fordi 26 × 14 = 364 dage.'
+    explanation: 'Single sourcing: man vælger bevidst kun én leverandør for at opbygge et tæt samarbejde, forhandle bedre priser og forenkle logistikken. Risikoen er stor afhængighed — hvis leverandøren fejler, har man ikke et alternativ. Modsat: dual/multi sourcing.'
 },
 {
     id: 94,
-    category: 'Budget & Økonomi',
-    q: 'Hvad er payback-perioden for en investering?',
+    category: 'Supply Chain',
+    q: 'Hvad er "vendor rating"?',
     options: [
-        'Den tid det tager at modtage leverancen',
-        'Den tid det tager at tjene investeringen hjem (nul-punkt)',
-        'Låneaftalens løbetid',
-        'Tilbagebetalingsfristen på en faktura'
+        'At kunderne giver stjerner til virksomheden online',
+        'En systematisk vurdering og scoring af leverandørers præstation på parametre som pris, kvalitet, levering og service',
+        'En pris som leverandøren betaler for at komme på virksomhedens liste',
+        'Antallet af maskiner som leverandøren ejer'
     ],
     correct: 1,
-    explanation: 'Payback-perioden er den tid det tager, før de akkumulerede besparelser/indtægter overstiger den oprindelige investering. Kort payback = lavere risiko. Bruges i Kaizen ROI-beregninger.'
+    explanation: 'Vendor rating scorer leverandører løbende: overholder de leveringstider? Er kvaliteten i orden? Er priserne konkurrencedygtige? Har de god kommunikation? Det bruges til at vælge de bedste leverandører og frasortere de dårlige.'
 },
 {
     id: 95,
-    category: 'Budget & Økonomi',
-    q: 'Hvad er det vigtigste formål med et personligt budget?',
+    category: 'Supply Chain',
+    q: 'Hvad er en forsyningskædens "upstream" og "downstream"?',
     options: [
-        'At betale så lidt skat som muligt',
-        'At sikre overblik over indtægter vs. udgifter og planlægge sin økonomi',
-        'At spare hele sin løn op',
-        'At sammenligne sig med andre'
+        'Upstream er vandforsyningen til lageret, downstream er kloakken',
+        'Upstream er leverandørsiden (indadgående), downstream er kundesiden (udadgående)',
+        'Upstream er topledelsen, downstream er lagermedarbejderne',
+        'Upstream er morgenholdet, downstream er aftenholdet'
     ],
     correct: 1,
-    explanation: 'Et budget giver overblik over indtægter og udgifter, hjælper med at prioritere forbrug, opbygge opsparing, og undgå uventede økonomiske problemer. Det er et styringsværktøj, ikke et sparemål.'
+    explanation: 'Upstream = opad i kæden mod leverandører og råvarer. Downstream = nedad mod kunder og slutbrugere. Virksomheden sidder i midten og har upstream leverandører og downstream kunder.'
 },
-
-// ============================
-// CATEGORY 10: STREGKODER, QR & GENERELT (96-110)
-// ============================
 {
     id: 96,
-    category: 'Stregkoder & QR',
-    q: 'Hvad er en EAN-13 stregkode typisk brugt til?',
+    category: 'Supply Chain',
+    q: 'Hvad er "milk run" i logistik?',
     options: [
-        'Intern lagermærkning',
-        'Europæiske detailhandelsvarer (butiksvarer)',
-        'Kun bøger',
-        'Internationale forsendelser'
+        'En rute hvor en lastbil kører rundt til flere leverandører og samler gods op, i stedet for at alle leverer hver for sig',
+        'En specialtransport kun til mejeriprodukter',
+        'En morgenrutine for lagermedarbejdere',
+        'En test af lastbilens bremser på glatte veje'
     ],
-    correct: 1,
-    explanation: 'EAN-13 (European Article Number) med 13 cifre er den mest udbredte stregkode for europæiske butiksvarer. Du scanner den ved kassen. De første cifre angiver landekode, derefter producent og vare.'
+    correct: 0,
+    explanation: 'Milk run (som mælkemanden der kørte rundt): én lastbil kører en fast rute og henter gods hos 5-6 leverandører i stedet for at alle 5-6 leverandører sender hver sin halvtomme lastbil. Det sparer transportomkostninger og er bedre for miljøet.'
 },
 {
     id: 97,
-    category: 'Stregkoder & QR',
-    q: 'Hvad er forskellen på EAN-8 og EAN-13?',
+    category: 'Supply Chain',
+    q: 'Hvad er "supply chain visibility"?',
     options: [
-        'EAN-8 er nyere',
-        'EAN-8 har færre cifre og bruges til små emballager hvor plads er begrænset',
-        'EAN-8 er kun til USA',
-        'Der er ingen forskel'
+        'At lageret har god belysning, så medarbejderne kan se',
+        'At man kan se leverandørens fabrik fra virksomhedens vinduer',
+        'Evnen til at spore og se status på varer, ordrer og forsendelser i realtid på tværs af hele forsyningskæden',
+        'At sælgerne bærer synlige ID-badges'
     ],
-    correct: 1,
-    explanation: 'EAN-8 har kun 8 cifre (7 + check) og er mindre fysisk. Den bruges til varer med begrænset emballageplads, f.eks. tyggegummipakker eller små kosmetikprodukter.'
+    correct: 2,
+    explanation: 'Supply chain visibility handler om gennemsigtighed. Man ved hvor varerne er, hvornår de ankommer, og om noget er forsinket — i realtid. Det kræver gode IT-systemer, datadeling og integration mellem partnere. Det reducerer overraskelser og lagerbehov.'
 },
 {
     id: 98,
-    category: 'Stregkoder & QR',
-    q: 'Hvad er CODE-128 primært brugt til?',
+    category: 'Supply Chain',
+    q: 'Hvad er en ABC-XYZ-analyse?',
     options: [
-        'Butiksvarer i Europa',
-        'Intern logistik, shipping og pakkemærkning — kan indeholde tekst og tal',
-        'Bøger og magasiner',
-        'Betalingskort'
+        'En alfabetiseringsmetode til arkivering af dokumenter',
+        'En kombination der klassificerer varer efter værdi (ABC) og efterspørgslens forudsigelighed (XYZ)',
+        'En laboratorietest af varekvalitet',
+        'En analyse kun brugt i farmaceutisk industri'
     ],
     correct: 1,
-    explanation: 'CODE-128 er den mest alsidige lineære stregkode. Den kan indeholde alle ASCII-tegn (tal, bogstaver, specialtegn) og bruges til shipping-labels, interne lagerkoder, og GS1-128 track-and-trace.'
+    explanation: 'ABC sorterer efter værdi (A = høj). XYZ sorterer efter forudsigelighed (X = stabil, Y = svingende, Z = uforudsigelig). En AX-vare er højværdi med stabil efterspørgsel — nem at styre. En CZ-vare er lavværdi og uforudsigelig — svær at planlægge.'
 },
 {
     id: 99,
-    category: 'Stregkoder & QR',
-    q: 'Hvad er ITF-14 stregkoden typisk brugt til?',
+    category: 'Supply Chain',
+    q: 'Hvad er "landed cost"?',
     options: [
-        'Individuelle butiksvarer',
-        'Bulk- og palleemballager, ydre kartoner',
-        'Digitale kvitteringer',
-        'Biometrisk identifikation'
+        'Prisen for at lande et fly med gods i en lufthavn',
+        'Den samlede pris for en vare inkl. indkøb, told, afgifter, fragt, forsikring og alle andre udgifter indtil varen er i dit lager',
+        'Regningen for grundskyld og ejendomsskat for lagerbygningen',
+        'Den pris man betaler for at købe et stykke jord til et nyt lager'
     ],
     correct: 1,
-    explanation: 'ITF-14 (Interleaved Two of Five) med 14 cifre bruges på ydre emballage — kartoner, paller, bulk-forsendelser. Den er robust, kan printes direkte på bølgepap og scannes på afstand.'
+    explanation: 'Landed cost er den reelle totalpris. En vare fra Kina til 10 kr. kan i virkeligheden koste 18 kr. når man lægger fragt, forsikring, told, afgifter, håndtering og transport til lageret oveni. Det er landed cost.'
 },
 {
     id: 100,
-    category: 'Stregkoder & QR',
-    q: 'Hvad er en QR-kodes primære fordel over en traditionel stregkode?',
+    category: 'Supply Chain',
+    q: 'Hvad er en "safety lead time"?',
     options: [
-        'Den er billigere at printe',
-        'Den kan rumme meget mere data og scannes fra enhver vinkel',
-        'Den er altid i farver',
-        'Den kræver ingen scanner'
+        'Den tid sikkerhedsvagten bruger på at patruljere lageret',
+        'Den ekstra tid man lægger oven i den normale leveringstid for at beskytte mod forsinkelser',
+        'Tiden det tager at montere sikkerhedsudstyr på en gaffeltruck',
+        'Minimum antal timer mellem to skift for medarbejdersikkerhed'
     ],
     correct: 1,
-    explanation: 'QR-koder (Quick Response) er 2D og kan rumme op til ~4.296 tegn vs. ~20-30 tegn i en 1D stregkode. De kan scannes fra enhver vinkel, med smartphones, og indeholde URLs, kontaktinfo, WiFi m.m.'
+    explanation: 'Sikkerhedstid er en buffer i tid. Hvis normal leveringstid er 5 dage, bestiller man måske allerede efter 3 dage. De 2 ekstra dage er sikkerhedstiden, der beskytter mod forsinkelser. Det er tidens version af sikkerhedslageret.'
 },
+
+// ============================
+// EKSTRA: TRANSPORT & LEVERINGSBETINGELSER (101-108)
+// ============================
 {
     id: 101,
-    category: 'Stregkoder & QR',
-    q: 'Hvad er fejlkorrektionsniveau "H" i QR-koder?',
+    category: 'Transport',
+    q: 'Hvad er en "full truck load" (FTL)?',
     options: [
-        '7% af koden kan være beskadiget',
-        '15% af koden kan være beskadiget',
-        '25% af koden kan være beskadiget',
-        '30% af koden kan være beskadiget og stadig scannes'
+        'Når lastbilen er overfyldt og kører ulovligt',
+        'En forsendelse der fylder hele lastbilen — én afsender, én modtager',
+        'En bestemt type truck der kun bruges ved fuld kapacitet',
+        'Et certifikat truckchauffører modtager efter uddannelse'
     ],
-    correct: 3,
-    explanation: 'QR fejlkorrektionsniveau H (High) tillader op til 30% beskadigelse/tilsmudsning. Niveauerne er: L=7%, M=15%, Q=25%, H=30%. Højere niveau = mere robust men større kode.'
+    correct: 1,
+    explanation: 'FTL: én afsender fylder hele lastbilen, der kører direkte til én modtager. Det er billigere per kilo end LTL (Less Than Truckload), fordi der ikke er omlastning og sortering undervejs.'
 },
 {
     id: 102,
-    category: 'Generelt Logistik',
-    q: 'Hvad er et WMS?',
+    category: 'Transport',
+    q: 'Hvad er "LTL" (Less Than Truckload)?',
     options: [
-        'Wireless Monitoring System',
-        'Warehouse Management System — software til lagerstyring',
-        'World Market Standard',
-        'Weekly Maintenance Schedule'
+        'En forsendelse der er for tung til en lastbil og kræver specialtransport',
+        'En forsendelse der ikke fylder en hel lastbil — flere kunders gods kombineres',
+        'En lastbil der er lettere end normalt pga. special materialer',
+        'Et udtryk for godstransport med lette varebiler under 3,5 ton'
     ],
     correct: 1,
-    explanation: 'WMS = Warehouse Management System. Det er software der automatiserer og optimerer lagerprocesser: indlagring, plukning, lagerplacering, optælling, og rapportering. Det er rygraden i moderne lagerdrift.'
+    explanation: 'LTL samler flere kunders varer på samme lastbil. Det er billigere for den enkelte, men tager længere tid pga. stop og omlastning. Det passer til forsendelser der er for store til pakkepost men for små til at fylde en hel lastbil.'
 },
 {
     id: 103,
-    category: 'Generelt Logistik',
-    q: 'Hvad er et ERP-system?',
+    category: 'Transport',
+    q: 'Hvad er et B/L (Bill of Lading)?',
     options: [
-        'Emergency Response Plan',
-        'Enterprise Resource Planning — integreret virksomhedsstyringsystem',
-        'External Routing Protocol',
-        'Equipment Repair Procedure'
+        'En faktura for benzin til lastbiler',
+        'Et konnossement — et transportdokument ved søfragt der er bevis for fragtaftalen og varernes modtagelse',
+        'En licens til at drive ballastvands-rensningsanlæg',
+        'En forsikringspolice for lastbilchauffører'
     ],
     correct: 1,
-    explanation: 'ERP (Enterprise Resource Planning) er et centralt IT-system der integrerer alle forretningsprocesser: økonomi, lager, salg, produktion, HR osv. Kendte eksempler: SAP, Microsoft Dynamics, Oracle.'
+    explanation: 'Bill of Lading (konnossement) er det vigtigste dokument i søfragt. Det er: 1) bevis for fragtaftalen, 2) kvittering for at godset er modtaget af rederiet, 3) et dokument der giver ret til udlevering af godset ved destinationen.'
 },
 {
     id: 104,
-    category: 'Generelt Logistik',
-    q: 'Hvad er TCO (Total Cost of Ownership)?',
+    category: 'Leveringsbetingelser',
+    q: 'Hvad betyder Incoterm "CIF" (Cost, Insurance and Freight)?',
     options: [
-        'Kun indkøbsprisen for en vare',
-        'De samlede omkostninger ved at eje/bruge en vare over hele dens levetid',
-        'Transportomkostninger alene',
-        'Toldafgifter og moms'
+        'Kunden betaler alle omkostninger fra fabrik til levering',
+        'Sælger betaler varens pris, forsikring og fragt til ankomsthavnen, men risiko overgår ved lastning',
+        'Begge parter deler alle omkostninger 50/50',
+        'CIF har ingen standard betydning og forhandles frit'
     ],
     correct: 1,
-    explanation: 'TCO inkluderer ALLE omkostninger: indkøb, fragt, opbevaring, vedligeholdelse, forsikring, svind, bortskaffelse m.m. En billig vare med høje følgeomkostninger kan være dyrere end en dyr vare med lave følgeomkostninger.'
+    explanation: 'CIF: sælger betaler varen, forsikring og fragt til destinationshavnen. MEN: risikoen overgår til køber allerede når varen lastes på skibet i afgangshavnen. Bruges kun ved sø- og indenlandsvandtransport.'
 },
 {
     id: 105,
-    category: 'Generelt Logistik',
-    q: 'Hvad er svind (shrinkage) i lagerstyring?',
+    category: 'Leveringsbetingelser',
+    q: 'Hvad betyder Incoterm "FOB" (Free On Board)?',
     options: [
-        'Når lageret fysisk krymper',
-        'Tab af lagerbeholdning pga. tyveri, beskadigelse, fejl eller fordærv',
-        'Når priser falder',
-        'Reduktion i antal ansatte'
+        'Kunden afhenter varen frit på fabrikken',
+        'Varen leveres gratis til modtagerens kontor',
+        'Sælger leverer varen om bord på skibet — risikoen overgår til køber når varen er lastet',
+        'Varen leveres frit til den første omlastningsstation'
     ],
-    correct: 1,
-    explanation: 'Svind (shrinkage) er forskellen mellem den registrerede og den faktiske lagerbeholdning. Årsager: tyveri (internt/eksternt), beskadigelse, administrativefejl, fordærv. Typisk 1-3% af lagerværdien.'
+    correct: 2,
+    explanation: 'FOB: sælger bærer alle risici og omkostninger indtil varen er lastet om bord. Derefter overtager køber. Bruges kun til sø- og indlandsvandtransport. FOB er en af de mest kendte og brugte Incoterms.'
 },
 {
     id: 106,
-    category: 'Generelt Logistik',
-    q: 'Hvad er batch-/lotnummer brugt til?',
+    category: 'Leveringsbetingelser',
+    q: 'Hvad er en "franco-grænse" i en leveringsaftale?',
     options: [
-        'At sætte priser',
-        'Sporbarhed — at kunne spore en specifik gruppe af varer tilbage til produktionsdato/leverandør',
-        'At tælle antal på lager',
-        'At identificere lagerpladser'
+        'Landegrænsen mellem to EU-lande',
+        'Det minimumsbeløb en ordre skal have før leverandøren betaler fragten',
+        'Den fysiske grænsemarkering omkring leverandørens fabriksområde',
+        'Grænsen for hvor mange varer man må købe ad gangen'
     ],
     correct: 1,
-    explanation: 'Batch/lotnummer giver fuld sporbarhed: Hvis der opdages en fejl, kan man tilbagekalde præcis den batch. Det er lovpligtigt i fødevare- og medicinalindustrien.'
+    explanation: 'Franco-grænsen er typisk et beløb, fx 5.000 kr. Bestiller du for over 5.000 kr., betaler leverandøren fragten (franco). Under 5.000 kr. betaler du selv (ufranco). Det motiverer kunder til at samle ordrer og bestille større mængder.'
 },
 {
     id: 107,
-    category: 'Generelt Logistik',
-    q: 'Hvad er cyklisk optælling (cycle counting)?',
+    category: 'Transport',
+    q: 'Hvad er et TMS (Transportation Management System)?',
     options: [
-        'At tælle alle varer på lageret én gang om året',
-        'At tælle en del af lageret regelmæssigt, så alt tælles over en periode',
-        'At tælle varer kun når de modtages',
-        'At tælle transportmidler'
+        'Et termometerstyringsystem til køletransport',
+        'En type truckmotor specifikt til store lagre',
+        'Et IT-system til planlægning, udførelse og optimering af godstransport',
+        'Et manuelt tidsmålingssystem for chauffører'
     ],
-    correct: 1,
-    explanation: 'Cyklisk optælling tæller en lille del af lageret dagligt/ugentligt (f.eks. A-varer oftere end C-varer), så hele lageret gennemgås over tid. Det er mere praktisk end fuld årlig optælling og giver bedre datakvalitet.'
+    correct: 2,
+    explanation: 'TMS er software der hjælper med at planlægge den bedste rute, vælge den billigste fragtmulighed, booke transportører, spore forsendelser og analysere transportomkostninger. Det er transportens svar på WMS for lageret.'
 },
 {
     id: 108,
-    category: 'Generelt Logistik',
-    q: 'Hvad er SMART-mål?',
+    category: 'Transport',
+    q: 'Hvad er "pallebytte" (pallet exchange)?',
     options: [
-        'Mål der kræver høj intelligens',
-        'Specific, Measurable, Achievable, Relevant, Time-bound',
-        'Sales, Marketing, Analytics, Revenue, Training',
-        'Standard, Method, Approach, Result, Timeline'
+        'At man bytter en gammel palle ud med en ny for ekstra betaling',
+        'At chaufføren og modtageren bytter lige mange paller: for hver fyldt palle der aflæsses, gives en tom palle tilbage',
+        'At man bytter varer mellem to paller for at optimere pladsudnyttelsen',
+        'At man sender paller til genbrug hos en palleproducent'
     ],
     correct: 1,
-    explanation: 'SMART: Specific (specifikt), Measurable (målbart), Achievable (opnåeligt), Relevant (relevant), Time-bound (tidsbestemt). F.eks. "Reducer leveringstiden med 15% inden Q3 2026" er SMART.'
+    explanation: 'I pallebytteordninger (typisk EUR-paller) giver modtageren tomme paller tilbage for hver fyldte palle, der leveres. Det sikrer et cirkulært flow af paller, og ingen ender med at mangle. Det er standard praksis med EUR/EPAL-paller.'
 },
+
+// ============================
+// EKSTRA: SIKKERHED & MILJØ (109-115)
+// ============================
 {
     id: 109,
-    category: 'Generelt Logistik',
-    q: 'Hvad er en SWOT-analyse?',
+    category: 'Sikkerhed',
+    q: 'Hvad betyder GHS i sikkerhedssammenhæng?',
     options: [
-        'En regnskabsmetode',
-        'En strategisk analyse af Strengths, Weaknesses, Opportunities og Threats',
-        'En sikkerhedskontrol',
-        'En transportberegning'
+        'General Health Standard — et frivilligt sundhedsprogram for lagre',
+        'Globally Harmonized System — et internationalt system til klassificering og mærkning af kemikalier',
+        'Green House Safety — en miljøcertificering for lagerbygninger',
+        'Ground Handling Services — krav til godshåndtering i lufthavne'
     ],
     correct: 1,
-    explanation: 'SWOT analyserer: Styrker (interne fordele), Svagheder (interne ulemper), Muligheder (eksterne chancer), Trusler (eksterne risici). Det bruges til strategisk planlægning og beslutninger.'
+    explanation: 'GHS er et verdensomspændende system der giver standardiserede symboler, signalord og sætninger til at kommunikere kemiske farer. De rødkantede ruder med symboler (flammer, dødningehoved osv.) er GHS-piktogrammer.'
 },
 {
     id: 110,
-    category: 'Generelt Logistik',
-    q: 'Hvad er "Incoterm DDP" (Delivered Duty Paid)?',
+    category: 'Sikkerhed',
+    q: 'Hvad er en APV (Arbejdspladsvurdering)?',
     options: [
-        'Køber betaler alt',
-        'Sælger leverer til døren og betaler al transport, told og moms — max ansvar for sælger',
-        'Varen hentes på fabrikken',
-        'Sælger betaler kun til grænsen'
+        'En opgørelse over virksomhedens samlede aktivværdi',
+        'En vurdering af medarbejdernes lønninger i forhold til markedet',
+        'En systematisk gennemgang af arbejdsmiljøet for at finde og forebygge risici',
+        'En vurdering af lagerets ejendomsværdi'
     ],
-    correct: 1,
-    explanation: 'DDP er modsætningen til EXW: Sælger bærer ALLE omkostninger og risici helt til kundens dør, inkl. transport, forsikring, told og importmoms. Det er den mest favorable Incoterm for køber.'
+    correct: 2,
+    explanation: 'APV er lovpligtig i Danmark. Virksomheden skal regelmæssigt vurdere alle arbejdsmiljøforhold: fysiske, psykiske, kemiske og ergonomiske risici. Formålet er at forebygge ulykker og arbejdsrelaterede sygdomme.'
 },
 {
     id: 111,
-    category: 'Generelt Logistik',
-    q: 'Hvad er gennemløb (throughput) i lagersammenhæng?',
+    category: 'Sikkerhed',
+    q: 'Hvor mange fareklasser har ADR-systemet?',
     options: [
-        'Antal ansatte der kan gå igennem lageret',
-        'Mængden af varer der kan behandles (modtages, plukkes, sendes) pr. tidsenhed',
-        'Tykkelsen af lagergulvet',
-        'Antallet af hylder i lageret'
+        '3 klasser',
+        '5 klasser',
+        '9 klasser',
+        '13 klasser'
     ],
-    correct: 1,
-    explanation: 'Gennemløb (throughput) måler lagerets kapacitet: antal ordrer, linjer, kolli eller paller der behandles pr. time/dag. Det er en nøgle-KPI for lagereffektivitet.'
+    correct: 2,
+    explanation: '9 ADR-fareklasser: 1) Eksplosiver, 2) Gasser, 3) Brandfarlige væsker, 4) Brandfarlige faste stoffer, 5) Oxiderende stoffer, 6) Giftige stoffer, 7) Radioaktivt, 8) Ætsende stoffer, 9) Diverse farlige stoffer. Hver klasse har underklasser.'
 },
 {
     id: 112,
-    category: 'Generelt Logistik',
-    q: 'Hvad er forskellen mellem 3PL og 4PL?',
+    category: 'Sikkerhed',
+    q: 'Hvad er en nær-ved ulykke?',
     options: [
-        '3PL er billigere end 4PL',
-        '3PL udfører operationer (transport/lager), 4PL koordinerer hele forsyningskæden som rådgiver',
-        '3PL er for 3 leverandører, 4PL for 4',
-        'Der er ingen forskel'
+        'En ulykke der skete for lang tid siden',
+        'En hændelse der kunne have ført til en ulykke, men ingen kom til skade denne gang',
+        'En ulykke der kun rammer vikarer, ikke fastansatte',
+        'En ulykke der sker i nærheden af lageret, men uden for virksomhedens grund'
     ],
     correct: 1,
-    explanation: '3PL (Third-Party Logistics) udfører fysiske operationer (transport, lagring, distribution). 4PL (Fourth-Party) styrer og koordinerer hele forsyningskæden strategisk, ofte inkl. valg af 3PL-leverandører.'
+    explanation: 'En nær-ved ulykke er en advarsel. Fx falder en kasse ned, men rammer ingen. Næste gang er man måske ikke så heldig. Derfor skal nær-ved ulykker rapporteres og undersøges, så man forebygger den rigtige ulykke.'
 },
 {
     id: 113,
-    category: 'LEAN',
-    q: 'Hvad er Cykeltid (Cycle Time)?',
+    category: 'Sikkerhed',
+    q: 'Hvad er max tilladelig løftemasse for én person ifølge Arbejdstilsynets vejledning?',
     options: [
-        'Den tid en medarbejder cykler til arbejde',
-        'Antal producerede enheder divideret med total tid',
-        'Tiden fra kundebestilling til levering',
-        'Tiden mellem to vedligeholdelseskontroller'
+        'Der er ingen grænse, bare man bruger korrekt teknik',
+        'Op til 50 kg under alle omstændigheder',
+        'Op til 25 kg under optimale forhold (tæt ved kroppen, god højde, køn/fysik vurderes)',
+        'Præcis 10 kg uanset omstændighederne'
     ],
-    correct: 1,
-    explanation: 'Cykeltid = Producerede enheder / Total tid. Det er den faktiske tid det tager at slutføre én enhed. Cykeltid skal være ≤ Takt-tid for at møde kundeefterspørgslen.'
+    correct: 2,
+    explanation: 'Arbejdstilsynet anbefaler max ca. 25 kg under optimale forhold (byrde tæt på kroppen, i god højde, uden vridning). Ved dårlige forhold (rækkeafstand, vridning, højde, hyppighed) sænkes grænsen til 12 kg eller mindre.'
 },
 {
     id: 114,
-    category: 'Forsyningskæde',
-    q: 'Hvad er "sidste kilometer-levering" (last mile delivery)?',
+    category: 'Sikkerhed',
+    q: 'Hvad skal man gøre FØRST ved en arbejdsulykke på lageret?',
     options: [
-        'Den længste strækning i transporten',
-        'Den sidste del af leveringen fra distributionscenter til slutkunde',
-        'Levering til afsidesliggende øer',
-        'Levering af reservedele'
+        'Ringe til forsikringsselskabet',
+        'Sørge for at sikre ulykkesstedet og yde førstehjælp',
+        'Skrive en rapport til ledelsen',
+        'Tage billeder til sociale medier'
     ],
     correct: 1,
-    explanation: 'Sidste kilometer-levering (last mile) er den dyreste og mest komplekse del af leveringen: fra distributionscenteret til kundens adresse. Den udgør ofte op til 50% af de totale fragtomkostninger pga. mange små stop.'
+    explanation: 'Først: sørg for sikkerheden (stop farekilden, afspær området). Yd førstehjælp. Ring 112 ved alvorlige skader. Derefter: rapportér ulykken, dokumentér og undersøg årsagen for at forebygge gentagelse.'
 },
 {
     id: 115,
-    category: 'Lager & Drift',
-    q: 'Hvad er en reachtruck?',
+    category: 'Sikkerhed',
+    q: 'Hvad er formålet med gangbredde-krav i et lager?',
     options: [
-        'En lastbil med lang rækkevidde',
-        'En gaffeltruck designet til smalle gange der kan løfte paller i stor højde',
-        'Et transportbånd der strækker sig',
-        'En kran der når ud over bygningen'
+        'At sikre nok plads til at dekorere gangene med planter og kunst',
+        'At sørge for der er plads til truckturning, sikker passage af personer og overholdelse af brandveje',
+        'At give plads til at parkere medarbejdernes biler inde i lageret',
+        'Gangbredden har ingen praktisk betydning'
     ],
     correct: 1,
-    explanation: 'En reachtruck har en fremskudt mast der kan "række" ind i reolen. Den er designet til smalle gange (2,7-3 m) og kan løfte paller op til 10-12 m højde. Ideel til højlagre.'
+    explanation: 'Korrekt gangbredde sikrer at gaffeltrucks kan manøvrere sikkert, at medarbejdere kan passere, og at brandveje er frie. For smalle gange kræves smalgangs-trucks. For brede gange bruges modvægtstruck. Branddøre og nødudgange må ALDRIG blokeres.'
 },
+
+// ============================
+// EKSTRA: VIRKSOMHED & ØKONOMI (116-120)
+// ============================
 {
     id: 116,
-    category: 'Stregkoder & QR',
-    q: 'Hvad er UPC-A stregkoden primært brugt til?',
+    category: 'Virksomhed',
+    q: 'Hvad er formålet med en SWOT-analyse?',
     options: [
-        'Europæiske butikker',
-        'Nordamerikansk detailhandel (USA og Canada)',
-        'Kun bøger',
-        'Kun fødevarer'
+        'At beregne virksomhedens skatteforpligtelser',
+        'At vurdere virksomhedens Strengths, Weaknesses, Opportunities og Threats — styrker, svagheder, muligheder og trusler',
+        'At sortere medarbejdere efter kompetenceniveau',
+        'At planlægge virksomhedens sommerfest'
     ],
     correct: 1,
-    explanation: 'UPC-A (Universal Product Code) med 12 cifre er den nordamerikanske standard for detailhandelsvarer. Den svarer til EAN-13 i Europa, og de to systemer er kompatible.'
+    explanation: 'SWOT giver et strategisk overblik. Styrker og svagheder er interne (hvad er vi gode/dårlige til?). Muligheder og trusler er eksterne (hvad sker i markedet?). Det bruges til at planlægge strategien og prioritere indsatser.'
 },
 {
     id: 117,
-    category: 'Generelt Logistik',
-    q: 'Hvad er ABC-zonering i et fysisk lager?',
+    category: 'Virksomhed',
+    q: 'Hvad er "kapitalbinding" i lagersammenhæng?',
     options: [
-        'Maling af gulvet i tre farver',
-        'Placering af A-varer nærmest pluk/forsendelse, B-varer lidt længere væk, C-varer fjernest',
-        'Sortering af varer efter farve',
-        'Inddeling af lageret i tre etager'
+        'Pengene der er brugt til at købe lagerbygningen',
+        'De penge der er bundet i varer på lageret og ikke kan bruges til andet, før varerne er solgt',
+        'Et investeringsbevis fra banken',
+        'Udgiften til at binde paller sammen med plastfolie'
     ],
     correct: 1,
-    explanation: 'ABC-zonering optimerer lagerlayoutet: A-varer (hyppigst plukket) placeres i "guldzonen" (golden zone) tættest på forsendelsen. B-varer i mellomzonen. C-varer fjernest. Det minimerer gangafstand og pluktid.'
+    explanation: 'Når du har varer for 1 mio. kr. på lageret, er 1 mio. kr. "frosset" — de kan ikke bruges til investeringer, markedsføring eller lønninger. Jo mere lager, jo mere kapital er bundet. Derfor er det dyrt at have for stort lager.'
 },
 {
     id: 118,
-    category: 'LEAN',
-    q: 'Hvad er et "Hvad-hvis" scenarie (What-If) i LEAN?',
+    category: 'Virksomhed',
+    q: 'Hvad er "throughput" i et lager?',
     options: [
-        'En risikoforsikring',
-        'En simulering der viser effekten af at ændre én eller flere parametre',
-        'En fejlanalyse efter en ulykke',
-        'En type 5S-audit'
+        'Gennemstrømningen — den samlede mængde varer der modtages, behandles og sendes videre per tidsenhed',
+        'Det hul i væggen man kører gaffeltrucken igennem',
+        'Antallet af pauser medarbejderne gennemfører på en dag',
+        'Den tid en medarbejder bruger på at gå hele vejen igennem lageret'
     ],
-    correct: 1,
-    explanation: 'Hvad-hvis scenariet (What-If) lader dig ændre parametre (f.eks. "Hvad hvis OEE stiger 5%?" eller "Hvad hvis efterspørgsel falder 10%?") og se den beregnede effekt. Det bruges til beslutningsstøtte og planlægning.'
+    correct: 0,
+    explanation: 'Throughput er mængden af varer der "flyder igennem" lageret. Fx 500 ordrer per dag eller 200 paller per time. Højere throughput med samme ressourcer = højere produktivitet. Det er en af de vigtigste KPIer for lagerdrift.'
 },
 {
     id: 119,
-    category: 'Forsyningskæde',
-    q: 'Hvad er "bullwhip-effekten"?',
+    category: 'Virksomhed',
+    q: 'Hvad er leveringspræcision som KPI?',
     options: [
-        'Et sikkerhedsproblem med paller',
-        'At små udsving i kundeefterspørgsel forstærkes op gennem forsyningskæden',
-        'En metode til at piske processer fremad',
-        'Effekten af at bruge for mange leverandører'
+        'Hvor mange leveringer der ankommer i ét stykke uden skader',
+        'Procentdelen af ordrer der leveres til kunden til den aftalte tid med det rigtige indhold',
+        'Gennemsnitshastigheden på leveringsbilerne i km/t',
+        'Antal leverancer per chauffør per uge'
     ],
     correct: 1,
-    explanation: 'Bullwhip-effekten: små variationer i slutkundens efterspørgsel forstørres eksplosivt op gennem kæden (butik → lager → producent → leverandør). Løsning: del data, reducer gennemløbstider, undgå batch-bestilling.'
+    explanation: 'Leveringspræcision (OTIF — On Time In Full) måler om kunden får den rigtige vare, i den rigtige mængde, til den aftalte tid. Det er en afgørende KPI, fordi den viser kundetilfredsheden direkte. Mål: typisk 95%+ for gode virksomheder.'
 },
 {
     id: 120,
-    category: 'Generelt Logistik',
-    q: 'Hvad er KPI?',
+    category: 'Virksomhed',
+    q: 'Hvad er en reklamation?',
     options: [
-        'Key Product Information',
-        'Key Performance Indicator — nøgletalsindikator til at måle præstation',
-        'Known Problem Issue',
-        'Kanban Process Integration'
+        'En reklame i et fagblad for lager og logistik',
+        'En kundes officielle klage over en vare eller leverance der ikke lever op til det aftalte',
+        'En invitation til virksomhedens jubilæumsfest',
+        'En positiv kundeanmeldelse på virksomhedens hjemmeside'
     ],
     correct: 1,
-    explanation: 'KPI = Key Performance Indicator (nøgletal). Eksempler i logistik: Lageromsætning, leveringspræcision, plukkefejl-rate, OEE, lagerudnyttelse, ordrecyklustid. KPIer bør være SMART.'
+    explanation: 'En reklamation er en formel klage. Kunden informerer leverandøren om fejl: forkert vare, beskadiget gods, manglende enheder, for sen levering. Reklamationer skal håndteres hurtigt og registreres for at forbedre fremtidige processer.'
+},
+
+// ============================
+// EKSTRA: LAGERSTYRING AVANCERET (121-135)
+// ============================
+{
+    id: 121,
+    category: 'Lagerstyring',
+    q: 'Hvad er en cyklusoptælling?',
+    options: [
+        'En årlig optælling af alle varer på lageret samtidigt',
+        'En løbende optælling hvor man tæller en del af lageret ad gangen, fordelt over hele året',
+        'En optælling af antal cykler parkeret foran lageret',
+        'En optælling der kun foretages, når der opdages fejl'
+    ],
+    correct: 1,
+    explanation: 'Cyklusoptælling (cycle counting) er en løbende metode, hvor man tæller en lille del af lageret hver dag — typisk styret af ABC-klassificering. A-varer tælles oftere end C-varer. Det erstatter den store, forstyrrende årsoptælling.'
+},
+{
+    id: 122,
+    category: 'Lagerstyring',
+    q: 'Hvad er en EUR-palle (EPAL)?',
+    options: [
+        'En palle med målene 120 × 80 cm, standardiseret i Europa med mærkerne EUR og EPAL',
+        'En specialpalle lavet af genanvendt plast fra Europa',
+        'En palle der kan modstå eurofarve kemikalier',
+        'En palle der kun anvendes i euroområdet og ikke i Norden'
+    ],
+    correct: 0,
+    explanation: 'EUR-pallen (120 × 80 cm) er den mest brugte palle i Europa. Den er standardiseret, kan holde op til 1.500 kg, og indgår i et bytteordning (pallecirkulering). Den er mærket med EUR og EPAL og fremstillet efter faste kvalitetskrav.'
+},
+{
+    id: 123,
+    category: 'Lagerstyring',
+    q: 'Hvad er en halvpalle?',
+    options: [
+        'En palle der er halvt ødelagt og skal kasseres',
+        'En palle med målene 80 × 60 cm, ofte brugt til displayformål i butikker',
+        'En palle der kun bruges i halvdelen af året',
+        'En palle lastet til halvdelen af sin kapacitet'
+    ],
+    correct: 1,
+    explanation: 'Halvpallen (80 × 60 cm) er præcis en halv EUR-palle. Den bruges ofte til butiksdisplay — man kører den direkte ud i butikken med varer på. Det sparer ompakning og opstilling. Optimeret til at passe i standard EUR-pallereol.'
+},
+{
+    id: 124,
+    category: 'Lagerstyring',
+    q: 'Hvad er en WMS "put-away" strategi?',
+    options: [
+        'Regler for hvornår varer skal kasseres og smides ud',
+        'Systemets logik for hvor indgående varer skal placeres i lageret',
+        'En metode til at fjerne defekte varer fra salg',
+        'En backup-plan for hvad der sker, hvis WMS-systemet fejler'
+    ],
+    correct: 1,
+    explanation: 'Put-away strategien bestemmer automatisk, hvor varer skal stilles hen. Fx: A-varer i golden zone, tunge varer i bund, temperaturkrævende i kølezone, farligt gods i farligt-gods-zone. Det optimerer pladsudnyttelse og plukkadgang.'
+},
+{
+    id: 125,
+    category: 'Lagerstyring',
+    q: 'Hvad er "slotting" i lagersammenhæng?',
+    options: [
+        'At indsætte mønter i automater på lageret',
+        'At udvælge det optimale tidsslot for levering',
+        'Den analytiske proces med at bestemme den bedste placering af hver vare i lageret for at optimere plukning',
+        'At skære spalter i emballage for at sikre ventilation'
+    ],
+    correct: 2,
+    explanation: 'Slotting optimerer hvor hver SKU står i lageret. Hurtigtløbende varer placeres tæt på pakkebordet i golden zone. Tungere varer i bund. Varer der ofte bestilles sammen, placeres tæt på hinanden. Det reducerer gangafstand og pluktid markant.'
+},
+{
+    id: 126,
+    category: 'Lagerstyring',
+    q: 'Hvad er "pick-to-light"?',
+    options: [
+        'Et system der vejer varer ved hjælp af lysbaseret teknologi',
+        'En metode der bruger lysindikatorer på hylderne til at guide plukkeren til den rigtige vare og mængde',
+        'En dimmer-funktion til lagerlys for at spare energi',
+        'En type lommelygte godkendt til brug på lageret'
+    ],
+    correct: 1,
+    explanation: 'Pick-to-light: en lampe lyser op ved den hylde, plukkeren skal plukke fra, og et display viser antal. Plukkeren trykker på en knap efter plukning. Det er hurtigt, reducerer fejl, og kræver ingen papir eller scanner. Brugt i højfreklvente plukzoner.'
+},
+{
+    id: 127,
+    category: 'Lagerstyring',
+    q: 'Hvad er "voice picking"?',
+    options: [
+        'En metode hvor medarbejderne stemmer om hvilke ordrer der skal plukkes først',
+        'En plukmetode hvor plukkeren modtager instruktioner via en hovedtelefon og bekræfter mundtligt',
+        'En sangkonkurrence afholdt i frokosten for at øge moralen',
+        'Et stemmestyringssystem til lagerlys og temperatur'
+    ],
+    correct: 1,
+    explanation: 'Voice picking: plukkeren bærer et headset og modtager instrukser via tale — "gå til lokation A-03-2, pluk 5 stk." Plukkeren bekræfter ved at sige et kontroltal. Begge hænder er fri til at plukke. Fejlraten falder typisk med 25-50% sammenlignet med papirlister.'
+},
+{
+    id: 128,
+    category: 'Lagerstyring',
+    q: 'Hvad er batch picking?',
+    options: [
+        'En plukmetode hvor man samler varer til flere ordrer samtidigt i én tur gennem lageret',
+        'En metode kun brugt til at plukke bagerivarer i batches',
+        'At plukke alle ordrer i den rækkefølge de blev modtaget',
+        'At plukke varer der har samme batchnummer eller udløbsdato'
+    ],
+    correct: 0,
+    explanation: 'Batch picking: plukkeren samler varer til 10-20 ordrer ad gangen i én runde. Fx plukker man alle bestilte tusch fra hylde B-12 til alle ordrer i stedet for at gå til B-12 separat for hver ordre. Det reducerer gangafstand dramatisk.'
+},
+{
+    id: 129,
+    category: 'Lagerstyring',
+    q: 'Hvad er zone picking?',
+    options: [
+        'Når plukkere kun er ansvarlige for at plukke varer i deres tildelte zone af lageret',
+        'At opdele lageret i zoner baseret på temperatur',
+        'En plukmetode der kun bruges i zoologiske haver',
+        'At plukke varer baseret på tidszoner for internationale kunder'
+    ],
+    correct: 0,
+    explanation: 'Zone picking: lageret opdeles i zoner, og hver plukker plukker kun i sin zone. Ordren bevæger sig fra zone til zone ("pick and pass") eller zonerne plukker parallelt og samles bagefter. Det reducerer gangafstand og øger specialisering.'
+},
+{
+    id: 130,
+    category: 'Lagerstyring',
+    q: 'Hvad er cross-docking?',
+    options: [
+        'Når varer krydser en bro over vand under transport',
+        'At varer modtages på den ene side af lageret og sendes direkte ud fra den anden uden at blive opbevaret',
+        'At skibscontainere flyttes fra skibssiden til landsiden af en havn',
+        'En metode til at parkere lastbiler på tværs i stedet for langs'
+    ],
+    correct: 1,
+    explanation: 'Cross-docking: varer modtages, sorteres og sendes videre inden for timer — de opbevares ikke. Indleveringsdokker på den ene side, udleveringsdokker på den modsatte. Det reducerer lageromkostninger og gennemløbstid dramatisk. Bruges fx i detailhandel.'
+},
+{
+    id: 131,
+    category: 'Lagerstyring',
+    q: 'Hvad er en SKU (Stock Keeping Unit)?',
+    options: [
+        'Et forsikringskrav til lager- og logistikbranche',
+        'En entydig identifikationskode der repræsenterer én specifik varetype i lagersystemet',
+        'En type lagerreol fremstillet i Sverige',
+        'En forkortelse for den skandinaviske krone-enhed'
+    ],
+    correct: 1,
+    explanation: 'SKU er varenummeret — en unik kode for hver enkelt varetype. Fx er en blå t-shirt i størrelse L én SKU, mens den samme t-shirt i M er en anden SKU. Et typisk lager har tusindvis af SKUer.'
+},
+{
+    id: 132,
+    category: 'Lagerstyring',
+    q: 'Hvad er en kolli?',
+    options: [
+        'En type trælim til emballagebrug',
+        'En samlet enhed af gods — fx en kasse, en sæk, en tønde eller et bundt der kan håndteres som ét styk',
+        'En kollegial betegnelse for en lagermedarbejder',
+        'En type sikkerhedshjelm specielt til lagerarbejdere'
+    ],
+    correct: 1,
+    explanation: 'Kolli (flertal: kolli eller kollis) er den mindste håndterbare enhed af gods. Én kolli kan være en kasse, en sæk, en tromle eller et bundt. Følgesedler og fragtbreve angiver antal kolli, så man kan kontrollere at alt er med.'
+},
+{
+    id: 133,
+    category: 'Lagerstyring',
+    q: 'Hvad er en SSCC (Serial Shipping Container Code)?',
+    options: [
+        'En kode til at låse containere op i havne',
+        'En 18-cifret unik stregkode til at identificere en individuel palle, kasse eller forsendelse i hele forsyningskæden',
+        'Et sikkerhedscertifikat for containerskibe',
+        'En forkortelse for Standard Safety Control Check'
+    ],
+    correct: 1,
+    explanation: 'SSCC er en unik 18-cifret GS1-kode der identificerer én fysisk logistisk enhed (fx en palle). Den gør det muligt at spore pallen digitalt gennem hele forsyningskæden — fra producent til lager til butik.'
+},
+{
+    id: 134,
+    category: 'Lagerstyring',
+    q: 'Hvad er shrink-wrap?',
+    options: [
+        'En psykologisk behandlingsmetode for stressede lagerchefer',
+        'En type lagerreol der kan skrumpe i størrelse',
+        'Klar plastfolie der vikles stramt om varer eller en palle for at sikre lasten under transport',
+        'En rengøringsmetode til lagergulve'
+    ],
+    correct: 2,
+    explanation: 'Shrink-wrap (stretchfolie) vikles rundt om pallen eller varerne for at holde dem samlet og stabile under transport. Det beskytter mod fugt, støv og tyveri, og forhindrer at varer forskubber sig. Kan også varmesvejses til tæt forsegling.'
+},
+{
+    id: 135,
+    category: 'Lagerstyring',
+    q: 'Hvad er forskellen på kaotisk og fast lokation i et lager?',
+    options: [
+        'Kaotisk bruger robotter, fast bruger mennesker',
+        'Kaotisk lager: varer placeres på den først ledige plads. Fast lokation: hver vare har en fast tildelt hylde',
+        'Kaotisk er et midlertidigt lager, fast er permanent',
+        'Der er ingen forskel — det er to ord for det samme'
+    ],
+    correct: 1,
+    explanation: 'Kaotisk (randomiseret/dynamisk) lokation: WMS bestemmer, hvor varen placeres — hvor der er plads. Giver bedre pladsudnyttelse. Fast lokation: SKU A er altid på plads B-04. Nemmere at finde manuelt, men lavere pladsudnyttelse, da tomme pladser reserveres.'
+},
+
+// ============================
+// EKSTRA: ERP & IT SYSTEMER (136-148)
+// ============================
+{
+    id: 136,
+    category: 'ERP & IT',
+    q: 'Hvad er forskellen på ERP og WMS?',
+    options: [
+        'ERP og WMS er det samme system, bare med forskellige navne',
+        'ERP styrer hele virksomheden (økonomi, salg, HR osv.), mens WMS er specialiseret til at styre lageroperationer som plukning, placering og optælling',
+        'WMS er en dyrere version af ERP',
+        'ERP bruges kun af store virksomheder, WMS kun af små'
+    ],
+    correct: 1,
+    explanation: 'ERP (Enterprise Resource Planning) er virksomhedens hovedsystem til alt: økonomi, salg, indkøb, produktion, HR. WMS (Warehouse Management System) er special-software til selve lagerdriften. De to systemer integreres ofte, så ordrer flyder automatisk.'
+},
+{
+    id: 137,
+    category: 'ERP & IT',
+    q: 'Hvad er EDI (Electronic Data Interchange)?',
+    options: [
+        'En type USB-stik til lagercomputere',
+        'En standardiseret elektronisk udveksling af forretningsdokumenter (ordrer, fakturaer, følgesedler) mellem virksomheder',
+        'En energibesparende dimmerfunktion til lagerlys',
+        'Et internt e-mail system kun til lagermedarbejdere'
+    ],
+    correct: 1,
+    explanation: 'EDI sender forretningsdokumenter automatisk mellem virksomheders systemer. Fx sender kundens ERP automatisk en indkøbsordre til leverandørens ERP — ingen manuelle e-mails eller faxer. Det sparer tid, reducerer fejl og øger hastigheden i forsyningskæden.'
+},
+{
+    id: 138,
+    category: 'ERP & IT',
+    q: 'Hvad er en RFID-tag?',
+    options: [
+        'En type klistermærke med virksomhedens logo til markedsføring',
+        'En lille chip med antenne der kan sende produktdata trådløst uden at scanneren behøver direkte synscontakt',
+        'Et manuelt skrevet prisskilt på varer i butikken',
+        'En type USB-flashdrev til lagerstyringssoftware'
+    ],
+    correct: 1,
+    explanation: 'RFID (Radio Frequency Identification): en chip sender data via radiobølger. Fordel over stregkode: man kan scanne mange tags på én gang og behøver ikke sigte direkte på dem. Man kan tælle en hel palle på sekunder. Bruges i lager, butik, produktion og logistik.'
+},
+{
+    id: 139,
+    category: 'ERP & IT',
+    q: 'Hvad er IoT (Internet of Things) i lagersammenhæng?',
+    options: [
+        'Et socialt medie kun for lager- og logistikfolk',
+        'Sensorer og enheder i lageret der er koblet til internettet og leverer realtidsdata om temperatur, fugtighed, beholdning, lokation osv.',
+        'Et onlinebutikssystem til at sælge lagerudstyr',
+        'Et programmeringssprog til lagerrobotter'
+    ],
+    correct: 1,
+    explanation: 'IoT i lageret: temperatursensorer i kølezoner, vægtsensorer på hylder (giver alarm når stock er lav), GPS på gaffeltrucks, RFID-porte der automatisk registrerer varer der passerer. Alt sender data til et dashboard — man kan overvåge lageret i realtid.'
+},
+{
+    id: 140,
+    category: 'ERP & IT',
+    q: 'Hvad er en GS1-128 (tidligere EAN-128) stregkode?',
+    options: [
+        'En type stregkode kun brugt i 128 lande',
+        'En stregkode der kun kan scanne priser',
+        'En avanceret stregkode der kan indeholde mange typer data: batchnummer, udløbsdato, vægt, serienummer osv.',
+        'En kode til at låse op for premium-funktioner i WMS-software'
+    ],
+    correct: 2,
+    explanation: 'GS1-128 bruger Application Identifiers (AI) til at kode mange informationer i én stregkode. AI(01) = varenummer, AI(10) = batchnummer, AI(17) = udløbsdato, AI(310x) = nettovægt osv. Den er vigtig for sporbarhed i fødevarer og medicin.'
+},
+{
+    id: 141,
+    category: 'ERP & IT',
+    q: 'Hvad er en QR-kode i logistiksammenhæng?',
+    options: [
+        'En forkortelse for "Quality Rating" — en kvalitetskode',
+        'En todimensionel stregkode der kan indeholde langt mere data end en traditionel stregkode og scannes med en smartphone',
+        'En kode for at rate en leverandørs kvartalspræstation',
+        'En type alarm-kode der aktiveres ved tyveri'
+    ],
+    correct: 1,
+    explanation: 'QR (Quick Response) koder er 2D-stregkoder der kan lagre tusindvis af tegn: URL, serienumre, produktinfo, sporingsdata. De kan scannes med en almindelig smartphone. Bruges til track-and-trace, produktinformation og hurtig registrering.'
+},
+{
+    id: 142,
+    category: 'ERP & IT',
+    q: 'Hvad er "master data" i et ERP-system?',
+    options: [
+        'Data der kun er tilgængelig for virksomhedens direktør',
+        'De grundlæggende stamdata som varer, kunder, leverandører og priser — den faste data som transaktioner bygger på',
+        'Historisk data om alle transaktioner de seneste 10 år',
+        'Data om virksomhedens mesterlærlinge'
+    ],
+    correct: 1,
+    explanation: 'Master data (stamdata) er den grundlæggende information: varenumre, varebeskrivelser, priser, leverandøradresser, kundedata. Det er fundamentet. Alle transaktioner (ordrer, fakturaer, pluk) refererer til stamdata. Dårlig stamdata → fejl overalt.'
+},
+{
+    id: 143,
+    category: 'ERP & IT',
+    q: 'Hvad er et MRP-system (Material Requirements Planning)?',
+    options: [
+        'Et system til planlægning og styring af materialebehov baseret på styklister, lagerstatus og produktionsplaner',
+        'Et system til at registrere medarbejdernes pauser',
+        'Et system til at reservere mødelokaler i virksomheden',
+        'Et system til mappestruktur på virksomhedens filserver'
+    ],
+    correct: 0,
+    explanation: 'MRP besvarer: Hvad skal vi bruge? Hvor meget? Hvornår? Ved at kende produktionsplanen, styklisterne og lagerstatus beregner MRP, hvad der skal bestilles hvornår. Det sikrer at materialer er klar til produktion — hverken for tidligt eller for sent.'
+},
+{
+    id: 144,
+    category: 'ERP & IT',
+    q: 'Hvad er en "pick list" (plukliste)?',
+    options: [
+        'En liste over medarbejdere til udvælgelse ved fyring',
+        'En prioriteret liste over lagerforbedringsprojekter',
+        'Et dokument eller digitalt display der viser plukkeren præcis hvilke varer, mængder og lokationer der skal plukkes til en ordre',
+        'En liste over de mest populære varer i webshoppen'
+    ],
+    correct: 2,
+    explanation: 'Pluklisten genereres af WMS og fortæller plukkeren: gå til lokation A-05-3, pluk 2 stk. varenummer 4711, dernæst til B-12-1 for 1 stk. varenummer 8800. Den optimerer ofte ruten gennem lageret for at minimere gangafstand.'
+},
+{
+    id: 145,
+    category: 'ERP & IT',
+    q: 'Hvad er et YMS (Yard Management System)?',
+    options: [
+        'Et system til at styre havebeplantning ved lagerbygningen',
+        'Et system til at styre og optimere aktiviteter på virksomhedens udendørs pladsområde: lastbilparkering, dockbooking, traileradministration',
+        'Et system der måler gårdafstande mellem lagerbygninger',
+        'Et system til forvaltning af virksomhedens ejendomsportefølje'
+    ],
+    correct: 1,
+    explanation: 'YMS styrer alt på "gårdspladsen" (yard): hvilke trailere holder hvor, hvornår de skal til and fra dock, prioritering af lastning/losning. Det reducerer ventetider for chauffører og sikrer, at de rigtige trailere er ved de rigtige porte til tiden.'
+},
+{
+    id: 146,
+    category: 'ERP & IT',
+    q: 'Hvad er barcoding versus RFID — den vigtigste forskel?',
+    options: [
+        'Stregkode kræver direkte synslinje og scanner én ad gangen; RFID kan scanne mange tags trådløst uden synslinje',
+        'RFID er billigere end stregkode',
+        'Stregkode er nyere teknologi end RFID',
+        'Der er ingen funktionel forskel — det er samme teknologi med to navne'
+    ],
+    correct: 0,
+    explanation: 'Stregkode: scanner skal "se" koden direkte, og man scanner én ad gangen. RFID: radiobølger, ingen synslinje nødvendig, kan scanne hundredvis af tags på få sekunder. RFID er dyrere per tag, men sparer enormt på arbejdstiden ved masseaflæsning.'
+},
+{
+    id: 147,
+    category: 'ERP & IT',
+    q: 'Hvad er "blockchain" potentielt brugt til i supply chain?',
+    options: [
+        'At bygge fysiske kæder til at låse containere',
+        'At spore varer uforanderligt og gennemsigtigt gennem hele forsyningskæden, da data ikke kan ændres bagefter',
+        'At blokere uautoriseret adgang til lagerbygninger',
+        'At kæde lastbiler sammen i konvojer for brændstofbesparelse'
+    ],
+    correct: 1,
+    explanation: 'Blockchain i supply chain: hver transaktion (produktion, forsendelse, modtagelse) registreres i en kæde, der ikke kan manipuleres. Det giver fuld sporbarhed — fx kan man bevise at en fisk er fanget bæredygtigt, eller at en medicin er ægte.'
+},
+{
+    id: 148,
+    category: 'ERP & IT',
+    q: 'Hvad er en "digital twin" i lagersammenhæng?',
+    options: [
+        'En kopi af lagerchefens adgangskort til nødsituationer',
+        'En virtual reality-oplevelse til medarbejdertræning',
+        'En digital, realtidsopdateret kopi af det fysiske lager, brugt til simulering, optimering og overvågning',
+        'Et backup-lager i en anden by'
+    ],
+    correct: 2,
+    explanation: 'En digital twin er en digital model af lageret der opdateres i realtid. Man kan simulere ændringer — fx hvad sker der, hvis vi omplacerer alle A-varer? — uden at forstyrre det rigtige lager. Det giver datadrevet optimering uden risiko.'
+},
+
+// ============================
+// EKSTRA: LEVERINGSBETINGELSER & DOKUMENTER (149-160)
+// ============================
+{
+    id: 149,
+    category: 'Leveringsbetingelser',
+    q: 'Hvad er Incoterm "EXW" (Ex Works)?',
+    options: [
+        'Sælger leverer varen helt til kundens dør inkl. al forsikring',
+        'Varen stilles til rådighed hos sælger — køber bærer alle omkostninger og risici fra det øjeblik',
+        'Varen sendes ekspres med garanti for levering næste dag',
+        'Sælger betaler fragt til nærmeste grænseovergang'
+    ],
+    correct: 1,
+    explanation: 'EXW er den "mindste" forpligtelse for sælger: varen står klar på lager/fabrik, køber henter den og betaler ALT selv — lastning, transport, told, forsikring. Sælgers eneste pligt er at gøre varen tilgængelig.'
+},
+{
+    id: 150,
+    category: 'Leveringsbetingelser',
+    q: 'Hvad er Incoterm "DDP" (Delivered Duty Paid)?',
+    options: [
+        'Køber betaler alle told- og afgiftsomkostninger selv',
+        'Sælger leverer varen helt til købers adresse med alt betalt inkl. told, afgifter og transport — køber gør intet',
+        'Fragten betales af en tredjepart (speditør)',
+        'Varen leveres fortoldet men afhentes selv'
+    ],
+    correct: 1,
+    explanation: 'DDP er den "største" forpligtelse for sælger — og det modsatte af EXW. Sælger betaler ALT: transport, forsikring, told, afgifter, levering til dør. Køber skal bare modtage varen. Det er den dyreste Incoterm for sælger.'
+},
+{
+    id: 151,
+    category: 'Leveringsbetingelser',
+    q: 'Hvad er Incoterm "DAP" (Delivered At Place)?',
+    options: [
+        'Sælger leverer varen til den aftalte destination, klar til aflæsning — men køber betaler tolden',
+        'Køber henter varen på lufthavnen',
+        'Varen leveres til midtpunktet mellem sælger og køber',
+        'Sælger leverer til nærmeste havn og stopper der'
+    ],
+    correct: 0,
+    explanation: 'DAP: sælger betaler transport til den aftalte destination og bærer risikoen frem til varen er klar til aflæsning. Men importtold og -afgifter er købers ansvar. Det adskiller DAP fra DDP, hvor sælger også betaler tolden.'
+},
+{
+    id: 152,
+    category: 'Leveringsbetingelser',
+    q: 'Hvad er Incoterm "FCA" (Free Carrier)?',
+    options: [
+        'Varen er gratis for alle transportører',
+        'Sælger leverer varen til den af køber anviste fragtfører eller et navngivet sted — risikoen overgår ved overlevering',
+        'Varen transporteres med gratis fragtskib',
+        'Fragten betales i afdrag uden renter'
+    ],
+    correct: 1,
+    explanation: 'FCA er meget fleksibel: man aftaler et overgivelsessted (fx sælgers rampe, en transportterminal, en lufthavn). Når varen leveres til fragtføreren dér, overgår risiko og ansvar til køber. FCA bruges til alle transportformer.'
+},
+{
+    id: 153,
+    category: 'Leveringsbetingelser',
+    q: 'Hvad er en proforma-faktura?',
+    options: [
+        'En falsk faktura bruges til skattesvindel',
+        'En foreløbig faktura der beskriver varens pris, indhold og vilkår — bruges som tilbud og til toldformål, men er IKKE betalingskrav',
+        'En faktura der kun udstedes for professionelle kunder',
+        'En faktura der er betalt på forhånd'
+    ],
+    correct: 1,
+    explanation: 'En proforma-faktura ser ud som en faktura, men er kun et tilbud/estimat. Den bruges ofte til toldangivelse, importlicenser og forundersøgelser. Den skaber IKKE et juridisk betalingskrav — det gør kun den rigtige handelsfaktura.'
+},
+{
+    id: 154,
+    category: 'Leveringsbetingelser',
+    q: 'Hvad er en CMR-fragtbrev?',
+    options: [
+        'Et dokument kun brugt i container-skibsfart',
+        'En faktura for vejafgifter i Europa',
+        'Et internationalt fragtbrev for godstransport ad landevej der dokumenterer fragtaftalen og varernes tilstand',
+        'En certifikat til chauffører der kører med farligt gods'
+    ],
+    correct: 2,
+    explanation: 'CMR-fragtbrevet (Convention on the Contract for the International Carriage of Goods by Road) følger varen ved international landevejstransport. Det dokumenterer afsender, modtager, gods, eventuelle forbehold og er bevis for fragtaftalen.'
+},
+{
+    id: 155,
+    category: 'Leveringsbetingelser',
+    q: 'Hvad er en toldangivelse?',
+    options: [
+        'En skriftlig klage over toldbetjentens opførsel',
+        'En erklæring til toldmyndighederne der beskriver varernes art, mængde, værdi og oprindelse for at beregne told og afgifter',
+        'En liste over medarbejdere der har toldkort',
+        'En oversigt over toldfrie butikker i lufthavnen'
+    ],
+    correct: 1,
+    explanation: 'Toldangivelsen er det centrale importdokument: man oplyser varetype, HS-kode (toldbetegnelse), mængde, værdi, oprindelsesland osv. Toldmyndigheden bruger det til at beregne told, moms og eventuelle afgifter. For EU-intern handel er der ikke told.'
+},
+{
+    id: 156,
+    category: 'Leveringsbetingelser',
+    q: 'Hvad er en HS-kode (Harmonized System)?',
+    options: [
+        'En type sikkerhedskode til lagerdøre',
+        'Et internationalt 6-cifret klassifikationssystem der kategoriserer alle varer til brug ved toldhåndtering',
+        'Et sundhedscertifikat krævet for fødevareimport',
+        'En forkortelse for "High Security" — en sikkerhedsklassificering'
+    ],
+    correct: 1,
+    explanation: 'HS-koden er et verdensomspændende system til at klassificere varer. De første 6 cifre er ens globalt — fx 0901.11 er ubrændt kaffe. Lande tilføjer ekstra cifre for detaljer. HS-koden bestemmer toldsats, importregler og handelsstatistik.'
+},
+{
+    id: 157,
+    category: 'Leveringsbetingelser',
+    q: 'Hvad er en letter of credit (remburs)?',
+    options: [
+        'Et brev med klager til leverandøren',
+        'En bankgaranti der sikrer at sælger får betaling når bestemte dokumenter fremvises — en sikkerhed for begge parter i international handel',
+        'Et kreditkort specielt til indkøb af lagervarer',
+        'Et brev der giver kredit til medarbejdere i kantinen'
+    ],
+    correct: 1,
+    explanation: 'Remburs: købers bank lover at betale sælger, når sælger fremviser de rigtige dokumenter (fx B/L, faktura, certifikater). Det beskytter sælger (sikker betaling) og køber (betaler først når dokumentation er i orden). Brugt ved store internationale handler.'
+},
+{
+    id: 158,
+    category: 'Leveringsbetingelser',
+    q: 'Hvad er en "packing list" (pakkeliste)?',
+    options: [
+        'En liste over alle ansatte der arbejder i pakkeafdelingen',
+        'En detaljeret oversigt over indholdet af en forsendelse: varenumre, beskrivelser, mængder, vægt og kolli — bruges til modtagekontrol og told',
+        'En indkøbsliste til emballagematerialer',
+        'En checkliste over alt hvad man skal pakke til en forretningsrejse'
+    ],
+    correct: 1,
+    explanation: 'Pakkelisten følger forsendelsen og beskriver nøjagtigt, hvad der er i hver kolli: varenummer, varebeskrivelse, antal, nettovægt, bruttovægt. Modtageren bruger den til at krydstjekke, og toldmyndighederne bruger den ved fortoldning.'
+},
+{
+    id: 159,
+    category: 'Leveringsbetingelser',
+    q: 'Hvad er "certificate of origin" (oprindelsescertifikat)?',
+    options: [
+        'Et certifikat der beviser at lagermedarbejderen er født i Danmark',
+        'Et dokument der bekræfter i hvilket land varen er produceret — bruges til toldsatser og handelsaftaler',
+        'Et bevis for at virksomheden er original og ikke en kopi',
+        'Et certifikat der bruges til at certificere økologiske varer'
+    ],
+    correct: 1,
+    explanation: 'Oprindelsescertifikatet dokumenterer, hvor varen er fremstillet. Det er afgørende for toldsatser, fordi mange lande har frihandelsaftaler — fx kan varer fra EU til Norge have lavere told med et korrekt certifikat. Uden det betaler man fuld told.'
+},
+{
+    id: 160,
+    category: 'Leveringsbetingelser',
+    q: 'Hvad er "dangerous goods declaration" (farligt gods erklæring)?',
+    options: [
+        'En udtalelse om at lagergulvet er glat',
+        'En oversigt over alle nødudgange i lagerbygningen',
+        'Et dokument der beskriver farligt gods: UN-nummer, fareklasse, emballagegruppe og korrekt forsendelsesnavn — krævet ved transport',
+        'En medarbejders erklæring om aldrig at komme i fare'
+    ],
+    correct: 2,
+    explanation: 'Ved transport af farligt gods (kemikalier, gasser, brandbare væsker osv.) kræves en erklæring med UN-nummer, korrekt forsendelsesnavn, fareklasse, emballagegruppe og mængde. Uden den må transportøren nægte at medtage godset.'
+},
+
+// ============================
+// EKSTRA: TRANSPORT & DISTRIBUTION (161-170)
+// ============================
+{
+    id: 161,
+    category: 'Transport',
+    q: 'Hvad er intermodal transport?',
+    options: [
+        'Transport der kun bruger én transportform hele vejen',
+        'Transport med mindst to forskellige transportformer (fx lastbil + tog + skib) hvor godset forbliver i samme container',
+        'Transport mellem internationale modetermiter',
+        'En type intern transport på lagergulvet'
+    ],
+    correct: 1,
+    explanation: 'Intermodal transport: godset flyttes i samme container fra lastbil til tog til skib. Containeren åbnes ikke undervejs. Det kombinerer styrker: lastbil (fleksibel first/last mile), tog (billigt på lang strækning), skib (billigst til oversøisk).'
+},
+{
+    id: 162,
+    category: 'Transport',
+    q: 'Hvad er en TEU (Twenty-foot Equivalent Unit)?',
+    options: [
+        'En måleenhed for lastbilers motorkraft',
+        'En standardenhed baseret på en 20-fods container — bruges til at angive skibes og terminalsers kapacitet',
+        'En type temperatorenhed brugt i køletransport',
+        'En forkortelse for "Total Economic Utility"'
+    ],
+    correct: 1,
+    explanation: 'TEU = en 20-fods container (6,1 m lang). En 40-fods container = 2 TEU. Når man siger "et containerskib på 20.000 TEU," kan det rumme 20.000 20-fods containere. Det er standardmålet for kapacitet i containertransport.'
+},
+{
+    id: 163,
+    category: 'Transport',
+    q: 'Hvad er cabotage i transportsammenhæng?',
+    options: [
+        'En type lastbilkabine med soveplads',
+        'Når en udenlandsk transportør udfører indenlandsk transport i et andet land end sit eget — strengt reguleret i EU',
+        'En kombination af cab og transport — ét ord for taxikørsel',
+        'En type transportforsikring mod kabelbrud'
+    ],
+    correct: 1,
+    explanation: 'Cabotage: fx en polsk lastbil leverer gods i Danmark og tager derefter en indenlandsk dansk transport. I EU er det begrænset: max 3 cabotage-ture inden for 7 dage efter international levering. Det beskytter nationale transportører mod unfair konkurrence.'
+},
+{
+    id: 164,
+    category: 'Transport',
+    q: 'Hvad er køre- og hviletidsregler for lastbilchauffører?',
+    options: [
+        'Chauffører må køre ubegrænset så længe de holder kaffe-pauser',
+        'Max 4,5 timers kørsel, derefter 45 min pause. Max 9 timers daglig kørsel (2 gange 10 timer per uge). Min 11 timers daglig hvile',
+        'Max 12 timers kørsel per dag uden pause',
+        'Reglerne varierer fra by til by'
+    ],
+    correct: 1,
+    explanation: 'EU-regler (forordning 561/2006): Max 4,5 timers kørsel → 45 min pause. Max 9 timer daglig kørsel (kan forlænges til 10 timer 2x/uge). Ugentlig max 56 timer. Min 11 timers daglig hvile (kan reduceres til 9 timer 3x/uge). Overvåges via takograf.'
+},
+{
+    id: 165,
+    category: 'Transport',
+    q: 'Hvad er en takograf?',
+    options: [
+        'Et instrument der optager chauffører med video under kørsel',
+        'Et apparat i lastbilen der registrerer køretid, hastighed, hvileperioder og pauser — lovpligtigt i EU for lastbiler over 3,5 ton',
+        'Et overfaldsalarm til chauffører der kører med værdifuld last',
+        'En type navigationssystem specielt udviklet til lastbiler'
+    ],
+    correct: 1,
+    explanation: 'Takografen (digital siden 2006) registrerer uafbrudt: kørsel, andet arbejde, rådighed, hvile. Politiet kan kontrollere data ved vejsiden. Overtrædelse af køre-hviletifsregler giver bøder til både chauffør og vognmand. Formålet er trafiksikkerhed.'
+},
+{
+    id: 166,
+    category: 'Transport',
+    q: 'Hvad er en speditør?',
+    options: [
+        'En mekaniker der reparerer lastbiler',
+        'Et firma der arrangerer og koordinerer transport af gods på vegne af afsenderen — uden nødvendigvis selv at eje transportmidlerne',
+        'En person der holder opsyn med farten på motorvejen',
+        'En type højhastighedstransport kun til eksprespakker'
+    ],
+    correct: 1,
+    explanation: 'Speditøren er "transportens rejsebureau." De finder den bedste transportløsning: vælger rute, fragtmåde (sø, luft, vej), booker plads, håndterer tolddokumentation. De ejer sjældent selv lastbiler — de koordinerer. DFDS, DSV, DB Schenker er speditører.'
+},
+{
+    id: 167,
+    category: 'Transport',
+    q: 'Hvad er en "last mile" i logistik?',
+    options: [
+        'Den sidste mil inden lastbilens motor slukkes for altid',
+        'Den sidste etape af leveringen fra distributionscenter til slutkundens dør — ofte den dyreste og mest komplekse del',
+        'Den siste kilometer af motorvejen inden rasthuset',
+        'En type langdistanceløb arrangeret af logistikvirksomheder'
+    ],
+    correct: 1,
+    explanation: 'Last mile er den dyreste del: mange små leveringer til private adresser, ingen hjemme, parkeringsproblemer, tidsvindue-krav. I e-handel udgør last mile ofte 40-50% af de samlede forsendelsesomkostninger. Pakkeboxe og afhentningssteder reducerer problemet.'
+},
+{
+    id: 168,
+    category: 'Transport',
+    q: 'Hvad er ADR i transportsammenhæng?',
+    options: [
+        'An international aftale om transport af farligt gods ad landevej — chauffører skal have ADR-bevis',
+        'En automatisk dørring til lastbilernes lasterum',
+        'En type anti-drap rude på lastbilvinduer',
+        'Automatic Delivery Registration — et system til leveringsbekræftelse'
+    ],
+    correct: 0,
+    explanation: 'ADR (Accord européen relatif au transport international des marchandises Dangereuses par Route): internationale regler for transport af farligt gods. Chauffører skal gennemgå ADR-kursus, og køretøjer skal have ADR-udstyr (brandslukkere, advarselsskilte, øjenskyllere).'
+},
+{
+    id: 169,
+    category: 'Transport',
+    q: 'Hvad er en "hub-and-spoke" model i distribution?',
+    options: [
+        'Et kredsløbssystem i lastbilens motor',
+        'En model med et centralt hub (nav) hvorfra varer distribueres ud ad eger (spokes) til mindre destinationer — som et hjuls nav og eger',
+        'En cykelhjulsformet lagerbygning',
+        'En metode hvor gods altid transporteres i cirkler'
+    ],
+    correct: 1,
+    explanation: 'Hub-and-spoke: alt gods samles i ét centralt hub (fx Billund for pakkepost), sorteres, og sendes ud ad "eger" til lokale terminaler/kunder. Det giver effektiv konsolidering og sortering, men kræver at alt passerer hubbet — så det tager lidt længere tid.'
+},
+{
+    id: 170,
+    category: 'Transport',
+    q: 'Hvad er "reverse logistics" (returlogistik)?',
+    options: [
+        'At køre baglæns med lastbilen til lageret',
+        'Logistikken for at håndtere varer der flyder den modsatte vej: returnerede varer, emballage, genbrugsmaterialer fra kunde tilbage til virksomhed',
+        'At læse lagerlisten bagfra for at finde fejl',
+        'En strategi hvor leverandøren besøger kunden i stedet for omvendt'
+    ],
+    correct: 1,
+    explanation: 'Reverse logistics håndterer alt der flyder modstrøms: returneringer, reparationer, genbrug, genvinding, bortskaffelse. Med e-handel returneres 25-30% af alle varer — så reverse logistics er blevet en enorm og vigtig disciplin.'
+},
+
+// ============================
+// EKSTRA: SUPPLY CHAIN & ØKONOMI (171-185)
+// ============================
+{
+    id: 171,
+    category: 'Supply Chain',
+    q: 'Hvad er "bullwhip effect" (piskeefekt)?',
+    options: [
+        'En teknik til at motivere medarbejdere til at arbejde hurtigere',
+        'Når små udsving i efterspørgslen hos slutkunden forstærkes og skaber store svingninger opad i forsyningskæden',
+        'En lydbølge-effekt i store lagerhaller',
+        'En fysisk træningsmetode for lagermedarbejdere'
+    ],
+    correct: 1,
+    explanation: 'Bullwhip-effekten: supermarkedet sælger 5% mere mælk → detailkæden bestiller 10% mere → mejeriet producerer 20% mere → landmanden investerer i 30% flere køer. Små kundeændringer forstærkes opad pga. prognoser, batchbestilling og sikkerhedslagre.'
+},
+{
+    id: 172,
+    category: 'Supply Chain',
+    q: 'Hvad er forskellen på "lead time" og "cycle time"?',
+    options: [
+        'De er præcis det samme — to ord for det samme',
+        'Lead time er den samlede tid fra ordre til levering; cycle time er tiden for at gennemføre én produktions- eller procescyklus',
+        'Lead time er længere end 1 år; cycle time er under 1 dag',
+        'Lead time bruges kun i bilindustrien; cycle time bruges kun i IT'
+    ],
+    correct: 1,
+    explanation: 'Lead time: total tid fra kundeordre til kunden modtager varen (kan inkludere ventetid, produktion, transport). Cycle time: den faktiske proceseringstid for ét trin (fx tiden for at plukke og pakke én ordre). Lead time = summen af cycle times + ventetider.'
+},
+{
+    id: 173,
+    category: 'Supply Chain',
+    q: 'Hvad er "Total Cost of Ownership" (TCO)?',
+    options: [
+        'Den samlede pris for at eje og drive et aktiv over hele dets levetid: indkøb, drift, vedligehold, bortskaffelse',
+        'Den pris virksomhedsejeren betalte for at starte virksomheden',
+        'Summen af alle medarbejderlønninger i virksomheden',
+        'En rabat man får når man køber alle produkter fra én leverandør'
+    ],
+    correct: 0,
+    explanation: 'TCO: en billig gaffeltruck til 100.000 kr. med høje vedligeholdelsesomkostninger kan koste mere over 10 år end en dyr truck til 200.000 kr. med lave driftsomkostninger. TCO afslører den reelle pris over tid — ikke bare indkøbsprisen.'
+},
+{
+    id: 174,
+    category: 'Supply Chain',
+    q: 'Hvad er "demand forecasting" (efterspørgselsprognose)?',
+    options: [
+        'At forudsige vejret for at planlægge udendørs levering',
+        'Brugen af historiske data, trends og statistiske modeler til at forudse fremtidig kundeefterspørgsel',
+        'At spørge kunderne direkte hvad de vil købe',
+        'At kopiere konkurrentens salgstal og bruge dem som prognose'
+    ],
+    correct: 1,
+    explanation: 'Demand forecasting bruger historiske salgsdata, sæsonmønstre, trends og statistik til at forudsige fremtidigt salg. En god prognose reducerer lageromkostninger (ikke for meget) og undgår stockout (ikke for lidt). Det er en af de sværeste discipliner i supply chain.'
+},
+{
+    id: 175,
+    category: 'Supply Chain',
+    q: 'Hvad er VMI (Vendor Managed Inventory)?',
+    options: [
+        'Når medarbejderne selv styrer deres eget lager uden chefens tilsyn',
+        'Når leverandøren har ansvaret for at overvåge og genopfylde kundens lager — leverandøren bestemmer hvad og hvornår der genbestilles',
+        'Når lageret styres af virtuelle maskiner (VM)',
+        'En type antivirus-software til WMS-systemer'
+    ],
+    correct: 1,
+    explanation: 'VMI: leverandøren overvåger kundens lagerbeholdning (fx via EDI) og genopfylder automatisk. Fordel: leverandøren kender sit eget produkt bedst og kan planlægge produktion jævnere. Kunden slipper for at bestille. Bruges fx i dagligvarehandel og industri.'
+},
+{
+    id: 176,
+    category: 'Supply Chain',
+    q: 'Hvad er "consignment stock" (konsignationslager)?',
+    options: [
+        'Et lager med kun konsumvarer (fødevarer og drikkevarer)',
+        'Varer der ligger på kundens lager, men som ejes af leverandøren indtil kunden tager dem i brug',
+        'Et lager hvor varerne er konsigneret til destruktion',
+        'Et lager der drives af en konsulent på midlertidig basis'
+    ],
+    correct: 1,
+    explanation: 'Konsignationslager: leverandørens varer ligger hos kunden, men leverandøren ejer dem stadig. Kunden betaler først, når varerne bruges eller sælges. Det giver kunden lav kapitalbinding, men leverandøren bærer lageromkostningen og risikoen.'
+},
+{
+    id: 177,
+    category: 'Supply Chain',
+    q: 'Hvad er "3PL" (Third-Party Logistics)?',
+    options: [
+        'Tredje parkeringsplads til venstre',
+        'Når en virksomhed outsourcer sine logistikfunktioner (lager, transport, ordrehåndtering) til en specialiseret ekstern logistikpartner',
+        'Et lager med præcis 3 platforme',
+        'En logistikmodel der kun bruger 3 lastbiler'
+    ],
+    correct: 1,
+    explanation: '3PL: virksomheden outsourcer lager, distribution og evt. ordrehåndtering til en logistikpartner som DSV, DHL eller PostNord. Virksomheden fokuserer på sine kernekompetencer, mens 3PL-udbyderen leverer logistikekspertise og skalerbarhed.'
+},
+{
+    id: 178,
+    category: 'Supply Chain',
+    q: 'Hvad er "4PL" (Fourth-Party Logistics)?',
+    options: [
+        'Et firma der har 4 lagre placeret symmetrisk',
+        'En logistikintegrator der styrer og koordinerer flere 3PL-partnere og hele forsyningskæden på kundens vegne',
+        'Fire parallelle logistikafdelinger i virksomheden',
+        'En model med 4 leverancer per dag'
+    ],
+    correct: 1,
+    explanation: '4PL er et lag oven på 3PL: en 4PL-partner styrer hele logistikken og koordinerer flere 3PL-udbydere, transportører og lagre. De optimerer den samlede forsyningskæde — som en dirigent der koordinerer hele orkestret.'
+},
+{
+    id: 179,
+    category: 'Virksomhed',
+    q: 'Hvad er lageromkostninger typisk sammensat af?',
+    options: [
+        'Kun huslejen for lagerbygningen',
+        'Kapitalbinding + lagerhusets driftsomkostninger + svind + forsikring + forældelse + håndtering',
+        'Kun medarbejderlønninger',
+        'Kun indkøbsprisen for varerne'
+    ],
+    correct: 1,
+    explanation: 'Lageromkostninger = kapitalbinding (pengene bundet i varer), drift (husleje, strøm, udstyr, løn), svind (tyveri/skader), forsikring, forældelse (varer der går ud på dato eller mode) og håndtering. Tommelfingerregel: lageromkostningerne er 15-30% af varernes værdi per år.'
+},
+{
+    id: 180,
+    category: 'Virksomhed',
+    q: 'Hvad er lageromsætningshastighed?',
+    options: [
+        'Hvor hurtigt gaffeltruckerne kører rundt i lageret',
+        'Antal gange lageret omsættes (tømmes og genfyldes) per år — beregnet som forbrug/gennemsnitslager',
+        'Hastighed i km/t som varer bevæger sig på transportbånd',
+        'Antal jobskift blandt lagermedarbejdere per år'
+    ],
+    correct: 1,
+    explanation: 'Lageromsætningshastighed = årligt forbrug (i kr. eller enheder) / gennemsnitslager. Hvis du sælger for 10 mio. kr. og har et gennemsnitslager på 2 mio. kr., er omsætningshastigheden 5. Højere er bedre — det betyder færre penge bundet i lager.'
+},
+{
+    id: 181,
+    category: 'Virksomhed',
+    q: 'Hvad er dækningsbidrag?',
+    options: [
+        'Det beløb virksomheden bidrager med til velgørenhed',
+        'Salgsprisen minus de variable omkostninger — det der er "tilovers" til at dække faste omkostninger og give profit',
+        'Lønnen til dækchefen i virksomhedens lastbilflåde',
+        'Antallet af dæk skiftet på gaffeltrucks per år'
+    ],
+    correct: 1,
+    explanation: 'Dækningsbidrag (DB) = salgspris - variable omkostninger (fx indkøbspris, emballage, fragt). Hvis en vare sælges for 100 kr. og de variable omkostninger er 60 kr., er DB 40 kr. De 40 kr. skal dække faste omkostninger (husleje, løn) og give overskud.'
+},
+{
+    id: 182,
+    category: 'Virksomhed',
+    q: 'Hvad er "fill rate" som KPI?',
+    options: [
+        'Hvor fuld lagerbygningen er i procent',
+        'Procentdelen af kundeordrer der kan leveres komplet fra lagerbeholdning — med det samme, uden restordre',
+        'Hvor hurtigt man kan fylde en lastbil med gods',
+        'Procentdelen af luften i lageret der er CO2'
+    ],
+    correct: 1,
+    explanation: 'Fill rate (opfyldelsesgrad) = antal ordrelinjer leveret direkte fra lager / totale ordrelinjer. Mål: typisk 95-98%. 100% kræver enormt lager. Fx: 95 ud af 100 ordrelinjer kan leveres straks → 95% fill rate. De resterende 5 er "backorder."'
+},
+{
+    id: 183,
+    category: 'Virksomhed',
+    q: 'Hvad er "dead stock" (dødt lager)?',
+    options: [
+        'Varer der er gået i stykker under transport',
+        'Varer der har ligget på lageret i lang tid uden at blive solgt eller brugt — binder kapital og fylder',
+        'Et lager der er lukket ned permanent',
+        'Varer der er så tunge at de ikke kan flyttes'
+    ],
+    correct: 1,
+    explanation: 'Dead stock er varer der bare samler støv. De binder kapital, fylder plads der kunne bruges bedre, og taber ofte værdi over tid. Løsning: nedsættelse, bortskaffelse, donation eller genbrug. Forebyggelse: bedre prognoser og indkøbsdisciplin.'
+},
+{
+    id: 184,
+    category: 'Virksomhed',
+    q: 'Hvad er "order lead time" (ordregennemløbstid)?',
+    options: [
+        'Tiden fra kunden placerer en ordre til kunden modtager varen',
+        'Tiden det tager at lede efter en mistet ordre',
+        'Antal dage en ordre venter på godkendelse fra ledelsen',
+        'Tiden det tager at taste en ordre ind i ERP-systemet'
+    ],
+    correct: 0,
+    explanation: 'Order lead time = total tid fra ordremodtagelse til levering hos kunden. Den inkluderer ordrebehandling, plukning, pakning, forsendelse og transport. Kortere OLT = højere kundetilfredshed. Amazon har presset standarden ned mod 1-2 dage for e-handel.'
+},
+{
+    id: 185,
+    category: 'Virksomhed',
+    q: 'Hvad er en SLA (Service Level Agreement)?',
+    options: [
+        'Et standard leveringsadresse-format',
+        'En aftale der specificerer det forventede serviceniveau mellem to parter — fx leveringstider, svartider og kvalitetsmål',
+        'En salgslicensaftale for alkohol',
+        'En standard lager-audit gennemført hvert kvartal'
+    ],
+    correct: 1,
+    explanation: 'SLA: en formel aftale. Fx: "Vi leverer 98% af alle ordrer inden 24 timer. Fejlraten skal være under 0,5%. Svartid på forespørgsler max 4 timer." Hvis ikke SLA overholdes, kan der være bøder eller kontraktopsigelse. Det sikrer klare forventninger.'
+},
+
+// ============================
+// EKSTRA: BÆREDYGTIGHED & MILJØ (186-195)
+// ============================
+{
+    id: 186,
+    category: 'Generelt Logistik',
+    q: 'Hvad er "grøn logistik"?',
+    options: [
+        'At male alle lastbiler grønne',
+        'Logistik med fokus på at minimere miljøpåvirkningen: reducere CO2-udledning, spild, emballage og energiforbrug i forsyningskæden',
+        'Transport af planter og blomster',
+        'Logistik der kun bruger gangstier i stedet for veje'
+    ],
+    correct: 1,
+    explanation: 'Grøn logistik handler om bæredygtig forsyningskæde: optimere ruter for lavere brændstofforbrug, bruge el-køretøjer, minimere emballage, genanvende, reducere tomkørsel, bruge tog i stedet for lastbil osv. Det er både godt for miljøet og kan spare penge.'
+},
+{
+    id: 187,
+    category: 'Generelt Logistik',
+    q: 'Hvad er "carbon footprint" i logistik?',
+    options: [
+        'Mærket som lastbilens dæk efterlader på vejen',
+        'Den samlede CO2-udledning fra en virksomheds logistikaktiviteter: transport, lagerdrift, emballage, energiforbrug',
+        'Et klimaanlæg i lagerbygningen',
+        'En type affaldsbeholder med kulfilter'
+    ],
+    correct: 1,
+    explanation: 'Carbon footprint måler den samlede CO2-udledning. I logistik kommer den primært fra transport (lastbiler, skibe, fly, tog), energi til opvarmning/køling af lagre, og produktion af emballagematerialer. Mange virksomheder har mål om CO2-neutralitet.'
+},
+{
+    id: 188,
+    category: 'Generelt Logistik',
+    q: 'Hvad er "cirkulær økonomi" i en forsyningskæde?',
+    options: [
+        'At lastbilerne kører i cirkler for at levere varer',
+        'At varer aldrig sælges men kun udlejes',
+        'En model hvor materialer genbruges, repareres og genanvendes i stedet for at blive smidt ud efter brug — fra "tag-brug-smid-ud" til "tag-brug-genbrug"',
+        'En økonomisk model hvor alle betaler den samme pris'
+    ],
+    correct: 2,
+    explanation: 'Cirkulær økonomi erstatter den lineære model (udvind → producér → brug → smid ud) med et kredsløb: design til holdbarhed, reparation, genbrug, genfremstilling, genanvendelse. Det reducerer ressourceforbrug og affald. Logistikken spiller en nøglerolle i returflow.'
+},
+{
+    id: 189,
+    category: 'Generelt Logistik',
+    q: 'Hvad er "tomkørsel" (empty running)?',
+    options: [
+        'Når lagermedarbejdere løber tomhændede rundt i lageret',
+        'Når en lastbil kører uden last — den returnerer tom efter levering, hvilket spilder brændstof og kapacitet',
+        'Når et transportbånd kører uden varer på',
+        'Når en gaffeltruck kører med tændt motor men uden fører'
+    ],
+    correct: 1,
+    explanation: 'Tomkørsel er en af de største spildkilder i transport. I EU kører ca. 25% af alle lastbilkilometer med tom trailer. Løsninger: fragtbørser (finder returlast), milk run-ruter, bedre ruteoptimering og samarbejde mellem transportører.'
+},
+{
+    id: 190,
+    category: 'Generelt Logistik',
+    q: 'Hvad er formålet med en "miljøcertificering" som ISO 14001?',
+    options: [
+        'At certificere at produkterne er lavet af 100% genbrugsmateriale',
+        'At virksomheden har et dokumenteret og systematisk miljøledelsessystem til løbende at forbedre sin miljøpræstation',
+        'At alla medarbejdere har bestået en miljøeksamen',
+        'At lagerbygningen er LEGO-certificeret'
+    ],
+    correct: 1,
+    explanation: 'ISO 14001: virksomheden har et miljøledelsessystem — man identificerer miljøpåvirkninger, sætter mål, gennemfører forbedringer og dokumenterer det hele. Det er IKKE en garanti for grøn drift, men et system til løbende at blive bedre.'
+},
+{
+    id: 191,
+    category: 'Generelt Logistik',
+    q: 'Hvad er "konsolidering af forsendelser"?',
+    options: [
+        'At pakke varer i solide kasser der kan modstå stød',
+        'At samle flere mindre forsendelser til en stor for at udnytte transportkapaciteten bedre og reducere omkostninger',
+        'At cementere varer fast til pallen for at forhindre bevægelse',
+        'At kondensere dampformige varer til væske'
+    ],
+    correct: 1,
+    explanation: 'I stedet for at sende 5 halvtomme lastbiler, samler man gods fra 5 kunder i 1-2 fulde lastbiler. Det reducerer transportomkostninger (per kg), CO2-udledning (færre ture), og trængsel på vejene. Speditører og 3PL-udbydere gør det dagligt.'
+},
+{
+    id: 192,
+    category: 'Generelt Logistik',
+    q: 'Hvad er "rightsizing" af emballage?',
+    options: [
+        'At lave emballagen i den exakt rigtige størrelse til produktet for at undgå at sende luft og reducere materialeforbruget',
+        'At bruge kun højrehåndede maskiner til emballeringen',
+        'At standardisere alle kasser til én enhedsstørrelse',
+        'At gøre emballagen så lille som muligt uanset produktet'
+    ],
+    correct: 0,
+    explanation: 'Rightsizing: tilpasse kassestørrelsen til varen. Amazons problem i starten: en lille USB-stick i en kæmpekasse fuld af fyidemateriale. Rightsizing reducerer emballageforbrug, fyldmateriale, transportvolumen (flere kasser per lastbil) og affald. Win-win-win.'
+},
+{
+    id: 193,
+    category: 'Generelt Logistik',
+    q: 'Hvad er "scope 3 emissioner" i logistik?',
+    options: [
+        'CO2-udslip der sker præcis 3 km fra lageret',
+        'Indirekte udledninger i den samlede forsyningskæde som virksomheden ikke direkte kontrollerer — fx underleverandørers transport og kunders brug af produktet',
+        'Emissioner fra præcis 3 lastbiler',
+        'Udledning der er opgort over 3 år'
+    ],
+    correct: 1,
+    explanation: 'Scope 1: direkte udledning (egne biler/maskiner). Scope 2: indkøbt energi (el, varme). Scope 3: alt andet i værdikæden — råvarer, indkøbt transport, medarbejderpendling, bortskaffelse af solgte produkter. Scope 3 udgør typisk 70-90% af den samlede CO2 — det er her de store gevinster er.'
+},
+{
+    id: 194,
+    category: 'Generelt Logistik',
+    q: 'Hvad er et "returcenter"?',
+    options: [
+        'Et center der vender retursendinger: tjekker, sorterer, oparbejder, genopfylder eller bortskaffer returnerede varer',
+        'Et kontor der returnerer ubesvarede opkald',
+        'Et center der kun modtager paller i retur',
+        'Et rehabiliteringscenter for stressede logistikchefer'
+    ],
+    correct: 0,
+    explanation: 'Returcentre håndterer det "omvendte flow": modtagelse af returnerede varer, kvalitetskontrol (kan varen videresælges?), reparation, ompakning, genanvendelse eller bortskaffelse. Med e-handelens høje returprocent er effektive returcentre blevet afgørende for indtjeningen.'
+},
+{
+    id: 195,
+    category: 'Generelt Logistik',
+    q: 'Hvad er formålet med emballagekravene i EU (Packaging and Packaging Waste Directive)?',
+    options: [
+        'At sikre at al emballage er lavet af guld',
+        'At sætte mål for genbrug og genanvendelse af emballage, minimere emballageaffald og fremme cirkulær økonomi',
+        'At forbyde al brug af plast i Europa',
+        'At standardisere alle emballagefarver til hvid'
+    ],
+    correct: 1,
+    explanation: 'EU-direktivet kræver at medlemsstater når bestemte mål for genbrug og genanvendelse af emballage (papir, glas, metal, plast, træ). Producenter har "producentansvar" — de skal bidrage finansielt til indsamling og genbrug af den emballage de sætter på markedet.'
+},
+
+// ============================
+// EKSTRA: SIKKERHED & ERGONOMI (196-205)
+// ============================
+{
+    id: 196,
+    category: 'Sikkerhed',
+    q: 'Hvad kræves for at føre gaffeltruck i Danmark?',
+    options: [
+        'Man behøver ingen uddannelse — alle må køre gaffeltruck',
+        'Kun et almindeligt kørekort til bil',
+        'Et gyldigt gaffeltruckcertifikat (typisk A eller B) udstedt efter godkendt uddannelse',
+        'Man skal blot have arbejdsgiverens mundtlige tilladelse'
+    ],
+    correct: 2,
+    explanation: 'I Danmark kræves certifikat. Type A: lavt-løftende palleløfter. Type B: gaffeltruck med løftehøjde over 1 meter. Uddannelsen omfatter teori og praktik. Arbejdstilsynet kan give bøder, hvis ukvalificerede fører truck. Det handler om sikkerhed for alle.'
+},
+{
+    id: 197,
+    category: 'Sikkerhed',
+    q: 'Hvad er korrekt procedure ved kørsel med gaffeltruck med byrde?',
+    options: [
+        'Gaflerne holdes højt for bedre udsyn',
+        'Man kører altid fremad uanset omstændigheder',
+        'Gaflerne holdes lavt (15-20 cm fra gulv), mast tiltet bagud, man kører baglæns ned ad rampe, og aldrig over hastigheds- grænsen',
+        'Man kører så hurtigt som muligt for at spare tid'
+    ],
+    correct: 2,
+    explanation: 'Lavt tyngdepunkt = stabil truck. Gafler 15-20 cm over gulv. Mast tiltet bagud. Ned ad rampe: baglæns med byrde (byrden opad). Op ad rampe: fremad med byrde. Aldrig bratte sving — truck kan vælte. Husk: gaffeltrucks dræber mennesker hvert år.'
+},
+{
+    id: 198,
+    category: 'Sikkerhed',
+    q: 'Hvad er et sikkerhedsdatablad (SDS)?',
+    options: [
+        'Et datablad med medarbejdernes CPR-numre',
+        'Et regneark med virksomhedens sikkerhedsbudget',
+        'Et dokument med 16 sektioner der beskriver et kemisk produkts farer, håndtering, opbevaring, bortskaffelse og førstehjælp',
+        'En database over alle lagerhylder og deres max belastning'
+    ],
+    correct: 2,
+    explanation: 'SDS (16 standardiserede sektioner): identifikation, fareidentifikation, sammensætning, førstehjælp, brandbekæmpelse, udslip, håndtering og opbevaring, eksponeringskontrol/personlig beskyttelse, fysisk-kemiske egenskaber, stabilitet osv. Skal medfølge alle kemikalier.'
+},
+{
+    id: 199,
+    category: 'Sikkerhed',
+    q: 'Hvad er PPE (Personal Protective Equipment)?',
+    options: [
+        'Et bonusprogram for produktive plukkere',
+        'Personlige værnemidler: sikkerhedssko, hjelm, handsker, høreværn, sikkerhedsbriller, refleksvest osv.',
+        'Et IT-program til personlig planlægning og evaluering',
+        'En type plastpalle der er ekstra let'
+    ],
+    correct: 1,
+    explanation: 'PPE/værnemidler er udstyr der beskytter medarbejderen: sikkerhedssko (mod tunge genstande der falder ned), hjelm (i truckomr.), handsker (skarpe kanter), høreværn (støj), refleksvest (synlighed), sikkerhedsbriller (kemikaler/støv). Det er arbejdsgiverens pligt at stille PPE til rådighed.'
+},
+{
+    id: 200,
+    category: 'Sikkerhed',
+    q: 'Hvad er ergonomi i lagerarbejde?',
+    options: [
+        'Studiet af økonomi i ergonomiske møbler',
+        'Tilpasning af arbejdet til mennesket for at forebygge belastningsskader — korrekt løfteteknik, god arbejdshøjde, variation i opgaver',
+        'En type energidrik til lagermedarbejdere',
+        'Et automatisk truckstyringssystem'
+    ],
+    correct: 1,
+    explanation: 'Ergonomi i lageret: justérbare pakkeborde (arbejde i korrekt højde), palleløftere der hæver pallen til plukhøjde, rotation mellem opgaver (variation reducerer ensidigt gentaget arbejde), korrekt løfteteknik (brug benene, hold byrden tæt).'
+},
+{
+    id: 201,
+    category: 'Sikkerhed',
+    q: 'Hvad er en risikovurdering (risk assessment)?',
+    options: [
+        'En vurdering af risikoen for inflation i økonomien',
+        'En systematisk gennemgang for at identificere farer, vurdere risici og fastlægge forebyggende foranstaltninger i arbejdsmiljøet',
+        'En vurdering af hvor risikabelt det er at investere i aktier',
+        'En vurdering af lastbilens risiko for punktering'
+    ],
+    correct: 1,
+    explanation: 'Risikovurdering: 1) Find farerne (fx kemikalier, tung løft, truck-trafik). 2) Hvem kan blive skadet og hvordan? 3) Vurdér risiko (sandsynlighed × konsekvens). 4) Beslut forebyggelse (fjern fare, beskyt, instruér). 5) Dokumentér og revider regelmæssigt.'
+},
+{
+    id: 202,
+    category: 'Sikkerhed',
+    q: 'Hvad er formålet med gulvmærkning (floor marking) i et lager?',
+    options: [
+        'At gøre lageret mere farverigt og indbydende',
+        'At adskille gangarealer, truckzoner, fodgængerområder, opbevaringsarealer og nødudgange visuelt med farvede linjer',
+        'At angive hvor gulvet er nyligt poleret og glat',
+        'At vise medarbejderne den hurtigste rute til kantinen'
+    ],
+    correct: 1,
+    explanation: 'Gulvmærkning: gul = gangarealer/truckruter, grøn = fodgængerstier, rød = brandslukkere/nødudgange (skal holdes fri!), hvid/sorts skravering = farezone. Det skaber visuelt overblik og adskiller truck- og persontrafik. Det er Lean-princippet "visual management" i praksis.'
+},
+{
+    id: 203,
+    category: 'Sikkerhed',
+    q: 'Hvad er forbudt ved stabling af gods på paller?',
+    options: [
+        'At placere lette varer på toppen',
+        'At stable tungere og mere stabile varer i bunden',
+        'At stable højere end reolens tilladte belastning, med overhæng ud over pallen, eller med ustabil opbygning der kan vælte',
+        'At bruge stretchfolie til at holde lasten sammen'
+    ],
+    correct: 2,
+    explanation: 'Regler: overhold reolens løstige belastning (skiltet på reolen). Ingen overhæng over palle-kanten. Stabil opbygning: tungt i bund, let på top. Wrap/stretchfolie rundt om. Gods der stikkeder ud over pallen kan falde ned og ramme nogen.'
+},
+{
+    id: 204,
+    category: 'Sikkerhed',
+    q: 'Hvad er en brandsektion i et lager?',
+    options: [
+        'En afdeling der specialiserer sig i at sælge brandudstyr',
+        'Et afgrænset område i lageret adskilt af brandvægge og branddøre for at forhindre brand i at sprede sig',
+        'Et område hvor det er tilladt at ryge',
+        'Det afsnit af lageret der opbevarer brændbart væske'
+    ],
+    correct: 1,
+    explanation: 'Brandsektionering deler lageret op, så en brand i én sektion ikke spreder sig til nabosektionerne. Brandvægge, branddøre og sprinkleranlæg begrænser branden. Krav afhænger af lagerstørrelse, varetype og risiko. Branddøre må ALDRIG kiiles op.'
+},
+{
+    id: 205,
+    category: 'Sikkerhed',
+    q: 'Hvad er en evakueringsplan?',
+    options: [
+        'En plan for at evaluere medarbejdernes præstation',
+        'En forud fastlagt plan der viser flugtveje, samlingspladser og procedurer for sikker evakuering ved brand, gasudslip eller anden fare',
+        'En plan for at flytte lageret til en ny lokation',
+        'En plan for at reducere antallet af ansatte'
+    ],
+    correct: 1,
+    explanation: 'Evakueringsplanen skal kendes af alle: Hvor er nødudgangene? Hvor er samlingsstedet? Hvem tæller folk? Hvem kontakter beredskabet? Planen skal øves min. en gang om året. Planer hænger synligt i lageret med kort over flugtuveje.'
+},
+
+// ============================
+// EKSTRA: AVANCERET LOGISTIK & TRENDS (206-225)
+// ============================
+{
+    id: 206,
+    category: 'Generelt Logistik',
+    q: 'Hvad er "omnichannel logistics"?',
+    options: [
+        'At bruge kun én salgskanal ad gangen',
+        'Logistik der integrerer alle salgskanaler (butik, webshop, app, marketplace) så kunden oplever en sømløs oplevelse uanset kanal',
+        'En tv-kanal udelukkende om logistik',
+        'At have separate lagre for hver salgskanal'
+    ],
+    correct: 1,
+    explanation: 'Omnichannel: kunden bestiller online, returnerer i butik. Eller køber i butik, får leveret hjem. Lageret skal servicere alle kanaler fra ét sted. Det kræver fleksible WMS-systemer, integration og realtidsoverblik over beholdning på tværs af alle salgskanaler.'
+},
+{
+    id: 207,
+    category: 'Generelt Logistik',
+    q: 'Hvad er en AGV (Automated Guided Vehicle)?',
+    options: [
+        'Et automatisk genereret vognnummer til lastbiler',
+        'Et førerløst køretøj der navigerer autonomt i lageret via magneter, sensorer eller lasere for at transportere varer',
+        'Et system til automatisk at guide gæster rundt på lagerbesøg',
+        'Et køretøj med automatik gearkasse'
+    ],
+    correct: 1,
+    explanation: 'AGVer kører selv rundt i lageret og transporterer paller, kasser eller reoler. De følger magnetbånd i gulvet, bruger lasersensorer eller kameraer til navigation. De kører 24/7, aldrig holder frokostpause, og reducerer ulykker med gaffeltrucks.'
+},
+{
+    id: 208,
+    category: 'Generelt Logistik',
+    q: 'Hvad er en AMR (Autonomous Mobile Robot)?',
+    options: [
+        'En automatisk murer-robot til bygning af lagerhaller',
+        'En avanceret lagerrobot der navigerer selvstændigt uden faste ruter — bruger kameraer, sensorer og AI til at finde vej',
+        'Et antimissil-radarsystem til nationale lagre',
+        'En automatisk mailrobot der distribuerer post i kontoret'
+    ],
+    correct: 1,
+    explanation: 'AMR er næste generation efter AGV. Hvor AGVer følger faste ruter (magneter/bånd), navigerer AMRer frit ved hjælp af kameraer, lidar og AI. De kan undvige forhindringer, finde korteste rute og tilpasse sig ændringer i lagerlayoutet. Fx Amazons Kiva-robotter.'
+},
+{
+    id: 209,
+    category: 'Generelt Logistik',
+    q: 'Hvad er "goods-to-person" (GTP) teknologi?',
+    options: [
+        'En leveringsservice der bringer dagligvarer til ældre borgere',
+        'Robotter eller automatiserede systemer der bringer varerne hen til plukkeren i stedet for at plukkeren går hen til varerne',
+        'En person der manuelt bærer gods fra A til B',
+        'En type kundeservice-chat om godsleverancer'
+    ],
+    correct: 1,
+    explanation: 'GTP vender traditionelt lagerprincipper på hovedet: plukkeren står stille, og robotter (fx AutoStore, Kiva) bringer de rigtige hylder/kasser til plukkestationen. Det eliminerer gangafstand, øger plukhastigheden 4-5 gange og reducerer pladsbehov.'
+},
+{
+    id: 210,
+    category: 'Generelt Logistik',
+    q: 'Hvad er "AutoStore" i lagersammenhæng?',
+    options: [
+        'En funktion i WMS der automatisk gemmer dokumenter',
+        'Et automatisk butikskoncept uden personale',
+        'Et robotbaseret lagersystem hvor robotter kører oven på et gitter og henter kasser fra en tætpakket stabel — ekstremt pladsbesparende',
+        'Et automatisk dørsystem til lagerporten'
+    ],
+    correct: 2,
+    explanation: 'AutoStore: plastikbeholdere stables tæt i et gitter. Robotter kører oven på gitteret og graver de rigtige kasser frem. Plukkeren står ved en port (port), og robotten bringer kassen til dem. Det udnytter 4 gange mindre plads end traditionelle lager. Norsk opfindelse.'
+},
+{
+    id: 211,
+    category: 'Generelt Logistik',
+    q: 'Hvad er "predictive analytics" i logistik?',
+    options: [
+        'Software der forudsiger hvornår medarbejdere vil sige op',
+        'Brugen af historiske data, maskinlæring og statistik til at forudsige fremtidige begivenheder som efterspørgsel, forsinkelser eller maskinnedbrud',
+        'Analytiske beregninger der altid forudsiger det rigtige — med 100% nøjagtighed',
+        'En type psykisk evne mennesker i logistik udvikler over tid'
+    ],
+    correct: 1,
+    explanation: 'Predictive analytics: algoritmer analyserer store datamængder og identificerer mønstre. Fx: "baseret på tidligere data og vejrudsigten vil efterspørgslen stige 15% i uge 48." Eller: "Transportforsinkelse sandsynlig på rute X pga. vejarbejde." Det giver proaktiv handling.'
+},
+{
+    id: 212,
+    category: 'Generelt Logistik',
+    q: 'Hvad er "dark warehouse" (mørkt lager)?',
+    options: [
+        'Et lager med defekt belysning',
+        'Et fuldt automatiseret lager der kører uden mennesker og lys — robotter behøver ikke lys og kan arbejde 24/7 i mørke',
+        'Et lager der kun er åbent om natten',
+        'Et lager med sortmalede vægge for at reducere refleksioner'
+    ],
+    correct: 1,
+    explanation: 'Dark warehouse: ingen mennesker, intet lys nødvendigt. Robotter og AS/RS-systemer klarer al ind- og udlagring, plukning og transport. Fordelene: lavere energiforbrug (intet lys, ingen opvarmning), 24/7 drift, ingen personalomkostninger, færre fejl.'
+},
+{
+    id: 213,
+    category: 'Generelt Logistik',
+    q: 'Hvad er "e-commerce fulfillment"?',
+    options: [
+        'At opfylde medarbejdernes drømme om at arbejde i e-handel',
+        'Den samlede proces fra onlineordre til levering: modtag ordre, pluk, pak, forsend, levér og håndtér eventuelle returneringer',
+        'At oprette en e-commerce hjemmeside',
+        'At sende reklame-emails til kunder'
+    ],
+    correct: 1,
+    explanation: 'E-commerce fulfillment er hele ordreprocessen: ordremodtagelse fra webshoppen → plukning → pakning (ofte individuelt tilpasset) → forsendelse → track-and-trace → evt. returnering. Hastighed og præcision er afgørende — kunden forventer 1-2 dages levering.'
+},
+{
+    id: 214,
+    category: 'Generelt Logistik',
+    q: 'Hvad er "dropshipping"?',
+    options: [
+        'En model hvor sælger aldrig har varerne fysisk — ordrer sendes direkte fra leverandøren til slutkunden',
+        'En teknik til at droppe pakker fra droner',
+        'At slippe varer ned fra øverste hylde',
+        'En metode til at skippere varer over vand'
+    ],
+    correct: 0,
+    explanation: 'Dropshipping: du sælger varer i din webshop, men ejer intet lager. Når kunden bestiller, sendes ordren til din leverandør, som sender direkte til kunden i dit navn. Fordel: ingen lagerrisiko. Ulempe: lavere marginer, ingen kontrol over kvalitet/levering.'
+},
+{
+    id: 215,
+    category: 'Generelt Logistik',
+    q: 'Hvad er "micro-fulfillment center" (MFC)?',
+    options: [
+        'En lillebitte fabrik der fremstiller mikrochips',
+        'Et lille, ofte automatiseret lager placeret tæt på slutkunden (fx i baglokalet af et supermarked) for ultrahurtig levering',
+        'Et minimalt kontor til administration af opfyldningsordrer',
+        'Et center der måler mikrobølger fra lagerudstyr'
+    ],
+    correct: 1,
+    explanation: 'MFC: minilagre (500-3000 m²) placeret i byer, tæt på kunderne. Ofte med AutoStore eller shuttlesystemer. De muliggør levering inden for 1-2 timer. Brugt af supermarkeder til online dagligvarerer og af retailere til same-day delivery. Tendensen vokser eksplosivt.'
+},
+{
+    id: 216,
+    category: 'Generelt Logistik',
+    q: 'Hvad er "dronelevering" i logistik?',
+    options: [
+        'At en drone overvåger medarbejderne',
+        'Brug af ubemandede flyvende droner til at levere pakker direkte til kundens dør — typisk for lette pakker over korte afstande',
+        'At bruge droner til at optage reklamefilm for logistikfirmaer',
+        'En metode til at inspicere taget på lagerbygningen'
+    ],
+    correct: 1,
+    explanation: 'Dronelevering: droner flyver pakker (typisk under 5 kg) direkte til kunden over 5-15 km. Testpilotprojekter kører hos Amazon (Prime Air), Google (Wing) og andre. Udfordringer: regulering, rækkevidde, vægt, vejrforhold, støj og luftrumskontrol.'
+},
+{
+    id: 217,
+    category: 'Lagerstyring',
+    q: 'Hvad er Wilsons formel (EOQ) brugt til?',
+    options: [
+        'At beregne den optimale ordrestørrelse der minimerer de samlede lager- og ordreomkostninger',
+        'At beregne lagerbygningens optimale temperatur',
+        'At beregne hvor mange medarbejdere der skal ansættes',
+        'At beregne transporttiden mellem to byer'
+    ],
+    correct: 0,
+    explanation: 'EOQ (Economic Order Quantity) = √(2DS/H), hvor D = årligt forbrug, S = ordreomkostning, H = lageromkostning per enhed per år. Den finder det sweet spot hvor man bestiller nok til at holde ordreomkostningerne lave, men ikke så meget at lageromkostningerne eksploderer.'
+},
+{
+    id: 218,
+    category: 'Lagerstyring',
+    q: 'Hvad er en genbestillingspunkt (reorder point)?',
+    options: [
+        'Det tidspunkt på dagen hvor man helst skal genbestille (kl. 9.00)',
+        'Den lagerbeholdning hvor man skal bestille nye varer for at undgå at gå tom — beregnet som forbrug i leveringstiden + sikkerhedslager',
+        'Det punkt i lageret hvor genbrugsaffald opsamles',
+        'Den dato hvor leverandøren genbestiller fra sin leverandør'
+    ],
+    correct: 1,
+    explanation: 'Genbestillingspunkt = dagsforbrug × leveringstid + sikkerhedslager. Fx: bruger du 10 stk./dag, og leveringstid er 5 dage, med sikkerhedslager 20 stk., er dit genbestillingspunkt 10×5+20 = 70 stk. Når lageret rammer 70, bestiller du.'
+},
+{
+    id: 219,
+    category: 'Lagerstyring',
+    q: 'Hvad er "sæsonlager"?',
+    options: [
+        'Et midlertidigt lager der kun eksisterer om sommeren',
+        'Ekstra lager der opbygges før en forventet sæsonmæssig stigning i efterspørgslen',
+        'Et lager til opbevaring af julepynt og påskeæg',
+        'Et lager med naturlig ventilation der kun virker i foråret'
+    ],
+    correct: 1,
+    explanation: 'Sæsonlager: man producerer eller indkøber på forhånd for at være klar til sæsonen. Fx bygger isgrossisten lager op i vinter/forår for at dække sommerens efterspørgsel. Det udjævner produktionen men binder kapital og kræver plads. Alternativ: fleksibel kapacitet.'
+},
+{
+    id: 220,
+    category: 'Generelt Logistik',
+    q: 'Hvad er formålet med et "control tower" i supply chain?',
+    options: [
+        'Et højt kontroltårn midt i lageret for at overvåge medarbejderne',
+        'Et flyveledertårn i en lufthavn',
+        'En central funktion der giver realtidsoverblik over hele forsyningskæden og muliggør proaktiv styring af forsinkelser og problemer',
+        'Et tårn af containere stablet oven på hinanden'
+    ],
+    correct: 2,
+    explanation: 'Supply chain control tower: et centralt overblikscenter med dashboards der viser status i realtid — hvor er varerne, er noget forsinket, hvad er lagerniveauerne, hvor er der risici? Det giver evnen til at handle proaktivt i stedet for at reagere, når problemet allerede er opstått.'
 }
 
 ];
+
 
 // ============================================================
 // QUIZ ENGINE
@@ -1845,87 +3264,77 @@ const LearnQuiz = {
 
 // ============================================================
 // TRUE / FALSE QUESTION BANK
-// 60 statements — half true, half false — covering all 10 cats
+// 50 statements covering all categories
 // ============================================================
 
 const learnTrueFalseBank = [
-// --- ABC Analyse ---
-{ statement: 'I en ABC-analyse udgør A-varer typisk ca. 20% af varerne og ca. 80% af værdien.', answer: true, explanation: 'Korrekt — dette er Pareto-princippet (80/20-reglen) som ABC-analyse er baseret på.' },
-{ statement: 'C-varer bør altid kasseres fra lageret, da de har lav værdi.', answer: false, explanation: 'Forkert — C-varer har lav værdi men kan stadig være nødvendige. De styres blot med enklere metoder og mindre overvågning.' },
-{ statement: 'ABC-analyse kan kun anvendes på fysiske lagervarer.', answer: false, explanation: 'Forkert — ABC-analyse kan bruges på alt med værdifordeling: kunder, leverandører, projekter, services, osv.' },
-{ statement: 'A-varer kræver tættere lagerstyring og hyppigere optælling end C-varer.', answer: true, explanation: 'Korrekt — A-varer er højværdi og bør overvåges tæt, fx med cyklisk optælling.' },
-{ statement: 'I en standard ABC-analyse kan en vare kun tilhøre én kategori ad gangen.', answer: true, explanation: 'Korrekt — hver vare klassificeres som enten A, B eller C baseret på dens kumulative andel af totalværdien.' },
-{ statement: 'Pareto-princippet siger at 50% af varerne står for 50% af værdien.', answer: false, explanation: 'Forkert — Pareto-princippet (80/20-reglen) siger at ca. 20% af varerne typisk udgør ca. 80% af værdien.' },
-
-// --- ABC Dobbelt ---
-{ statement: 'ABC Dobbelt Analyse kombinerer værdi og forbrugsmængde i en 3×3 matrix.', answer: true, explanation: 'Korrekt — man får 9 kategorier (AA, AB, AC, BA, BB, BC, CA, CB, CC) ved at krydse værdi-ABC med forbrugs-ABC.' },
-{ statement: 'En AA-vare i ABC Dobbelt har høj værdi OG højt forbrug og kræver mindst opmærksomhed.', answer: false, explanation: 'Forkert — AA-varer kræver MEST opmærksomhed, da de er kritiske på begge dimensioner.' },
-{ statement: 'En AC-vare og en CA-vare bør styres på præcis samme måde.', answer: false, explanation: 'Forkert — AC (høj værdi, lavt forbrug) styres anderledes end CA (lav værdi, højt forbrug). AC kræver sikring mod dyr kapitalbinding, CA kræver effektiv forsyning.' },
-{ statement: 'ABC Dobbelt giver en mere nuanceret klassificering end standard ABC-analyse.', answer: true, explanation: 'Korrekt — ved at tilføje en ekstra dimension (forbrug) opnår man mere præcis styring af varer.' },
-
-// --- Wilson EOQ ---
-{ statement: 'Wilson\'s EOQ-formel finder den ordrestørrelse der minimerer de samlede lageromkostninger.', answer: true, explanation: 'Korrekt — EOQ = √(2DS/H) minimerer summen af ordreomkostninger og lageromkostninger.' },
-{ statement: 'Hvis ordreomkostningen S stiger, vil den optimale ordrestørrelse (EOQ) falde.', answer: false, explanation: 'Forkert — S er i tælleren under kvadratroden. Højere S → større EOQ → man bestiller mere per gang for at reducere antallet af ordrer.' },
-{ statement: 'EOQ-formlen antager at efterspørgslen er konstant og kendt.', answer: true, explanation: 'Korrekt — det er en af grundforudsætningerne for Wilson\'s formel.' },
-{ statement: 'H i Wilson\'s formel er ordreomkostningen per ordre.', answer: false, explanation: 'Forkert — H er lageromkostningen per enhed per år (typisk pris × rente). S er ordreomkostningen.' },
-{ statement: 'Ved EOQ er de årlige ordreomkostninger lig med de årlige lageromkostninger.', answer: true, explanation: 'Korrekt — dette er en matematisk egenskab ved EOQ: de to omkostningskomponenter er præcis lige store ved den optimale ordrestørrelse.' },
-{ statement: 'EOQ tager højde for kapacitetsbegrænsninger på lageret.', answer: false, explanation: 'Forkert — basis-EOQ antager ubegrænset lagerkapacitet. Man bør justere resultatet manuelt for fysiske begrænsninger.' },
-
 // --- Lagerstyring ---
-{ statement: 'Genbestillingspunktet (ROP) beregnes som dagligt forbrug gange leveringstid plus sikkerhedslager.', answer: true, explanation: 'Korrekt — ROP = (d × L) + SS. Sikkerhedslager beskytter mod udsving i efterspørgsel og leveringstid.' },
-{ statement: 'Et højere serviceniveau fører til et lavere sikkerhedslager.', answer: false, explanation: 'Forkert — højere serviceniveau (fx 99% vs 95%) kræver MERE sikkerhedslager for at undgå stockouts.' },
-{ statement: 'I en periodisk gennemgangsmodel bestilles der ved faste tidsintervaller.', answer: true, explanation: 'Korrekt — fx hver 14. dag gennemgås lagersituationen og der bestilles op til et fastsat målniveau.' },
-{ statement: 'Min/Max modellen bestiller altid den samme mængde ved genbestilling.', answer: false, explanation: 'Forkert i den periodiske variant — ordremængden er Maks minus nuværende beholdning, så den varierer. I den faste variant er ordremængden dog konstant.' },
-{ statement: 'Lageromsætningshastighed beregnes som årligt forbrug divideret med gennemsnitligt lager.', answer: true, explanation: 'Korrekt — lageromsætning viser hvor mange gange lageret omsættes per år. Høj omsætning = effektiv lagerstyring.' },
-{ statement: 'Sikkerhedslager er kun nødvendigt for A-varer.', answer: false, explanation: 'Forkert — alle varekategorier kan have sikkerhedslager, men størrelsen og niveauet varierer. A-varer har typisk mest nøjagtigt beregnet sikkerhedslager.' },
+{ statement: 'FIFO betyder at de ældste varer udleveres først.', answer: true, explanation: 'Korrekt — First In, First Out sikrer, at varer med ældst modtagelsesdato sendes ud først. Vigtigt for fødevarer og varer med udløbsdato.' },
+{ statement: 'Et sikkerhedslager er kun nødvendigt for A-varer i en ABC-analyse.', answer: false, explanation: 'Forkert — alle varekategorier kan have sikkerhedslager, men størrelsen og beregningen varierer. A-varer kræver typisk mere præcist beregnet sikkerhedslager.' },
+{ statement: 'I et flydende lagerplads-system har varer ikke en fast reserveret plads.', answer: true, explanation: 'Korrekt — varer placeres på den første ledige plads. Det giver bedre pladsudnyttelse, men kræver et WMS-system til at holde styr på lokationerne.' },
+{ statement: 'Lageromsætningshastighed beregnes som gennemsnitslager divideret med årsforbrug.', answer: false, explanation: 'Forkert — det er omvendt: lageromsætningshastighed = årligt forbrug / gennemsnitslager. Jo højere tal, jo mere effektiv omsætning af varer.' },
+{ statement: 'Genbestillingspunktet (ROP) beregnes som dagsforbrug × leveringstid + sikkerhedslager.', answer: true, explanation: 'Korrekt — ROP = (d × L) + SS. Det sikrer, at man bestiller nye varer i tide, så lageret ikke løber tørt inden leverancen ankommer.' },
+{ statement: 'ABC-analyse bygger på Pareto-princippet (80/20-reglen).', answer: true, explanation: 'Korrekt — ca. 20% af varerne udgør typisk 80% af den samlede lagerværdi (A-varer). Derfor prioriterer man sin styring efter varernes vigtighed.' },
+{ statement: 'A-varer i en ABC-analyse udgør typisk 50% af varerne og 50% af værdien.', answer: false, explanation: 'Forkert — A-varer udgør typisk kun ca. 20% af antallet, men hele ca. 80% af den samlede værdi. Det er netop pointen med ABC-analyse.' },
+{ statement: 'Cyklisk optælling erstatter den årlige totaltælling med løbende optælling af udvalgte varer.', answer: true, explanation: 'Korrekt — man tæller løbende: fx A-varer ugentligt, B-varer månedligt, C-varer kvartalsvis. Det holder lagersaldoen mere nøjagtig hele året.' },
 
-// --- LEAN ---
-{ statement: '5S står for: Sortér, Systematisér, Skinnende rent, Standardisér, Selvdisciplin.', answer: true, explanation: 'Korrekt — de 5 S\'er (Seiri, Seiton, Seiso, Seiketsu, Shitsuke) er fundamentet i LEAN arbejdsplads-organisering.' },
-{ statement: 'Muda betyder "værdi" på japansk.', answer: false, explanation: 'Forkert — Muda betyder spild. De 7 spildformer er: overproduktion, ventetid, transport, overbearbejdning, lager, bevægelse og fejl/defekter.' },
-{ statement: 'Kanban er et pull-baseret system der styrer produktionen baseret på reelt behov.', answer: true, explanation: 'Korrekt — Kanban er et pull-system: først når en vare forbruges, signaleres genopfyldning. Modsat push-systemer der producerer baseret på prognoser (forecasts).' },
-{ statement: 'OEE (Overall Equipment Effectiveness) beregnes som Tilgængelighed × Ydelse × Kvalitet.', answer: true, explanation: 'Korrekt — OEE = A × P × Q. Verdensklasse er typisk 85%+.' },
-{ statement: 'Kaizen handler om store, sjældne forandringsprocesser.', answer: false, explanation: 'Forkert — Kaizen betyder "kontinuerlig forbedring" med mange små, daglige forbedringer over tid. Det er det modsatte af store engangstransformationer.' },
-{ statement: 'Just-in-Time (JIT) betyder at man har store sikkerhedslagre for at undgå leveringsproblemer.', answer: false, explanation: 'Forkert — JIT handler om at modtage varer præcis når de skal bruges, med minimalt lager. Store sikkerhedslagre modarbejder JIT-princippet.' },
-{ statement: 'En Gemba-walk bruges af ledere til at observere arbejdsprocesser direkte på gulvet.', answer: true, explanation: 'Korrekt — Gemba = "det virkelige sted". Ledere går ud på gulvet for at se processer, tale med medarbejdere og identificere forbedringer.' },
-{ statement: 'Poka-Yoke er en japansk teknik til fejlsikring af processer.', answer: true, explanation: 'Korrekt — Poka-Yoke designer processer/produkter så fejl enten forhindres (prevention) eller opdages straks (detection).' },
+// --- Lean ---
+{ statement: '5S står for: Sortér, Systematisér, Skinnende rent, Standardisér, Selvdisciplin.', answer: true, explanation: 'Korrekt — de 5S (Seiri, Seiton, Seiso, Seiketsu, Shitsuke) er fundamentet for en velorganiseret arbejdsplads i Lean.' },
+{ statement: 'Muda betyder "værdi" på japansk.', answer: false, explanation: 'Forkert — Muda betyder spild. Alt der ikke skaber værdi for kunden betragtes som spild i Lean-tankegang.' },
+{ statement: 'Kanban er et pull-baseret system, der styrer produktion efter reelt forbrug.', answer: true, explanation: 'Korrekt — først når en vare er brugt, sendes et signal om genopfyldning. Det modvirker overproduktion og for store lagre.' },
+{ statement: 'Kaizen handler om store, sjældne forandringsprocesser.', answer: false, explanation: 'Forkert — Kaizen handler om mange små, daglige forbedringer. Det er det modsatte af store engangstransformationer.' },
+{ statement: 'OEE beregnes som Tilgængelighed × Ydelse × Kvalitet.', answer: true, explanation: 'Korrekt — OEE (Overall Equipment Effectiveness) = A × P × Q. Verdensklasse er typisk 85% eller derover.' },
+{ statement: 'Just-in-Time (JIT) kræver store sikkerhedslagre for at fungere.', answer: false, explanation: 'Forkert — JIT handler netop om at minimere lager. Varer ankommer præcis når de skal bruges. Store lagre modarbejder JIT-princippet.' },
+{ statement: 'Poka-Yoke er en fejlsikringsteknik der forhindrer eller opdager fejl med det samme.', answer: true, explanation: 'Korrekt — Poka-Yoke designer processer, så fejl enten ikke kan ske, eller opdages straks. Et USB-stik der kun passer én vej er et godt eksempel.' },
+{ statement: 'En Gemba-walk bruges af ledere til at observere arbejdsprocesser direkte på gulvet.', answer: true, explanation: 'Korrekt — Gemba = "det virkelige sted". Lederen går ud på gulvet for at se, spørge og forstå — ikke for at kontrollere.' },
+{ statement: 'Value Stream Mapping (VSM) er et regnskabsværktøj til at beregne lagerværdi.', answer: false, explanation: 'Forkert — VSM er en Lean-teknik, der visuelt kortlægger alle trin i en proces fra start til slut for at identificere spild og forbedringspotentiale.' },
 
 // --- Supply Chain ---
-{ statement: 'TCO (Total Cost of Ownership) inkluderer kun indkøbsprisen for en vare.', answer: false, explanation: 'Forkert — TCO inkluderer alle omkostninger over varens levetid: indkøb, transport, lager, vedligehold, kassation osv.' },
-{ statement: 'Bullwhip-effekten beskriver hvordan små udsving i efterspørgsel forstærkes op gennem forsyningskæden.', answer: true, explanation: 'Korrekt — en lille ændring hos slutkunden kan skabe store svingninger i ordrer længere oppe i kæden.' },
-{ statement: 'Cross-docking eliminerer lageropbevaring ved at omlade varer direkte fra indgående til udgående transport.', answer: true, explanation: 'Korrekt — varer ankommer og sorteres direkte til udgående forsendelser uden at blive lagt på lager.' },
-{ statement: 'I en forsyningskæde er det altid billigst at have ét centralt lager.', answer: false, explanation: 'Forkert — det optimale antal lagre afhænger af transportomkostninger, leveringstider, og kundeservice-krav. Flere lagre kan reducere leveringstider men øger lageromkostninger.' },
-{ statement: 'Sidste kilometer-levering (last mile) er typisk den billigste del af fragtprocessen.', answer: false, explanation: 'Forkert — Sidste kilometer-leveringen er typisk den dyreste del (op til 50% af total fragt) pga. mange små leveringer til individuelle adresser.' },
-{ statement: 'En 3PL-udbyder er en tredjepart som håndterer logistikoperationer for en virksomhed.', answer: true, explanation: 'Korrekt — Third Party Logistics (3PL) udbydere varetager fx lager, plukning, pakning og transport for andre virksomheder.' },
+{ statement: 'Bullwhip-effekten beskriver, at små udsving i efterspørgsel forstærkes op gennem forsyningskæden.', answer: true, explanation: 'Korrekt — en lille ændring hos slutkunden kan skabe store ordresvingninger længere oppe i kæden, fordi hvert led overreagerer.' },
+{ statement: 'TCO inkluderer kun selve indkøbsprisen for en vare.', answer: false, explanation: 'Forkert — TCO (Total Cost of Ownership) inkluderer alle omkostninger: indkøb, transport, lager, vedligehold, bortskaffelse osv.' },
+{ statement: 'Cross-docking eliminerer lageropbevaring ved at omlaste direkte fra indgående til udgående transport.', answer: true, explanation: 'Korrekt — varer sorteres og sendes videre med det samme, uden at blive lagt på lager. Det sparer tid og plads.' },
+{ statement: 'I en forsyningskæde er det altid billigst at have kun ét centralt lager.', answer: false, explanation: 'Forkert — det optimale antal lagre afhænger af transportomkostninger, leveringstider og kundeservice-krav. Flere lagre kan give bedre service.' },
+{ statement: 'Sidste kilometer-levering (last mile) er typisk den dyreste del af fragtprocessen.', answer: true, explanation: 'Korrekt — op til 50% af fragtens totalomkostning kan ligge i sidste kilometer, fordi der er mange individuelle stop med små leverancer.' },
+{ statement: '3PL står for Third Party Logistics og handler om outsourcing af logistikoperationer.', answer: true, explanation: 'Korrekt — 3PL-udbydere varetager lager, distribution og transport for andre virksomheder, så de kan fokusere på deres kerneprodukter.' },
+{ statement: 'Lead time er den tid en medarbejder bruger på frokostpause.', answer: false, explanation: 'Forkert — lead time er den samlede tid fra bestilling afgives til varerne er modtaget og klar til brug. Det er en af de vigtigste KPIer i logistik.' },
 
-// --- Warehouse ---
-{ statement: 'FIFO-princippet betyder at de ældste varer udleveres først.', answer: true, explanation: 'Korrekt — First In, First Out sikrer at ældre varer bruges/sendes først, hvilket er vigtigt for fødevarer og varer med udløbsdato.' },
-{ statement: 'I en stemmestyret plukløsning (voice picking) aflæser plukkeren stregkoder fra en liste.', answer: false, explanation: 'Forkert — Stemmestyret plukning (voice picking) bruger headset med stemmekommandoer. Plukkeren hører instruktioner og bekræfter mundtligt, hvilket giver frie hænder.' },
-{ statement: 'Lysstyret plukning (pick-to-light) guider plukkeren med lysdioder der viser hvilken lokation der skal plukkes fra.', answer: true, explanation: 'Korrekt — lysdioder tændes ved den relevante lokation og viser antal der skal plukkes.' },
-{ statement: 'Zone-plukning betyder at hele ordren plukkes af én person der går gennem alle zoner.', answer: false, explanation: 'Forkert — ved zone-plukning er lageret opdelt i zoner, og hver plukker arbejder kun i sin zone. Ordrerne samles derefter.' },
-{ statement: 'Et WMS (Warehouse Management System) styrer og optimerer lageroperationer digitalt.', answer: true, explanation: 'Korrekt — WMS håndterer modtagelse, læggepladser, plukning, pakning, forsendelse og lageroptælling.' },
-{ statement: 'Batch-plukning samler flere ordrer i én plukrunde for at spare gangtid.', answer: true, explanation: 'Korrekt — flere ordrer plukkes samtidig, sorteres bagefter. Effektivt ved mange små ordrer.' },
+// --- Leveringsbetingelser ---
+{ statement: 'Franco levering betyder at sælger betaler fragten til leveringsstedet.', answer: true, explanation: 'Korrekt — franco = frit leveret. Sælger betaler transporten. Mange leverandører har en beløbsgrænse for franco-levering.' },
+{ statement: 'Ufranco levering betyder at varerne er gratis for kunden.', answer: false, explanation: 'Forkert — ufranco betyder at kunden betaler fragten. Det har ingenting med varens pris at gøre.' },
+{ statement: 'Incoterms er internationale handelsregler udgivet af ICC.', answer: true, explanation: 'Korrekt — Incoterms standardiserer ansvar og omkostningsfordeling mellem køber og sælger i international handel.' },
+{ statement: 'EXW (Ex Works) giver mest ansvar til sælgeren af alle Incoterms.', answer: false, explanation: 'Forkert — EXW giver MINDST ansvar til sælgeren. Sælger gør kun varen klar til afhentning. Alt andet er købers risiko og omkostning.' },
 
-// --- Sikkerhed & ADR ---
-{ statement: 'ADR omhandler international transport af farligt gods ad vej.', answer: true, explanation: 'Korrekt — ADR (Accord européen relatif au transport international des marchandises Dangereuses par Route) regulerer vejtransport af farligt gods i Europa.' },
-{ statement: 'Ergonomisk løfteteknik anbefaler at man løfter med bøjet ryg og strakte ben.', answer: false, explanation: 'Forkert — korrekt løfteteknik er: bøjede knæ, ret ryg, tæt ved kroppen. Aldrig løft med bøjet ryg!' },
-{ statement: 'Man skal altid bære sikkerhedssko i et lagerområde.', answer: true, explanation: 'Korrekt — sikkerhedssko med stålnæse er et minimumskrav i de fleste lageroperationer for at beskytte mod faldende genstande.' },
-{ statement: 'Orange ADR-faresedler med bombesymbol angiver brandfarlige væsker.', answer: false, explanation: 'Forkert — bombesymbolet angiver eksplosive stoffer (klasse 1). Brandfarlige væsker har flammesymbolet (klasse 3).' },
-{ statement: 'SDS (Safety Data Sheet) indeholder oplysninger om kemikaliers farlighed og håndtering.', answer: true, explanation: 'Korrekt — sikkerhedsdatablade er lovpligtige for farlige kemikalier og angiver bl.a. fareklasse, førstehjælp, opbevaringskrav og bortskaffelse.' },
-{ statement: 'En truck kan køres uden certifikat, hvis man har almindeligt kørekort.', answer: false, explanation: 'Forkert — gaffeltruckkørsel kræver et specielt truckcertifikat/kørekort og relevant oplæring.' },
+// --- ERP & IT ---
+{ statement: 'ERP står for Enterprise Resource Planning og er et samlet IT-system for hele virksomheden.', answer: true, explanation: 'Korrekt — ERP integrerer økonomi, lager, indkøb, produktion, HR m.m. i én database, så alle arbejder med de samme data.' },
+{ statement: 'Et WMS-system styrer kun kasseopgørelser og regnskab.', answer: false, explanation: 'Forkert — WMS (Warehouse Management System) styrer lageroperationer: modtagelse, placering, plukning, pakning og forsendelse.' },
+{ statement: 'RFID kan aflæses uden direkte synslinje, i modsætning til stregkoder.', answer: true, explanation: 'Korrekt — RFID bruger radiobølger og kan læses gennem emballage og på afstand. Stregkoder kræver direkte synslinje.' },
+{ statement: 'EDI bruges til at sende ferieansøgninger mellem medarbejdere.', answer: false, explanation: 'Forkert — EDI (Electronic Data Interchange) er elektronisk udveksling af forretningsdokumenter (ordrer, fakturaer, forsendelsesdata) mellem virksomheders IT-systemer.' },
 
-// --- Budget & Økonomi ---
-{ statement: 'Variable omkostninger ændrer sig med produktionsmængden.', answer: true, explanation: 'Korrekt — variable omkostninger (fx råmaterialer, fragt per enhed) stiger og falder med aktivitetsniveauet.' },
-{ statement: 'Dækningsbidrag beregnes som salgspris minus faste omkostninger.', answer: false, explanation: 'Forkert — dækningsbidrag = salgspris minus variable omkostninger. Det hedder dækningsbidrag fordi det skal "dække" de faste omkostninger.' },
-{ statement: 'Break-even er det punkt hvor omsætningen præcis dækker alle omkostninger.', answer: true, explanation: 'Korrekt — ved break-even er profit = 0. Virksomheden tjener hverken penge eller taber.' },
-{ statement: 'Lageromkostninger er typisk 15-30% af varens værdi per år.', answer: true, explanation: 'Korrekt — det inkluderer kapitalomkostning, forsikring, svind, forældelse, lagerplads og håndtering.' },
+// --- Transport ---
+{ statement: 'Intermodal transport kombinerer flere transportformer, fx lastbil, tog og skib.', answer: true, explanation: 'Korrekt — intermodal transport udnytter styrkerne ved flere transportformer for at optimere pris, hastighed og miljøbelastning.' },
+{ statement: 'Et CMR-fragtbrev er kun påkrævet ved indenrigs transport i Danmark.', answer: false, explanation: 'Forkert — CMR bruges ved international vejtransport i Europa. Det dokumenterer fragtaftalen og godsdetaljerne.' },
+{ statement: 'Kabotage er indenrigskørsel i et land udført af et udenlandsk transportfirma.', answer: true, explanation: 'Korrekt — fx en polsk vognmand der kører en tur fra Aalborg til København. EU har regler der begrænser antal kabotage-ture.' },
 
-// --- Stregkoder / QR / Generelt ---
-{ statement: 'EAN-13 er den standardstregkode der bruges på de fleste dagligvarer i Europa.', answer: true, explanation: 'Korrekt — EAN-13 (European Article Number) er den 13-cifrede stregkode man ser på stort set alle detailvarer.' },
-{ statement: 'En QR-kode kan kun indeholde tal.', answer: false, explanation: 'Forkert — QR-koder kan indeholde tekst, URL\'er, kontaktinfo, WiFi-indstillinger, binære data og meget mere.' },
-{ statement: 'RFID-tags kræver direkte synslinje for at kunne aflæses.', answer: false, explanation: 'Forkert — RFID kan aflæses uden synslinje, gennem emballage, kasser m.m. Det er en af de store fordele i forhold til stregkoder.' },
-{ statement: 'CODE-128 kan indeholde alle 128 ASCII-tegn inklusiv tal og bogstaver.', answer: true, explanation: 'Korrekt — CODE-128 er en alsidig stregkode der understøtter hele ASCII-tegnsættet.' },
-{ statement: 'KPI står for Key Performance Indicator og bruges til at måle virksomhedens præstation.', answer: true, explanation: 'Korrekt — KPIer er nøgletal der viser, hvor godt en proces eller virksomhed performer i forhold til fastsatte mål.' },
-{ statement: 'IoT i logistik bruges kun til temperaturstyring af kølevarer.', answer: false, explanation: 'Forkert — IoT bruges også til GPS-tracking, lagerniveauovervågning, maskinsensorer, predictive maintenance og meget mere.' },
+// --- Sikkerhed ---
+{ statement: 'ADR regulerer vejtransport af farligt gods i Europa.', answer: true, explanation: 'Korrekt — ADR sikrer, at farligt gods (kemikalier, brændstoffer, eksplosiver) transporteres sikkert med korrekt mærkning, emballage og dokumentation.' },
+{ statement: 'Man kan køre gaffeltruck uden certifikat, hvis man har et almindeligt kørekort.', answer: false, explanation: 'Forkert — gaffeltruckkørsel kræver et specielt truckcertifikat efter bestået teori og praktisk prøve.' },
+{ statement: 'Korrekt løfteteknik er: bøjede knæ, ret ryg og byrden tæt ved kroppen.', answer: true, explanation: 'Korrekt — forkert løfteteknik er en af de mest almindelige årsager til rygskader i lagerjobs.' },
+{ statement: 'SDS (Safety Data Sheet) indeholder oplysninger om kemikaliers farlighed og håndtering.', answer: true, explanation: 'Korrekt — sikkerhedsdatablade er lovpligtige for farlige kemikalier og indeholder 16 sektioner om alt fra fareidentifikation til bortskaffelse.' },
+{ statement: 'Sikkerhedssko med stålnæse er kun påkrævet i fødevarelagre.', answer: false, explanation: 'Forkert — sikkerhedssko er typisk påkrævet i de fleste lagertyper for at beskytte mod faldende genstande og klemskader.' },
+
+// --- Virksomhed & Økonomi ---
+{ statement: 'Dækningsbidrag beregnes som salgspris minus variable omkostninger.', answer: true, explanation: 'Korrekt — dækningsbidraget skal "dække" de faste omkostninger. Det der er til overs derefter er overskud.' },
+{ statement: 'Dækningsbidrag beregnes som salgspris minus faste omkostninger.', answer: false, explanation: 'Forkert — dækningsbidrag = salgspris minus VARIABLE omkostninger. De faste omkostninger trækkes fra dækningsbidraget for at finde resultatet (overskud/underskud).' },
+{ statement: 'Break-even er det punkt hvor omsætningen præcis dækker alle omkostninger.', answer: true, explanation: 'Korrekt — ved break-even er profit = 0. Virksomheden hverken tjener eller taber penge.' },
+{ statement: 'Variable omkostninger er konstante uanset produktionsmængden.', answer: false, explanation: 'Forkert — variable omkostninger ændrer sig med aktiviteten. Flere producerede enheder = højere variable omkostninger (råvarer, emballage osv.).' },
+{ statement: 'Lageromkostninger udgør typisk 15-30% af varens værdi per år.', answer: true, explanation: 'Korrekt — det inkluderer kapitalbinding, forsikring, svind, forældelse, lagerplads og håndtering.' },
+{ statement: 'KPI står for Key Performance Indicator og bruges til at måle præstation.', answer: true, explanation: 'Korrekt — KPIer omsætter strategi til målbare tal, fx leveringspræcision, lageromsætning og plukkefejlrate.' },
+
+// --- Generelt Logistik ---
+{ statement: 'Wilsons EOQ-formel finder den ordrestørrelse der minimerer samlede lageromkostninger.', answer: true, explanation: 'Korrekt — EOQ = √(2DS/H) minimerer summen af ordreomkostninger og lageromkostninger.' },
+{ statement: 'ISO 9001 er en standard for truckcertificering.', answer: false, explanation: 'Forkert — ISO 9001 er en international standard for kvalitetsledelsessystemer. Den handler om virksomhedens kvalitetsstyring, ikke om truckkørsel.' },
+{ statement: 'Reverse logistics handler om returnering, genanvendelse og bortskaffelse af produkter.', answer: true, explanation: 'Korrekt — reverse logistics er logistikken "den anden vej" — fra kunde tilbage til virksomheden eller til genbrug/bortskaffelse.' },
+{ statement: 'Lean warehousing handler udelukkende om at reducere antallet af medarbejdere.', answer: false, explanation: 'Forkert — lean warehousing handler om at fjerne spild i processer og øge effektiviteten. Det handler om smartere arbejde, ikke nødvendigvis færre medarbejdere.' },
 ];
 
 
@@ -2310,7 +3719,7 @@ const LearnTrueFalse = {
                     <div class="flex-1">
                         <p class="text-sm font-semibold text-gray-900 dark:text-white">${q.statement}</p>
                         <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Svar: <strong>${q.answer ? 'SANDT' : 'FALSK'}</strong></p>
-                        ${!isCorrect ? `<p class="text-xs text-gray-600 dark:text-gray-300 mt-1 bg-white dark:bg-gray-800 p-2 rounded-lg border border-gray-200 dark:border-gray-700"><strong>💡</strong> ${q.explanation}</p>` : ''}
+                        ${!isCorrect ? `<p class="text-xs text-gray-500 dark:text-gray-400 mt-1">${q.explanation}</p>` : ''}
                     </div>
                 </div>
             </div>`;
@@ -2319,12 +3728,11 @@ const LearnTrueFalse = {
 
         html += `
             <div class="flex flex-wrap gap-3 justify-center mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
-                <button onclick="LearnTrueFalse.start(${total})" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-colors">🔄 Prøv igen (${total})</button>
+                <button onclick="LearnTrueFalse.start(${this.questions.length})" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-colors">🔄 Prøv igen</button>
                 <button onclick="LearnTrueFalse.backToMenu()" class="px-5 py-2.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-xl font-semibold transition-colors">← Tilbage</button>
             </div>
         `;
         results.innerHTML = html;
-        results.scrollIntoView({ behavior: 'smooth', block: 'start' });
     },
 
     backToMenu() {
@@ -2337,10 +3745,10 @@ const LearnTrueFalse = {
 
 
 // ============================================================
-// CATEGORY QUIZ ENGINE (uses existing quiz bank with category filter)
+// CATEGORY QUIZ
 // ============================================================
 
-const LearnCategoryQuiz = {
+const CategoryQuiz = {
     start(category) {
         // Filter questions by category, then use the main quiz engine
         const pool = learnQuizBank.filter(q => q.category === category);
