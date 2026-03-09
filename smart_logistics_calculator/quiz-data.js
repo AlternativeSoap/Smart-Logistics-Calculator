@@ -3164,7 +3164,7 @@ const LearnQuiz = {
             <div class="text-center mb-8">
                 <div class="text-6xl mb-3">${gradeEmoji}</div>
                 <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Quiz Afsluttet!</h2>
-                <p class="text-lg text-gray-600 dark:text-gray-400 mb-4">${this.mode === 35 ? 'EUC Lillebælt — Lager & Logistikoperatør Afslutningstest' : this.mode + ' spørgsmåls quiz'}</p>
+                <p class="text-lg text-gray-600 dark:text-gray-400 mb-4">${this.mode === 35 ? 'Lager & Logistikoperatør Afslutningstest' : this.mode + ' spørgsmåls quiz'}</p>
                 <div class="inline-flex items-center gap-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg px-8 py-5 border border-gray-200 dark:border-gray-700">
                     <div class="text-center">
                         <p class="text-4xl font-black ${correct === this.mode ? 'text-green-600' : pct >= 55 ? 'text-blue-600' : 'text-red-600'}">${correct}/${this.mode}</p>
