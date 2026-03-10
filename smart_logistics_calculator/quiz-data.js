@@ -1521,15 +1521,15 @@ const learnQuizBank = [
 {
     id: 113,
     category: 'Sikkerhed',
-    q: 'Hvad er max tilladelig løftemasse for én person ifølge Arbejdstilsynets vejledning?',
+    q: 'Hvad er Arbejdstilsynets vejledende vægtgrænser for løft under optimale forhold (1 person)?',
     options: [
-        'Der er ingen grænse, bare man bruger korrekt teknik',
-        'Op til 50 kg under alle omstændigheder',
-        'Op til 25 kg under optimale forhold (tæt ved kroppen, god højde, køn/fysik vurderes)',
-        'Præcis 10 kg uanset omstændighederne'
+        'Op til 25 kg er altid sikkert, og 50 kg er grænsen for alle',
+        'Op til 12 kg er uproblematisk, 12-18 kg kræver gode stillinger, 18-30 kg er belastende (brug udstyr), over 30 kg bør ikke løftes manuelt',
+        'Præcis 10 kg uanset omstændighederne',
+        'Man må løfte op til 40 kg hvis man bruger korrekt løfteteknik'
     ],
-    correct: 2,
-    explanation: 'Arbejdstilsynet anbefaler max ca. 25 kg under optimale forhold (byrde tæt på kroppen, i god højde, uden vridning). Ved dårlige forhold (rækkeafstand, vridning, højde, hyppighed) sænkes grænsen til 12 kg eller mindre.'
+    correct: 1,
+    explanation: 'Arbejdstilsynets vejledende vægtgrænser (optimale forhold, 1 person): op til 12 kg er generelt uproblematisk, 12-18 kg kræver gode arbejdsstillinger, 18-30 kg er belastende og kræver løfteudstyr, over 30 kg bør som udgangspunkt ikke løftes manuelt. Absolutte maksimum er 50 kg tæt ved kroppen under perfekte forhold. Løft over 15-20 kg anses generelt for belastende. Vigtige faktorer: afstand til kroppen, højde, hyppighed. Ungarbejdere (u. 18 år): max 12 kg. Bæring bør ikke overstige 20 meter. Ved to personer er max 70 kg. Lav altid en APV for præcis vurdering.'
 },
 {
     id: 114,
@@ -2640,7 +2640,7 @@ const learnQuizBank = [
         'Man skal blot have arbejdsgiverens mundtlige tilladelse'
     ],
     correct: 2,
-    explanation: 'I Danmark kræves certifikat. Type A: lavt-løftende palleløfter. Type B: gaffeltruck med løftehøjde over 1 meter. Uddannelsen omfatter teori og praktik. Arbejdstilsynet kan give bøder, hvis ukvalificerede fører truck. Det handler om sikkerhed for alle.'
+    explanation: 'I Danmark kræves certifikat. Type A: gaffelstabler (smalgangstruck/reachtruck med løftehøjde over 1 meter). Type B: gaffeltruck med modvægt (counterbalance). Lavtløftende palleløftere kræver IKKE certifikat. Uddannelsen omfatter teori og praktik. Arbejdstilsynet kan give bøder, hvis ukvalificerede fører truck.'
 },
 {
     id: 197,
