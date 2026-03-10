@@ -1,6 +1,6 @@
 // ============================================================
 // LAGER & LOGISTIK QUIZ — Smart Logistics Calculator
-// 283 multiple choice spørgsmål til TUR-eksamensforberedelse
+// 329 multiple choice spørgsmål til TUR-eksamensforberedelse
 // Emner: lagerstyring, lean, supply chain, ERP, WMS,
 // leveringsbetingelser, transport, sikkerhed, virksomhed m.m.
 // ============================================================
@@ -145,9 +145,9 @@ const learnQuizBank = [
     category: 'Lagerstyring',
     q: 'Hvad er voice picking?',
     options: [
-        'Et system hvor lagerchefen dikterer ordrer over højttaleren',
-        'At diskutere plukkelister mundtligt med kollegaer',
-        'Et oversættelsesprogram til flersprogede lagre',
+        'Et system hvor plukordrer vises på en skærm monteret på gaffeltrucken (pick-by-vision)',
+        'Plukkeren scanner stregkoder med en håndscanner og får næste lokation på display',
+        'Et system med lysindikationer på reolerne, der viser hvor der skal plukkes (pick-by-light)',
         'Plukkeren får stemmeinstruktioner via headset og bekræfter mundtligt, så hænderne er frie'
     ],
     correct: 3,
@@ -762,10 +762,10 @@ const learnQuizBank = [
     category: 'Generelt Logistik',
     q: 'Hvad er "reverse logistics"?',
     options: [
-        'At køre baglæns med gaffeltrucken i smalle gange',
+        'Logistikken fra råvareleverandør til produktionslinje (inbound logistics)',
         'At håndtere returvarer, genanvendelse og bortskaffelse — logistikken "den anden vej"',
-        'At sende varer til forkerte adresser med vilje som test',
-        'En metode til at vende pallerne om, så de kan genbruges'
+        'Planlfægning af den mest effektive leveringsrute til kunden (last-mile delivery)',
+        'Distribution af varer fra centrallager til regionale lagre (outbound logistics)'
     ],
     correct: 1,
     explanation: 'Reverse logistics dækker returhåndtering, reparation, genanvendelse og bortskaffelse. Med stigende e-handel og krav om bæredygtighed er det blevet en vigtig del af moderne logistik.'
@@ -974,10 +974,10 @@ const learnQuizBank = [
     category: 'Lagerstyring',
     q: 'Hvad er wave picking?',
     options: [
-        'En plukmetode hvor medarbejderen vinker til kollegaer, når en ordre er klar',
+        'En metode hvor hver plukker kun plukker i sin tildelte zone af lageret (zone picking)',
         'At plukke ordrer i tidsbaserede bølger, hvor alle ordrer i en bestemt forsendelsesperiode samles og plukkes på én gang',
-        'En teknik til at plukke bølgepapemballage fra hylderne',
-        'En plukmetode der kun bruges i surfshops'
+        'En metode hvor plukkeren samler flere ordrer samtidig på én rute (batch picking)',
+        'En metode hvor én ordre ad gangen plukkes færdig før næste påbegyndes (diskret plukning)'
     ],
     correct: 1,
     explanation: 'Wave picking grupperer ordrer efter forsendelsestidspunkt. Alle ordrer der fx skal afsendes kl. 14: plukkes, pakkes og gøres klar i samme bølge. Det synkroniserer plukning med transport og giver jævnt arbejdsflow.'
@@ -1013,10 +1013,10 @@ const learnQuizBank = [
     category: 'Lagerstyring',
     q: 'Hvad er en "pick-and-pack" station?',
     options: [
-        'Et tilbud i en takeaway-restaurant',
+        'Et separat pakkeri, der modtager plukkede varer fra lageret og emballerer dem',
         'En arbejdsstation hvor ordrer plukkes og pakkes i forsendelsesklar emballage i ét sammenhængende flow',
-        'Et sted hvor medarbejderne vælger deres eget frokostmad',
-        'En særlig type gaffeltruck med indbygget pakkebord'
+        'En station hvor indgående varer pakkes ud og placeres på lager (modtagestation)',
+        'En automatisk maskine der sorterer pakker efter postnummer'
     ],
     correct: 1,
     explanation: 'Pick-and-pack kombinerer plukning og pakning i ét flow. Plukkeren lægger varerne direkte i forsendelseskassen i stedet for først at samle dem i en bakke. Det er effektivt til e-handel med mange enkeltordrer.'
@@ -1054,25 +1054,25 @@ const learnQuizBank = [
 {
     id: 78,
     category: 'Lean',
-    q: 'Hvad er "Takt Time"?',
+    q: 'Hvad er "Takt Time" i Lean?',
     options: [
-        'Den tid det tager at rengøre en maskine efter brug',
-        'Hvorlænge en medarbejder må holde pause',
-        'Den takt eller rytme som produktionen skal køre i for at matche kundeefterspørgslen',
-        'Varslet tid for en planlagt maskinreparation'
+        'Den samlede tid det tager at gennemløbe alle produktionstrin fra start til slut (gennemløbstid)',
+        'Den tid en enkelt maskine kører, før den skal have vedligehold (oppetid)',
+        'Den rytme produktionen skal køre i for at matche kundeefterspørgslen — beregnet som tilgængelig tid / efterspørgsel',
+        'Den tid det tager at omstille en maskine fra ét produkt til et andet (omstillingstid)'
     ],
     correct: 2,
-    explanation: 'Takt Time = tilgængelig produktionstid / kundeefterspørgsel. Hvis kunderne vil have 480 stk. på en 8-timers dag (480 min.), er Takt Time 1 min. per enhed. Det sætter rytmen for hele produktionen.'
+    explanation: 'Takt Time = tilgængelig produktionstid / kundeefterspørgsel. Hvis kunderne vil have 480 stk. på en 8-timers dag (480 min.), er Takt Time 1 min. per enhed. Det sætter rytmen for hele produktionen. Forveksles ofte med cyklustid (tid per enhed) eller gennemløbstid (total tid).'
 },
 {
     id: 79,
     category: 'Lean',
     q: 'Hvad er "Heijunka" i Lean?',
     options: [
-        'En type japansk sushi serveret i kantinen',
+        'Et system til at stoppe produktionen, når der opdages en fejl (jidoka)',
         'En udjævning af produktionen, så man producerer jævnt i stedet for i store svingninger',
-        'En japansk hilseform mellem kolleger',
-        'Det japanske ord for overtidsbetaling'
+        'Et visuelt styringssystem med kort, der signalerer behov for efterfyldning (kanban)',
+        'En metode til at fjerne unødvendige bevægelser og spild fra en arbejdsproces'
     ],
     correct: 1,
     explanation: 'Heijunka = produktionsudjævning. I stedet for at producere 1000 stk. af produkt A mandag og 1000 stk. af B tirsdag, producerer man lidt af begge hver dag. Det giver jævnere flow, mindre lager og mere forudsigelig drift.'
@@ -1173,10 +1173,10 @@ const learnQuizBank = [
     category: 'Lean',
     q: 'Hvad er en Ishikawa-diagram (fiskebensdiagram)?',
     options: [
-        'En graf over fiskesalg i japanske supermarkeder',
+        'Et flowdiagram der viser rækkefølgen af processer og beslutningspunkter i en produktion',
         'Et diagram der viser alle mulige årsager til et problem, organiseret i kategorier som grener fra en fiskeryggrad',
-        'Et arkitekttegning af et fiskeformet lagerbygning',
-        'Et flowdiagram over vandforsyningen i lageret'
+        'Et Pareto-diagram der rangordner årsager efter hyppighed med en kumulativ kurve',
+        'Et kontrolkort der overvåger processens variation over tid med øvre og nedre kontrolgrænser'
     ],
     correct: 1,
     explanation: 'Fiskebensdiagrammet (opfundet af Kaoru Ishikawa) bruges til årsagsanalyse. Problemet er "hovedet", og årsagerne fordeles som "ben" i kategorier: Mennesker, Maskiner, Materialer, Metoder, Miljø, Målinger. Det giver overblik over alle mulige årsager.'
@@ -1281,10 +1281,10 @@ const learnQuizBank = [
     category: 'Supply Chain',
     q: 'Hvad er en forsyningskædens "upstream" og "downstream"?',
     options: [
-        'Upstream er vandforsyningen til lageret, downstream er kloakken',
+        'Upstream er den fysiske transport, downstream er informationsflowet',
         'Upstream er leverandørsiden (indadgående), downstream er kundesiden (udadgående)',
-        'Upstream er topledelsen, downstream er lagermedarbejderne',
-        'Upstream er morgenholdet, downstream er aftenholdet'
+        'Upstream er de strategiske beslutninger, downstream er de operationelle opgaver',
+        'Upstream er push-styring, downstream er pull-styring'
     ],
     correct: 1,
     explanation: 'Upstream = opad i kæden mod leverandører og råvarer. Downstream = nedad mod kunder og slutbrugere. Virksomheden sidder i midten og har upstream leverandører og downstream kunder.'
@@ -1593,9 +1593,9 @@ const learnQuizBank = [
     q: 'Hvad er "throughput" i et lager?',
     options: [
         'Gennemstrømningen — den samlede mængde varer der modtages, behandles og sendes videre per tidsenhed',
-        'Det hul i væggen man kører gaffeltrucken igennem',
-        'Antallet af pauser medarbejderne gennemfører på en dag',
-        'Den tid en medarbejder bruger på at gå hele vejen igennem lageret'
+        'Den gennemsnitlige tid en vare tilbringer på lageret fra modtagelse til afsendelse (liggetid)',
+        'Antallet af ordrer der er i kø og venter på at blive plukket (backlog)',
+        'Procentdelen af lagerets kapacitet der er i brug på et givent tidspunkt (belastningsgrad)'
     ],
     correct: 0,
     explanation: 'Throughput er mængden af varer der "flyder igennem" lageret. Fx 500 ordrer per dag eller 200 paller per time. Højere throughput med samme ressourcer = højere produktivitet. Det er en af de vigtigste KPIer for lagerdrift.'
@@ -1740,9 +1740,9 @@ const learnQuizBank = [
     q: 'Hvad er zone picking?',
     options: [
         'Når plukkere kun er ansvarlige for at plukke varer i deres tildelte zone af lageret',
-        'At opdele lageret i zoner baseret på temperatur',
-        'En plukmetode der kun bruges i zoologiske haver',
-        'At plukke varer baseret på tidszoner for internationale kunder'
+        'En metode hvor flere ordrer samles og plukkes på én rute af én plukker (batch picking)',
+        'En metode hvor hele lageret plukkes efter forsendelsestidspunkt (wave picking)',
+        'En plukteknik hvor plukkeren følger et fast mønster og plukker én ordre ad gangen (diskret plukning)'
     ],
     correct: 0,
     explanation: 'Zone picking: lageret opdeles i zoner, og hver plukker plukker kun i sin zone. Ordren bevæger sig fra zone til zone ("pick and pass") eller zonerne plukker parallelt og samles bagefter. Det reducerer gangafstand og øger specialisering.'
@@ -1804,12 +1804,12 @@ const learnQuizBank = [
     category: 'Lagerstyring',
     q: 'Hvad er shrink-wrap?',
     options: [
-        'En psykologisk behandlingsmetode for stressede lagerchefer',
-        'En type lagerreol der kan skrumpe i størrelse',
+        'En type papbånd der spændes rundt om kasser for at holde dem lukket under transport',
         'Klar plastfolie der vikles stramt om varer eller en palle for at sikre lasten under transport',
-        'En rengøringsmetode til lagergulve'
+        'Et beskyttende skumlag der lægges mellem varer på en palle for at undgå ridser',
+        'En type genbrugelig palleramme der holder varerne på plads uden folie'
     ],
-    correct: 2,
+    correct: 1,
     explanation: 'Shrink-wrap (stretchfolie) vikles rundt om pallen eller varerne for at holde dem samlet og stabile under transport. Det beskytter mod fugt, støv og tyveri, og forhindrer at varer forskubber sig. Kan også varmesvejses til tæt forsegling.'
 },
 {
@@ -2284,10 +2284,10 @@ const learnQuizBank = [
     category: 'Transport',
     q: 'Hvad er "reverse logistics" (returlogistik)?',
     options: [
-        'At køre baglæns med lastbilen til lageret',
+        'Planlfægning af transportruter fra lager til kunde med fokus på hurtigst mulig levering',
         'Logistikken for at håndtere varer der flyder den modsatte vej: returnerede varer, emballage, genbrugsmaterialer fra kunde tilbage til virksomhed',
-        'At læse lagerlisten bagfra for at finde fejl',
-        'En strategi hvor leverandøren besøger kunden i stedet for omvendt'
+        'En procesoptimering der reducerer antallet af mellemlagre i forsyningskæden',
+        'Konsolidering af små forsendelser til én stor sending for at spare fragten'
     ],
     correct: 1,
     explanation: 'Reverse logistics håndterer alt der flyder modstrøms: returneringer, reparationer, genbrug, genvinding, bortskaffelse. Med e-handel returneres 25-30% af alle varer — så reverse logistics er blevet en enorm og vigtig disciplin.'
@@ -2500,10 +2500,10 @@ const learnQuizBank = [
     category: 'Generelt Logistik',
     q: 'Hvad er "grøn logistik"?',
     options: [
-        'At male alle lastbiler grønne',
+        'En strategi for at reducere leveringstiden ved at køre hurtigere ruter',
         'Logistik med fokus på at minimere miljøpåvirkningen: reducere CO2-udledning, spild, emballage og energiforbrug i forsyningskæden',
-        'Transport af planter og blomster',
-        'Logistik der kun bruger gangstier i stedet for veje'
+        'En certificeringsordning for lagerbygninger der overholder bestemte temperaturkrav',
+        'En logistikmodel der prioriterer lokale leverandører frem for internationale'
     ],
     correct: 1,
     explanation: 'Grøn logistik handler om bæredygtig forsyningskæde: optimere ruter for lavere brændstofforbrug, bruge el-køretøjer, minimere emballage, genanvende, reducere tomkørsel, bruge tog i stedet for lastbil osv. Det er både godt for miljøet og kan spare penge.'
@@ -2605,9 +2605,9 @@ const learnQuizBank = [
     q: 'Hvad er et "returcenter"?',
     options: [
         'Et center der vender retursendinger: tjekker, sorterer, oparbejder, genopfylder eller bortskaffer returnerede varer',
-        'Et kontor der returnerer ubesvarede opkald',
-        'Et center der kun modtager paller i retur',
-        'Et rehabiliteringscenter for stressede logistikchefer'
+        'Et decentralt lager der fungerer som mellemstation før varer sendes til centrallager',
+        'En afdeling der håndterer reklamationer og kundeservice via telefon og e-mail',
+        'Et sorterings- og distributionscenter for udgående forsendelser'
     ],
     correct: 0,
     explanation: 'Returcentre håndterer det "omvendte flow": modtagelse af returnerede varer, kvalitetskontrol (kan varen videresælges?), reparation, ompakning, genanvendelse eller bortskaffelse. Med e-handelens høje returprocent er effektive returcentre blevet afgørende for indtjeningen.'
@@ -2873,9 +2873,9 @@ const learnQuizBank = [
     q: 'Hvad er "dropshipping"?',
     options: [
         'En model hvor sælger aldrig har varerne fysisk — ordrer sendes direkte fra leverandøren til slutkunden',
-        'En teknik til at droppe pakker fra droner',
-        'At slippe varer ned fra øverste hylde',
-        'En metode til at skippere varer over vand'
+        'En metode hvor varer sendes fra centrallager til regionale lagre i små partier',
+        'En forsendelsesform hvor pakker leveres uden for døren uden underskrift',
+        'En logistikmodel hvor kunden selv henter varen på et udleveringssted (click-and-collect)'
     ],
     correct: 0,
     explanation: 'Dropshipping: du sælger varer i din webshop, men ejer intet lager. Når kunden bestiller, sendes ordren til din leverandør, som sender direkte til kunden i dit navn. Fordel: ingen lagerrisiko. Ulempe: lavere marginer, ingen kontrol over kvalitet/levering.'
@@ -3801,6 +3801,619 @@ const learnQuizBank = [
     ],
     correct: 1,
     explanation: 'CSDDD kræver i praksis 7 trin: 1) Udarbejde due diligence-politikker, 2) Identificere aktuelle og potentielle ugunstige indvirkninger, 3) Forebygge og afbøde potentielle indvirkninger, 4) Stoppe/minimere aktuelle indvirkninger, 5) Etablere klageprocedurer, 6) Overvåge effektiviteten, 7) Kommunikere om due diligence offentligt. Rapportering kaldes også ESG-rapportering.'
+},
+
+// ============================================================
+// EKSTRA: SUNDHED & SIKKERHED PÅ LAGER (284-289)
+// ============================================================
+
+{
+    id: 284,
+    category: 'Sikkerhed',
+    q: 'Hvad er den anbefalede maksimale vægt for manuel løft pr. person under optimale forhold?',
+    options: [
+        'Op til 25 kg uden begrænsninger',
+        'Op til 12 kg er generelt uproblematisk — over 30 kg bør som udgangspunkt ikke løftes manuelt',
+        'Op til 50 kg hvis man bruger korrekt løfteteknik',
+        'Der er ingen øvre grænse, så længe man har fået instruktion'
+    ],
+    correct: 1,
+    explanation: 'Arbejdstilsynets vejledning: op til 12 kg er generelt uproblematisk, 12-18 kg kræver gode arbejdsstillinger, 18-30 kg er belastende og kræver vurdering, over 30 kg bør ikke løftes manuelt. Absolutte max er 50 kg tæt ved kroppen under perfekte forhold. Ungarbejdere (u. 18 år): max 12 kg.'
+},
+{
+    id: 285,
+    category: 'Sikkerhed',
+    q: 'Hvorfor er dehydrering et problem ved fysisk lagerarbejde?',
+    options: [
+        'Dehydrering giver kun hovedpine og er ikke farligt',
+        'Væsketab reducerer koncentration, reaktionsevne og muskelkraft — og øger risikoen for ulykker og fejl',
+        'Dehydrering er kun et problem ved udendørs arbejde',
+        'Dehydrering påvirker kun ældre medarbejdere over 50 år'
+    ],
+    correct: 1,
+    explanation: 'Fysisk lagerarbejde med løft, gang og truckkørsel giver væsketab. Allerede 1-2% dehydrering kan reducere koncentration og reaktionsevne mærkbart. Det øger risikoen for ulykker og fejl. Drik vand regelmæssigt — vent ikke til du er tørstig.'
+},
+{
+    id: 286,
+    category: 'Sikkerhed',
+    q: 'Hvad er en arbejdsmiljøorganisation (AMO), og hvornår er den lovpligtig?',
+    options: [
+        'En frivillig gruppe der arrangerer sociale arrangementer for medarbejderne',
+        'En lovpligtig organisation i virksomheder med 10+ ansatte, der samarbejder om at sikre et sundt og sikkert arbejdsmiljø',
+        'En ekstern konsulentvirksomhed der inspicerer lagre én gang om året',
+        'En organisation der kun er påkrævet i virksomheder med farlige kemikalier'
+    ],
+    correct: 1,
+    explanation: 'AMO er lovpligtig i virksomheder med 10 eller flere ansatte. Den består af arbejdsgiver, arbejdsledere og arbejdsmiljørepræsentanter. AMO arbejder med at forebygge ulykker, ergonomiske belastninger, psykisk arbejdsmiljø og kemiske risici.'
+},
+{
+    id: 287,
+    category: 'Sikkerhed',
+    q: 'Hvad er de typiske helbredsrisici ved arbejde i køle- eller fryselager?',
+    options: [
+        'Ingen særlige risici — man vænner sig hurtigt til temperaturen',
+        'Kun risiko for forfrysninger ved temperaturer under -40°C',
+        'Hypotermi, forfrysninger, nedsat fingerfærdighed og forlænget reaktionstid — kræver termotøj og regelmæssige opvarmningspauser',
+        'Risikoen er kun relevant for medarbejdere der arbejder der i mere end 10 timer'
+    ],
+    correct: 2,
+    explanation: 'Køle- og fryselagerarbejde (typisk -18°C til -25°C) giver risiko for hypotermi, forfrysninger og nedsat motorik. Krav: termotøj, isolerede handsker, varme pauser hver 45-60 min., max opholdstid, og varm drik. Fingerfærdighed falder hurtigt i kulde, hvilket øger fejlrisikoen.'
+},
+{
+    id: 288,
+    category: 'Sikkerhed',
+    q: 'Hvad er støjgrænsen på en arbejdsplads i Danmark, og hvad kræves ved overskridelse?',
+    options: [
+        '100 dB — der kræves kun skiltning',
+        '85 dB over en 8-timers arbejdsdag — der skal bruges høreværn og støjen skal reduceres',
+        '70 dB — alle skal bære høreværn hele dagen',
+        '95 dB — kun medarbejdere over 50 år behøver høreværn'
+    ],
+    correct: 1,
+    explanation: 'Grænseværdien er 85 dB(A) over en 8-timers dag. Over 80 dB skal arbejdsgiver stille høreværn til rådighed. Over 85 dB er høreværn påbudt, og der skal tages tekniske foranstaltninger til at reducere støjen. Varig høreskade kan opstå ved langvarig eksponering over 85 dB.'
+},
+{
+    id: 289,
+    category: 'Sikkerhed',
+    q: 'Hvor langt bør man maksimalt bære en byrde manuelt?',
+    options: [
+        '50 meter hvis byrden er under 15 kg',
+        'Max 20 meter — længere bæreafstande kræver hjælpemidler som sækkevogn eller palle',
+        '100 meter med korrekt løfteteknik',
+        'Der er ingen grænse for bæreafstand, kun for vægt'
+    ],
+    correct: 1,
+    explanation: 'Arbejdstilsynet anbefaler max 20 meter bæreafstand. Ved længere afstande skal der bruges hjælpemidler (sækkevogn, palleløfter, transportbånd). Bæring belaster kroppen mere end løft, fordi musklerne arbejder statisk over længere tid.'
+},
+
+// ============================================================
+// EKSTRA: VIRKSOMHED, ORGANISATION & ØKONOMI (290-319)
+// ============================================================
+
+{
+    id: 290,
+    category: 'Virksomhed',
+    q: 'Hvad består en virksomhed grundlæggende af?',
+    options: [
+        'Kun produkter og kunder',
+        'Kunder, produkt/ydelse, driftsmidler og medarbejdere',
+        'Bygninger, maskiner og aktionærer',
+        'Kun ledelse og kapital'
+    ],
+    correct: 1,
+    explanation: 'En virksomhed består grundlæggende af fire elementer: kunder (som skaber efterspørgsel), produkt/ydelse (det virksomheden sælger), driftsmidler (udstyr, lokaler, IT) og medarbejdere (dem der udfører arbejdet).'
+},
+{
+    id: 291,
+    category: 'Virksomhed',
+    q: 'Hvad bør en forretningsplan indeholde?',
+    options: [
+        'Kun et budget og en liste over konkurrenter',
+        'Idégrundlag, markedsvurdering, målsætning og budget',
+        'Kun beskrivelse af produktet og prisen',
+        'En liste over medarbejderne og deres CV'
+    ],
+    correct: 1,
+    explanation: 'En forretningsplan indeholder: idégrundlag (hvad er forretningsidéen?), markedsvurdering (er der kunder? hvem er konkurrenterne?), målsætning (hvor vil vi hen?) og budget (hvad koster det, og hvad forventer vi at tjene?). Planen bruges bl.a. ved finansiering.'
+},
+{
+    id: 292,
+    category: 'Virksomhed',
+    q: 'Hvad er forskellen på en kerneydelse og en periferiydelse?',
+    options: [
+        'Kerneydelse er det billigste produkt, periferiydelse er det dyreste',
+        'Kerneydelse er virksomhedens hovedydelse, periferiydelse er ekstra services der skaber merværdi og afhængighed',
+        'Periferiydelsen er vigtigere end kerneydelsen for kundetilfredsheden',
+        'Der er ingen forskel — begge begreber dækker det samme'
+    ],
+    correct: 1,
+    explanation: 'Kerneydelsen er det virksomheden primært leverer (fx SAS: flyve dig fra A til B, iPhone: telefon). Periferiydelser er det ekstra der skaber merværdi og afhængighed: SAS tilbyder mad, komfort, baggage; iPhone har AirPods, apps, ekosystem.'
+},
+{
+    id: 293,
+    category: 'Virksomhed',
+    q: 'Hvad er forskellen på nærmiljø og fjernmiljø for en virksomhed?',
+    options: [
+        'Nærmiljø er bygningen, fjernmiljø er andre byer',
+        'Nærmiljø er det tætte omgivelser (kunder, konkurrenter, leverandører), fjernmiljø er samfundsfaktorer (økonomi, teknologi, politik, kultur)',
+        'Nærmiljø er medarbejderne, fjernmiljø er ledelsen',
+        'Der er ingen forskel — begge handler om virksomhedens interne forhold'
+    ],
+    correct: 1,
+    explanation: 'Nærmiljøet er det, der foregår tæt på virksomheden: kunder, konkurrenter og leverandører. Fjernmiljøet er det, der sker i samfundet: økonomi, teknologi, politik og kultur. Virksomheden kan påvirke sit nærmiljø, men fjernmiljøet er sværere at styre.'
+},
+{
+    id: 294,
+    category: 'Virksomhed',
+    q: 'Hvad er en interessegruppe (interessent) i virksomhedssammenhæng?',
+    options: [
+        'Kun aktionærer der ejer aktier i virksomheden',
+        'Enhver person eller gruppe der har en interesse i eller påvirkes af virksomhedens aktiviteter og beslutninger',
+        'Kun de kunder der køber produkterne',
+        'En gruppe medarbejdere der er interesseret i at starte fagforening'
+    ],
+    correct: 1,
+    explanation: 'Interessenter er alle der har noget på spil i virksomheden: ejere, medarbejdere, kunder, leverandører, kommune, stat, långivere, naboer, konkurrenter m.fl. Interessenternes krav kan kortlægges med fx spindelvævsmodellen.'
+},
+{
+    id: 295,
+    category: 'Virksomhed',
+    q: 'Hvad står SWOT for i en SWOT-analyse?',
+    options: [
+        'Salg, Workflow, Organisation, Tid',
+        'Styrker, Svagheder, Muligheder, Trusler',
+        'Strategi, Winning, Optimering, Transformation',
+        'System, Workflow, Output, Throughput'
+    ],
+    correct: 1,
+    explanation: 'SWOT: Strengths (Styrker — det vi er gode til), Weaknesses (Svagheder — vores udfordringer), Opportunities (Muligheder — det vi kan udnytte), Threats (Trusler — det der kan skabe problemer). SWOT bruges til at vurdere en virksomheds idégrundlag og strategiske position.'
+},
+{
+    id: 296,
+    category: 'Virksomhed',
+    q: 'Hvad står SMART for i forbindelse med delmål?',
+    options: [
+        'Simpel, Moderne, Attraktiv, Rentabel, Total',
+        'Specifikt, Målbart, Accepteret, Realistisk, Tidsafgrænset',
+        'Strategisk, Motiverende, Ambitiøst, Resultatskabende, Testbart',
+        'Salg, Marketing, Administration, Resultat, Tracking'
+    ],
+    correct: 1,
+    explanation: 'SMART-mål: Specifikt (klart defineret), Målbart (kan måles), Accepteret (opbakning fra teamet), Realistisk (opnåeligt), Tidsafgrænset (deadline). SMART bruges ved milepæle og delmål, så man kan følge op på fremskridt.'
+},
+{
+    id: 297,
+    category: 'Virksomhed',
+    q: 'Hvad er forskellen på de tre strateginiveauer: virksomheds-, forretnings- og teamstrategi?',
+    options: [
+        'Der er ingen forskel — det er tre ord for det samme',
+        'Virksomhedsstrategi (corporate) sætter den overordnede retning, forretningsstrategi (business) handler om konkurrencefordel i markedet, teamstrategi (functional) handler om de daglige funktioner',
+        'Virksomhedsstrategi er for små virksomheder, forretningsstrategi er for store',
+        'Teamstrategi er vigtigere end virksomhedsstrategi'
+    ],
+    correct: 1,
+    explanation: 'De tre strateginiveauer: 1) Virksomhedsstrategi (Corporate level) — overordnet retning for hele virksomheden. 2) Forretningsenhedsstrategi (Business level) — hvordan konkurrerer vi i markedet? 3) Teamstrategi (Functional level) — hvordan udfører de enkelte afdelinger deres opgaver?'
+},
+{
+    id: 298,
+    category: 'Virksomhed',
+    q: 'Hvad kendetegner linjeprincippet (den klassiske organisationsmodel)?',
+    options: [
+        'Alle medarbejdere refererer til flere overordnede samtidig',
+        'Et klart hierarki hvor hver medarbejder kun refererer til én overordnet med tydelige kommandoveje',
+        'Medarbejderne styrer selv uden ledelse (selvstyrende grupper)',
+        'Organisationen er midlertidig og oprettes kun til projekter'
+    ],
+    correct: 1,
+    explanation: 'Linjeprincippet bygger på et klart hierarki: én chef per medarbejder, tydelige kommandoveje og klare ansvarsområder. Det er enkelt og overskueligt, men kan være stift og langsomt, fordi alt skal op gennem hierarkiet.'
+},
+{
+    id: 299,
+    category: 'Virksomhed',
+    q: 'Hvad kendetegner en matrixorganisation?',
+    options: [
+        'Hver medarbejder har kun én chef og arbejder kun i én afdeling',
+        'En fast kombination af projekt- og linjeorganisation, hvor medarbejdere kan indgå i flere projekter med flere chefer',
+        'Organisationen har ingen ledelse — alle beslutninger tages demokratisk',
+        'Alle ansatte roterer mellem afdelinger hver uge'
+    ],
+    correct: 1,
+    explanation: 'Matrixorganisationen kombinerer funktions- og projektprincippet. Medarbejdere kan indgå i flere projekter samtidig (Projekt A, B, C) og har dermed flere chefer. Det giver fleksibilitet og samarbejde, men kan føre til uklare ledelsesforhold.'
+},
+{
+    id: 300,
+    category: 'Virksomhed',
+    q: 'Hvad er forskellen på en enkeltmandsvirksomhed og et anpartsselskab (ApS)?',
+    options: [
+        'Der er ingen forskel — begge hæfter personligt',
+        'I en enkeltmandsvirksomhed hæfter ejeren personligt for alt, mens ejerne i et ApS kun hæfter med deres indskud (min. 40.000 kr.)',
+        'Et ApS kan kun have én ejer, en enkeltmandsvirksomhed kan have flere',
+        'En enkeltmandsvirksomhed kræver mere startkapital end et ApS'
+    ],
+    correct: 1,
+    explanation: 'Enkeltmandsvirksomhed: én ejer, hæfter personligt med hele sin formue. ApS (Anpartsselskab): ejerne hæfter kun med indskuddet (min. 40.000 kr.) — privat formue er beskyttet. ApS kræver mere administration (årsrapport, bogføring) men giver begrænset hæftelse.'
+},
+{
+    id: 301,
+    category: 'Virksomhed',
+    q: 'Hvad er minimumskapitalkravet for at starte et aktieselskab (A/S)?',
+    options: [
+        '40.000 kr.',
+        '100.000 kr.',
+        '400.000 kr.',
+        '1.000.000 kr.'
+    ],
+    correct: 2,
+    explanation: 'Et A/S kræver min. 400.000 kr. i aktiekapital. Et ApS kræver min. 40.000 kr. I et A/S ejer aktionærerne aktier (A-aktier med flere stemmer, B-aktier med færre). Generalforsamlingen er øverste myndighed og vælger bestyrelsen, som ansætter direktionen.'
+},
+{
+    id: 302,
+    category: 'Virksomhed',
+    q: 'Hvad er generalforsamlingens rolle i et aktieselskab (A/S)?',
+    options: [
+        'Den står for den daglige drift af selskabet',
+        'Den er øverste myndighed — aktionærer mødes, godkender årsrapport, vælger bestyrelse og beslutter udbytte',
+        'Den ansætter alle medarbejdere i selskabet',
+        'Den håndterer kun selskabets IT-systemer'
+    ],
+    correct: 1,
+    explanation: 'Generalforsamlingen er den øverste myndighed i et A/S. Aktionærerne stemmer om vigtige beslutninger, godkender årsrapport, vælger bestyrelse og beslutter evt. udbytte. Den skal indkaldes min. 1 gang om året, men kan også indkaldes ekstraordinært.'
+},
+{
+    id: 303,
+    category: 'Virksomhed',
+    q: 'Hvad er en "Make or Buy"-beslutning?',
+    options: [
+        'Om virksomheden skal sælge sine produkter online eller i butik',
+        'Om virksomheden selv skal producere en vare/service, eller om den skal købes fra en ekstern leverandør',
+        'Om virksomheden skal ansætte faste medarbejdere eller vikarer',
+        'Om virksomheden skal leje eller købe sine lokaler'
+    ],
+    correct: 1,
+    explanation: 'Make or Buy handler om at vurdere: selv producere (make) vs. outsource (buy). Faktorer: pris, kvalitet, kapacitet, kompetencer, risiko, fleksibilitet og strategi. Hvis varen er vigtig for konkurrencefordelen, laver man den ofte selv. Mindre vigtige varer kan købes udefra.'
+},
+{
+    id: 304,
+    category: 'Transport',
+    q: 'Hvad er CMR-konventionen?',
+    options: [
+        'En dansk standard for opbevaring af farligt gods',
+        'En international konvention der regulerer transport af gods med lastbil på tværs af landegrænser i Europa',
+        'Et EU-direktiv om CO2-udledning fra skibstransport',
+        'Et certifikat for gaffeltruckkørere i Skandinavien'
+    ],
+    correct: 1,
+    explanation: 'CMR (Convention on the Contract for the International Carriage of Goods by Road) regulerer international vejtransport. Den fastsætter regler for fragtbreve, ansvar ved skader eller forsinkelser, og hvem der bærer ansvaret under transporten.'
+},
+{
+    id: 305,
+    category: 'Transport',
+    q: 'Hvad er NSAB 2015?',
+    options: [
+        'Nordiske regler for køre- og hviletid for chauffører',
+        'Nordisk Speditørforbunds Almindelige Bestemmelser — standardvilkår for speditører med regler om ansvar, forsikring og tvister',
+        'En nordisk standard for pallemål og emballage',
+        'En EU-forordning om elektroniske fragtbreve'
+    ],
+    correct: 1,
+    explanation: 'NSAB 2015 (Nordisk Speditørforbunds Almindelige Bestemmelser) er standardvilkår som speditører i Norden bruger. De beskriver ansvar, forsikring og tvistløsning — og skaber klare rammer for samarbejdet mellem speditør og kunde, fx hæftelsesgrænser ved skader.'
+},
+{
+    id: 306,
+    category: 'Leveringsbetingelser',
+    q: 'Hvad regulerer Incoterms — og hvad regulerer de IKKE?',
+    options: [
+        'Incoterms regulerer ejerskab, betaling, og hvornår risikoen skifter',
+        'Incoterms regulerer hvornår risiko og ansvar overgår fra sælger til køber — men IKKE ejerskab eller betaling',
+        'Incoterms regulerer kun forsikring ved søtransport',
+        'Incoterms regulerer kun told og importafgifter'
+    ],
+    correct: 1,
+    explanation: 'Incoterms (ICC) fastlægger hvornår risiko, ansvar og omkostninger overgår fra sælger til køber. Men de regulerer IKKE ejerskab (ejendomsret) eller betaling (betalingsbetingelser). Der findes 11 Incoterms (senest opdateret 2020), opdelt i E-, F-, C- og D-grupper.'
+},
+{
+    id: 307,
+    category: 'Leveringsbetingelser',
+    q: 'Hvad er huskereglen for Incoterms E-, F-, C- og D-grupper?',
+    options: [
+        'E = sælger leverer alt, D = køber bærer alt',
+        'E = køber bærer alt fra sælgers dør, F = sælger leverer til transportør, C = sælger betaler transport, D = sælger leverer til destination',
+        'Alle fire grupper er ens — de dækker det samme ansvar',
+        'E og F gælder kun søtransport, C og D kun vejtransport'
+    ],
+    correct: 1,
+    explanation: 'Huskeregel: E (EXW) = køber bærer alt. F (FCA, FOB, FAS) = sælger leverer til transportør. C (CPT, CIP, CFR, CIF) = sælger betaler transport. D (DAP, DPU, DDP) = sælger leverer færdigt til destination. DDP er mest fordelagtig for køber — sælger betaler alt inkl. told.'
+},
+{
+    id: 308,
+    category: 'Leveringsbetingelser',
+    q: 'Hvad skal en korrekt FOB-aftale altid indeholde udover selve klausulen?',
+    options: [
+        'Kun sælgers virksomhedsnummer',
+        'En specificeret afskibningshavn eller -adresse, så det er klart hvor risikoen overgår',
+        'Antal paller og emballagetype',
+        'Navnet på forsikringsselskabet'
+    ],
+    correct: 1,
+    explanation: 'FOB kræver altid en specificeret afskibningshavn, fx "FOB Hamburg Hafen". Risikoen overgår til køber, når varen er lastet om bord på skibet på den angivne havn. Uden havnangivelse er det uklart, hvor og hvornår risikoen skifter — og det kan føre til tvister.'
+},
+{
+    id: 309,
+    category: 'Virksomhed',
+    q: 'Hvad er forskellen på en udgift, en udbetaling og en omkostning?',
+    options: [
+        'De tre begreber betyder det samme',
+        'Udgift opstår ved indkøb, udbetaling er når det betales, omkostning er når det forbruges',
+        'Udgift er kun for varer, omkostning er kun for løn',
+        'Udbetaling er altid det største beløb af de tre'
+    ],
+    correct: 1,
+    explanation: 'Udgift: opstår når der foretages et indkøb (fx bestilling af varer). Udbetaling: når indkøbet faktisk betales (helt eller delvist). Omkostning: når det indkøbte bruges/forbruges i virksomheden. De tre tidspunkter falder sjældent sammen.'
+},
+{
+    id: 310,
+    category: 'Virksomhed',
+    q: 'Hvad er dækningsbidraget (DB)?',
+    options: [
+        'Virksomhedens samlede omsætning minus skat',
+        'Omsætning minus variable omkostninger — det der er tilbage til at dække faste omkostninger og skabe overskud',
+        'Faste omkostninger minus variable omkostninger',
+        'Årets resultat efter skat divideret med antal ansatte'
+    ],
+    correct: 1,
+    explanation: 'DB = Omsætning − Variable omkostninger. Dækningsbidraget viser, hvor meget der er tilbage til at dække de faste omkostninger (husleje, løn, forsikring) og skabe overskud. Dækningsgraden (DG) viser det samme i procent: DG = DB / Omsætning × 100%.'
+},
+{
+    id: 311,
+    category: 'Virksomhed',
+    q: 'Hvad betyder Primo, Medio og Ultimo i et regnskab?',
+    options: [
+        'Primo = midt, Medio = start, Ultimo = slut',
+        'Primo = begyndelsen af perioden, Medio = midt i perioden, Ultimo = slutningen af perioden',
+        'Primo = slutningen, Medio = midt, Ultimo = begyndelsen',
+        'Det er tre forskellige regnskabsmetoder'
+    ],
+    correct: 1,
+    explanation: 'Primo = start (fx primo lager 1. jan.), Medio = midt i perioden, Ultimo = slut (fx ultimo lager 31. dec.). Bruges ofte ved lagersaldi og egenkapital. Eksempel: Vareforbrug = (Primo lager + Varekøb) − Ultimo lager.'
+},
+{
+    id: 312,
+    category: 'Virksomhed',
+    q: 'Hvad viser balancen i et regnskab?',
+    options: [
+        'Kun virksomhedens omsætning for det foregående år',
+        'Hvad virksomheden ejer (aktiver) og hvordan det er finansieret (passiver + egenkapital) på et bestemt tidspunkt',
+        'Kun virksomhedens gæld og lån',
+        'Medarbejdernes løn fordelt på afdelinger'
+    ],
+    correct: 1,
+    explanation: 'Balancen har to sider: Aktiver (det virksomheden ejer: kontanter, maskiner, lager, debitorer) og Passiver (det virksomheden skylder: lån, kreditorer, skyldig løn) + Egenkapital (det ejerne har indskudt + akkumuleret overskud). Aktiver = Passiver + Egenkapital — altid i balance.'
+},
+{
+    id: 313,
+    category: 'Virksomhed',
+    q: 'Hvad er de tre typer anlægsaktiver?',
+    options: [
+        'Korte, mellemlange og langsigtede aktiver',
+        'Materielle (maskiner, bygninger), immaterielle (patenter, software) og finansielle (aktier, obligationer)',
+        'Kontanter, lager og debitorer',
+        'Egenkapital, gæld og omsætning'
+    ],
+    correct: 1,
+    explanation: 'Materielle anlægsaktiver: fysiske ting (maskiner, bygninger, biler). Immaterielle: ikke-fysiske værdier (patenter, varemærker, software, goodwill). Finansielle: penge/investeringer (aktier, obligationer, langfristede lån). Husk: Materielle = kan røres, Immaterielle = kan ikke røres, Finansielle = penge der arbejder.'
+},
+{
+    id: 314,
+    category: 'Virksomhed',
+    q: 'Hvad er forskellen på faste og variable omkostninger?',
+    options: [
+        'Faste omkostninger ændrer sig med produktionen, variable er altid de samme',
+        'Faste omkostninger er de samme uanset produktion (fx husleje, løn), variable ændrer sig med produktionsmængden (fx råvarer, emballage)',
+        'Variable omkostninger er altid højere end faste',
+        'Der er ingen forskel — begge følger produktionsmængden'
+    ],
+    correct: 1,
+    explanation: 'Faste omkostninger er konstante uanset produktion: husleje, fast løn, forsikringer. Variable omkostninger ændrer sig med mængden: råvarer, emballage, el til produktion. Jo mere man producerer, jo højere variable omkostninger — men de faste forbliver uændrede.'
+},
+{
+    id: 315,
+    category: 'Lagerstyring',
+    q: 'Hvad er FIFO-metoden til opgørelse af lagerværdi?',
+    options: [
+        'De billigste varer tælles først uanset indkøbstidspunkt',
+        'De varer der er indkøbt/produceret først, regnes som solgt først — lageret opgøres til de nyeste enhedsomkostninger',
+        'Alle varer opgøres til gennemsnitsprisen af alle indkøb',
+        'De senest indkøbte varer regnes altid som solgt først'
+    ],
+    correct: 1,
+    explanation: 'FIFO (First In, First Out): de ældste varer regnes som solgt først, så restlageret opgøres til de nyeste (og typisk højere) priser. Det giver en lagerværdi tæt på markedsværdien. Alternativt kan man bruge gennemsnitspris (total indkøbspris / total mængde).'
+},
+{
+    id: 316,
+    category: 'Virksomhed',
+    q: 'Hvad er de tre afskrivningsmetoder som SKAT accepterer?',
+    options: [
+        'Hurtig, langsom og middel afskrivning',
+        'Straksafskrivning (op til 34.400 kr.), lineær afskrivning (fast beløb/år) og saldometoden (% sats, max 25%/år)',
+        'Kun lineær afskrivning er tilladt i Danmark',
+        'Manuel, automatisk og digital afskrivning'
+    ],
+    correct: 1,
+    explanation: 'Tre metoder: 1) Straksafskrivning: aktiver op til 34.400 kr. (2025) kan fradrages med det samme. 2) Lineær afskrivning: fast beløb afskrives hvert år. 3) Saldometoden: en procentdel (max 25%) afskrives af restværdien pr. år, indtil grænsen for straksafskrivning nås.'
+},
+{
+    id: 317,
+    category: 'Lagerstyring',
+    q: 'Hvad er typiske lageromkostninger ud over selve varerne?',
+    options: [
+        'Kun husleje og forsikring',
+        'Aktivitetsomkostninger (modtagelse, plukning, pakning), driftsomkostninger (brændstof, el, vedligehold) og kapitalomkostninger (renter, afskrivninger)',
+        'Kun løn til lagermedarbejdere',
+        'Kun transportomkostninger fra leverandør til lager'
+    ],
+    correct: 1,
+    explanation: 'Lageromkostninger opdeles i: Aktiviteter (varemodtagelse, kvalitetskontrol, plukning, pakning, IT-registrering), Drift (brændstof, el, vedligehold, reservedele, uddannelse, svind) og Kapital (renter og afskrivninger på IT-udstyr, transportudstyr, bygninger, lagervarer).'
+},
+{
+    id: 318,
+    category: 'Virksomhed',
+    q: 'Hvad er Edgar Scheins isbjergmodel om virksomhedskultur?',
+    options: [
+        'En model der viser at 80% af virksomhedens omsætning er skjult',
+        'En model der viser at kultur har synlige elementer (ritualer, ceremonier) og usynlige elementer (værdier, holdninger, grundlæggende antagelser)',
+        'En model der kun handler om iskolde arbejdsmiljøer i fryselagre',
+        'En strategi for at fryse priser i et dårligt marked'
+    ],
+    correct: 1,
+    explanation: 'Edgar Scheins isbjergmodel: Over vandoverfladen (synligt): ritualer, ceremonier, adfærd. Under overfladen (usynligt): værdier, holdninger og grundlæggende antagelser. Kulturen er en form for lim der binder organisationen sammen — medarbejdere og ledelse styres af den, ofte uden at være bevidste om det.'
+},
+{
+    id: 319,
+    category: 'Virksomhed',
+    q: 'Hvad er formlen for egenkapital ultimo?',
+    options: [
+        'Egenkapital Ultimo = Aktiver − Variable omkostninger',
+        'Egenkapital Ultimo = Egenkapital Primo +/− Årets resultat',
+        'Egenkapital Ultimo = Omsætning − Faste omkostninger',
+        'Egenkapital Ultimo = Passiver − Aktiver'
+    ],
+    correct: 1,
+    explanation: 'Egenkapital Ultimo = Egenkapital Primo ± Årets resultat. Har virksomheden overskud, stiger egenkapitalen. Har den underskud, falder egenkapitalen. Egenkapitalen er ejernes andel af virksomhedens værdi (Aktiver − Gæld = Egenkapital).'
+},
+
+// ============================================================
+// EKSTRA: AFSKRIVNING, FORRENTNING & BUDGETTYPER (320-329)
+// ============================================================
+
+{
+    id: 320,
+    category: 'Virksomhed',
+    q: 'Hvad kendetegner lineær afskrivning?',
+    options: [
+        'Man afskriver en fast procentdel af restværdien hvert år, så beløbet falder over tid',
+        'Hele aktivets værdi trækkes fra i købsåret',
+        'Man afskriver det samme beløb hvert år: (Købspris − Restværdi) / Antal år',
+        'Man afskriver kun i de år, hvor aktivet faktisk bruges'
+    ],
+    correct: 2,
+    explanation: 'Ved lineær afskrivning fordeles værdien jævnt over levetiden. Formlen er: Årlig afskrivning = (Købspris − Restværdi) / Antal år. Fx en maskine til 100.000 kr. med restværdi 10.000 kr. og 5 års levetid: (100.000 − 10.000) / 5 = 18.000 kr./år. Fordel: stabilt og let at planlægge.'
+},
+{
+    id: 321,
+    category: 'Virksomhed',
+    q: 'En maskine koster 100.000 kr. og afskrives med saldometoden (25% pr. år). Hvad er afskrivningen i år 2?',
+    options: [
+        '25.000 kr.',
+        '18.750 kr.',
+        '20.000 kr.',
+        '12.500 kr.'
+    ],
+    correct: 1,
+    explanation: 'Saldoafskrivning: man afskriver en fast procentdel af den tilbageværende bogførte værdi. År 1: 25% af 100.000 = 25.000 kr. (restværdi 75.000). År 2: 25% af 75.000 = 18.750 kr. Beløbet bliver altså mindre og mindre med tiden — det matcher ofte den faktiske værdiforringelse bedre.'
+},
+{
+    id: 322,
+    category: 'Virksomhed',
+    q: 'Hvornår bruges straksafskrivning typisk?',
+    options: [
+        'Ved store maskiner med lang levetid',
+        'Ved aktiver under beløbsgrænsen (34.400 kr. i 2025), hvor hele værdien fradrages i købsåret',
+        'Kun ved immaterielle aktiver som patenter og software',
+        'Ved bygninger der afskrives over 30 år'
+    ],
+    correct: 1,
+    explanation: 'Straksafskrivning bruges ved mindre aktiver med lav værdi — op til 34.400 kr. (2025). Hele anskaffelsesprisen fradrages med det samme i købsåret. Fordel: hurtigt skattefradrag og nem bogføring. Ulempe: ingen afskrivninger i de følgende år.'
+},
+{
+    id: 323,
+    category: 'Virksomhed',
+    q: 'Hvordan beregnes forrentning af lagerkapital ved hjælp af primo- og ultimoværdi?',
+    options: [
+        'Rente = Ultimoværdi × Renteprocent',
+        'Rente = (Primoværdi + Ultimoværdi) × Renteprocent / (2 × 100)',
+        'Rente = Primoværdi / Ultimoværdi × 100',
+        'Rente = (Ultimoværdi − Primoværdi) × Renteprocent'
+    ],
+    correct: 1,
+    explanation: 'Formlen bruger gennemsnittet af primo- og ultimoværdien: Rente = (Primo + Ultimo) × Renteprocent / (2 × 100). Fx med primo 100.000, ultimo 120.000, rente 5%: (100.000 + 120.000) × 5 / 200 = 5.500 kr. Man finder den gennemsnitlige kapital og beregner renten af den.'
+},
+{
+    id: 324,
+    category: 'Virksomhed',
+    q: 'Hvad er et budget i økonomisk forstand?',
+    options: [
+        'En oversigt over alle virksomhedens kunder og leverandører',
+        'En liste over forventede indtægter og udgifter for en fremtidig periode',
+        'Det samme som årsregnskabet for det forgangne år',
+        'Et juridisk dokument der fastlægger virksomhedens skatteforhold'
+    ],
+    correct: 1,
+    explanation: 'Et budget er et regnskab for en fremtidig periode — en liste over forventede indtægter og udgifter/omkostninger. Budgettet fremkommer i økonomistyringens planlægning (budgettering), hvor forudsætninger om den økonomiske udvikling og handlingsplaner danner grundlag for forventningerne.'
+},
+{
+    id: 325,
+    category: 'Virksomhed',
+    q: 'Hvad viser et salgsbudget?',
+    options: [
+        'Hvor mange medarbejdere virksomheden skal ansætte',
+        'Hvor meget virksomheden forventer at sælge i en periode og den forventede omsætning',
+        'Hvor mange maskiner der skal indkøbes til produktionen',
+        'Hvor stort et lån virksomheden har brug for'
+    ],
+    correct: 1,
+    explanation: 'Et salgsbudget viser forventet salg og omsætning i en periode. Det tager udgangspunkt i: afsætningen de forrige år, ordrebestanden, og forventet efterspørgsel (via markedsanalyse, konkurrentanalyse, PLC). Når salgsbudgettet er færdigt, kan man budgettere varelager, indkøb og produktion.'
+},
+{
+    id: 326,
+    category: 'Virksomhed',
+    q: 'Hvordan beregnes periodens budgetterede varekøb i et indkøbsbudget?',
+    options: [
+        'Varekøb = Forventet salg × 2',
+        'Varekøb = Budgetteret salg (i anskaffelsespris) + Ultimo lager − Primo lager',
+        'Varekøb = Primo lager + Ultimo lager',
+        'Varekøb = Omsætning − Dækningsbidrag'
+    ],
+    correct: 1,
+    explanation: 'Indkøbsbudget: Varekøb = Budgetteret salg omregnet i anskaffelsespris + Ønsket slutlager (ultimo) − Begyndelseslager (primo). Det sikrer, at der købes nok ind til at dække salget og opretholde den ønskede lagerbeholdning uden at over- eller underkøbe.'
+},
+{
+    id: 327,
+    category: 'Virksomhed',
+    q: 'Hvad er formålet med et produktionsbudget?',
+    options: [
+        'At vise virksomhedens samlede passiver og aktiver',
+        'At beregne hvor mange enheder der skal produceres for at opfylde salgsbudgettet og den ønskede lagerbeholdning',
+        'At vise virksomhedens skattemæssige forpligtelser',
+        'At planlægge medarbejdernes ferieuger'
+    ],
+    correct: 1,
+    explanation: 'Produktionsbudgettet viser, hvor meget der skal produceres for at opfylde salgsbudgettet. Produktion = Forventet salg − Primo lager + Ønsket ultimo lager. Fx: Forventer at sælge 1.000 stk., har 100 på lager, ønsker 200 ultimo → skal producere 1.100 stk.'
+},
+{
+    id: 328,
+    category: 'Virksomhed',
+    q: 'Hvad er forskellen mellem faste og variable omkostninger i et omkostningsbudget?',
+    options: [
+        'Faste omkostninger ændrer sig med produktionen, variable er de samme hele tiden',
+        'Faste omkostninger er de samme uanset produktion (fx husleje, løn), variable ændrer sig med mængden (fx råvarer, el)',
+        'Der er ingen forskel — begge dele afhænger af antal ansatte',
+        'Faste omkostninger er kun relevante for store virksomheder'
+    ],
+    correct: 1,
+    explanation: 'Faste omkostninger er nogenlunde ens uanset hvor meget der produceres (fx husleje, forsikring, fast personale). Variable omkostninger stiger med produktionsmængden (fx råvarer, emballage, energi). Et omkostningsbudget giver overblik over begge typer, så virksomheden ved, hvor meget den skal tjene for at gå i overskud.'
+},
+{
+    id: 329,
+    category: 'Virksomhed',
+    q: 'Hvilke metoder kan bruges til at forudsige efterspørgslen i et salgsbudget?',
+    options: [
+        'Kun ved at spørge konkurrenterne direkte',
+        'Markedsanalyse (desk/field research), konkurrentanalyse og produktets livscyklus (PLC)',
+        'Udelukkende ved at se på vejrudsigten for perioden',
+        'Ved at tælle antal ansatte i virksomheden'
+    ],
+    correct: 1,
+    explanation: 'Efterspørgsel forudsiges bl.a. med: Markedsanalyse (Desk Research og Field Research), Konkurrentanalyse (positionsstrategi, kompetenceprofil, reaktionsevne), og Produktets livscyklus (PLC). Salget fremmes desuden via reklamer, salgstræning og PR. Når salgsbudgettet er lavet, kan indkøb og produktion budgetteres.'
 }
 
 ];
@@ -4118,8 +4731,7 @@ const learnTrueFalseBank = [
 { statement: 'I et flydende lagerplads-system har varer ikke en fast reserveret plads.', answer: true, explanation: 'Korrekt — varer placeres på den første ledige plads. Det giver bedre pladsudnyttelse, men kræver et WMS-system til at holde styr på lokationerne.' },
 { statement: 'Lageromsætningshastighed beregnes som gennemsnitslager divideret med årsforbrug.', answer: false, explanation: 'Forkert — det er omvendt: lageromsætningshastighed = årligt forbrug / gennemsnitslager. Jo højere tal, jo mere effektiv omsætning af varer.' },
 { statement: 'Genbestillingspunktet (ROP) beregnes som dagsforbrug × leveringstid + sikkerhedslager.', answer: true, explanation: 'Korrekt — ROP = (d × L) + SS. Det sikrer, at man bestiller nye varer i tide, så lageret ikke løber tørt inden leverancen ankommer.' },
-{ statement: 'ABC-analyse bygger på Pareto-princippet (80/20-reglen).', answer: true, explanation: 'Korrekt — ca. 20% af varerne udgør typisk 80% af den samlede lagerværdi (A-varer). Derfor prioriterer man sin styring efter varernes vigtighed.' },
-{ statement: 'A-varer i en ABC-analyse udgør typisk 50% af varerne og 50% af værdien.', answer: false, explanation: 'Forkert — A-varer udgør typisk kun ca. 20% af antallet, men hele ca. 80% af den samlede værdi. Det er netop pointen med ABC-analyse.' },
+{ statement: 'ABC-analyse bygger på Pareto-princippet (80/20-reglen), hvor ca. 20% af varerne udgør ca. 80% af lagerværdien.', answer: true, explanation: 'Korrekt — A-varer udgør typisk kun ca. 20% af antallet, men hele ca. 80% af den samlede værdi. Derfor prioriterer man sin styring efter varernes vigtighed.' },
 { statement: 'Cyklisk optælling erstatter den årlige totaltælling med løbende optælling af udvalgte varer.', answer: true, explanation: 'Korrekt — man tæller løbende: fx A-varer ugentligt, B-varer månedligt, C-varer kvartalsvis. Det holder lagersaldoen mere nøjagtig hele året.' },
 
 // --- Lean ---
